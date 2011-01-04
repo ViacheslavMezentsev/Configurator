@@ -53,12 +53,15 @@ Private Const DTRG_PARAMETER_DESCR_ROTTIME = "Время вращ. мотора"
 Private Const DTRG_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
 Private Const DTRG_PARAMETER_DESCR_DRUMSPEED = "Скорость вращ. барабана"
 
-Public Sub ShowPropertyTableForDTRG(frm As FormMain)
+' Функция-посредник
+Private Sub func_ShowPropertyTableForDTRG(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordDetergent As TYPE_WPC_DETERGENT)
+    
     Dim I, J, row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
-    Dim RecordTitle As TYPE_WPC_TITLE
-    Dim RecordDetergent As TYPE_WPC_DETERGENT
     
     With frm
         ' Формируем столбик с названиями параметров
@@ -135,14 +138,16 @@ Public Sub ShowPropertyTableForDTRG(frm As FormMain)
         .PropertyTable.FormatString = ParamStr
         
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .PropertyTable.col = 1
                
@@ -242,22 +247,35 @@ Public Sub ShowPropertyTableForDTRG(frm As FormMain)
     End With
 End Sub
 
-Public Sub EditPropertyForDTRG(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+
+Public Sub ShowPropertyTableForDTRG(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordDetergent As TYPE_WPC_DETERGENT
     
+    func_ShowPropertyTableForDTRG frm, 0&, RecordTitle, RecordDetergent
+End Sub
+
+' Функция-посредник
+Private Sub func_EditPropertyForDTRG(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordDetergent As TYPE_WPC_DETERGENT)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
         .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
@@ -390,22 +408,34 @@ Public Sub EditPropertyForDTRG(frm As FormMain)
     End With
 End Sub
 
-Public Sub SetComboPropertyForDTRG(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub EditPropertyForDTRG(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordDetergent As TYPE_WPC_DETERGENT
     
+    func_EditPropertyForDTRG frm, 0&, RecordTitle, RecordDetergent
+End Sub
+
+' Функция-посредник
+Private Sub func_SetComboPropertyForDTRG(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordDetergent As TYPE_WPC_DETERGENT)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
@@ -497,11 +527,18 @@ Public Sub SetComboPropertyForDTRG(frm As FormMain)
         .SetModified True
         
         ' Сохраняем изменения
-        CopyMemory ByVal StepPointer, RecordDetergent, STEP_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordDetergent, STEP_SIZE_IN_BYTES
         
-        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
+        'StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
     End With
+End Sub
+
+Public Sub SetComboPropertyForDTRG(frm As FormMain)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordDetergent As TYPE_WPC_DETERGENT
+    
+    func_SetComboPropertyForDTRG frm, 0&, RecordTitle, RecordDetergent
 End Sub
 
 

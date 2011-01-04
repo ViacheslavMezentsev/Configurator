@@ -35,12 +35,15 @@ Private Const WASH_PARAMETER_DESCR_ROTTIME = "Время вращ. мотора"
 Private Const WASH_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
 Private Const WASH_PARAMETER_DESCR_DRUMSPEED = "Скорость вращ. барабана"
 
-Public Sub ShowPropertyTableForWashOrRinsOrJolt(frm As FormMain)
+' Функция-посредник
+Private Sub func_ShowPropertyTableForWashOrRinsOrJolt(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordWash As TYPE_WPC_WASH)
+    
     Dim I, J, row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
-    Dim RecordTitle As TYPE_WPC_TITLE
-    Dim RecordWash As TYPE_WPC_WASH
     
     With frm
         ' Формируем столбик с названиями параметров
@@ -94,14 +97,16 @@ Public Sub ShowPropertyTableForWashOrRinsOrJolt(frm As FormMain)
         .PropertyTable.FormatString = ParamStr
         
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordWash, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordWash, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .PropertyTable.col = 1
         
@@ -177,22 +182,34 @@ Public Sub ShowPropertyTableForWashOrRinsOrJolt(frm As FormMain)
     End With
 End Sub
 
-Public Sub EditPropertyForWashOrRinsOrJolt(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub ShowPropertyTableForWashOrRinsOrJolt(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordWash As TYPE_WPC_WASH
     
+    func_ShowPropertyTableForWashOrRinsOrJolt frm, 0&, RecordTitle, RecordWash
+End Sub
+
+' Функция-посредник
+Private Sub func_EditPropertyForWashOrRinsOrJolt(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordWash As TYPE_WPC_WASH)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordWash, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordWash, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
         .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
@@ -285,22 +302,34 @@ Public Sub EditPropertyForWashOrRinsOrJolt(frm As FormMain)
     End With
 End Sub
 
-Public Sub SetComboPropertyForWashOrRinsOrJolt(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub EditPropertyForWashOrRinsOrJolt(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordWash As TYPE_WPC_WASH
     
+    func_EditPropertyForWashOrRinsOrJolt frm, 0&, RecordTitle, RecordWash
+End Sub
+
+' Функция-посредник
+Private Sub func_SetComboPropertyForWashOrRinsOrJolt(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordWash As TYPE_WPC_WASH)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordWash, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordWash, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
@@ -368,10 +397,17 @@ Public Sub SetComboPropertyForWashOrRinsOrJolt(frm As FormMain)
         .SetModified True
         
         ' Сохраняем изменения
-        CopyMemory ByVal StepPointer, RecordWash, STEP_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordWash, STEP_SIZE_IN_BYTES
         
-        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
+        'StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
     End With
+End Sub
+
+Public Sub SetComboPropertyForWashOrRinsOrJolt(frm As FormMain)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordWash As TYPE_WPC_WASH
+    
+    func_SetComboPropertyForWashOrRinsOrJolt frm, 0&, RecordTitle, RecordWash
 End Sub
 

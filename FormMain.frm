@@ -555,8 +555,8 @@ Private Sub RefreshComponents(ByVal FramesOnly As Boolean)
     ' Обновление данных в компонентах
     If Not FramesOnly Then RefreshDataComponents
 
-    'FrameLeft.Top = CoolBar1.Top + CoolBar1.Height
-    FrameLeft.Height = StatusBar.Top - (CoolBar1.Top + CoolBar1.Height) - 100
+    FrameLeft.Top = CoolBar1.Top + CoolBar1.Height
+    FrameLeft.Height = StatusBar.Top - (CoolBar1.Top + CoolBar1.Height)
         
     SplitterLeft.Left = FrameLeft.Left + FrameLeft.Width
     SplitterLeft.Top = FrameLeft.Top + 100
@@ -608,7 +608,14 @@ Private Sub RefreshFrameMain()
             StepsView.Top = 0
             StepsView.Width = FrameGridView.Width
             StepsView.Height = FrameGridView.Height
-            
+
+            If Manager.FileLoaded Then
+                FrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
+                                ".Шаг" & Manager.StepIndex + 1 & "]"
+            Else
+                FrameMain.Caption = "Шаги"
+            End If
+
             FrameGridView.Visible = True
 
         Case CODE_VIEW
@@ -622,6 +629,12 @@ Private Sub RefreshFrameMain()
             CodeView.Top = 0
             CodeView.Width = FrameCodeView.Width
             CodeView.Height = FrameCodeView.Height
+            
+            If Manager.FileLoaded Then
+                FrameMain.Caption = "Код - [" & ListPrograms.Text & "]"
+            Else
+                FrameMain.Caption = "Код"
+            End If
             
             ' Отображение данных в CodeView зависит от видимости строк
             ' Поэтому нужно делать обновление после измненения размеров
@@ -902,6 +915,12 @@ Private Sub ExitMainMenuItem_Click()
     End
 End Sub
 
+Private Sub FileMainMenuItem_Click()
+    SaveMainMenuItem.Enabled = Modified
+    SaveAsMainMenuItem.Enabled = Manager.FileLoaded
+    CloseMainMenuItem.Enabled = Manager.FileLoaded
+End Sub
+
 Private Sub Form_KeyDown(keyCode As Integer, Shift As Integer)
     If keyCode = VBRUN.KeyCodeConstants.vbKeyF3 Then
         If Not Manager.FileLoaded Then Exit Sub
@@ -911,12 +930,13 @@ Private Sub Form_KeyDown(keyCode As Integer, Shift As Integer)
                 CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
                     HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
                 
-                RefreshCodeView
                 ViewMode = CODE_VIEW
+                RefreshCodeView
             
             Case CODE_VIEW
-                RefreshStepsView
                 ViewMode = STEPS_VIEW
+                RefreshStepsView
+                
         End Select
         
         RefreshFrameMain
@@ -935,8 +955,17 @@ Private Sub Form_Load()
     ' Среда разработки часто "вылетает" из-за кода внутри
     ' Поэтому его тестирование нужно проводить только на
     ' откомпилированном приложении
-    ' Переключите DESIGN_MODE в False перед компиляцией
-    If Not DESIGN_MODE Then
+    Dim WE_ARE_IN_IDE As Boolean
+    
+    Debug.Assert MakeTrue(WE_ARE_IN_IDE)
+    
+    If WE_ARE_IN_IDE Then
+        ' Код, выполняемый в runtime среды разработки
+        DesignMode = True
+    Else
+        ' Код, который будет в скомпилированном файле
+        DesignMode = False
+        
         Timer1.Enabled = True
         Timer1.Interval = 0
     
@@ -1138,14 +1167,15 @@ End Sub
 
 Private Sub ListPrograms_Click()
     Manager.ProgramIndex = ListPrograms.row - 1
-    
+
     Select Case ViewMode
         Case STEPS_VIEW
+            RefreshFrameMain
             RefreshStepsView
-            
+
         Case CODE_VIEW
             CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex) / 16 + 1
-            RefreshCodeView
+            RefreshFrameMain
     End Select
 
     RefreshProperties
@@ -1298,6 +1328,7 @@ Private Sub StepsView_Click()
     
     ' Обновляем зависимые компоненты
     RefreshProperties
+    RefreshFrameMain
     RefreshFrameRight
     RefreshCodeView
 End Sub
@@ -1341,13 +1372,13 @@ End Sub
 
 Private Sub SetCaption(FileName As String)
     If Manager.FileLoaded Then
-        If DESIGN_MODE Then
+        If DesignMode Then
             Caption = APP_NAME & " [DESIGN] - [" & FileName & "]"
         Else
             Caption = APP_NAME & " - [" & FileName & "]"
         End If
     Else
-        If DESIGN_MODE Then
+        If DesignMode Then
             Caption = APP_NAME & " [DESIGN]"
         Else
             Caption = APP_NAME & ""
@@ -1764,9 +1795,7 @@ Private Sub RefreshCodeView()
         FrameMain.Enabled = False
         Exit Sub
     End If
-    
-    FrameMain.Caption = "Код - [" & ListPrograms.Text & ".Шаг" & Manager.StepIndex + 1 & "]"
-    
+       
     CodeView.Visible = False
     CodeView.Clear
    
@@ -1920,9 +1949,8 @@ Private Sub RefreshStepsView()
         FrameMain.Enabled = False
         Exit Sub
     End If
-    
+        
     StepsView.Visible = False
-    FrameMain.Caption = "Шаги - [" & ListPrograms.Text & ".Шаг" & Manager.StepIndex + 1 & "]"
     
     x% = StepsView.col
     y% = StepsView.row
