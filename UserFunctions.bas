@@ -6,6 +6,28 @@ Option Explicit
 ' *  ~~~~~~~~~~ ~~~~~~~ ~~~~~~~~~~~~
 ' *****************************************
 
+' [VB] Как проверить, что код работает в IDE?
+' Вы заводите в каком-нибудь модуле функцию со следующим кодом:
+
+Public Function MakeTrue(ByRef bvar As Boolean) As Boolean
+    bvar = True
+    MakeTrue = True
+End Function
+
+' А затем, когда вам понадобится разместить код, который должен _
+по разному работать, делаете следующее:
+
+'    Dim WE_ARE_IN_IDE As Boolean
+'    Debug.Assert MakeTrue(WE_ARE_IN_IDE)
+    
+'    If WE_ARE_IN_IDE Then
+'        MsgBox "Мы в IDE"
+'        MakeSomethingBad
+'    Else
+'        MsgBox "Мы в скомпилированном файле"
+'        MakeSomethingGood
+'    End If
+
 Public Function GetCellIndex(MSFlexGrid As MSFlexGrid, _
     row As Integer, col As Integer)
     

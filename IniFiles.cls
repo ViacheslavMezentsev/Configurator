@@ -18,6 +18,15 @@ Option Explicit
 
 Private FFileName As String
 
+' Конструктор
+Private Sub Class_Initialize()
+End Sub
+
+' Деструктор
+Private Sub Class_Terminate()
+
+End Sub
+
 Public Sub Create(FileName As String)
     FFileName = FileName
 End Sub

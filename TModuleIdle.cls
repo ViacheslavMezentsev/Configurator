@@ -15,11 +15,15 @@ Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
 Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
-Public Sub ShowPropertyTableForIdle(frm As FormMain)
+' Функция-посредник
+Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordStep As TYPE_WPC_STEP)
+    
     Dim I, J, row As Integer
     Dim StepPointer As Long
     Dim ParamStr, s As String
-    Dim RecordStep As TYPE_WPC_STEP
     
     With frm
         ' Формируем столбик с названиями параметров
@@ -56,7 +60,8 @@ Public Sub ShowPropertyTableForIdle(frm As FormMain)
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .PropertyTable.col = 1
         
@@ -80,22 +85,34 @@ Public Sub ShowPropertyTableForIdle(frm As FormMain)
     End With
 End Sub
 
-Public Sub EditPropertyForIdle(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub ShowPropertyTableForIdle(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordStep As TYPE_WPC_STEP
+
+    func_ShowPropertyTableForIdle frm, 0&, RecordTitle, RecordStep
+End Sub
+
+' Функция-посредник
+Private Sub func_EditPropertyForIdle(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordStep As TYPE_WPC_STEP)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
     
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
         Select Case .PropertyTable.row
             Case IDLE_ENDSOUND_FIELD:
@@ -133,21 +150,33 @@ Public Sub EditPropertyForIdle(frm As FormMain)
     End With
 End Sub
 
-Public Sub SetComboPropertyForIdle(frm As FormMain)
-    Dim StepPointer As Long
+Public Sub EditPropertyForIdle(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordStep As TYPE_WPC_STEP
     
+    func_EditPropertyForIdle frm, 0&, RecordTitle, RecordStep
+End Sub
+
+' Функция-посредник
+Private Sub func_SetComboPropertyForIdle(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordStep As TYPE_WPC_STEP)
+    
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
         Select Case .PropertyTable.row
             ' В режиме пропуска доступны для изменения только два поля
@@ -172,8 +201,15 @@ Public Sub SetComboPropertyForIdle(frm As FormMain)
         .SetModified True
         
         ' Сохраняем изменения
-        CopyMemory ByVal StepPointer, RecordStep, STEP_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordStep, STEP_SIZE_IN_BYTES
     End With
+End Sub
+
+Public Sub SetComboPropertyForIdle(frm As FormMain)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordStep As TYPE_WPC_STEP
+    
+    func_SetComboPropertyForIdle frm, 0&, RecordTitle, RecordStep
 End Sub
 
 

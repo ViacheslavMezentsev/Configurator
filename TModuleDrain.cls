@@ -43,13 +43,16 @@ Private Const DRAIN_PARAMETER_DESCR_DRUMSPEED1 = "Скорость вращ. бар. (реверс)"
 Private Const DRAIN_PARAMETER_DESCR_TIME2 = "Время раскладки"
 Private Const DRAIN_PARAMETER_DESCR_DRUMSPEED2 = "Скорость вращ. бар. (раскл.)"
 
-Public Sub ShowPropertyTableForDrain(frm As FormMain)
+' Функция-посредник
+Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordDrain As TYPE_WPC_DRAIN)
+    
     Dim I, J, row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
-    Dim RecordTitle As TYPE_WPC_TITLE
-    Dim RecordDrain As TYPE_WPC_DRAIN
-
+    
     With frm
         ' Формируем столбик с названиями параметров
         ParamStr = ";Параметр|"
@@ -114,14 +117,16 @@ Public Sub ShowPropertyTableForDrain(frm As FormMain)
         .PropertyTable.FormatString = ParamStr
         
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
 
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .PropertyTable.col = 1
         
@@ -219,22 +224,34 @@ Public Sub ShowPropertyTableForDrain(frm As FormMain)
     End With
 End Sub
 
-Public Sub EditPropertyForDrain(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub ShowPropertyTableForDrain(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordDrain As TYPE_WPC_DRAIN
     
+    func_ShowPropertyTableForDrain frm, 0&, RecordTitle, RecordDrain
+End Sub
+
+' Функция-посредник
+Private Sub func_EditPropertyForDrain(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordDrain As TYPE_WPC_DRAIN)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
         .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
@@ -353,22 +370,34 @@ Public Sub EditPropertyForDrain(frm As FormMain)
     End With
 End Sub
 
-Public Sub SetComboPropertyForDrain(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub EditPropertyForDrain(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordDrain As TYPE_WPC_DRAIN
     
+    func_EditPropertyForDrain frm, 0&, RecordTitle, RecordDrain
+End Sub
+
+' Функция-посредник
+Private Sub func_SetComboPropertyForDrain(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordDrain As TYPE_WPC_DRAIN)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
@@ -457,11 +486,18 @@ Public Sub SetComboPropertyForDrain(frm As FormMain)
         .SetModified True
         
         ' Сохраняем изменения
-        CopyMemory ByVal StepPointer, RecordDrain, STEP_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordDrain, STEP_SIZE_IN_BYTES
         
-        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
+        'StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
     End With
+End Sub
+
+Public Sub SetComboPropertyForDrain(frm As FormMain)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordDrain As TYPE_WPC_DRAIN
+    
+    func_SetComboPropertyForDrain frm, 0&, RecordTitle, RecordDrain
 End Sub
 
 

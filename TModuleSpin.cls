@@ -33,12 +33,15 @@ Private Const SPIN_PARAMETER_DESCR_DRAINGATE2 = "Разр. кл. слива 2"
 Private Const SPIN_PARAMETER_DESCR_DRUMSPEED = "Скорость вращ. барабана"
 Private Const SPIN_PARAMETER_DESCR_TIME = "Время отжима"
 
-Public Sub ShowPropertyTableForSpin(frm As FormMain)
+' Функция-посредник
+Private Sub func_ShowPropertyTableForSpin(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordSpin As TYPE_WPC_SPIN)
+    
     Dim I, J, row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
-    Dim RecordTitle As TYPE_WPC_TITLE
-    Dim RecordSpin As TYPE_WPC_SPIN
     
     With frm
         ' Формируем столбик с названиями параметров
@@ -89,14 +92,16 @@ Public Sub ShowPropertyTableForSpin(frm As FormMain)
         .PropertyTable.FormatString = ParamStr
 
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordSpin, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordSpin, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .PropertyTable.col = 1
         
@@ -173,22 +178,34 @@ Public Sub ShowPropertyTableForSpin(frm As FormMain)
     End With
 End Sub
 
-Public Sub EditPropertyForSpin(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub ShowPropertyTableForSpin(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordSpin As TYPE_WPC_SPIN
     
+    func_ShowPropertyTableForSpin frm, 0&, RecordTitle, RecordSpin
+End Sub
+
+' Функция-посредник
+Private Sub func_EditPropertyForSpin(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordSpin As TYPE_WPC_SPIN)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordSpin, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordSpin, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
         .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
@@ -278,22 +295,34 @@ Public Sub EditPropertyForSpin(frm As FormMain)
     End With
 End Sub
 
-Public Sub SetComboPropertyForSpin(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub EditPropertyForSpin(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordSpin As TYPE_WPC_SPIN
     
+    func_EditPropertyForSpin frm, 0&, RecordTitle, RecordSpin
+End Sub
+
+' Функция-посредник
+Private Sub func_SetComboPropertyForSpin(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordSpin As TYPE_WPC_SPIN)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordSpin, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordSpin, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
@@ -361,11 +390,18 @@ Public Sub SetComboPropertyForSpin(frm As FormMain)
         .SetModified True
         
         ' Сохраняем изменения
-        CopyMemory ByVal StepPointer, RecordSpin, STEP_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordSpin, STEP_SIZE_IN_BYTES
         
-        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
+        'StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
     End With
+End Sub
+
+Public Sub SetComboPropertyForSpin(frm As FormMain)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordSpin As TYPE_WPC_SPIN
+    
+    func_SetComboPropertyForSpin frm, 0&, RecordTitle, RecordSpin
 End Sub
 
 

@@ -23,10 +23,6 @@ Public Const DEFAULT_FILE_NAME As String = "Без имени"
 Public Const STEPS_VIEW = 0
 Public Const CODE_VIEW = 1
 
-' Режим проектирования
-' !!! ВНИМАНИЕ !!! ИЗМЕНИТЬ НА FALSE ПРИ КОМПИЛЯЦИИ
-Public Const DESIGN_MODE As Boolean = False
-
 ' Типы операций
 Public Const WPC_OPERATION_IDLE = 0 '// пропуск
 Public Const WPC_OPERATION_FILL = 1 '// налив
@@ -68,6 +64,8 @@ Public Const LOADING_DRIVE = 17 '// Движок
 
 ' Признак изменённости файла
 Public Modified As Boolean
-
+Public DesignMode As Boolean
 Public FunctionsStrings(0 To 11) As String
 Public Hook As Long, tMessage As Timer
+
+

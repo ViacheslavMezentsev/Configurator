@@ -17,12 +17,15 @@ Option Explicit
 
 Private Const TRIN_PARAMETERS_COUNT = IDLE_PARAMETERS_COUNT + 0
 
-Public Sub ShowPropertyTableForTrin(frm As FormMain)
+' Функция-посредник
+Private Sub func_ShowPropertyTableForTrin(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordStep As TYPE_WPC_STEP)
+    
     Dim I, J, row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
-    Dim RecordTitle As TYPE_WPC_TITLE
-    Dim RecordStep As TYPE_WPC_STEP
     
     With frm
         ' Формируем столбик с названиями параметров
@@ -59,14 +62,16 @@ Public Sub ShowPropertyTableForTrin(frm As FormMain)
         .PropertyTable.FormatString = ParamStr
         
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .PropertyTable.col = 1
         
@@ -117,22 +122,34 @@ Public Sub ShowPropertyTableForTrin(frm As FormMain)
     End With
 End Sub
 
-Public Sub EditPropertyForTrin(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub ShowPropertyTableForTrin(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordStep As TYPE_WPC_STEP
     
+    func_ShowPropertyTableForTrin frm, 0&, RecordTitle, RecordStep
+End Sub
+
+' Функция-посредник
+Private Sub func_EditPropertyForTrin(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordStep As TYPE_WPC_STEP)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
 
         .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
         .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
@@ -192,22 +209,34 @@ Public Sub EditPropertyForTrin(frm As FormMain)
     End With
 End Sub
 
-Public Sub SetComboPropertyForTrin(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub EditPropertyForTrin(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordStep As TYPE_WPC_STEP
     
+    func_EditPropertyForTrin frm, 0&, RecordTitle, RecordStep
+End Sub
+
+' Функция-посредник
+Private Sub func_SetComboPropertyForTrin(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordStep As TYPE_WPC_STEP)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
@@ -252,11 +281,18 @@ Public Sub SetComboPropertyForTrin(frm As FormMain)
         .SetModified True
         
         ' Сохраняем изменения
-        CopyMemory ByVal StepPointer, RecordStep, STEP_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordStep, STEP_SIZE_IN_BYTES
         
-        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
+        'StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
     End With
+End Sub
+
+Public Sub SetComboPropertyForTrin(frm As FormMain)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordStep As TYPE_WPC_STEP
+    
+    func_SetComboPropertyForTrin frm, 0&, RecordTitle, RecordStep
 End Sub
 
 

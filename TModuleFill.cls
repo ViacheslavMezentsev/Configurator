@@ -40,13 +40,16 @@ Private Const FILL_PARAMETER_DESCR_ROTTIME = "Время вращ. мотора"
 Private Const FILL_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
 Private Const FILL_PARAMETER_DESCR_DRUMSPEED = "Скорость вращ. барабана"
 
-Public Sub ShowPropertyTableForFill(frm As FormMain)
+' Функция-посредник
+Private Sub func_ShowPropertyTableForFill(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordFill As TYPE_WPC_FILL)
+
     Dim I, J, row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
-    Dim RecordTitle As TYPE_WPC_TITLE
-    Dim RecordFill As TYPE_WPC_FILL
-    
+
     With frm
         ' Формируем столбик с названиями параметров
         ParamStr = ";Параметр|"
@@ -108,14 +111,16 @@ Public Sub ShowPropertyTableForFill(frm As FormMain)
         .PropertyTable.FormatString = ParamStr
         
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .PropertyTable.col = 1
         
@@ -212,22 +217,34 @@ Public Sub ShowPropertyTableForFill(frm As FormMain)
     End With
 End Sub
 
-Public Sub EditPropertyForFill(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub ShowPropertyTableForFill(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordFill As TYPE_WPC_FILL
     
+    func_ShowPropertyTableForFill frm, 0&, RecordTitle, RecordFill
+End Sub
+
+' Функция-посредник
+Private Sub func_EditPropertyForFill(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordFill As TYPE_WPC_FILL)
+    
+    Dim I As Integer
+    Dim StepPointer As Long
+    
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
         .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
         .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
@@ -341,22 +358,34 @@ Public Sub EditPropertyForFill(frm As FormMain)
     End With
 End Sub
 
-Public Sub SetComboPropertyForFill(frm As FormMain)
-    Dim I As Integer
-    Dim StepPointer As Long
+Public Sub EditPropertyForFill(frm As FormMain)
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordFill As TYPE_WPC_FILL
     
+    func_EditPropertyForFill frm, 0&, RecordTitle, RecordFill
+End Sub
+
+' Функция-посредник
+Private Sub func_SetComboPropertyForFill(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordFill As TYPE_WPC_FILL)
+
+    Dim I As Integer
+    Dim StepPointer As Long
+
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
         
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
             .Manager.StepIndex * STEP_SIZE_IN_BYTES
         
-        CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        'CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
@@ -440,11 +469,18 @@ Public Sub SetComboPropertyForFill(frm As FormMain)
         .SetModified True
         
         ' Сохраняем изменения
-        CopyMemory ByVal StepPointer, RecordFill, STEP_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordFill, STEP_SIZE_IN_BYTES
         
-        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-        CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
+        'StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
     End With
+End Sub
+
+Public Sub SetComboPropertyForFill(frm As FormMain)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordFill As TYPE_WPC_FILL
+    
+    func_SetComboPropertyForFill frm, 0&, RecordTitle, RecordFill
 End Sub
 
 
