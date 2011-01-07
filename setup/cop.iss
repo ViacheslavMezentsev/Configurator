@@ -6,7 +6,7 @@
 
 [Setup]
 AppName=Конфигуратор УП
-AppVerName=Конфигуратор УП версия 1.1.16
+AppVerName=Конфигуратор УП версия 1.1.100
 DefaultDirName={pf}\Конфигуратор УП
 DefaultGroupName=Конфигуратор УП
 UninstallDisplayIcon={app}\cop.exe
@@ -14,7 +14,7 @@ Compression=lzma
 SolidCompression=true
 OutputDir=Output
 ;LicenseFile=License.rtf
-OutputBaseFilename=Configurator_1.1.16_setup
+OutputBaseFilename=Configurator_1.1.100_setup
 
 [Languages]
 ;Name: en; MessagesFile: compiler:Default.isl
@@ -27,8 +27,9 @@ BeveledLabel =Copyright 2011
 LicenseLabel3=
 
 [Files]
-Source: ..\cop.exe; DestDir: {app}
+Source: ..\cop.exe; DestDir: {app}; Flags: ignoreversion
 Source: ..\help\cop.chm; DestDir: {app}; Flags: ignoreversion
+Source: ..\limits.ini; DestDir: {app}; Flags: ignoreversion
 Source: ..\msvbvm60.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\comct332.ocx; DestDir: {app}; Flags: ignoreversion
 Source: ..\Comdlg32.ocx; DestDir: {app}; Flags: ignoreversion

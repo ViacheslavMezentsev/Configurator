@@ -12,8 +12,9 @@ Begin VB.Form FormAbout
    MinButton       =   0   'False
    ScaleHeight     =   2148.041
    ScaleMode       =   0  'User
-   ScaleWidth      =   5076.832
+   ScaleWidth      =   5076.833
    ShowInTaskbar   =   0   'False
+   StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox picIcon 
       AutoSize        =   -1  'True
       ClipControls    =   0   'False
@@ -37,17 +38,26 @@ Begin VB.Form FormAbout
       Top             =   2640
       Width           =   1260
    End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      Caption         =   "Екатеринбург, 2011 г."
+      Height          =   252
+      Left            =   1920
+      TabIndex        =   6
+      Top             =   2160
+      Width           =   1812
+   End
    Begin VB.Line Line1 
       BorderColor     =   &H00808080&
       BorderStyle     =   6  'Inside Solid
       Index           =   1
       X1              =   84.426
-      X2              =   5309.473
-      Y1              =   1687.452
-      Y2              =   1687.452
+      X2              =   5309.474
+      Y1              =   1687.451
+      Y2              =   1687.451
    End
    Begin VB.Label lblDescription 
-      Caption         =   "Программа предназначена для создания или изменения управляющих программ"
+      Caption         =   "Конфигуратор предназначен для создания или изменения управляющих программ"
       ForeColor       =   &H00000000&
       Height          =   564
       Left            =   1056
@@ -69,12 +79,12 @@ Begin VB.Form FormAbout
       BorderWidth     =   2
       Index           =   0
       X1              =   98.497
-      X2              =   5309.473
+      X2              =   5309.474
       Y1              =   1697.779
       Y2              =   1697.779
    End
    Begin VB.Label lblVersion 
-      Caption         =   "Version"
+      Caption         =   "Версия"
       Height          =   225
       Left            =   1050
       TabIndex        =   5
@@ -84,10 +94,10 @@ Begin VB.Form FormAbout
    Begin VB.Label lblDisclaimer 
       Caption         =   "Авторы: Зыков Василий и Мезенцев Вячеслав"
       ForeColor       =   &H00000000&
-      Height          =   348
+      Height          =   228
       Left            =   1080
       TabIndex        =   3
-      Top             =   1920
+      Top             =   1800
       Width           =   3876
    End
 End
@@ -137,7 +147,7 @@ End Sub
 Private Sub Form_Load()
     'Me.Caption = "About " & App.Title
     Me.Caption = "О программе"
-    lblVersion.Caption = "Version " & App.Major & "." & App.Minor & "." & App.Revision
+    lblVersion.Caption = "Версия " & App.Major & "." & App.Minor & "." & App.Revision
     'lblTitle.Caption = App.Title
     lblTitle.Caption = "Конфигуратор управляющих программ"
 End Sub
@@ -173,7 +183,7 @@ SysInfoErr:
 End Sub
 
 Public Function GetKeyValue(KeyRoot As Long, KeyName As String, SubKeyRef As String, ByRef KeyVal As String) As Boolean
-    Dim i As Long                                           ' Loop Counter
+    Dim I As Long                                           ' Loop Counter
     Dim rc As Long                                          ' Return Code
     Dim hKey As Long                                        ' Handle To An Open Registry Key
     Dim hDepth As Long                                      '
@@ -210,8 +220,8 @@ Public Function GetKeyValue(KeyRoot As Long, KeyName As String, SubKeyRef As Str
     Case REG_SZ                                             ' String Registry Key Data Type
         KeyVal = tmpVal                                     ' Copy String Value
     Case REG_DWORD                                          ' Double Word Registry Key Data Type
-        For i = Len(tmpVal) To 1 Step -1                    ' Convert Each Bit
-            KeyVal = KeyVal + Hex(Asc(Mid(tmpVal, i, 1)))   ' Build Value Char. By Char.
+        For I = Len(tmpVal) To 1 Step -1                    ' Convert Each Bit
+            KeyVal = KeyVal + Hex(Asc(Mid(tmpVal, I, 1)))   ' Build Value Char. By Char.
         Next
         KeyVal = Format$("&h" + KeyVal)                     ' Convert Double Word To String
     End Select

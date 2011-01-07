@@ -15,6 +15,82 @@ Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
 Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
+' Название секции
+Private Const IDLE_SECTION_NAME = "Idle"
+
+' Настройки по умолчанию
+' Дискретные типы
+Private Const PAUSE_DEFAULT = 0
+
+' Параметры функции шага
+' Дискретные типы
+Private Pause As TYPE_BOOL_DESCRIPTION
+
+' Аналоговые типы
+
+Public LimitsLoaded As Boolean
+
+' Конструктор
+Private Sub Class_Initialize()
+    LimitsLoaded = False
+End Sub
+
+' Деструктор
+Private Sub Class_Terminate()
+End Sub
+
+Public Sub LoadLimits(FileName As String)
+    LimitsLoaded = DoesFileExist(FileName)
+    
+    If Not LimitsLoaded Then Exit Sub
+    
+    Dim LimitsFile As New TIniFiles
+    
+    LimitsFile.Create FileName
+    
+    ' Настройки функции
+    ' Дискретные типы
+    Pause.DefaultValue = LimitsFile.ReadInteger(IDLE_SECTION_NAME, "Pause.Default", PAUSE_DEFAULT) > 0
+    
+    ' Аналоговые типы
+    
+    Set LimitsFile = Nothing
+End Sub
+
+' Функция-посредник
+Private Sub func_SetDefaults(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordStep As TYPE_WPC_STEP)
+
+    Dim StepPointer As Long
+    
+    StepPointer = frm.Manager.DataPointer + _
+        frm.Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+        HEADER_SIZE_IN_BYTES + _
+        frm.Manager.StepIndex * STEP_SIZE_IN_BYTES
+    
+    'CopyMemory RecordCool, ByVal StepPointer, STEP_SIZE_IN_BYTES
+    PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+    
+    ' Дискретные типы
+    Select Case Pause.DefaultValue
+        Case False: RecordStep.Bits = RecordStep.Bits And &HFFEF
+        Case True: RecordStep.Bits = RecordStep.Bits Or &H10
+    End Select
+    
+    ' Аналоговые типы
+    
+    ' Сохраняем изменения
+    'StepPointer = frm.Manager.DataPointer + frm.Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+    'CopyMemory ByVal StepPointer, RecordStep, HEADER_SIZE_IN_BYTES
+End Sub
+
+Public Sub SetDefaults(frm As FormMain)
+    Dim RecordStep As TYPE_WPC_STEP
+    
+    func_SetDefaults frm, 0&, RecordStep
+End Sub
+
 ' Функция-посредник
 Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
     ByVal begin_of_pointers As Long, _
@@ -55,6 +131,10 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
         
         .PropertyTable.FormatString = ParamStr
         
+        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+        
         StepPointer = .Manager.DataPointer + _
             .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
             HEADER_SIZE_IN_BYTES + _
@@ -69,6 +149,13 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
             .PropertyTable.row = I
             
             Select Case I
+                Case IDLE_PROGNAME_FIELD:
+                    s = ""
+                    For J = 1 To PROG_NAME_LENGTH - 1
+                        s = s & Chr(CLng(RecordTitle.ProgName(J)))
+                    Next J
+                    .PropertyTable.Text = s
+                    
                 Case IDLE_STEP_FIELD:
                     .PropertyTable.CellFontBold = True
                     .PropertyTable.Text = "" & .Manager.StepIndex + 1
@@ -100,6 +187,7 @@ Private Sub func_EditPropertyForIdle(frm As FormMain, _
     
     Dim I As Integer
     Dim StepPointer As Long
+    Dim s As String
     
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
@@ -113,37 +201,59 @@ Private Sub func_EditPropertyForIdle(frm As FormMain, _
         
         'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
-    
+        
+        .ComboCell.Left = .PropertyTable.Left + .PropertyTable.CellLeft
+        .ComboCell.Top = .PropertyTable.Top + .PropertyTable.CellTop
+        .ComboCell.Width = .PropertyTable.CellWidth
+        .ComboCell.Clear
+        
+        .TextCell.Left = .PropertyTable.Left + .PropertyTable.CellLeft
+        .TextCell.Top = .PropertyTable.Top + .PropertyTable.CellTop
+        .TextCell.Width = .PropertyTable.CellWidth
+        .TextCell.Height = .PropertyTable.CellHeight
+        
+        .LabelDescription.Left = .PropertyTable.Left
+        .LabelDescription.Width = .PropertyTable.Width
+        .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
+        .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
+        
         Select Case .PropertyTable.row
             Case IDLE_ENDSOUND_FIELD:
             
             Case IDLE_DOORUNLOCK_FIELD:
             
             Case IDLE_PROGNAME_FIELD:
+                s = ""
+                For I = 1 To PROG_NAME_LENGTH - 1
+                    s = s & Chr(CLng(RecordTitle.ProgName(I)))
+                Next I
+                .TextCell.Text = s
+                .TextCell.Visible = True
+                .TextCell.SetFocus
             
             Case IDLE_STEP_FIELD:
-                .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
-                .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
-                .ComboCell(0).Width = .PropertyTable.CellWidth
-                .ComboCell(0).Clear
+                .ComboCell.Left = .PropertyTable.Left + .PropertyTable.CellLeft
+                .ComboCell.Top = .PropertyTable.Top + .PropertyTable.CellTop
+                .ComboCell.Width = .PropertyTable.CellWidth
+                .ComboCell.Clear
                 For I = 1 To MAX_NUMBER_OF_STEPS
-                    .ComboCell(0).AddItem ("Шаг " & I)
+                    .ComboCell.AddItem ("Шаг " & I)
                 Next I
-                .ComboCell(0).ListIndex = .Manager.StepIndex
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.ListIndex = .Manager.StepIndex
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case IDLE_FUNCTION_FIELD:
-                .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
-                .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
-                .ComboCell(0).Width = .PropertyTable.CellWidth
-                .ComboCell(0).Clear
+                .ComboCell.Left = .PropertyTable.Left + .PropertyTable.CellLeft
+                .ComboCell.Top = .PropertyTable.Top + .PropertyTable.CellTop
+                .ComboCell.Width = .PropertyTable.CellWidth
+                .ComboCell.Clear
                 For I = 0 To 11
-                    .ComboCell(0).AddItem (FunctionsStrings(I))
+                    .ComboCell.AddItem (FunctionsStrings(I))
                 Next I
-                .ComboCell(0).ListIndex = RecordStep.Bits And &HF
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.ListIndex = RecordStep.Bits And &HF
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
             
             Case Else
         End Select
@@ -163,6 +273,9 @@ Private Sub func_SetComboPropertyForIdle(frm As FormMain, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordStep As TYPE_WPC_STEP)
     
+    On Error GoTo ErrorHandler
+    
+    Dim I As Integer
     Dim StepPointer As Long
     
     With frm
@@ -182,17 +295,68 @@ Private Sub func_SetComboPropertyForIdle(frm As FormMain, _
             ' В режиме пропуска доступны для изменения только два поля
             Case IDLE_ENDSOUND_FIELD:
             Case IDLE_DOORUNLOCK_FIELD:
-            Case IDLE_PROGNAME_FIELD:
             
+            Case IDLE_PROGNAME_FIELD:
+                For I = 1 To PROG_NAME_LENGTH - 1
+                    If I <= Len(.TextCell.Text) Then
+                        RecordTitle.ProgName(I) = Asc(Mid(.TextCell.Text, I, 1))
+                    Else
+                        RecordTitle.ProgName(I) = 0
+                    End If
+                Next I
+                RecordTitle.ProgName(PROG_NAME_LENGTH) = 0
+                
             Case IDLE_STEP_FIELD:
-                .Manager.StepIndex = .ComboCell(0).ListIndex
+                .Manager.StepIndex = .ComboCell.ListIndex
                 Exit Sub
                 
             Case IDLE_FUNCTION_FIELD:
-                ' При выборе новой функции для шага мы должны обнулить структуру
+                ' Если функция та же, то ничего не делаем
+                If (RecordStep.Bits And &HF) = (.ComboCell.ListIndex And &HF) Then Exit Sub
+
+                ' При выборе новой функции для шага мы должны обнулить структуру,
                 ZeroMemory RecordStep, STEP_SIZE_IN_BYTES
-                ' и записать новое значение в поле типа функции
-                RecordStep.Bits = .ComboCell(0).ListIndex And &HF
+                
+                ' установить значения по умолчанию в зависимости от функции,
+                If LimitsLoaded Then
+                    Select Case .ComboCell.ListIndex And &HF
+                        Case WPC_OPERATION_IDLE ' пропуск
+                            .ModuleIdle.SetDefaults frm
+                            
+                        Case WPC_OPERATION_FILL ' Налив
+                            .ModuleFill.SetDefaults frm
+                        
+                        Case WPC_OPERATION_DTRG ' моющие
+                            .ModuleDTRG.SetDefaults frm
+                            
+                        Case WPC_OPERATION_HEAT ' нагрев
+                            .ModuleHeat.SetDefaults frm
+                            
+                        ' стирка, полоскание, расстряска
+                        Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+                            .ModuleWashOrRinsOrJolt.SetDefaults frm
+                            
+                        'Case WPC_OPERATION_PAUS ' пауза
+            
+                        Case WPC_OPERATION_DRAIN ' слив
+                            .ModuleDrain.SetDefaults frm
+                            
+                        Case WPC_OPERATION_SPIN ' отжим
+                            .ModuleSpin.SetDefaults frm
+                        
+                        Case WPC_OPERATION_COOL ' охлаждение
+                            .ModuleCool.SetDefaults frm
+                            
+                        Case WPC_OPERATION_TRIN ' тех.полоскание
+                            .ModuleTrin.SetDefaults frm
+                    
+                        Case Else
+                        
+                    End Select
+                End If
+                
+                ' записать новое значение в поле типа функции
+                RecordStep.Bits = RecordStep.Bits Or (.ComboCell.ListIndex And &HF)
                 
             Case Else
                 
@@ -203,6 +367,10 @@ Private Sub func_SetComboPropertyForIdle(frm As FormMain, _
         ' Сохраняем изменения
         'CopyMemory ByVal StepPointer, RecordStep, STEP_SIZE_IN_BYTES
     End With
+    Exit Sub
+
+ErrorHandler:
+    Err.Clear
 End Sub
 
 Public Sub SetComboPropertyForIdle(frm As FormMain)
