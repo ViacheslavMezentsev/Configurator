@@ -76,7 +76,7 @@ End Type
 Public Type TYPE_WPC_FILL
     Bits As Integer
     Level As Byte ' уровень моющего раствора
-    RotTime As Byte ' время вращения мотора
+    RotationTime As Byte ' время вращения мотора
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана
     
@@ -95,7 +95,7 @@ Public Type TYPE_WPC_DETERGENT
     Detergent_7_Time As Byte ' время подачи моющих 7
     Detergent_8_Time As Byte ' время подачи моющих 8
     Detergent_9_Time As Byte ' время подачи моющих 9
-    RotTime As Byte ' время вращения мотора
+    RotationTime As Byte ' время вращения мотора
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана
     
@@ -106,7 +106,7 @@ End Type
 Public Type TYPE_WPC_HEAT
     Bits As Integer
     Temperature As Byte ' температура моющего раствора
-    RotTime As Byte ' время вращения мотора
+    RotationTime As Byte ' время вращения мотора
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана
     
@@ -117,7 +117,7 @@ End Type
 Public Type TYPE_WPC_WASH
     Bits As Integer
     Time As Byte ' время стирки
-    RotTime As Byte ' время вращения мотора
+    RotationTime As Byte ' время вращения мотора
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана
     
@@ -125,18 +125,14 @@ Public Type TYPE_WPC_WASH
 End Type
 
 ' структура шага СЛИВА
-' Примечание: Нарушено правило выравнивания элементов структуры
-' в памяти, поэтому исходное поле ByteDrumSpeed2 было заменено
-' на два байтовых поля
 Public Type TYPE_WPC_DRAIN
     Bits As Integer
     Level As Byte ' Уровень моющего раствора после слива
-    RotTime As Byte ' время вращения мотора
+    RotationTime As Byte ' время вращения мотора
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed1 As Byte ' скорость вращения барабана при реверсе
+    DrumSpeed2 As Integer ' скорость вращения барабана при раскладке
     Time2 As Byte ' время раскладки
-    LoByteDrumSpeed2 As Byte ' скорость вращения барабана при раскладке
-    HiByteDrumSpeed2 As Byte
     
     Reserved(1 To 7) As Byte
 End Type
@@ -155,10 +151,28 @@ Public Type TYPE_WPC_COOL
     Bits As Integer
     Temperature As Byte '
     ColdWaterTime As Byte ' время открытия клапана холодной воды
-    RotTime As Byte ' время вращения мотора
+    RotationTime As Byte ' время вращения мотора
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана при реверсе
     
     Reserved(1 To 9) As Byte
+End Type
+
+Public Type TYPE_BOOL_DESCRIPTION
+    DefaultValue As Boolean
+End Type
+
+Public Type TYPE_BYTE_DESCRIPTION
+    MinValue As Byte
+    MaxValue As Byte
+    DefaultValue As Byte
+    Dimension As String
+End Type
+
+Public Type TYPE_INT_DESCRIPTION
+    MinValue As Integer
+    MaxValue As Integer
+    DefaultValue As Integer
+    Dimension As String
 End Type
 

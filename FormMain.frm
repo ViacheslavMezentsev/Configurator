@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{38911DA0-E448-11D0-84A3-00DD01104159}#1.1#0"; "COMCT332.OCX"
+Object = "{38911DA0-E448-11D0-84A3-00DD01104159}#1.1#0"; "comct332.ocx"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Begin VB.Form FormMain 
@@ -118,9 +118,8 @@ Begin VB.Form FormMain
                Strikethrough   =   0   'False
             EndProperty
             Height          =   288
-            Index           =   1
             Left            =   120
-            MaxLength       =   2
+            MaxLength       =   3
             TabIndex        =   15
             Top             =   1800
             Visible         =   0   'False
@@ -190,14 +189,24 @@ Begin VB.Form FormMain
       TabIndex        =   3
       Top             =   360
       Width           =   2172
+      Begin VB.TextBox TextName 
+         BorderStyle     =   0  'None
+         Height          =   288
+         Left            =   120
+         TabIndex        =   17
+         Text            =   "Text1"
+         Top             =   4680
+         Visible         =   0   'False
+         Width           =   732
+      End
       Begin MSFlexGridLib.MSFlexGrid ListPrograms 
-         Height          =   4692
+         Height          =   4332
          Left            =   120
          TabIndex        =   16
          Top             =   240
          Width           =   1932
          _ExtentX        =   3408
-         _ExtentY        =   8276
+         _ExtentY        =   7641
          _Version        =   393216
          Cols            =   1
          FixedCols       =   0
@@ -226,7 +235,6 @@ Begin VB.Form FormMain
       Begin VB.ComboBox ComboCell 
          Appearance      =   0  'Flat
          Height          =   288
-         Index           =   0
          Left            =   120
          Style           =   2  'Dropdown List
          TabIndex        =   14
@@ -237,7 +245,6 @@ Begin VB.Form FormMain
       Begin VB.TextBox TextCell 
          BorderStyle     =   0  'None
          Height          =   288
-         Index           =   0
          Left            =   120
          TabIndex        =   13
          Top             =   4200
@@ -256,6 +263,25 @@ Begin VB.Form FormMain
          AllowBigSelection=   0   'False
          AllowUserResizing=   1
          BorderStyle     =   0
+      End
+      Begin VB.Label LabelDescription 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Label"
+         BeginProperty Font 
+            Name            =   "Courier New"
+            Size            =   9
+            Charset         =   204
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   552
+         Left            =   1200
+         TabIndex        =   18
+         Top             =   4320
+         Visible         =   0   'False
+         Width           =   972
       End
    End
    Begin MSComctlLib.ImageList ImageList1 
@@ -451,6 +477,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private Const TITLE_SECTION_NAME = "Title"
+
 Private SplitterRightMoving As Boolean
 Private SplitterLeftMoving As Boolean
 
@@ -468,12 +496,22 @@ Public ModuleFill As TModuleFill
 Public ModuleDTRG As TModuleDTRG
 Public ModuleHeat As TModuleHeat
 Public ModuleWashOrRinsOrJolt As TModuleWashOrRinsOrJolt
-Public ModulePause As TModulePause
+'Public ModulePause As TModulePause
 Public ModuleDrain As TModuleDrain
 Public ModuleSpin As TModuleSpin
 Public ModuleCool As TModuleCool
 Public ModuleTrin As TModuleTrin
 
+' Настройки по умолчанию
+' Дискретные типы
+Private Const ENDSOUND_DEFAULT = 1
+Private Const DOORUNLOCK_DEFAULT = 1
+
+Public LimitsLoaded As Boolean
+
+Dim EndSound As TYPE_BOOL_DESCRIPTION
+Dim DoorUnlock As TYPE_BOOL_DESCRIPTION
+    
 Private Sub SavePlacement()
     ' Размеры формы
     IniFile.WriteInteger "Placement", "Left", Left
@@ -550,13 +588,13 @@ Private Sub LoadPlacement()
 End Sub
 
 Private Sub RefreshComponents(ByVal FramesOnly As Boolean)
-    If FormMain.WindowState = vbMinimized Then Exit Sub
+    If Me.WindowState = vbMinimized Then Exit Sub
     
     ' Обновление данных в компонентах
     If Not FramesOnly Then RefreshDataComponents
 
-    FrameLeft.Top = CoolBar1.Top + CoolBar1.Height
-    FrameLeft.Height = StatusBar.Top - (CoolBar1.Top + CoolBar1.Height)
+    FrameLeft.Top = Me.ScaleTop + CoolBar1.Top + CoolBar1.Height
+    FrameLeft.Height = Me.ScaleHeight - (StatusBar.Height + CoolBar1.Top + CoolBar1.Height)
         
     SplitterLeft.Left = FrameLeft.Left + FrameLeft.Width
     SplitterLeft.Top = FrameLeft.Top + 100
@@ -565,13 +603,13 @@ Private Sub RefreshComponents(ByVal FramesOnly As Boolean)
     FrameMain.Left = SplitterLeft.Left + SplitterLeft.Width
     FrameMain.Top = FrameLeft.Top
     FrameMain.Height = FrameLeft.Height
-    FrameMain.Width = Width - FrameMain.Left - FrameRight.Width - SplitterRight.Width - 100
+    FrameMain.Width = Me.ScaleWidth - FrameMain.Left - FrameRight.Width - SplitterRight.Width
     
     SplitterRight.Left = FrameMain.Left + FrameMain.Width
     SplitterRight.Top = FrameLeft.Top + 100
     SplitterRight.Height = FrameLeft.Height - 100
     
-    FrameRight.Left = FormMain.Width - FrameRight.Width - 100
+    FrameRight.Left = Me.ScaleWidth - FrameRight.Width
     FrameRight.Top = FrameLeft.Top
     FrameRight.Height = FrameLeft.Height
     
@@ -787,25 +825,26 @@ Private Sub CodeView_KeyDown(keyCode As Integer, Shift As Integer)
     ' На всякий случай пропускаем фиксированные ячейки
     If col = 0 Or row = 0 Then Exit Sub
     
-    TextByte(1).Font = CodeView.Font
-    TextByte(1).Left = CodeView.Left + CodeView.CellLeft
-    TextByte(1).Top = CodeView.Top + CodeView.CellTop
-    TextByte(1).Width = CodeView.CellWidth
-    TextByte(1).Height = CodeView.CellHeight
-    TextByte(1).Text = CodeView.Text
-    TextByte(1).SelStart = 0
-    TextByte(1).SelLength = Len(TextByte(1).Text)
-    TextByte(1).Visible = True
-    TextByte(1).SetFocus
+    TextByte.Font = CodeView.Font
+    TextByte.Left = CodeView.Left + CodeView.CellLeft
+    TextByte.Top = CodeView.Top + CodeView.CellTop
+    TextByte.Width = CodeView.CellWidth
+    TextByte.Height = CodeView.CellHeight
+    TextByte.Text = CodeView.Text
+    TextByte.SelStart = 0
+    TextByte.SelLength = Len(TextByte.Text)
+    TextByte.Visible = True
+    TextByte.SetFocus
 End Sub
 
 Private Sub CodeView_Scroll()
     RefreshCodeView
 End Sub
 
-Private Sub ComboCell_KeyDown(Index As Integer, keyCode As Integer, Shift As Integer)
+Private Sub ComboCell_KeyDown(keyCode As Integer, Shift As Integer)
     If keyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
-        ComboCell(0).Visible = False
+        ComboCell.Visible = False
+        RefreshFrameRight
         PropertyTable.SetFocus
     End If
     
@@ -830,11 +869,11 @@ Private Sub ComboCell_KeyDown(Index As Integer, keyCode As Integer, Shift As Int
                     ModuleHeat.SetComboPropertyForHeat Me
                     
                 ' стирка, полоскание, расстряска
-                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT
+                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
                     ModuleWashOrRinsOrJolt.SetComboPropertyForWashOrRinsOrJolt Me
                     
-                Case WPC_OPERATION_PAUS ' пауза
-                    ModulePause.SetComboPropertyForPause Me
+'                Case WPC_OPERATION_PAUS ' пауза
+'                    ModulePause.SetComboPropertyForPause Me
     
                 Case WPC_OPERATION_DRAIN ' слив
                     ModuleDrain.SetComboPropertyForDrain Me
@@ -857,22 +896,23 @@ Private Sub ComboCell_KeyDown(Index As Integer, keyCode As Integer, Shift As Int
             b = Manager.CalculateCRC8(Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + 1, PROGRAM_SIZE_IN_BYTES - 1)
             Manager.SetByte Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, b
 
-            ComboCell(0).Visible = False
+            ComboCell.Visible = False
             Dim row As Integer
             row = PropertyTable.row
-            RefreshCodeView
-            RefreshStepsView
-            RefreshProperties
-            
-            RefreshComponents (True)
+            RefreshComponents (False)
+'            RefreshCodeView
+'            RefreshStepsView
+'            RefreshProperties
+'
+'            RefreshComponents (True)
             If row < PropertyTable.Rows - 1 Then PropertyTable.row = row
             PropertyTable.SetFocus
         End If
     End If
 End Sub
 
-Private Sub ComboCell_LostFocus(Index As Integer)
-    ComboCell(0).Visible = False
+Private Sub ComboCell_LostFocus()
+    ComboCell.Visible = False
 End Sub
 
 
@@ -950,7 +990,7 @@ Private Sub Form_Load()
     Dim IniFilePath As String
     Dim Result%
 
-    FormMain.KeyPreview = True
+    KeyPreview = True
     
     ' Среда разработки часто "вылетает" из-за кода внутри
     ' Поэтому его тестирование нужно проводить только на
@@ -985,8 +1025,16 @@ Private Sub Form_Load()
     IniFilePath = StrConv(IniFilePath, vbLowerCase)
     IniFilePath = Replace(IniFilePath, ".exe", ".ini")
 
+    ' Создаём экземпляр объекта
+    Set IniFile = New TIniFiles
+    IniFile.Create (IniFilePath)
+    
+    ' Создаём экземпляр объекта
+    Set Manager = New TProgramManager
+    Manager.Create
+    
     App.HelpFile = CurrentDir & "\cop.chm"
-
+    
     ' Начальные пути для диалоговых окон
     OpenFileDialog.InitDir = CurrentDir
     SaveFileDialog.InitDir = CurrentDir
@@ -996,19 +1044,25 @@ Private Sub Form_Load()
     Set ModuleDTRG = New TModuleDTRG
     Set ModuleHeat = New TModuleHeat
     Set ModuleWashOrRinsOrJolt = New TModuleWashOrRinsOrJolt
-    Set ModulePause = New TModulePause
+    'Set ModulePause = New TModulePause
     Set ModuleDrain = New TModuleDrain
     Set ModuleSpin = New TModuleSpin
     Set ModuleCool = New TModuleCool
     Set ModuleTrin = New TModuleTrin
-
-    ' Создаём экземпляр объекта
-    Set IniFile = New TIniFiles
-    IniFile.Create (IniFilePath)
+        
+    IniFilePath = CurrentDir & "\limits.ini"
     
-    ' Создаём экземпляр объекта
-    Set Manager = New TProgramManager
-    Manager.Create
+    LoadLimits IniFilePath
+    ModuleIdle.LoadLimits IniFilePath
+    ModuleFill.LoadLimits IniFilePath
+    ModuleDTRG.LoadLimits IniFilePath
+    ModuleHeat.LoadLimits IniFilePath
+    ModuleWashOrRinsOrJolt.LoadLimits IniFilePath
+'    ModulePause.LoadLimits IniFilePath
+    ModuleDrain.LoadLimits IniFilePath
+    ModuleSpin.LoadLimits IniFilePath
+    ModuleCool.LoadLimits IniFilePath
+    ModuleTrin.LoadLimits IniFilePath
     
     SetModified False
     
@@ -1181,11 +1235,26 @@ Private Sub ListPrograms_Click()
     RefreshProperties
 End Sub
 
+Private Sub ListPrograms_DblClick()
+    ListPrograms_KeyDown VBRUN.KeyCodeConstants.vbKeyReturn, 0
+End Sub
+
 Private Sub ListPrograms_KeyDown(keyCode As Integer, Shift As Integer)
     If keyCode = VBRUN.KeyCodeConstants.vbKeyUp Or _
         keyCode = VBRUN.KeyCodeConstants.vbKeyDown Then
         
         ListPrograms_Click
+    End If
+    
+    If keyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
+        TextName.Left = ListPrograms.Left + ListPrograms.CellLeft
+        TextName.Top = ListPrograms.Top + ListPrograms.CellTop
+        TextName.Width = ListPrograms.CellWidth
+        TextName.Height = ListPrograms.CellHeight
+        
+        TextName.Text = ListPrograms.Text
+        TextName.Visible = True
+        TextName.SetFocus
     End If
 End Sub
 
@@ -1196,15 +1265,22 @@ End Sub
 
 Private Sub NewMainMenuItem_Click()
     Manager.CreateNewFile (DEFAULT_FILE_NAME)
-    Manager.ClearAll
-    RefreshComponents (False)
+    
+    ' Очистить все программы из образа
+    PopupMenuListClearAll_Click
 End Sub
 Public Sub SetModified(Value As Boolean)
     Modified = Value
 End Sub
 
 Private Sub PopupMenuListClear_Click()
+    Dim StepPointer As Long
+    
+    ' Очищаем текущую программу
     Manager.ClearProgramN (ListPrograms.row)
+    
+    ' Устанавливаем заголовок по умолчанию
+    If LimitsLoaded Then SetDefaultProgramTitle Manager.ProgramIndex + 1
     
     ' Пересчитываем CRC поле записи программы
     Dim b As Byte
@@ -1218,8 +1294,23 @@ End Sub
 
 Private Sub PopupMenuListClearAll_Click()
     Manager.ClearAll
+    
+    If LimitsLoaded Then
+        Dim I As Integer
+        
+        For I = 1 To Manager.ProgramsCount
+            SetDefaultProgramTitle I
+        
+            ' Пересчитываем CRC поле записи программы
+            Dim b As Byte
+            b = Manager.CalculateCRC8((I - 1) * PROGRAM_SIZE_IN_BYTES + 1, PROGRAM_SIZE_IN_BYTES - 1)
+            Manager.SetByte (I - 1) * PROGRAM_SIZE_IN_BYTES, b
+        Next I
+    End If
+    
     SetModified True
-    RefreshDataComponents
+    
+    RefreshComponents (False)
 End Sub
 
 Private Sub PropertyTable_DblClick()
@@ -1257,11 +1348,11 @@ Private Sub PropertyTable_KeyDown(keyCode As Integer, Shift As Integer)
                 ModuleHeat.EditPropertyForHeat Me
                 
             ' стирка, полоскание, расстряска
-            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT
+            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
                 ModuleWashOrRinsOrJolt.EditPropertyForWashOrRinsOrJolt Me
                 
-            Case WPC_OPERATION_PAUS ' пауза
-                ModulePause.EditPropertyForPause Me
+'            Case WPC_OPERATION_PAUS ' пауза
+'                ModulePause.EditPropertyForPause Me
 
             Case WPC_OPERATION_DRAIN ' слив
                 ModuleDrain.EditPropertyForDrain Me
@@ -1279,6 +1370,11 @@ Private Sub PropertyTable_KeyDown(keyCode As Integer, Shift As Integer)
 
         End Select
     End If
+End Sub
+
+Private Sub StepMainMenuItem_Click()
+    InsertStepMenuItem = ActiveControl Is StepsView
+    DeleteStepMenuItem.Enabled = ActiveControl Is StepsView
 End Sub
 
 Private Sub StepsView_Click()
@@ -1495,7 +1591,7 @@ Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, x As Si
         LineLight.X2 = LineLight.X1
         
         FrameRight.Left = LineDark.X1 + SplitterRight.Width
-        FrameRight.Width = FormMain.Width - FrameRight.Left - 100
+        FrameRight.Width = Me.ScaleWidth - FrameRight.Left
         
         FrameMain.Width = LineDark.X1 - FrameMain.Left
         
@@ -1538,8 +1634,15 @@ Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, x As Single
     If Button And vbRightButton Then PopupMenu StepMainMenuItem
 End Sub
 
-Private Sub TextByte_KeyDown(Index As Integer, keyCode As Integer, Shift As Integer)
-    If keyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then TextByte(1).Visible = False
+Private Sub TextByte_Change()
+    TextByte.Text = Mid(TextByte.Text, 1, 2)
+End Sub
+
+Private Sub TextByte_KeyDown(keyCode As Integer, Shift As Integer)
+    If keyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
+        TextByte.Visible = False
+        CodeView.SetFocus
+    End If
     
     If keyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
         Dim OldByte, NewByte As Byte
@@ -1554,10 +1657,10 @@ Private Sub TextByte_KeyDown(Index As Integer, keyCode As Integer, Shift As Inte
         Manager.ProgramIndex = ProgNum
         
         OldByte = Manager.GetByte(Offset)
-        NewByte = Val("&H" & TextByte(1).Text)
+        NewByte = Val("&H" & TextByte.Text)
         
         If NewByte = OldByte Then
-            TextByte(1).Visible = False
+            TextByte.Visible = False
             CodeView.SetFocus
             Exit Sub
         End If
@@ -1576,9 +1679,9 @@ Private Sub TextByte_KeyDown(Index As Integer, keyCode As Integer, Shift As Inte
 
         SetModified True
         
-        TextByte(1).Visible = False
+        TextByte.Visible = False
         TopRow = CodeView.TopRow
-        RefreshDataComponents
+        RefreshComponents (False)
         CodeView.TopRow = TopRow
         
         CodeView.row = row
@@ -1587,7 +1690,7 @@ Private Sub TextByte_KeyDown(Index As Integer, keyCode As Integer, Shift As Inte
     End If
 End Sub
 
-Private Sub TextByte_KeyPress(Index As Integer, KeyAscii As Integer)
+Private Sub TextByte_KeyPress(KeyAscii As Integer)
     ' Фильтруем не нужные клавиши
     Select Case KeyAscii
         Case Asc("a"), Asc("b"), Asc("c"), Asc("d"), Asc("e"), Asc("f"):
@@ -1600,15 +1703,18 @@ Private Sub TextByte_KeyPress(Index As Integer, KeyAscii As Integer)
         Case Else
             KeyAscii = 0
     End Select
+    
+    If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
 End Sub
 
-Private Sub TextByte_LostFocus(Index As Integer)
-    TextByte(1).Visible = False
+Private Sub TextByte_LostFocus()
+    TextByte.Visible = False
 End Sub
 
-Private Sub TextCell_KeyDown(Index As Integer, keyCode As Integer, Shift As Integer)
+Private Sub TextCell_KeyDown(keyCode As Integer, Shift As Integer)
     If keyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
-        TextCell(0).Visible = False
+        TextCell.Visible = False
+        RefreshFrameRight
         PropertyTable.SetFocus
     End If
     
@@ -1633,11 +1739,11 @@ Private Sub TextCell_KeyDown(Index As Integer, keyCode As Integer, Shift As Inte
                     ModuleHeat.SetComboPropertyForHeat Me
                     
                 ' стирка, полоскание, расстряска
-                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT
+                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
                     ModuleWashOrRinsOrJolt.SetComboPropertyForWashOrRinsOrJolt Me
                     
-                Case WPC_OPERATION_PAUS ' пауза
-                    ModulePause.SetComboPropertyForPause Me
+'                Case WPC_OPERATION_PAUS ' пауза
+'                    ModulePause.SetComboPropertyForPause Me
     
                 Case WPC_OPERATION_DRAIN ' слив
                     ModuleDrain.SetComboPropertyForDrain Me
@@ -1660,22 +1766,78 @@ Private Sub TextCell_KeyDown(Index As Integer, keyCode As Integer, Shift As Inte
             b = Manager.CalculateCRC8(Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + 1, PROGRAM_SIZE_IN_BYTES - 1)
             Manager.SetByte Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, b
             
-            TextCell(0).Visible = False
+            TextCell.Visible = False
             Dim row As Integer
             row = PropertyTable.row
-            RefreshCodeView
-            RefreshStepsView
-            RefreshProperties
-            
-            RefreshComponents (True)
+            RefreshComponents (False)
+'            RefreshList
+'            RefreshCodeView
+'            RefreshStepsView
+'            RefreshProperties
+'
+'            RefreshComponents (True)
             If row < PropertyTable.Rows - 1 Then PropertyTable.row = row
             PropertyTable.SetFocus
         End If
     End If
 End Sub
 
-Private Sub TextCell_LostFocus(Index As Integer)
-    TextCell(0).Visible = False
+Private Sub TextCell_KeyPress(KeyAscii As Integer)
+    If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
+End Sub
+
+Private Sub TextCell_LostFocus()
+    TextCell.Visible = False
+    RefreshFrameRight
+End Sub
+
+Private Sub TextName_KeyDown(keyCode As Integer, Shift As Integer)
+    Dim I As Integer
+    Dim StepPointer As Long
+    Dim RecordTitle As TYPE_WPC_TITLE
+    
+    If keyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
+        TextName.Visible = False
+        ListPrograms.SetFocus
+    End If
+    
+    If keyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
+        StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        
+        For I = 1 To PROG_NAME_LENGTH - 1
+            If I <= Len(TextName.Text) Then
+                RecordTitle.ProgName(I) = Asc(Mid(TextName.Text, I, 1))
+            Else
+                RecordTitle.ProgName(I) = 0
+            End If
+        Next I
+        RecordTitle.ProgName(PROG_NAME_LENGTH) = 0
+        ' Сохраняем изменения
+        CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
+        SetModified True
+        
+        ' Пересчитываем CRC поле записи программы
+        Dim b As Byte
+        b = Manager.CalculateCRC8(Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + 1, PROGRAM_SIZE_IN_BYTES - 1)
+        Manager.SetByte Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, b
+        
+        TextName.Visible = False
+        Dim row As Integer
+        row = ListPrograms.row
+        RefreshComponents (False)
+        
+        If row < ListPrograms.Rows - 1 Then ListPrograms.row = row
+        ListPrograms.SetFocus
+    End If
+End Sub
+
+Private Sub TextName_KeyPress(KeyAscii As Integer)
+    If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
+End Sub
+
+Private Sub TextName_LostFocus()
+    TextName.Visible = False
 End Sub
 
 Private Sub Timer1_Timer()
@@ -1730,24 +1892,43 @@ Private Sub RefreshList()
     ListPrograms.FormatString = "<Список"
     
     If Manager.ProgramsCount > 0 Then
-        Dim b As Byte
-        Dim Cnt%
+        Dim b As Byte, N As Byte
+        Dim Cnt As Integer
+        Dim StepPointer As Long, Value As Long
+        Dim s As String
+        Dim RecordTitle As TYPE_WPC_TITLE
         
-        For Cnt% = 1 To Manager.ProgramsCount
-            ListPrograms.AddItem "Программа" & Cnt%
-        Next Cnt%
+        For Cnt = 1 To Manager.ProgramsCount
+            StepPointer = Manager.DataPointer + (Cnt - 1) * PROGRAM_SIZE_IN_BYTES
+            CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+            
+            Value = 0
+            For N = 1 To PROG_NAME_LENGTH - 1
+                Value = Value + CLng(RecordTitle.ProgName(N))
+            Next N
+            
+            If Value = 0 Then
+                ListPrograms.AddItem "Программа" & Cnt
+            Else
+                s = ""
+                For N = 1 To PROG_NAME_LENGTH - 1
+                    s = s & Chr(RecordTitle.ProgName(N))
+                Next N
+                ListPrograms.AddItem s
+            End If
+        Next Cnt
     
         ' Проверяем CRC для каждой из управляющих программ
-        For Cnt% = 0 To Manager.ProgramsCount - 1
-            ListPrograms.row = Cnt% + 1
+        For Cnt = 0 To Manager.ProgramsCount - 1
+            ListPrograms.row = Cnt + 1
             
             b = Manager.CalculateCRC8(Cnt% * PROGRAM_SIZE_IN_BYTES + 1, _
                 PROGRAM_SIZE_IN_BYTES - 1)
 
-            If Not b = Manager.GetByte(Cnt% * PROGRAM_SIZE_IN_BYTES) Then
+            If Not b = Manager.GetByte(Cnt * PROGRAM_SIZE_IN_BYTES) Then
                 ListPrograms.CellBackColor = &H8080FF
             End If
-        Next Cnt%
+        Next Cnt
         
         ListPrograms.row = Manager.ProgramIndex + 1
     End If
@@ -1973,7 +2154,7 @@ Private Sub RefreshStepsView()
     Next col%
     
     StepsView.FormatString = s
-       
+           
     s = ";|" _
         & "Клапан горячей воды" & "|" _
         & "Клапан холодной воды 1" & "|" _
@@ -2087,11 +2268,11 @@ Private Sub RefreshProperties()
                 ModuleHeat.ShowPropertyTableForHeat Me
                 
             ' стирка, полоскание, расстряска
-            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT
+            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
                 ModuleWashOrRinsOrJolt.ShowPropertyTableForWashOrRinsOrJolt Me
                 
-            Case WPC_OPERATION_PAUS ' пауза
-                ModulePause.ShowPropertyTableForPause Me
+'            Case WPC_OPERATION_PAUS ' пауза
+'                ModulePause.ShowPropertyTableForPause Me
 
             Case WPC_OPERATION_DRAIN ' слив
                 ModuleDrain.ShowPropertyTableForDrain Me
@@ -2111,5 +2292,50 @@ Private Sub RefreshProperties()
     End If
     
     PropertyTable.Visible = True
+End Sub
+
+Public Sub LoadLimits(FileName As String)
+    LimitsLoaded = DoesFileExist(FileName)
+    
+    If Not LimitsLoaded Then Exit Sub
+    
+    Dim LimitsFile As New TIniFiles
+    
+    LimitsFile.Create FileName
+    
+    ' Настройки заголовка
+    EndSound.DefaultValue = LimitsFile.ReadInteger(TITLE_SECTION_NAME, "EndSound.Default", ENDSOUND_DEFAULT) > 0
+    DoorUnlock.DefaultValue = LimitsFile.ReadInteger(TITLE_SECTION_NAME, "DoorUnlock.Default", DOORUNLOCK_DEFAULT) > 0
+    
+    Set LimitsFile = Nothing
+End Sub
+
+Private Sub func_SetDefaultProgramTitle(N As Integer, ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE)
+    
+    Dim StepPointer As Long
+    
+    StepPointer = Manager.DataPointer + (N - 1) * PROGRAM_SIZE_IN_BYTES
+    'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+    PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+    
+    Select Case EndSound.DefaultValue
+        Case False: RecordTitle.LowBits = RecordTitle.LowBits And &HFFFE
+        Case True: RecordTitle.LowBits = RecordTitle.LowBits Or &H1
+    End Select
+
+    Select Case DoorUnlock.DefaultValue
+        Case False: RecordTitle.LowBits = RecordTitle.LowBits And &HFFFD
+        Case True: RecordTitle.LowBits = RecordTitle.LowBits Or &H2
+    End Select
+    
+    ' Сохраняем изменения
+    'CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
+End Sub
+    
+Private Sub SetDefaultProgramTitle(N As Integer)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    
+    func_SetDefaultProgramTitle N, 0&, RecordTitle
 End Sub
 

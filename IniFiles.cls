@@ -46,8 +46,10 @@ Public Function ReadString(Section, Ident, Default As String) As String
     characters = GetPrivateProfileStringByKeyName(Section, Ident, "", _
         KeyValue$, 127, FFileName)
         
-    If (characters > 1) Then
+    If (characters > 0) Then
         KeyValue$ = Left$(KeyValue$, characters)
+    Else
+        KeyValue$ = Default
     End If
     
     ReadString = KeyValue$
@@ -70,7 +72,7 @@ Public Function ReadInteger(Section As String, Ident As String, Default As Long)
     characters = GetPrivateProfileStringByKeyName(Section, Ident, "", _
         KeyValue$, 127, FFileName)
         
-    If (characters > 1) Then
+    If (characters > 0) Then
         KeyValue$ = Left$(KeyValue$, characters)
         ReadInteger = Round(Val(KeyValue$))
     Else

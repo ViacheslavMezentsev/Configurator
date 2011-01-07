@@ -15,43 +15,255 @@ Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
 Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
-Private Const DTRG_PAUSE_FIELD = IDLE_FUNCTION_FIELD + 1
-Private Const DTRG_ROTATION_FIELD = IDLE_FUNCTION_FIELD + 2
+Const DTRG_PAUSE_FIELD = IDLE_FUNCTION_FIELD + 1
+Const DTRG_ROTATION_FIELD = IDLE_FUNCTION_FIELD + 2
 
-Private Const DTRG_DETERGENT1_FIELD = IDLE_FUNCTION_FIELD + 3
-Private Const DTRG_DETERGENT2_FIELD = IDLE_FUNCTION_FIELD + 4
-Private Const DTRG_DETERGENT3_FIELD = IDLE_FUNCTION_FIELD + 5
-Private Const DTRG_DETERGENT4_FIELD = IDLE_FUNCTION_FIELD + 6
-Private Const DTRG_DETERGENT5_FIELD = IDLE_FUNCTION_FIELD + 7
-Private Const DTRG_DETERGENT6_FIELD = IDLE_FUNCTION_FIELD + 8
-Private Const DTRG_DETERGENT7_FIELD = IDLE_FUNCTION_FIELD + 9
-Private Const DTRG_DETERGENT8_FIELD = IDLE_FUNCTION_FIELD + 10
-Private Const DTRG_DETERGENT9_FIELD = IDLE_FUNCTION_FIELD + 11
+Const DTRG_DETERGENT1_FIELD = IDLE_FUNCTION_FIELD + 3
+Const DTRG_DETERGENT2_FIELD = IDLE_FUNCTION_FIELD + 4
+Const DTRG_DETERGENT3_FIELD = IDLE_FUNCTION_FIELD + 5
+Const DTRG_DETERGENT4_FIELD = IDLE_FUNCTION_FIELD + 6
+Const DTRG_DETERGENT5_FIELD = IDLE_FUNCTION_FIELD + 7
+Const DTRG_DETERGENT6_FIELD = IDLE_FUNCTION_FIELD + 8
+Const DTRG_DETERGENT7_FIELD = IDLE_FUNCTION_FIELD + 9
+Const DTRG_DETERGENT8_FIELD = IDLE_FUNCTION_FIELD + 10
+Const DTRG_DETERGENT9_FIELD = IDLE_FUNCTION_FIELD + 11
 
-Private Const DTRG_ROTTIME_FIELD = IDLE_FUNCTION_FIELD + 12
-Private Const DTRG_PAUSETIME_FIELD = IDLE_FUNCTION_FIELD + 13
-Private Const DTRG_DRUMSPEED_FIELD = IDLE_FUNCTION_FIELD + 14
+Const DTRG_ROTATIONTIME_FIELD = IDLE_FUNCTION_FIELD + 12
+Const DTRG_PAUSETIME_FIELD = IDLE_FUNCTION_FIELD + 13
+Const DTRG_DRUMSPEED_FIELD = IDLE_FUNCTION_FIELD + 14
 
-Private Const DTRG_PARAMETERS_COUNT = IDLE_PARAMETERS_COUNT + 14
+Const DTRG_PARAMETERS_COUNT = IDLE_PARAMETERS_COUNT + 14
 
 ' Дискретные параметры
-Private Const DTRG_PARAMETER_DESCR_PAUSE = "Разр. паузы"
-Private Const DTRG_PARAMETER_DESCR_ROTATION = "Разр. вращ."
+Const DTRG_PARAMETER_DESCR_PAUSE = "Разр. паузы"
+Const DTRG_PARAMETER_DESCR_ROTATION = "Разр. вращ."
 
 ' Аналоговые параметры
-Private Const DTRG_PARAMETER_DESCR_DETERGENT1 = "Время подачи моющ. 1"
-Private Const DTRG_PARAMETER_DESCR_DETERGENT2 = "Время подачи моющ. 2"
-Private Const DTRG_PARAMETER_DESCR_DETERGENT3 = "Время подачи моющ. 3"
-Private Const DTRG_PARAMETER_DESCR_DETERGENT4 = "Время подачи моющ. 4"
-Private Const DTRG_PARAMETER_DESCR_DETERGENT5 = "Время подачи моющ. 5"
-Private Const DTRG_PARAMETER_DESCR_DETERGENT6 = "Время подачи моющ. 6"
-Private Const DTRG_PARAMETER_DESCR_DETERGENT7 = "Время подачи моющ. 7"
-Private Const DTRG_PARAMETER_DESCR_DETERGENT8 = "Время подачи моющ. 8"
-Private Const DTRG_PARAMETER_DESCR_DETERGENT9 = "Время подачи моющ. 9"
+Const DTRG_PARAMETER_DESCR_DETERGENT1 = "Время подачи моющ. 1"
+Const DTRG_PARAMETER_DESCR_DETERGENT2 = "Время подачи моющ. 2"
+Const DTRG_PARAMETER_DESCR_DETERGENT3 = "Время подачи моющ. 3"
+Const DTRG_PARAMETER_DESCR_DETERGENT4 = "Время подачи моющ. 4"
+Const DTRG_PARAMETER_DESCR_DETERGENT5 = "Время подачи моющ. 5"
+Const DTRG_PARAMETER_DESCR_DETERGENT6 = "Время подачи моющ. 6"
+Const DTRG_PARAMETER_DESCR_DETERGENT7 = "Время подачи моющ. 7"
+Const DTRG_PARAMETER_DESCR_DETERGENT8 = "Время подачи моющ. 8"
+Const DTRG_PARAMETER_DESCR_DETERGENT9 = "Время подачи моющ. 9"
 
-Private Const DTRG_PARAMETER_DESCR_ROTTIME = "Время вращ. мотора"
-Private Const DTRG_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
-Private Const DTRG_PARAMETER_DESCR_DRUMSPEED = "Скорость вращ. барабана"
+Const DTRG_PARAMETER_DESCR_RotationTime = "Время вращ. мотора"
+Const DTRG_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
+Const DTRG_PARAMETER_DESCR_DRUMSPEED = "Скорость вращ. барабана"
+
+' Название секции
+Const DTRG_SECTION_NAME = "DTRG"
+
+' Настройки по умолчанию
+' Дискретные типы
+Const PAUSE_DEFAULT = 0
+Const ROTATION_DEFAULT = 1
+
+' Аналоговые типы
+Const DETERGENT_MIN = 0
+Const DETERGENT_MAX = 255
+Const DETERGENT_DEFAULT = 0
+Const DETERGENT_DIMENSION = "сек"
+
+Const ROTATIONTIME_MIN = 1
+Const ROTATIONTIME_MAX = 250
+Const ROTATIONTIME_DEFAULT = 6
+Const ROTATIONTIME_DIMENSION = "сек"
+
+Const PAUSETIME_MIN = 1
+Const PAUSETIME_MAX = 250
+Const PAUSETIME_DEFAULT = 12
+Const PAUSETIME_DIMENSION = "сек"
+
+Const DRUMSPEED_MIN = 30
+Const DRUMSPEED_MAX = 70
+Const DRUMSPEED_DEFAULT = 50
+Const DRUMSPEED_DIMENSION = "об/мин"
+
+' Параметры функции шага
+' Дискретные типы
+Private Pause As TYPE_BOOL_DESCRIPTION
+Private Rotation As TYPE_BOOL_DESCRIPTION
+
+' Аналоговые типы
+Private Detergent_1_Time As TYPE_BYTE_DESCRIPTION
+Private Detergent_2_Time As TYPE_BYTE_DESCRIPTION
+Private Detergent_3_Time As TYPE_BYTE_DESCRIPTION
+Private Detergent_4_Time As TYPE_BYTE_DESCRIPTION
+Private Detergent_5_Time As TYPE_BYTE_DESCRIPTION
+Private Detergent_6_Time As TYPE_BYTE_DESCRIPTION
+Private Detergent_7_Time As TYPE_BYTE_DESCRIPTION
+Private Detergent_8_Time As TYPE_BYTE_DESCRIPTION
+Private Detergent_9_Time As TYPE_BYTE_DESCRIPTION
+Private RotationTime As TYPE_BYTE_DESCRIPTION
+Private PauseTime As TYPE_BYTE_DESCRIPTION
+Private DrumSpeed As TYPE_BYTE_DESCRIPTION
+
+Public LimitsLoaded As Boolean
+
+' Конструктор
+Private Sub Class_Initialize()
+    LimitsLoaded = False
+End Sub
+
+' Деструктор
+Private Sub Class_Terminate()
+End Sub
+
+Public Sub LoadLimits(FileName As String)
+    LimitsLoaded = DoesFileExist(FileName)
+    
+    If Not LimitsLoaded Then Exit Sub
+    
+    Dim LimitsFile As New TIniFiles
+    
+    LimitsFile.Create FileName
+    
+    ' Настройки функции
+    ' Дискретные типы
+    Pause.DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Pause.Default", PAUSE_DEFAULT) > 0
+    Rotation.DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Rotation.Default", ROTATION_DEFAULT) > 0
+    
+    ' Аналоговые типы
+    With Detergent_1_Time
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_1_Time.Min", DETERGENT_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_1_Time.Max", DETERGENT_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_1_Time.Default", DETERGENT_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "Detergent_1_Time.Dimension", DETERGENT_DIMENSION)
+    End With
+    
+    With Detergent_2_Time
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_2_Time.Min", DETERGENT_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_2_Time.Max", DETERGENT_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_2_Time.Default", DETERGENT_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "Detergent_2_Time.Dimension", DETERGENT_DIMENSION)
+    End With
+    
+    With Detergent_3_Time
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_3_Time.Min", DETERGENT_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_3_Time.Max", DETERGENT_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_3_Time.Default", DETERGENT_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "Detergent_3_Time.Dimension", DETERGENT_DIMENSION)
+    End With
+    
+    With Detergent_4_Time
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_4_Time.Min", DETERGENT_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_4_Time.Max", DETERGENT_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_4_Time.Default", DETERGENT_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "Detergent_4_Time.Dimension", DETERGENT_DIMENSION)
+    End With
+    
+    With Detergent_5_Time
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_5_Time.Min", DETERGENT_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_5_Time.Max", DETERGENT_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_5_Time.Default", DETERGENT_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "Detergent_5_Time.Dimension", DETERGENT_DIMENSION)
+    End With
+    
+    With Detergent_6_Time
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_6_Time.Min", DETERGENT_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_6_Time.Max", DETERGENT_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_6_Time.Default", DETERGENT_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "Detergent_6_Time.Dimension", DETERGENT_DIMENSION)
+    End With
+    
+    With Detergent_7_Time
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_7_Time.Min", DETERGENT_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_7_Time.Max", DETERGENT_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_7_Time.Default", DETERGENT_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "Detergent_7_Time.Dimension", DETERGENT_DIMENSION)
+    End With
+    
+    With Detergent_8_Time
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_8_Time.Min", DETERGENT_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_8_Time.Max", DETERGENT_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_8_Time.Default", DETERGENT_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "Detergent_8_Time.Dimension", DETERGENT_DIMENSION)
+    End With
+    
+    With Detergent_9_Time
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_9_Time.Min", DETERGENT_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_9_Time.Max", DETERGENT_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "Detergent_9_Time.Default", DETERGENT_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "Detergent_9_Time.Dimension", DETERGENT_DIMENSION)
+    End With
+    
+    With RotationTime
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "RotationTime.Min", ROTATIONTIME_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "RotationTime.Max", ROTATIONTIME_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "RotationTime.Default", ROTATIONTIME_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "RotationTime.Dimension", ROTATIONTIME_DIMENSION)
+    End With
+    
+    With PauseTime
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "PauseTime.Min", PAUSETIME_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "PauseTime.Max", PAUSETIME_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "PauseTime.Default", PAUSETIME_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "PauseTime.Dimension", PAUSETIME_DIMENSION)
+    End With
+    
+    With DrumSpeed
+        .MinValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "DrumSpeed.Min", DRUMSPEED_MIN)
+        .MaxValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "DrumSpeed.Max", DRUMSPEED_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(DTRG_SECTION_NAME, "DrumSpeed.Default", DRUMSPEED_DEFAULT)
+        .Dimension = LimitsFile.ReadString(DTRG_SECTION_NAME, "DrumSpeed.Dimension", DRUMSPEED_DIMENSION)
+    End With
+
+    Set LimitsFile = Nothing
+End Sub
+
+' Функция-посредник
+Private Sub func_SetDefaults(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordDetergent As TYPE_WPC_DETERGENT)
+
+    Dim StepPointer As Long
+    
+    StepPointer = frm.Manager.DataPointer + _
+        frm.Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+        HEADER_SIZE_IN_BYTES + _
+        frm.Manager.StepIndex * STEP_SIZE_IN_BYTES
+    
+    'CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
+    PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+    
+    ' Дискретные типы
+    Select Case Pause.DefaultValue
+        Case False: RecordDetergent.Bits = RecordDetergent.Bits And &HFFEF
+        Case True: RecordDetergent.Bits = RecordDetergent.Bits Or &H10
+    End Select
+    
+    Select Case Rotation.DefaultValue
+        Case False: RecordDetergent.Bits = RecordDetergent.Bits And &HFFDF
+        Case True: RecordDetergent.Bits = RecordDetergent.Bits Or &H20
+    End Select
+    
+    ' Аналоговые типы
+    RecordDetergent.Detergent_1_Time = Detergent_1_Time.DefaultValue
+    RecordDetergent.Detergent_2_Time = Detergent_2_Time.DefaultValue
+    RecordDetergent.Detergent_3_Time = Detergent_3_Time.DefaultValue
+    RecordDetergent.Detergent_4_Time = Detergent_4_Time.DefaultValue
+    RecordDetergent.Detergent_5_Time = Detergent_5_Time.DefaultValue
+    RecordDetergent.Detergent_6_Time = Detergent_6_Time.DefaultValue
+    RecordDetergent.Detergent_7_Time = Detergent_7_Time.DefaultValue
+    RecordDetergent.Detergent_8_Time = Detergent_8_Time.DefaultValue
+    RecordDetergent.Detergent_9_Time = Detergent_9_Time.DefaultValue
+    RecordDetergent.RotationTime = RotationTime.DefaultValue
+    RecordDetergent.PauseTime = PauseTime.DefaultValue
+    RecordDetergent.DrumSpeed = DrumSpeed.DefaultValue
+    
+    ' Сохраняем изменения
+    'StepPointer = frm.Manager.DataPointer + frm.Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+    'CopyMemory ByVal StepPointer, RecordDetergent, HEADER_SIZE_IN_BYTES
+End Sub
+
+Public Sub SetDefaults(frm As FormMain)
+    Dim RecordDetergent As TYPE_WPC_DETERGENT
+    
+    func_SetDefaults frm, 0&, RecordDetergent
+End Sub
 
 ' Функция-посредник
 Private Sub func_ShowPropertyTableForDTRG(frm As FormMain, _
@@ -118,8 +330,8 @@ Private Sub func_ShowPropertyTableForDTRG(frm As FormMain, _
                 Case DTRG_DETERGENT9_FIELD:
                     ParamStr = ParamStr & DTRG_PARAMETER_DESCR_DETERGENT9
                 
-                Case DTRG_ROTTIME_FIELD:
-                    ParamStr = ParamStr & DTRG_PARAMETER_DESCR_ROTTIME
+                Case DTRG_ROTATIONTIME_FIELD:
+                    ParamStr = ParamStr & DTRG_PARAMETER_DESCR_RotationTime
                     
                 Case DTRG_PAUSETIME_FIELD:
                     ParamStr = ParamStr & DTRG_PARAMETER_DESCR_PAUSETIME
@@ -171,12 +383,10 @@ Private Sub func_ShowPropertyTableForDTRG(frm As FormMain, _
                         .PropertyTable.Text = STRING_NO
                     End If
                     
-                ' TODO: Доделать отображение имени программы
                 Case IDLE_PROGNAME_FIELD:
                     s = ""
                     For J = 1 To PROG_NAME_LENGTH - 1
-                        'if Chr(RecordStep.Reserved(J))
-                        s = s & "*"
+                        s = s & Chr(CLng(RecordTitle.ProgName(J)))
                     Next J
                     .PropertyTable.Text = s
                 
@@ -204,39 +414,135 @@ Private Sub func_ShowPropertyTableForDTRG(frm As FormMain, _
                     End If
                     
                 Case DTRG_DETERGENT1_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.Detergent_1_Time < Detergent_1_Time.MinValue Or _
+                            RecordDetergent.Detergent_1_Time > Detergent_1_Time.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.Detergent_1_Time
                     
                 Case DTRG_DETERGENT2_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.Detergent_2_Time < Detergent_2_Time.MinValue Or _
+                            RecordDetergent.Detergent_2_Time > Detergent_2_Time.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.Detergent_2_Time
                 
                 Case DTRG_DETERGENT3_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.Detergent_3_Time < Detergent_3_Time.MinValue Or _
+                            RecordDetergent.Detergent_3_Time > Detergent_3_Time.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.Detergent_3_Time
                 
                 Case DTRG_DETERGENT4_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.Detergent_1_Time < Detergent_1_Time.MinValue Or _
+                            RecordDetergent.Detergent_1_Time > Detergent_1_Time.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.Detergent_4_Time
                 
                 Case DTRG_DETERGENT5_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.Detergent_4_Time < Detergent_4_Time.MinValue Or _
+                            RecordDetergent.Detergent_4_Time > Detergent_4_Time.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.Detergent_5_Time
                 
                 Case DTRG_DETERGENT6_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.Detergent_6_Time < Detergent_6_Time.MinValue Or _
+                            RecordDetergent.Detergent_6_Time > Detergent_6_Time.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.Detergent_6_Time
                 
                 Case DTRG_DETERGENT7_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.Detergent_7_Time < Detergent_7_Time.MinValue Or _
+                            RecordDetergent.Detergent_7_Time > Detergent_7_Time.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.Detergent_7_Time
                     
                 Case DTRG_DETERGENT8_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.Detergent_8_Time < Detergent_8_Time.MinValue Or _
+                            RecordDetergent.Detergent_8_Time > Detergent_8_Time.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.Detergent_8_Time
                     
                 Case DTRG_DETERGENT9_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.Detergent_9_Time < Detergent_9_Time.MinValue Or _
+                            RecordDetergent.Detergent_9_Time > Detergent_9_Time.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.Detergent_9_Time
                 
-                Case DTRG_ROTTIME_FIELD:
-                    .PropertyTable.Text = "" & RecordDetergent.RotTime
+                Case DTRG_ROTATIONTIME_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.RotationTime < RotationTime.MinValue Or _
+                            RecordDetergent.RotationTime > RotationTime.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
+                    .PropertyTable.Text = "" & RecordDetergent.RotationTime
                     
                 Case DTRG_PAUSETIME_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.PauseTime < PauseTime.MinValue Or _
+                            RecordDetergent.PauseTime > PauseTime.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.PauseTime
                     
                 Case DTRG_DRUMSPEED_FIELD:
+                    If LimitsLoaded Then
+                        If RecordDetergent.DrumSpeed < DrumSpeed.MinValue Or _
+                            RecordDetergent.DrumSpeed > DrumSpeed.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordDetergent.DrumSpeed
                     
                 Case Else
@@ -263,6 +569,7 @@ Private Sub func_EditPropertyForDTRG(frm As FormMain, _
     
     Dim I As Integer
     Dim StepPointer As Long
+    Dim s As String
     
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
@@ -277,134 +584,263 @@ Private Sub func_EditPropertyForDTRG(frm As FormMain, _
         'CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
-        .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
-        .ComboCell(0).Width = .PropertyTable.CellWidth
-        .ComboCell(0).Clear
+        .ComboCell.Left = .PropertyTable.Left + .PropertyTable.CellLeft
+        .ComboCell.Top = .PropertyTable.Top + .PropertyTable.CellTop
+        .ComboCell.Width = .PropertyTable.CellWidth
+        .ComboCell.Clear
         
-        .TextCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
-        .TextCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
-        .TextCell(0).Width = .PropertyTable.CellWidth
-        .TextCell(0).Height = .PropertyTable.CellHeight
+        .TextCell.Left = .PropertyTable.Left + .PropertyTable.CellLeft
+        .TextCell.Top = .PropertyTable.Top + .PropertyTable.CellTop
+        .TextCell.Width = .PropertyTable.CellWidth
+        .TextCell.Height = .PropertyTable.CellHeight
+        
+        .LabelDescription.Left = .PropertyTable.Left
+        .LabelDescription.Width = .PropertyTable.Width
+        .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
+        .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
-                .ComboCell(0).AddItem STRING_NO
-                .ComboCell(0).AddItem STRING_YES
-                .ComboCell(0).ListIndex = RecordTitle.LowBits And &H1
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.AddItem STRING_NO
+                .ComboCell.AddItem STRING_YES
+                .ComboCell.ListIndex = RecordTitle.LowBits And &H1
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
             
             Case IDLE_DOORUNLOCK_FIELD:
-                .ComboCell(0).AddItem STRING_NO
-                .ComboCell(0).AddItem STRING_YES
-                .ComboCell(0).ListIndex = (RecordTitle.LowBits And &H2) / &H2
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.AddItem STRING_NO
+                .ComboCell.AddItem STRING_YES
+                .ComboCell.ListIndex = (RecordTitle.LowBits And &H2) / &H2
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case IDLE_PROGNAME_FIELD:
-                .TextCell(0).Text = .PropertyTable.Text
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                s = ""
+                For I = 1 To PROG_NAME_LENGTH - 1
+                    s = s & Chr(CLng(RecordTitle.ProgName(I)))
+                Next I
+                .TextCell.Text = s
+                .TextCell.Visible = True
+                .TextCell.SetFocus
             
             Case IDLE_STEP_FIELD:
                 For I = 1 To MAX_NUMBER_OF_STEPS
-                    .ComboCell(0).AddItem ("Шаг " & I)
+                    .ComboCell.AddItem ("Шаг " & I)
                 Next I
-                .ComboCell(0).ListIndex = .Manager.StepIndex
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.ListIndex = .Manager.StepIndex
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case IDLE_FUNCTION_FIELD:
                 For I = 0 To 11
-                    .ComboCell(0).AddItem (FunctionsStrings(I))
+                    .ComboCell.AddItem (FunctionsStrings(I))
                 Next I
-                .ComboCell(0).ListIndex = RecordDetergent.Bits And &HF
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.ListIndex = RecordDetergent.Bits And &HF
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             ' Специальные параметры шага
             Case DTRG_PAUSE_FIELD:
-                .ComboCell(0).AddItem STRING_NO
-                .ComboCell(0).AddItem STRING_YES
-                .ComboCell(0).ListIndex = (RecordDetergent.Bits And &H10) / &H10
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.AddItem STRING_NO
+                .ComboCell.AddItem STRING_YES
+                .ComboCell.ListIndex = (RecordDetergent.Bits And &H10) / &H10
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case DTRG_ROTATION_FIELD:
-                .ComboCell(0).AddItem STRING_NO
-                .ComboCell(0).AddItem STRING_YES
-                .ComboCell(0).ListIndex = (RecordDetergent.Bits And &H20) / &H20
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.AddItem STRING_NO
+                .ComboCell.AddItem STRING_YES
+                .ComboCell.ListIndex = (RecordDetergent.Bits And &H20) / &H20
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case DTRG_DETERGENT1_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.Detergent_1_Time
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Detergent_1_Time.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Detergent_1_Time.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Detergent_1_Time.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Detergent_1_Time.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.Detergent_1_Time
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
             Case DTRG_DETERGENT2_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.Detergent_2_Time
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Detergent_2_Time.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Detergent_2_Time.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Detergent_2_Time.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Detergent_2_Time.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.Detergent_2_Time
+                .TextCell.Visible = True
+                .TextCell.SetFocus
             
             Case DTRG_DETERGENT3_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.Detergent_3_Time
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Detergent_3_Time.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Detergent_3_Time.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Detergent_3_Time.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Detergent_3_Time.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.Detergent_3_Time
+                .TextCell.Visible = True
+                .TextCell.SetFocus
             
             Case DTRG_DETERGENT4_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.Detergent_4_Time
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Detergent_4_Time.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Detergent_4_Time.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Detergent_4_Time.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Detergent_4_Time.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.Detergent_4_Time
+                .TextCell.Visible = True
+                .TextCell.SetFocus
             
             Case DTRG_DETERGENT5_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.Detergent_5_Time
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Detergent_5_Time.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Detergent_5_Time.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Detergent_5_Time.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Detergent_5_Time.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.Detergent_5_Time
+                .TextCell.Visible = True
+                .TextCell.SetFocus
             
             Case DTRG_DETERGENT6_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.Detergent_6_Time
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Detergent_6_Time.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Detergent_6_Time.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Detergent_6_Time.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Detergent_6_Time.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.Detergent_6_Time
+                .TextCell.Visible = True
+                .TextCell.SetFocus
             
             Case DTRG_DETERGENT7_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.Detergent_7_Time
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Detergent_7_Time.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Detergent_7_Time.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Detergent_7_Time.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Detergent_7_Time.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.Detergent_7_Time
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
             Case DTRG_DETERGENT8_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.Detergent_8_Time
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Detergent_8_Time.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Detergent_8_Time.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Detergent_8_Time.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Detergent_8_Time.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.Detergent_8_Time
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
             Case DTRG_DETERGENT9_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.Detergent_9_Time
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Detergent_9_Time.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Detergent_9_Time.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Detergent_9_Time.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Detergent_9_Time.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.Detergent_9_Time
+                .TextCell.Visible = True
+                .TextCell.SetFocus
             
-            Case DTRG_ROTTIME_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.RotTime
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+            Case DTRG_ROTATIONTIME_FIELD:
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & RotationTime.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & RotationTime.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & RotationTime.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & RotationTime.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.RotationTime
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
             Case DTRG_PAUSETIME_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.PauseTime
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & PauseTime.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & PauseTime.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & PauseTime.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & PauseTime.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.PauseTime
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
             Case DTRG_DRUMSPEED_FIELD:
-                .TextCell(0).Text = "" & RecordDetergent.DrumSpeed
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & DrumSpeed.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & DrumSpeed.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & DrumSpeed.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & DrumSpeed.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+
+                .TextCell.Text = "" & RecordDetergent.DrumSpeed
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
             Case Else
         
         End Select
         
-        .TextCell(0).SelStart = 0
-        .TextCell(0).SelLength = Len(.TextCell(0).Text)
+        .TextCell.SelStart = 0
+        .TextCell.SelLength = Len(.TextCell.Text)
     End With
 End Sub
 
@@ -420,6 +856,8 @@ Private Sub func_SetComboPropertyForDTRG(frm As FormMain, _
     ByVal begin_of_pointers As Long, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordDetergent As TYPE_WPC_DETERGENT)
+    
+    On Error GoTo ErrorHandler
     
     Dim I As Integer
     Dim StepPointer As Long
@@ -440,21 +878,21 @@ Private Sub func_SetComboPropertyForDTRG(frm As FormMain, _
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
-                Select Case .ComboCell(0).ListIndex
+                Select Case .ComboCell.ListIndex
                     Case 0: RecordTitle.LowBits = RecordTitle.LowBits And &HFFFE
                     Case 1: RecordTitle.LowBits = RecordTitle.LowBits Or &H1
                 End Select
             
             Case IDLE_DOORUNLOCK_FIELD:
-                Select Case .ComboCell(0).ListIndex
+                Select Case .ComboCell.ListIndex
                     Case 0: RecordTitle.LowBits = RecordTitle.LowBits And &HFFFD
                     Case 1: RecordTitle.LowBits = RecordTitle.LowBits Or &H2
                 End Select
                 
             Case IDLE_PROGNAME_FIELD:
                 For I = 1 To PROG_NAME_LENGTH - 1
-                    If I < Len(.TextCell(0).Text) Then
-                        RecordTitle.ProgName(I) = Asc(Mid(.TextCell(0).Text, I, 1))
+                    If I <= Len(.TextCell.Text) Then
+                        RecordTitle.ProgName(I) = Asc(Mid(.TextCell.Text, I, 1))
                     Else
                         RecordTitle.ProgName(I) = 0
                     End If
@@ -462,63 +900,105 @@ Private Sub func_SetComboPropertyForDTRG(frm As FormMain, _
                 RecordTitle.ProgName(PROG_NAME_LENGTH) = 0
             
             Case IDLE_STEP_FIELD:
-                .Manager.StepIndex = .ComboCell(0).ListIndex
+                .Manager.StepIndex = .ComboCell.ListIndex
                 Exit Sub
                 
             Case IDLE_FUNCTION_FIELD:
-                ' При выборе новой функции для шага мы должны обнулить структуру
+                ' Если функция та же, то ничего не делаем
+                If (RecordDetergent.Bits And &HF) = (.ComboCell.ListIndex And &HF) Then Exit Sub
+
+                ' При выборе новой функции для шага мы должны обнулить структуру,
                 ZeroMemory RecordDetergent, STEP_SIZE_IN_BYTES
-                ' и записать новое значение в поле типа функции
-                RecordDetergent.Bits = .ComboCell(0).ListIndex And &HF
+                
+                ' установить значения по умолчанию в зависимости от функции,
+                If LimitsLoaded Then
+                    Select Case .ComboCell.ListIndex And &HF
+                        Case WPC_OPERATION_IDLE ' пропуск
+                            .ModuleIdle.SetDefaults frm
+                            
+                        Case WPC_OPERATION_FILL ' Налив
+                            .ModuleFill.SetDefaults frm
+                        
+                        Case WPC_OPERATION_DTRG ' моющие
+                            .ModuleDTRG.SetDefaults frm
+                            
+                        Case WPC_OPERATION_HEAT ' нагрев
+                            .ModuleHeat.SetDefaults frm
+                            
+                        ' стирка, полоскание, расстряска
+                        Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+                            .ModuleWashOrRinsOrJolt.SetDefaults frm
+                            
+                        'Case WPC_OPERATION_PAUS ' пауза
+            
+                        Case WPC_OPERATION_DRAIN ' слив
+                            .ModuleDrain.SetDefaults frm
+                            
+                        Case WPC_OPERATION_SPIN ' отжим
+                            .ModuleSpin.SetDefaults frm
+                        
+                        Case WPC_OPERATION_COOL ' охлаждение
+                            .ModuleCool.SetDefaults frm
+                            
+                        Case WPC_OPERATION_TRIN ' тех.полоскание
+                            .ModuleTrin.SetDefaults frm
+                    
+                        Case Else
+                        
+                    End Select
+                End If
+                
+                'записать новое значение в поле типа функции
+                RecordDetergent.Bits = RecordDetergent.Bits Or (.ComboCell.ListIndex And &HF)
                 
             ' Специальные параметры шага
             Case DTRG_PAUSE_FIELD:
-                Select Case .ComboCell(0).ListIndex
+                Select Case .ComboCell.ListIndex
                     Case 0: RecordDetergent.Bits = RecordDetergent.Bits And &HFFEF
                     Case 1: RecordDetergent.Bits = RecordDetergent.Bits Or &H10
                 End Select
                 
             Case DTRG_ROTATION_FIELD:
-                Select Case .ComboCell(0).ListIndex
+                Select Case .ComboCell.ListIndex
                     Case 0: RecordDetergent.Bits = RecordDetergent.Bits And &HFFDF
                     Case 1: RecordDetergent.Bits = RecordDetergent.Bits Or &H20
                 End Select
                 
             Case DTRG_DETERGENT1_FIELD:
-                RecordDetergent.Detergent_1_Time = Val(.TextCell(0).Text)
+                RecordDetergent.Detergent_1_Time = Val(.TextCell.Text)
                 
             Case DTRG_DETERGENT2_FIELD:
-                RecordDetergent.Detergent_2_Time = Val(.TextCell(0).Text)
+                RecordDetergent.Detergent_2_Time = Val(.TextCell.Text)
             
             Case DTRG_DETERGENT3_FIELD:
-                RecordDetergent.Detergent_3_Time = Val(.TextCell(0).Text)
+                RecordDetergent.Detergent_3_Time = Val(.TextCell.Text)
             
             Case DTRG_DETERGENT4_FIELD:
-                RecordDetergent.Detergent_4_Time = Val(.TextCell(0).Text)
+                RecordDetergent.Detergent_4_Time = Val(.TextCell.Text)
             
             Case DTRG_DETERGENT5_FIELD:
-                RecordDetergent.Detergent_5_Time = Val(.TextCell(0).Text)
+                RecordDetergent.Detergent_5_Time = Val(.TextCell.Text)
             
             Case DTRG_DETERGENT6_FIELD:
-                RecordDetergent.Detergent_6_Time = Val(.TextCell(0).Text)
+                RecordDetergent.Detergent_6_Time = Val(.TextCell.Text)
             
             Case DTRG_DETERGENT7_FIELD:
-                RecordDetergent.Detergent_7_Time = Val(.TextCell(0).Text)
+                RecordDetergent.Detergent_7_Time = Val(.TextCell.Text)
                 
             Case DTRG_DETERGENT8_FIELD:
-                RecordDetergent.Detergent_8_Time = Val(.TextCell(0).Text)
+                RecordDetergent.Detergent_8_Time = Val(.TextCell.Text)
                 
             Case DTRG_DETERGENT9_FIELD:
-                RecordDetergent.Detergent_9_Time = Val(.TextCell(0).Text)
+                RecordDetergent.Detergent_9_Time = Val(.TextCell.Text)
             
-            Case DTRG_ROTTIME_FIELD:
-                RecordDetergent.RotTime = Val(.TextCell(0).Text)
+            Case DTRG_ROTATIONTIME_FIELD:
+                RecordDetergent.RotationTime = Val(.TextCell.Text)
                 
             Case DTRG_PAUSETIME_FIELD:
-                RecordDetergent.PauseTime = Val(.TextCell(0).Text)
+                RecordDetergent.PauseTime = Val(.TextCell.Text)
                 
             Case DTRG_DRUMSPEED_FIELD:
-                RecordDetergent.DrumSpeed = Val(.TextCell(0).Text)
+                RecordDetergent.DrumSpeed = Val(.TextCell.Text)
                 
             Case Else
 
@@ -532,6 +1012,10 @@ Private Sub func_SetComboPropertyForDTRG(frm As FormMain, _
         'StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
         'CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
     End With
+    Exit Sub
+
+ErrorHandler:
+    Err.Clear
 End Sub
 
 Public Sub SetComboPropertyForDTRG(frm As FormMain)

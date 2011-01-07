@@ -21,7 +21,7 @@ Private Const COOL_ROTATION_FIELD = IDLE_FUNCTION_FIELD + 3
 
 Private Const COOL_TEMPERATURE_FIELD = IDLE_FUNCTION_FIELD + 4
 Private Const COOL_COLDWATERTIME_FIELD = IDLE_FUNCTION_FIELD + 5
-Private Const COOL_ROTTIME_FIELD = IDLE_FUNCTION_FIELD + 6
+Private Const COOL_ROTATIONTIME_FIELD = IDLE_FUNCTION_FIELD + 6
 Private Const COOL_PAUSETIME_FIELD = IDLE_FUNCTION_FIELD + 7
 Private Const COOL_DRUMSPEED_FIELD = IDLE_FUNCTION_FIELD + 8
 
@@ -35,9 +35,171 @@ Private Const COOL_PARAMETER_DESCR_ROTATION = "Разр. вращ."
 ' Аналоговые параметры
 Private Const COOL_PARAMETER_DESCR_TEMPERATURE = "Температура"
 Private Const COOL_PARAMETER_DESCR_COLDWATERTIME = "Время откр. кл. ХВ"
-Private Const COOL_PARAMETER_DESCR_ROTTIME = "Время вращ. мотора"
+Private Const COOL_PARAMETER_DESCR_RotationTime = "Время вращ. мотора"
 Private Const COOL_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
 Private Const COOL_PARAMETER_DESCR_DRUMSPEED = "Скорость вращ. барабана"
+
+' Название секции
+Private Const COOL_SECTION_NAME = "Cool"
+
+' Настройки по умолчанию
+' Дискретные типы
+Private Const PAUSE_DEFAULT = 0
+Private Const FAST_DEFAULT = 0
+Private Const ROTATION_DEFAULT = 1
+
+' Аналоговые типы
+Private Const TEMPERATURE_MIN = 0
+Private Const TEMPERATURE_MAX = 90
+Private Const TEMPERATURE_DEFAULT = 1
+Private Const TEMPERATURE_DIMENSION = "градусы цельсия"
+
+Private Const COLDWATERTIME_MIN = 1
+Private Const COLDWATERTIME_MAX = 29
+Private Const COLDWATERTIME_DEFAULT = 10
+Private Const COLDWATERTIME_DIMENSION = "сек"
+
+Private Const ROTATIONTIME_MIN = 1
+Private Const ROTATIONTIME_MAX = 250
+Private Const ROTATIONTIME_DEFAULT = 6
+Private Const ROTATIONTIME_DIMENSION = "сек"
+
+Private Const PAUSETIME_MIN = 1
+Private Const PAUSETIME_MAX = 250
+Private Const PAUSETIME_DEFAULT = 12
+Private Const PAUSETIME_DIMENSION = "сек"
+
+Private Const DRUMSPEED_MIN = 30
+Private Const DRUMSPEED_MAX = 70
+Private Const DRUMSPEED_DEFAULT = 50
+Private Const DRUMSPEED_DIMENSION = "об/мин"
+
+' Параметры функции шага
+' Дискретные типы
+Private Pause As TYPE_BOOL_DESCRIPTION
+Private Fast As TYPE_BOOL_DESCRIPTION
+Private Rotation As TYPE_BOOL_DESCRIPTION
+
+' Аналоговые типы
+Private Temperature As TYPE_BYTE_DESCRIPTION
+Private ColdWaterTime As TYPE_BYTE_DESCRIPTION
+Private RotationTime As TYPE_BYTE_DESCRIPTION
+Private PauseTime As TYPE_BYTE_DESCRIPTION
+Private DrumSpeed As TYPE_BYTE_DESCRIPTION
+
+Public LimitsLoaded As Boolean
+
+' Конструктор
+Private Sub Class_Initialize()
+    LimitsLoaded = False
+End Sub
+
+' Деструктор
+Private Sub Class_Terminate()
+End Sub
+
+Public Sub LoadLimits(FileName As String)
+    LimitsLoaded = DoesFileExist(FileName)
+    
+    If Not LimitsLoaded Then Exit Sub
+    
+    Dim LimitsFile As New TIniFiles
+    
+    LimitsFile.Create FileName
+    
+    ' Настройки функции
+    ' Дискретные типы
+    Pause.DefaultValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "Pause.Default", PAUSE_DEFAULT) > 0
+    Fast.DefaultValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "Fast.Default", FAST_DEFAULT) > 0
+    Rotation.DefaultValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "Rotation.Default", ROTATION_DEFAULT) > 0
+    
+    ' Аналоговые типы
+    With Temperature
+        .MinValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "Temperature.Min", TEMPERATURE_MIN)
+        .MaxValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "Temperature.Max", TEMPERATURE_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "Temperature.Default", TEMPERATURE_DEFAULT)
+        .Dimension = LimitsFile.ReadString(COOL_SECTION_NAME, "Temperature.Dimension", TEMPERATURE_DIMENSION)
+    End With
+    
+    With ColdWaterTime
+        .MinValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "ColdWaterTime.Min", COLDWATERTIME_MIN)
+        .MaxValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "ColdWaterTime.Max", COLDWATERTIME_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "ColdWaterTime.Default", COLDWATERTIME_DEFAULT)
+        .Dimension = LimitsFile.ReadString(COOL_SECTION_NAME, "ColdWaterTime.Dimension", COLDWATERTIME_DIMENSION)
+    End With
+    
+    With RotationTime
+        .MinValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "RotationTime.Min", ROTATIONTIME_MIN)
+        .MaxValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "RotationTime.Max", ROTATIONTIME_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "RotationTime.Default", ROTATIONTIME_DEFAULT)
+        .Dimension = LimitsFile.ReadString(COOL_SECTION_NAME, "RotationTime.Dimension", ROTATIONTIME_DIMENSION)
+    End With
+    
+    With PauseTime
+        .MinValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "PauseTime.Min", PAUSETIME_MIN)
+        .MaxValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "PauseTime.Max", PAUSETIME_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "PauseTime.Default", PAUSETIME_DEFAULT)
+        .Dimension = LimitsFile.ReadString(COOL_SECTION_NAME, "PauseTime.Dimension", PAUSETIME_DIMENSION)
+    End With
+    
+    With DrumSpeed
+        .MinValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "DrumSpeed.Min", DRUMSPEED_MIN)
+        .MaxValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "DrumSpeed.Max", DRUMSPEED_MAX)
+        .DefaultValue = LimitsFile.ReadInteger(COOL_SECTION_NAME, "DrumSpeed.Default", DRUMSPEED_DEFAULT)
+        .Dimension = LimitsFile.ReadString(COOL_SECTION_NAME, "DrumSpeed.Dimension", DRUMSPEED_DIMENSION)
+    End With
+    
+    Set LimitsFile = Nothing
+End Sub
+
+' Функция-посредник
+Private Sub func_SetDefaults(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordCool As TYPE_WPC_COOL)
+
+    Dim StepPointer As Long
+    
+    StepPointer = frm.Manager.DataPointer + _
+        frm.Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+        HEADER_SIZE_IN_BYTES + _
+        frm.Manager.StepIndex * STEP_SIZE_IN_BYTES
+    
+    'CopyMemory RecordCool, ByVal StepPointer, STEP_SIZE_IN_BYTES
+    PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+    
+    ' Дискретные типы
+    Select Case Pause.DefaultValue
+        Case False: RecordCool.Bits = RecordCool.Bits And &HFFEF
+        Case True: RecordCool.Bits = RecordCool.Bits Or &H10
+    End Select
+
+    Select Case Fast.DefaultValue
+        Case False: RecordCool.Bits = RecordCool.Bits And &HFFDF
+        Case True: RecordCool.Bits = RecordCool.Bits Or &H20
+    End Select
+    
+    Select Case Rotation.DefaultValue
+        Case False: RecordCool.Bits = RecordCool.Bits And &HFFBF
+        Case True: RecordCool.Bits = RecordCool.Bits Or &H40
+    End Select
+    
+    ' Аналоговые типы
+    RecordCool.Temperature = Temperature.DefaultValue
+    RecordCool.ColdWaterTime = ColdWaterTime.DefaultValue
+    RecordCool.RotationTime = RotationTime.DefaultValue
+    RecordCool.PauseTime = PauseTime.DefaultValue
+    RecordCool.DrumSpeed = DrumSpeed.DefaultValue
+    
+    ' Сохраняем изменения
+    'StepPointer = frm.Manager.DataPointer + frm.Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+    'CopyMemory ByVal StepPointer, RecordCool, HEADER_SIZE_IN_BYTES
+End Sub
+
+Public Sub SetDefaults(frm As FormMain)
+    Dim RecordCool As TYPE_WPC_COOL
+    
+    func_SetDefaults frm, 0&, RecordCool
+End Sub
 
 ' Функция-посредник
 Private Sub func_ShowPropertyTableForCool(frm As FormMain, _
@@ -87,8 +249,8 @@ Private Sub func_ShowPropertyTableForCool(frm As FormMain, _
                 Case COOL_COLDWATERTIME_FIELD:
                     ParamStr = ParamStr & COOL_PARAMETER_DESCR_COLDWATERTIME
                 
-                Case COOL_ROTTIME_FIELD:
-                    ParamStr = ParamStr & COOL_PARAMETER_DESCR_ROTTIME
+                Case COOL_ROTATIONTIME_FIELD:
+                    ParamStr = ParamStr & COOL_PARAMETER_DESCR_RotationTime
                 
                 Case COOL_PAUSETIME_FIELD:
                     ParamStr = ParamStr & COOL_PARAMETER_DESCR_PAUSETIME
@@ -139,12 +301,10 @@ Private Sub func_ShowPropertyTableForCool(frm As FormMain, _
                         .PropertyTable.Text = STRING_NO
                     End If
                     
-                ' TODO: Доделать отображение имени программы
                 Case IDLE_PROGNAME_FIELD:
                     s = ""
                     For J = 1 To PROG_NAME_LENGTH - 1
-                        'if Chr(RecordStep.Reserved(J))
-                        s = s & "*"
+                        s = s & Chr(CLng(RecordTitle.ProgName(J)))
                     Next J
                     .PropertyTable.Text = s
                 
@@ -179,18 +339,53 @@ Private Sub func_ShowPropertyTableForCool(frm As FormMain, _
                     End If
                     
                 Case COOL_TEMPERATURE_FIELD:
+                    If LimitsLoaded Then
+                        If RecordCool.Temperature < Temperature.MinValue Or RecordCool.Temperature > Temperature.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordCool.Temperature
                     
                 Case COOL_COLDWATERTIME_FIELD:
+                    If LimitsLoaded Then
+                        If RecordCool.ColdWaterTime < ColdWaterTime.MinValue Or RecordCool.ColdWaterTime > ColdWaterTime.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordCool.ColdWaterTime
                     
-                Case COOL_ROTTIME_FIELD:
-                    .PropertyTable.Text = "" & RecordCool.RotTime
+                Case COOL_ROTATIONTIME_FIELD:
+                    If LimitsLoaded Then
+                        If RecordCool.RotationTime < RotationTime.MinValue Or RecordCool.RotationTime > RotationTime.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
+                    .PropertyTable.Text = "" & RecordCool.RotationTime
                 
                 Case COOL_PAUSETIME_FIELD:
+                    If LimitsLoaded Then
+                        If RecordCool.PauseTime < PauseTime.MinValue Or RecordCool.PauseTime > PauseTime.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordCool.PauseTime
                 
                 Case COOL_DRUMSPEED_FIELD:
+                    If LimitsLoaded Then
+                        If RecordCool.DrumSpeed < DrumSpeed.MinValue Or RecordCool.DrumSpeed > DrumSpeed.MaxValue Then
+                            .PropertyTable.CellBackColor = &H8080FF
+                        Else
+                            .PropertyTable.CellBackColor = &H80000005
+                        End If
+                    End If
                     .PropertyTable.Text = "" & RecordCool.DrumSpeed
                 
                 Case Else
@@ -216,6 +411,7 @@ Private Sub func_EditPropertyForCool(frm As FormMain, _
 
     Dim I As Integer
     Dim StepPointer As Long
+    Dim s As String
     
     With frm
         StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
@@ -230,106 +426,160 @@ Private Sub func_EditPropertyForCool(frm As FormMain, _
         'CopyMemory RecordCool, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .ComboCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
-        .ComboCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
-        .ComboCell(0).Width = .PropertyTable.CellWidth
-        .ComboCell(0).Clear
+        .ComboCell.Left = .PropertyTable.Left + .PropertyTable.CellLeft
+        .ComboCell.Top = .PropertyTable.Top + .PropertyTable.CellTop
+        .ComboCell.Width = .PropertyTable.CellWidth
+        .ComboCell.Clear
         
-        .TextCell(0).Left = .PropertyTable.Left + .PropertyTable.CellLeft
-        .TextCell(0).Top = .PropertyTable.Top + .PropertyTable.CellTop
-        .TextCell(0).Width = .PropertyTable.CellWidth
-        .TextCell(0).Height = .PropertyTable.CellHeight
+        .TextCell.Left = .PropertyTable.Left + .PropertyTable.CellLeft
+        .TextCell.Top = .PropertyTable.Top + .PropertyTable.CellTop
+        .TextCell.Width = .PropertyTable.CellWidth
+        .TextCell.Height = .PropertyTable.CellHeight
+        
+        .LabelDescription.Left = .PropertyTable.Left
+        .LabelDescription.Width = .PropertyTable.Width
+        .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
+        .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
-                .ComboCell(0).AddItem STRING_NO
-                .ComboCell(0).AddItem STRING_YES
-                .ComboCell(0).ListIndex = RecordTitle.LowBits And &H1
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.AddItem STRING_NO
+                .ComboCell.AddItem STRING_YES
+                .ComboCell.ListIndex = RecordTitle.LowBits And &H1
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
             
             Case IDLE_DOORUNLOCK_FIELD:
-                .ComboCell(0).AddItem STRING_NO
-                .ComboCell(0).AddItem STRING_YES
-                .ComboCell(0).ListIndex = (RecordTitle.LowBits And &H2) / &H2
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.AddItem STRING_NO
+                .ComboCell.AddItem STRING_YES
+                .ComboCell.ListIndex = (RecordTitle.LowBits And &H2) / &H2
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case IDLE_PROGNAME_FIELD:
-                .TextCell(0).Text = .PropertyTable.Text
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                s = ""
+                For I = 1 To PROG_NAME_LENGTH - 1
+                    s = s & Chr(CLng(RecordTitle.ProgName(I)))
+                Next I
+                .TextCell.Text = s
+                .TextCell.Visible = True
+                .TextCell.SetFocus
             
             Case IDLE_STEP_FIELD:
                 For I = 1 To MAX_NUMBER_OF_STEPS
-                    .ComboCell(0).AddItem ("Шаг " & I)
+                    .ComboCell.AddItem ("Шаг " & I)
                 Next I
-                .ComboCell(0).ListIndex = .Manager.StepIndex
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.ListIndex = .Manager.StepIndex
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case IDLE_FUNCTION_FIELD:
                 For I = 0 To 11
-                    .ComboCell(0).AddItem (FunctionsStrings(I))
+                    .ComboCell.AddItem (FunctionsStrings(I))
                 Next I
-                .ComboCell(0).ListIndex = RecordCool.Bits And &HF
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.ListIndex = RecordCool.Bits And &HF
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             ' Специальные параметры шага
             Case COOL_PAUSE_FIELD:
-                .ComboCell(0).AddItem STRING_NO
-                .ComboCell(0).AddItem STRING_YES
-                .ComboCell(0).ListIndex = (RecordCool.Bits And &H10) / &H10
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.AddItem STRING_NO
+                .ComboCell.AddItem STRING_YES
+                .ComboCell.ListIndex = (RecordCool.Bits And &H10) / &H10
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case COOL_FAST_FIELD:
-                .ComboCell(0).AddItem STRING_NO
-                .ComboCell(0).AddItem STRING_YES
-                .ComboCell(0).ListIndex = (RecordCool.Bits And &H20) / &H20
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.AddItem STRING_NO
+                .ComboCell.AddItem STRING_YES
+                .ComboCell.ListIndex = (RecordCool.Bits And &H20) / &H20
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case COOL_ROTATION_FIELD:
-                .ComboCell(0).AddItem STRING_NO
-                .ComboCell(0).AddItem STRING_YES
-                .ComboCell(0).ListIndex = (RecordCool.Bits And &H40) / &H40
-                .ComboCell(0).Visible = True
-                .ComboCell(0).SetFocus
+                .ComboCell.AddItem STRING_NO
+                .ComboCell.AddItem STRING_YES
+                .ComboCell.ListIndex = (RecordCool.Bits And &H40) / &H40
+                .ComboCell.Visible = True
+                .ComboCell.SetFocus
                 
             Case COOL_TEMPERATURE_FIELD:
-                .TextCell(0).Text = "" & RecordCool.Temperature
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & Temperature.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & Temperature.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & Temperature.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & Temperature.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+                .TextCell.Text = "" & RecordCool.Temperature
+                .TextCell.Visible = True
+                .TextCell.SetFocus
 
             Case COOL_COLDWATERTIME_FIELD:
-                .TextCell(0).Text = "" & RecordCool.ColdWaterTime
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & ColdWaterTime.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & ColdWaterTime.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & ColdWaterTime.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & ColdWaterTime.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+                .TextCell.Text = "" & RecordCool.ColdWaterTime
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
-            Case COOL_ROTTIME_FIELD:
-                .TextCell(0).Text = "" & RecordCool.RotTime
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+            Case COOL_ROTATIONTIME_FIELD:
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & RotationTime.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & RotationTime.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & RotationTime.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & RotationTime.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+                .TextCell.Text = "" & RecordCool.RotationTime
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
             Case COOL_PAUSETIME_FIELD:
-                .TextCell(0).Text = "" & RecordCool.PauseTime
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & PauseTime.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & PauseTime.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & PauseTime.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & PauseTime.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+                .TextCell.Text = "" & RecordCool.PauseTime
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
             Case COOL_DRUMSPEED_FIELD:
-                .TextCell(0).Text = "" & RecordCool.DrumSpeed
-                .TextCell(0).Visible = True
-                .TextCell(0).SetFocus
+                If LimitsLoaded Then
+                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+                                                "Минимальное значение: " & DrumSpeed.MinValue & Chr(13) & Chr(10) & _
+                                                "Максимальное значение: " & DrumSpeed.MaxValue & Chr(13) & Chr(10) & _
+                                                "Значение по умолчанию: " & DrumSpeed.DefaultValue & Chr(13) & Chr(10) & _
+                                                "Размерность: [" & DrumSpeed.Dimension & "]"
+                    .LabelDescription.Visible = True
+                End If
+                .TextCell.Text = "" & RecordCool.DrumSpeed
+                .TextCell.Visible = True
+                .TextCell.SetFocus
                 
             Case Else
 
         End Select
     
-        .TextCell(0).SelStart = 0
-        .TextCell(0).SelLength = Len(.TextCell(0).Text)
+        .TextCell.SelStart = 0
+        .TextCell.SelLength = Len(.TextCell.Text)
     End With
 End Sub
 
@@ -345,6 +595,8 @@ Private Sub func_SetComboPropertyForCool(frm As FormMain, _
     ByVal begin_of_pointers As Long, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordCool As TYPE_WPC_COOL)
+    
+    On Error GoTo ErrorHandler
     
     Dim I As Integer
     Dim StepPointer As Long
@@ -365,21 +617,21 @@ Private Sub func_SetComboPropertyForCool(frm As FormMain, _
         Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
-                Select Case .ComboCell(0).ListIndex
+                Select Case .ComboCell.ListIndex
                     Case 0: RecordTitle.LowBits = RecordTitle.LowBits And &HFFFE
                     Case 1: RecordTitle.LowBits = RecordTitle.LowBits Or &H1
                 End Select
             
             Case IDLE_DOORUNLOCK_FIELD:
-                Select Case .ComboCell(0).ListIndex
+                Select Case .ComboCell.ListIndex
                     Case 0: RecordTitle.LowBits = RecordTitle.LowBits And &HFFFD
                     Case 1: RecordTitle.LowBits = RecordTitle.LowBits Or &H2
                 End Select
                 
             Case IDLE_PROGNAME_FIELD:
                 For I = 1 To PROG_NAME_LENGTH - 1
-                    If I < Len(.TextCell(0).Text) Then
-                        RecordTitle.ProgName(I) = Asc(Mid(.TextCell(0).Text, I, 1))
+                    If I <= Len(.TextCell.Text) Then
+                        RecordTitle.ProgName(I) = Asc(Mid(.TextCell.Text, I, 1))
                     Else
                         RecordTitle.ProgName(I) = 0
                     End If
@@ -387,48 +639,90 @@ Private Sub func_SetComboPropertyForCool(frm As FormMain, _
                 RecordTitle.ProgName(PROG_NAME_LENGTH) = 0
             
             Case IDLE_STEP_FIELD:
-                .Manager.StepIndex = .ComboCell(0).ListIndex
+                .Manager.StepIndex = .ComboCell.ListIndex
                 Exit Sub
                 
             Case IDLE_FUNCTION_FIELD:
-                ' При выборе новой функции для шага мы должны обнулить структуру
+                ' Если функция та же, то ничего не делаем
+                If (RecordCool.Bits And &HF) = (.ComboCell.ListIndex And &HF) Then Exit Sub
+                
+                ' При выборе новой функции для шага мы должны обнулить структуру,
                 ZeroMemory RecordCool, STEP_SIZE_IN_BYTES
-                ' и записать новое значение в поле типа функции
-                RecordCool.Bits = .ComboCell(0).ListIndex And &HF
+
+                ' установить значения по умолчанию в зависимости от функции,
+                If LimitsLoaded Then
+                    Select Case .ComboCell.ListIndex And &HF
+                        Case WPC_OPERATION_IDLE ' пропуск
+                            .ModuleIdle.SetDefaults frm
+                            
+                        Case WPC_OPERATION_FILL ' Налив
+                            .ModuleFill.SetDefaults frm
+                        
+                        Case WPC_OPERATION_DTRG ' моющие
+                            .ModuleDTRG.SetDefaults frm
+                            
+                        Case WPC_OPERATION_HEAT ' нагрев
+                            .ModuleHeat.SetDefaults frm
+                            
+                        ' стирка, полоскание, расстряска
+                        Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+                            .ModuleWashOrRinsOrJolt.SetDefaults frm
+                            
+                        'Case WPC_OPERATION_PAUS ' пауза
+            
+                        Case WPC_OPERATION_DRAIN ' слив
+                            .ModuleDrain.SetDefaults frm
+                            
+                        Case WPC_OPERATION_SPIN ' отжим
+                            .ModuleSpin.SetDefaults frm
+                        
+                        Case WPC_OPERATION_COOL ' охлаждение
+                            .ModuleCool.SetDefaults frm
+                            
+                        Case WPC_OPERATION_TRIN ' тех.полоскание
+                            .ModuleTrin.SetDefaults frm
+                    
+                        Case Else
+                        
+                    End Select
+                End If
+                
+                ' записать новое значение в поле типа функции
+                RecordCool.Bits = RecordCool.Bits Or (.ComboCell.ListIndex And &HF)
                 
             ' Специальные параметры шага
             Case COOL_PAUSE_FIELD:
-                Select Case .ComboCell(0).ListIndex
+                Select Case .ComboCell.ListIndex
                     Case 0: RecordCool.Bits = RecordCool.Bits And &HFFEF
                     Case 1: RecordCool.Bits = RecordCool.Bits Or &H10
                 End Select
                 
             Case COOL_FAST_FIELD:
-                Select Case .ComboCell(0).ListIndex
+                Select Case .ComboCell.ListIndex
                     Case 0: RecordCool.Bits = RecordCool.Bits And &HFFDF
                     Case 1: RecordCool.Bits = RecordCool.Bits Or &H20
                 End Select
                 
             Case COOL_ROTATION_FIELD:
-                Select Case .ComboCell(0).ListIndex
+                Select Case .ComboCell.ListIndex
                     Case 0: RecordCool.Bits = RecordCool.Bits And &HFFBF
                     Case 1: RecordCool.Bits = RecordCool.Bits Or &H40
                 End Select
                 
             Case COOL_TEMPERATURE_FIELD:
-                RecordCool.Temperature = Val(.TextCell(0).Text)
+                RecordCool.Temperature = Val(.TextCell.Text)
             
             Case COOL_COLDWATERTIME_FIELD:
-                RecordCool.ColdWaterTime = Val(.TextCell(0).Text)
+                RecordCool.ColdWaterTime = Val(.TextCell.Text)
     
-            Case COOL_ROTTIME_FIELD:
-                RecordCool.RotTime = Val(.TextCell(0).Text)
+            Case COOL_ROTATIONTIME_FIELD:
+                RecordCool.RotationTime = Val(.TextCell.Text)
             
             Case COOL_PAUSETIME_FIELD:
-                RecordCool.PauseTime = Val(.TextCell(0).Text)
+                RecordCool.PauseTime = Val(.TextCell.Text)
             
             Case COOL_DRUMSPEED_FIELD:
-                RecordCool.DrumSpeed = Val(.TextCell(0).Text)
+                RecordCool.DrumSpeed = Val(.TextCell.Text)
             
             Case Else
     
@@ -442,6 +736,10 @@ Private Sub func_SetComboPropertyForCool(frm As FormMain, _
         'StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
         'CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
     End With
+    Exit Sub
+
+ErrorHandler:
+    Err.Clear
 End Sub
 
 Public Sub SetComboPropertyForCool(frm As FormMain)
