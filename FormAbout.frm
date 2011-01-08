@@ -7,6 +7,7 @@ Begin VB.Form FormAbout
    ClientTop       =   1932
    ClientWidth     =   5412
    ClipControls    =   0   'False
+   Icon            =   "FormAbout.frx":0000
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
@@ -17,16 +18,17 @@ Begin VB.Form FormAbout
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox picIcon 
       AutoSize        =   -1  'True
+      BorderStyle     =   0  'None
       ClipControls    =   0   'False
-      Height          =   432
-      Left            =   240
-      Picture         =   "FormAbout.frx":0000
-      ScaleHeight     =   263.118
+      Height          =   768
+      Left            =   120
+      Picture         =   "FormAbout.frx":6432
+      ScaleHeight     =   526.236
       ScaleMode       =   0  'User
-      ScaleWidth      =   263.118
+      ScaleWidth      =   526.236
       TabIndex        =   1
       Top             =   240
-      Width           =   432
+      Width           =   768
    End
    Begin VB.CommandButton cmdOK 
       Cancel          =   -1  'True
