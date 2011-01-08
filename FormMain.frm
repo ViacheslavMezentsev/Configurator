@@ -844,6 +844,7 @@ End Sub
 Private Sub ComboCell_KeyDown(keyCode As Integer, Shift As Integer)
     If keyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
         ComboCell.Visible = False
+        LabelDescription.Visible = False
         RefreshFrameRight
         PropertyTable.SetFocus
     End If
@@ -897,14 +898,10 @@ Private Sub ComboCell_KeyDown(keyCode As Integer, Shift As Integer)
             Manager.SetByte Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, b
 
             ComboCell.Visible = False
+            LabelDescription.Visible = False
             Dim row As Integer
             row = PropertyTable.row
             RefreshComponents (False)
-'            RefreshCodeView
-'            RefreshStepsView
-'            RefreshProperties
-'
-'            RefreshComponents (True)
             If row < PropertyTable.Rows - 1 Then PropertyTable.row = row
             PropertyTable.SetFocus
         End If
@@ -1714,6 +1711,7 @@ End Sub
 Private Sub TextCell_KeyDown(keyCode As Integer, Shift As Integer)
     If keyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
         TextCell.Visible = False
+        LabelDescription.Visible = False
         RefreshFrameRight
         PropertyTable.SetFocus
     End If
@@ -1767,15 +1765,10 @@ Private Sub TextCell_KeyDown(keyCode As Integer, Shift As Integer)
             Manager.SetByte Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, b
             
             TextCell.Visible = False
+            LabelDescription.Visible = False
             Dim row As Integer
             row = PropertyTable.row
             RefreshComponents (False)
-'            RefreshList
-'            RefreshCodeView
-'            RefreshStepsView
-'            RefreshProperties
-'
-'            RefreshComponents (True)
             If row < PropertyTable.Rows - 1 Then PropertyTable.row = row
             PropertyTable.SetFocus
         End If
