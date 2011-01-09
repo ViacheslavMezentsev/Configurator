@@ -49,7 +49,7 @@ Const DTRG_PARAMETER_DESCR_DETERGENT7 = "Время подачи моющ. 7"
 Const DTRG_PARAMETER_DESCR_DETERGENT8 = "Время подачи моющ. 8"
 Const DTRG_PARAMETER_DESCR_DETERGENT9 = "Время подачи моющ. 9"
 
-Const DTRG_PARAMETER_DESCR_RotationTime = "Время вращ. мотора"
+Const DTRG_PARAMETER_DESCR_ROTATIONTIME = "Время вращ. мотора"
 Const DTRG_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
 Const DTRG_PARAMETER_DESCR_DRUMSPEED = "Скорость вращ. барабана"
 
@@ -271,7 +271,7 @@ Private Sub func_ShowPropertyTableForDTRG(frm As FormMain, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordDetergent As TYPE_WPC_DETERGENT)
     
-    Dim I, J, row As Integer
+    Dim I, J, Row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
     
@@ -331,7 +331,7 @@ Private Sub func_ShowPropertyTableForDTRG(frm As FormMain, _
                     ParamStr = ParamStr & DTRG_PARAMETER_DESCR_DETERGENT9
                 
                 Case DTRG_ROTATIONTIME_FIELD:
-                    ParamStr = ParamStr & DTRG_PARAMETER_DESCR_RotationTime
+                    ParamStr = ParamStr & DTRG_PARAMETER_DESCR_ROTATIONTIME
                     
                 Case DTRG_PAUSETIME_FIELD:
                     ParamStr = ParamStr & DTRG_PARAMETER_DESCR_PAUSETIME
@@ -361,10 +361,10 @@ Private Sub func_ShowPropertyTableForDTRG(frm As FormMain, _
         'CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .PropertyTable.col = 1
+        .PropertyTable.Col = 1
                
         For I = 1 To DTRG_PARAMETERS_COUNT
-            .PropertyTable.row = I
+            .PropertyTable.Row = I
             .PropertyTable.CellAlignment = flexAlignRightCenter
         
             Select Case I
@@ -599,7 +599,7 @@ Private Sub func_EditPropertyForDTRG(frm As FormMain, _
         .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
         .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
-        Select Case .PropertyTable.row
+        Select Case .PropertyTable.Row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 .ComboCell.AddItem STRING_NO
@@ -875,7 +875,7 @@ Private Sub func_SetComboPropertyForDTRG(frm As FormMain, _
         'CopyMemory RecordDetergent, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        Select Case .PropertyTable.row
+        Select Case .PropertyTable.Row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 Select Case .ComboCell.ListIndex
@@ -1025,4 +1025,60 @@ Public Sub SetComboPropertyForDTRG(frm As FormMain)
     func_SetComboPropertyForDTRG frm, 0&, RecordTitle, RecordDetergent
 End Sub
 
+' Функция-посредник
+Private Function func_ValveEnabled(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordDetergent As TYPE_WPC_DETERGENT, _
+    ByVal StepIndex As Integer, _
+    ByVal Num As Integer)
+
+    Dim I As Integer
+    Dim StepPointer As Long
+    
+    With frm
+        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+        
+        StepPointer = .Manager.DataPointer + _
+            .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+            HEADER_SIZE_IN_BYTES + _
+            StepIndex * STEP_SIZE_IN_BYTES
+        
+        'CopyMemory RecordCool, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
+        
+        Select Case Num
+            Case 1:
+            Case 2:
+            Case 3:
+            Case 4: func_ValveEnabled = RecordDetergent.Detergent_1_Time > 0
+            Case 5: func_ValveEnabled = RecordDetergent.Detergent_2_Time > 0
+            Case 6: func_ValveEnabled = RecordDetergent.Detergent_3_Time > 0
+            Case 7: func_ValveEnabled = RecordDetergent.Detergent_4_Time > 0
+            Case 8: func_ValveEnabled = RecordDetergent.Detergent_5_Time > 0
+            Case 9: func_ValveEnabled = RecordDetergent.Detergent_6_Time > 0
+            Case 10: func_ValveEnabled = RecordDetergent.Detergent_7_Time > 0
+            Case 11: func_ValveEnabled = RecordDetergent.Detergent_8_Time > 0
+            Case 12: func_ValveEnabled = RecordDetergent.Detergent_9_Time > 0
+            Case 13:
+            Case 14:
+            Case 15:
+            Case 16:
+            Case 17:
+            Case 18: func_ValveEnabled = (RecordDetergent.Bits And &H20) > 0
+            
+            Case Else
+                func_ValveEnabled = False
+        End Select
+    End With
+End Function
+
+Public Function ValveEnabled(frm As FormMain, StepIndex As Integer, Num As Integer)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordDetergent As TYPE_WPC_DETERGENT
+    
+    ValveEnabled = func_ValveEnabled(frm, 0&, RecordTitle, RecordDetergent, StepIndex, Num)
+End Function
 

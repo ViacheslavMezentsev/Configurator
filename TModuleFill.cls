@@ -36,7 +36,7 @@ Private Const FILL_PARAMETER_DESCR_ROTATION = "Разр. вращ."
 
 ' Аналоговые параметры
 Private Const FILL_PARAMETER_DESCR_LEVEL = "Уровень моющ. раств."
-Private Const FILL_PARAMETER_DESCR_RotationTime = "Время вращ. мотора"
+Private Const FILL_PARAMETER_DESCR_ROTATIONTIME = "Время вращ. мотора"
 Private Const FILL_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
 Private Const FILL_PARAMETER_DESCR_DRUMSPEED = "Скорость вращ. барабана"
 
@@ -210,7 +210,7 @@ Private Sub func_ShowPropertyTableForFill(frm As FormMain, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordFill As TYPE_WPC_FILL)
 
-    Dim I As Integer, J As Integer, row As Integer
+    Dim I As Integer, J As Integer, Row As Integer
     Dim StepPointer As Long
     Dim ParamStr, s As String
 
@@ -256,7 +256,7 @@ Private Sub func_ShowPropertyTableForFill(frm As FormMain, _
                     ParamStr = ParamStr & FILL_PARAMETER_DESCR_LEVEL
                 
                 Case FILL_ROTATIONTIME_FIELD:
-                    ParamStr = ParamStr & FILL_PARAMETER_DESCR_RotationTime
+                    ParamStr = ParamStr & FILL_PARAMETER_DESCR_ROTATIONTIME
                 
                 Case FILL_PAUSETIME_FIELD:
                     ParamStr = ParamStr & FILL_PARAMETER_DESCR_PAUSETIME
@@ -286,10 +286,10 @@ Private Sub func_ShowPropertyTableForFill(frm As FormMain, _
         'CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .PropertyTable.col = 1
+        .PropertyTable.Col = 1
         
         For I = 1 To FILL_PARAMETERS_COUNT
-            .PropertyTable.row = I
+            .PropertyTable.Row = I
             .PropertyTable.CellAlignment = flexAlignRightCenter
             
             Select Case I
@@ -452,7 +452,7 @@ Private Sub func_EditPropertyForFill(frm As FormMain, _
         .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
         .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
-        Select Case .PropertyTable.row
+        Select Case .PropertyTable.Row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 .ComboCell.AddItem STRING_NO
@@ -625,7 +625,7 @@ Private Sub func_SetComboPropertyForFill(frm As FormMain, _
         'CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
-        Select Case .PropertyTable.row
+        Select Case .PropertyTable.Row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 Select Case .ComboCell.ListIndex
@@ -767,4 +767,59 @@ Public Sub SetComboPropertyForFill(frm As FormMain)
     func_SetComboPropertyForFill frm, 0&, RecordTitle, RecordFill
 End Sub
 
+' Функция-посредник
+Private Function func_ValveEnabled(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordFill As TYPE_WPC_FILL, _
+    ByVal StepIndex As Integer, _
+    ByVal Num As Integer)
 
+    Dim I As Integer
+    Dim StepPointer As Long
+    
+    With frm
+        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+        
+        StepPointer = .Manager.DataPointer + _
+            .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+            HEADER_SIZE_IN_BYTES + _
+            StepIndex * STEP_SIZE_IN_BYTES
+        
+        'CopyMemory RecordCool, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
+        
+        Select Case Num
+            Case 1: func_ValveEnabled = (RecordFill.Bits And &H40) > 0
+            Case 2: func_ValveEnabled = (RecordFill.Bits And &H20) > 0
+            Case 3: func_ValveEnabled = (RecordFill.Bits And &H80) > 0
+            Case 4:
+            Case 5:
+            Case 6:
+            Case 7:
+            Case 8:
+            Case 9:
+            Case 10:
+            Case 11:
+            Case 12:
+            Case 13:
+            Case 14:
+            Case 15:
+            Case 16:
+            Case 17:
+            Case 18: func_ValveEnabled = (RecordFill.Bits And &H100) > 0
+            
+            Case Else
+                func_ValveEnabled = False
+        End Select
+    End With
+End Function
+
+Public Function ValveEnabled(frm As FormMain, StepIndex As Integer, Num As Integer)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordFill As TYPE_WPC_FILL
+    
+    ValveEnabled = func_ValveEnabled(frm, 0&, RecordTitle, RecordFill, StepIndex, Num)
+End Function
