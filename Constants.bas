@@ -23,6 +23,10 @@ Public Const DEFAULT_FILE_NAME As String = "Без имени"
 Public Const STEPS_VIEW = 0
 Public Const CODE_VIEW = 1
 
+' Режимы отображения таблицы шагов
+Public Const TEXT_VIEW = 0
+Public Const CHECKS_VIEW = 1
+
 ' Типы операций
 Public Const WPC_OPERATION_IDLE = 0 '// пропуск
 Public Const WPC_OPERATION_FILL = 1 '// налив

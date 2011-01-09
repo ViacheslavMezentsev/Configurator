@@ -6,7 +6,7 @@
 
 [Setup]
 AppName=Конфигуратор УП
-AppVerName=Конфигуратор УП версия 1.1.100
+AppVerName=Конфигуратор УП версия 1.2.4
 DefaultDirName={pf}\Конфигуратор УП
 DefaultGroupName=Конфигуратор УП
 UninstallDisplayIcon={app}\cop.exe
@@ -14,7 +14,7 @@ Compression=lzma
 SolidCompression=true
 OutputDir=Output
 ;LicenseFile=License.rtf
-OutputBaseFilename=Configurator_1.1.100_setup
+OutputBaseFilename=Configurator_1.2.4_setup
 
 [Languages]
 ;Name: en; MessagesFile: compiler:Default.isl

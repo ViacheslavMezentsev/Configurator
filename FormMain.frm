@@ -387,6 +387,34 @@ Begin VB.Form FormMain
          EndProperty
       EndProperty
    End
+   Begin VB.Image ImageGrayed 
+      Height          =   192
+      Left            =   3120
+      Picture         =   "FormMain.frx":7182
+      Stretch         =   -1  'True
+      Top             =   5640
+      Visible         =   0   'False
+      Width           =   192
+   End
+   Begin VB.Image ImageChecked 
+      Height          =   192
+      Left            =   2880
+      Picture         =   "FormMain.frx":74E2
+      Stretch         =   -1  'True
+      Top             =   5640
+      Visible         =   0   'False
+      Width           =   192
+   End
+   Begin VB.Image ImageUnchecked 
+      Appearance      =   0  'Flat
+      Height          =   192
+      Left            =   2640
+      Picture         =   "FormMain.frx":7854
+      Stretch         =   -1  'True
+      Top             =   5640
+      Visible         =   0   'False
+      Width           =   192
+   End
    Begin VB.Line LineLight 
       BorderColor     =   &H80000005&
       Visible         =   0   'False
@@ -484,6 +512,8 @@ Private SplitterLeftMoving As Boolean
 
 ' Режим отображения средней панели
 Private ViewMode As Integer
+' Режимы отображения таблицы шагов
+Private StepsViewMode As Integer
 
 Private CurrentDir As String
 Private FileName As String
@@ -959,6 +989,8 @@ Private Sub FileMainMenuItem_Click()
 End Sub
 
 Private Sub Form_KeyDown(keyCode As Integer, Shift As Integer)
+    Dim col As Integer, row As Integer
+    
     If keyCode = VBRUN.KeyCodeConstants.vbKeyF3 Then
         If Not Manager.FileLoaded Then Exit Sub
         
@@ -978,6 +1010,26 @@ Private Sub Form_KeyDown(keyCode As Integer, Shift As Integer)
         
         RefreshFrameMain
         RefreshMainMenu
+        Exit Sub
+    End If
+    
+    If keyCode = VBRUN.KeyCodeConstants.vbKeyF4 Then
+        Select Case StepsViewMode
+            Case TEXT_VIEW: StepsViewMode = CHECKS_VIEW
+            Case CHECKS_VIEW: StepsViewMode = TEXT_VIEW
+        End Select
+            
+        row = StepsView.row
+        col = StepsView.col
+        
+        RefreshStepsView
+        RefreshMainMenu
+        
+        StepsView.row = row
+        StepsView.col = col
+        
+        StepsView.SetFocus
+        Exit Sub
     End If
 End Sub
 
@@ -1011,6 +1063,9 @@ Private Sub Form_Load()
    
     ' Режим отображения средней панели
     ViewMode = STEPS_VIEW
+    
+    ' Режимы отображения таблицы шагов
+    StepsViewMode = TEXT_VIEW
     
     SplitterRightMoving = False
     SplitterLeftMoving = False
@@ -1112,7 +1167,7 @@ Private Sub Form_Load()
     
     ' "Тушим" все ячейки таблицы
     For row% = 1 To StepsView.Rows - 1
-        For col% = 1 To StepsView.Cols - 1
+        For col% = 1 To MAX_NUMBER_OF_STEPS
             StepsView.col = col%
             StepsView.row = row%
             StepsView.CellBackColor = &H8000000F
@@ -2058,6 +2113,63 @@ Private Sub RefreshCodeView()
     CodeView.Visible = True
 End Sub
 
+Private Function ValveEnabled(col As Integer, row As Integer) As Boolean
+    Dim FuncN As Integer
+    
+    FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, col)
+    
+    ' Сохраняем изменённое значение
+    If FuncN < 12 Then
+        Select Case FuncN
+            Case WPC_OPERATION_IDLE ' пропуск
+                ValveEnabled = ModuleIdle.ValveEnabled(Me, col - 1, row)
+                Exit Function
+        
+            Case WPC_OPERATION_FILL ' Налив
+                ValveEnabled = ModuleFill.ValveEnabled(Me, col - 1, row)
+                Exit Function
+            
+            Case WPC_OPERATION_DTRG ' моющие
+                ValveEnabled = ModuleDTRG.ValveEnabled(Me, col - 1, row)
+                Exit Function
+            
+            Case WPC_OPERATION_HEAT ' нагрев
+                ValveEnabled = ModuleHeat.ValveEnabled(Me, col - 1, row)
+                Exit Function
+                
+            ' стирка, полоскание, расстряска
+            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+                ValveEnabled = ModuleWashOrRinsOrJolt.ValveEnabled(Me, col - 1, row)
+                Exit Function
+                
+'                Case WPC_OPERATION_PAUS ' пауза
+'                    ValveEnabled = ModulePause.SetComboPropertyForPause(Me, Col - 1, Row)
+'                   Exit Function
+
+            Case WPC_OPERATION_DRAIN ' слив
+                ValveEnabled = ModuleDrain.ValveEnabled(Me, col - 1, row)
+                Exit Function
+                
+            Case WPC_OPERATION_SPIN ' отжим
+                ValveEnabled = ModuleSpin.ValveEnabled(Me, col - 1, row)
+                Exit Function
+            
+            Case WPC_OPERATION_COOL ' охлаждение
+                ValveEnabled = ModuleCool.ValveEnabled(Me, col - 1, row)
+                Exit Function
+                
+            Case WPC_OPERATION_TRIN ' тех.полоскание
+                ValveEnabled = ModuleTrin.ValveEnabled(Me, col - 1, row)
+                Exit Function
+        
+            Case Else
+
+        End Select
+    End If
+    
+    ValveEnabled = False
+End Function
+
 Private Sub RefreshStepsView()
     Dim col%, row%, x%, y%, FuncN%
     Dim s As String
@@ -2179,9 +2291,21 @@ Private Sub RefreshStepsView()
         Next col%
     Next row%
     
-    col% = StepsView.LeftCol
+    'col% = StepsView.LeftCol
     
-    For col% = 1 To Program_Step_MAX + 1
+    StepsView.col = 1
+    StepsView.row = 1
+    
+    ImageChecked.Width = StepsView.CellWidth
+    ImageChecked.Height = StepsView.CellHeight
+    
+    ImageUnchecked.Width = StepsView.CellWidth
+    ImageUnchecked.Height = StepsView.CellHeight
+    
+    ImageGrayed.Width = StepsView.CellWidth
+    ImageGrayed.Height = StepsView.CellHeight
+    
+    For col% = 1 To MAX_NUMBER_OF_STEPS
         FuncN% = Manager.GetFunctionType(Manager.ProgramIndex + 1, col%)
         
         If FuncN% > 0 And FuncN% < 12 Then
@@ -2189,12 +2313,35 @@ Private Sub RefreshStepsView()
                 StepsView.col = col%
                 StepsView.row = row%
                 StepsView.CellAlignment = flexAlignCenterCenter
-                StepsView.Text = Mid$(FunctionsStrings(FuncN%), row%, 1)
+                
+                If StepsViewMode = TEXT_VIEW Then StepsView.Text = Mid$(FunctionsStrings(FuncN%), row%, 1)
                 
                 If GetLoadingsFromFuncN(FuncN%) And (2 ^ (row% - 1)) Then
-                    StepsView.CellBackColor = &HC000&
+                    Select Case StepsViewMode
+                        Case TEXT_VIEW:
+                            StepsView.CellBackColor = &HC000&
+                            
+                        
+                        Case CHECKS_VIEW:
+                            StepsView.CellBackColor = &HFFFFFF
+                            If ValveEnabled(col%, row%) Then
+                                Set StepsView.CellPicture = ImageChecked.Picture
+                            Else
+                                Set StepsView.CellPicture = ImageUnchecked.Picture
+                            End If
+                            StepsView.CellPictureAlignment = flexAlignCenterCenter
+                        
+                    End Select
                 Else
-                    StepsView.CellBackColor = &H80000005
+                    Select Case StepsViewMode
+                        Case TEXT_VIEW: StepsView.CellBackColor = &H80000005
+                    
+                        Case CHECKS_VIEW:
+                            StepsView.CellBackColor = &H80000005
+                            Set StepsView.CellPicture = ImageGrayed.Picture
+                            StepsView.CellPictureAlignment = flexAlignCenterCenter
+                        
+                        End Select
                 End If
             Next row%
         Else

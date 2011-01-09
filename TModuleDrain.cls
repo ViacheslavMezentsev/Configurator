@@ -37,7 +37,7 @@ Private Const DRAIN_PARAMETER_DESCR_ROTATION = "Разр. вращ."
 
 ' Аналоговые параметры
 Private Const DRAIN_PARAMETER_DESCR_LEVEL = "Уровень моющ. раств."
-Private Const DRAIN_PARAMETER_DESCR_RotationTime = "Время вращ. мотора"
+Private Const DRAIN_PARAMETER_DESCR_ROTATIONTIME = "Время вращ. мотора"
 Private Const DRAIN_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
 Private Const DRAIN_PARAMETER_DESCR_DRUMSPEED1 = "Скорость вращ. бар. (реверс)"
 Private Const DRAIN_PARAMETER_DESCR_TIME2 = "Время раскладки"
@@ -233,7 +233,7 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordDrain As TYPE_WPC_DRAIN)
     
-    Dim I, J, row As Integer
+    Dim I, J, Row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
     
@@ -276,7 +276,7 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
                     ParamStr = ParamStr & DRAIN_PARAMETER_DESCR_LEVEL
                 
                 Case DRAIN_ROTATIONTIME_FIELD:
-                    ParamStr = ParamStr & DRAIN_PARAMETER_DESCR_RotationTime
+                    ParamStr = ParamStr & DRAIN_PARAMETER_DESCR_ROTATIONTIME
                 
                 Case DRAIN_PAUSETIME_FIELD:
                     ParamStr = ParamStr & DRAIN_PARAMETER_DESCR_PAUSETIME
@@ -312,10 +312,10 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
         'CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .PropertyTable.col = 1
+        .PropertyTable.Col = 1
         
         For I = 1 To DRAIN_PARAMETERS_COUNT
-            .PropertyTable.row = I
+            .PropertyTable.Row = I
             .PropertyTable.CellAlignment = flexAlignRightCenter
             
             Select Case I
@@ -491,7 +491,7 @@ Private Sub func_EditPropertyForDrain(frm As FormMain, _
         .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
         .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
-        Select Case .PropertyTable.row
+        Select Case .PropertyTable.Row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 .ComboCell.AddItem STRING_NO
@@ -685,7 +685,7 @@ Private Sub func_SetComboPropertyForDrain(frm As FormMain, _
         'CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
-        Select Case .PropertyTable.row
+        Select Case .PropertyTable.Row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 Select Case .ComboCell.ListIndex
@@ -829,4 +829,60 @@ Public Sub SetComboPropertyForDrain(frm As FormMain)
     func_SetComboPropertyForDrain frm, 0&, RecordTitle, RecordDrain
 End Sub
 
+' Функция-посредник
+Private Function func_ValveEnabled(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordDrain As TYPE_WPC_DRAIN, _
+    ByVal StepIndex As Integer, _
+    ByVal Num As Integer)
+
+    Dim I As Integer
+    Dim StepPointer As Long
+    
+    With frm
+        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+        
+        StepPointer = .Manager.DataPointer + _
+            .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+            HEADER_SIZE_IN_BYTES + _
+            StepIndex * STEP_SIZE_IN_BYTES
+        
+        'CopyMemory RecordCool, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
+        
+        Select Case Num
+            Case 1:
+            Case 2:
+            Case 3:
+            Case 4:
+            Case 5:
+            Case 6:
+            Case 7:
+            Case 8:
+            Case 9:
+            Case 10:
+            Case 11:
+            Case 12:
+            Case 13:
+            Case 14:
+            Case 15: func_ValveEnabled = (RecordDrain.Bits And &H20) > 0
+            Case 16: func_ValveEnabled = (RecordDrain.Bits And &H40) > 0
+            Case 17:
+            Case 18: func_ValveEnabled = (RecordDrain.Bits And &H80) > 0
+            
+            Case Else
+                func_ValveEnabled = False
+        End Select
+    End With
+End Function
+
+Public Function ValveEnabled(frm As FormMain, StepIndex As Integer, Num As Integer)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordDrain As TYPE_WPC_DRAIN
+    
+    ValveEnabled = func_ValveEnabled(frm, 0&, RecordTitle, RecordDrain, StepIndex, Num)
+End Function
 

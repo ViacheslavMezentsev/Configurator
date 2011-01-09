@@ -97,7 +97,7 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordStep As TYPE_WPC_STEP)
     
-    Dim I, J, row As Integer
+    Dim I, J, Row As Integer
     Dim StepPointer As Long
     Dim ParamStr, s As String
     
@@ -143,10 +143,10 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
         'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .PropertyTable.col = 1
+        .PropertyTable.Col = 1
         
         For I = 1 To IDLE_PARAMETERS_COUNT
-            .PropertyTable.row = I
+            .PropertyTable.Row = I
             
             Select Case I
                 Case IDLE_PROGNAME_FIELD:
@@ -217,7 +217,7 @@ Private Sub func_EditPropertyForIdle(frm As FormMain, _
         .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
         .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
-        Select Case .PropertyTable.row
+        Select Case .PropertyTable.Row
             Case IDLE_ENDSOUND_FIELD:
             
             Case IDLE_DOORUNLOCK_FIELD:
@@ -291,7 +291,7 @@ Private Sub func_SetComboPropertyForIdle(frm As FormMain, _
         'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
-        Select Case .PropertyTable.row
+        Select Case .PropertyTable.Row
             ' В режиме пропуска доступны для изменения только два поля
             Case IDLE_ENDSOUND_FIELD:
             Case IDLE_DOORUNLOCK_FIELD:
@@ -380,4 +380,59 @@ Public Sub SetComboPropertyForIdle(frm As FormMain)
     func_SetComboPropertyForIdle frm, 0&, RecordTitle, RecordStep
 End Sub
 
+' Функция-посредник
+Private Function func_ValveEnabled(frm As FormMain, _
+    ByVal begin_of_pointers As Long, _
+    ByRef RecordTitle As TYPE_WPC_TITLE, _
+    ByRef RecordStep As TYPE_WPC_STEP, _
+    ByVal StepIndex As Integer, _
+    ByVal Num As Integer)
 
+    Dim I As Integer
+    Dim StepPointer As Long
+    
+    With frm
+        StepPointer = .Manager.DataPointer + .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        'CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+        
+        StepPointer = .Manager.DataPointer + _
+            .Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+            HEADER_SIZE_IN_BYTES + _
+            StepIndex * STEP_SIZE_IN_BYTES
+        
+        'CopyMemory RecordCool, ByVal StepPointer, STEP_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
+        
+        Select Case Num
+            Case 1:
+            Case 2:
+            Case 3:
+            Case 4:
+            Case 5:
+            Case 6:
+            Case 7:
+            Case 8:
+            Case 9:
+            Case 10:
+            Case 11:
+            Case 12:
+            Case 13:
+            Case 14:
+            Case 15:
+            Case 16:
+            Case 17:
+            Case 18:
+            
+            Case Else
+                func_ValveEnabled = False
+        End Select
+    End With
+End Function
+
+Public Function ValveEnabled(frm As FormMain, StepIndex As Integer, Num As Integer)
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordStep As TYPE_WPC_STEP
+    
+    ValveEnabled = func_ValveEnabled(frm, 0&, RecordTitle, RecordStep, StepIndex, Num)
+End Function
