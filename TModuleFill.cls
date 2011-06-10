@@ -210,7 +210,7 @@ Private Sub func_ShowPropertyTableForFill(frm As FormMain, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordFill As TYPE_WPC_FILL)
 
-    Dim I As Integer, J As Integer, Row As Integer
+    Dim I As Integer, J As Integer, row As Integer
     Dim StepPointer As Long
     Dim ParamStr, s As String
 
@@ -286,10 +286,10 @@ Private Sub func_ShowPropertyTableForFill(frm As FormMain, _
         'CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .PropertyTable.Col = 1
+        .PropertyTable.col = 1
         
         For I = 1 To FILL_PARAMETERS_COUNT
-            .PropertyTable.Row = I
+            .PropertyTable.row = I
             .PropertyTable.CellAlignment = flexAlignRightCenter
             
             Select Case I
@@ -452,7 +452,7 @@ Private Sub func_EditPropertyForFill(frm As FormMain, _
         .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
         .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
-        Select Case .PropertyTable.Row
+        Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 .ComboCell.AddItem STRING_NO
@@ -486,7 +486,7 @@ Private Sub func_EditPropertyForFill(frm As FormMain, _
                 .ComboCell.SetFocus
                 
             Case IDLE_FUNCTION_FIELD:
-                For I = 0 To 11
+                For I = 0 To NUMBER_OF_FUNCS - 1
                     .ComboCell.AddItem (FunctionsStrings(I))
                 Next I
                 .ComboCell.ListIndex = RecordFill.Bits And &HF
@@ -625,7 +625,7 @@ Private Sub func_SetComboPropertyForFill(frm As FormMain, _
         'CopyMemory RecordFill, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
-        Select Case .PropertyTable.Row
+        Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 Select Case .ComboCell.ListIndex

@@ -131,10 +131,10 @@ Public Type TYPE_WPC_DRAIN
     RotationTime As Byte ' время вращения мотора
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed1 As Byte ' скорость вращения барабана при реверсе
-    DrumSpeed2 As Integer ' скорость вращения барабана при раскладке
-    Time2 As Byte ' время раскладки
+'    DrumSpeed2 As Integer ' скорость вращения барабана при раскладке
+'    Time2 As Byte ' время раскладки
     
-    Reserved(1 To 7) As Byte
+    Reserved(1 To 10) As Byte
 End Type
 
 ' структура шага ОТЖИМА

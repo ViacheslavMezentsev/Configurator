@@ -24,10 +24,10 @@ Private Const DRAIN_LEVEL_FIELD = IDLE_FUNCTION_FIELD + 5
 Private Const DRAIN_ROTATIONTIME_FIELD = IDLE_FUNCTION_FIELD + 6
 Private Const DRAIN_PAUSETIME_FIELD = IDLE_FUNCTION_FIELD + 7
 Private Const DRAIN_DRUMSPEED1_FIELD = IDLE_FUNCTION_FIELD + 8
-Private Const DRAIN_DRUMSPEED2_FIELD = IDLE_FUNCTION_FIELD + 9
-Private Const DRAIN_TIME2_FIELD = IDLE_FUNCTION_FIELD + 10
+'Private Const DRAIN_DRUMSPEED2_FIELD = IDLE_FUNCTION_FIELD + 9
+'Private Const DRAIN_TIME2_FIELD = IDLE_FUNCTION_FIELD + 10
 
-Private Const DRAIN_PARAMETERS_COUNT = IDLE_PARAMETERS_COUNT + 10
+Private Const DRAIN_PARAMETERS_COUNT = IDLE_PARAMETERS_COUNT + 8
 
 ' Дискретные параметры
 Private Const DRAIN_PARAMETER_DESCR_PAUSE = "Разр. паузы"
@@ -40,8 +40,8 @@ Private Const DRAIN_PARAMETER_DESCR_LEVEL = "Уровень моющ. раств."
 Private Const DRAIN_PARAMETER_DESCR_ROTATIONTIME = "Время вращ. мотора"
 Private Const DRAIN_PARAMETER_DESCR_PAUSETIME = "Время паузы вращ. мот."
 Private Const DRAIN_PARAMETER_DESCR_DRUMSPEED1 = "Скорость вращ. бар. (реверс)"
-Private Const DRAIN_PARAMETER_DESCR_TIME2 = "Время раскладки"
-Private Const DRAIN_PARAMETER_DESCR_DRUMSPEED2 = "Скорость вращ. бар. (раскл.)"
+'Private Const DRAIN_PARAMETER_DESCR_TIME2 = "Время раскладки"
+'Private Const DRAIN_PARAMETER_DESCR_DRUMSPEED2 = "Скорость вращ. бар. (раскл.)"
 
 ' Название секции
 Private Const DRAIN_SECTION_NAME = "Drain"
@@ -74,15 +74,15 @@ Private Const DRUMSPEED1_MAX = 70
 Private Const DRUMSPEED1_DEFAULT = 50
 Private Const DRUMSPEED1_DIMENSION = "об/мин"
 
-Private Const DRUMSPEED2_MIN = 60
-Private Const DRUMSPEED2_MAX = 100
-Private Const DRUMSPEED2_DEFAULT = 70
-Private Const DRUMSPEED2_DIMENSION = "об/мин"
+'Private Const DRUMSPEED2_MIN = 60
+'Private Const DRUMSPEED2_MAX = 100
+'Private Const DRUMSPEED2_DEFAULT = 70
+'Private Const DRUMSPEED2_DIMENSION = "об/мин"
 
-Private Const TIME2_MIN = 1
-Private Const TIME2_MAX = 255
-Private Const TIME2_DEFAULT = 3
-Private Const TIME2_DIMENSION = "мин"
+'Private Const TIME2_MIN = 1
+'Private Const TIME2_MAX = 255
+'Private Const TIME2_DEFAULT = 3
+'Private Const TIME2_DIMENSION = "мин"
 
 ' Параметры функции шага
 ' Дискретные типы
@@ -96,8 +96,8 @@ Private Level As TYPE_BYTE_DESCRIPTION
 Private RotationTime As TYPE_BYTE_DESCRIPTION
 Private PauseTime As TYPE_BYTE_DESCRIPTION
 Private DrumSpeed1 As TYPE_BYTE_DESCRIPTION
-Private DrumSpeed2 As TYPE_INT_DESCRIPTION
-Private Time2 As TYPE_BYTE_DESCRIPTION
+'Private DrumSpeed2 As TYPE_INT_DESCRIPTION
+'Private Time2 As TYPE_BYTE_DESCRIPTION
 
 Public LimitsLoaded As Boolean
 
@@ -155,19 +155,19 @@ Public Sub LoadLimits(FileName As String)
         .Dimension = LimitsFile.ReadString(DRAIN_SECTION_NAME, "DrumSpeed1.Dimension", DRUMSPEED1_DIMENSION)
     End With
     
-    With DrumSpeed2
-        .MinValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "DrumSpeed2.Min", DRUMSPEED2_MIN)
-        .MaxValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "DrumSpeed2.Max", DRUMSPEED2_MAX)
-        .DefaultValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "DrumSpeed2.Default", DRUMSPEED2_DEFAULT)
-        .Dimension = LimitsFile.ReadString(DRAIN_SECTION_NAME, "DrumSpeed2.Dimension", DRUMSPEED2_DIMENSION)
-    End With
-    
-    With Time2
-        .MinValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "Time2.Min", TIME2_MIN)
-        .MaxValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "Time2.Max", TIME2_MAX)
-        .DefaultValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "Time2.Default", TIME2_DEFAULT)
-        .Dimension = LimitsFile.ReadString(DRAIN_SECTION_NAME, "Time2.Dimension", TIME2_DIMENSION)
-    End With
+'    With DrumSpeed2
+'        .MinValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "DrumSpeed2.Min", DRUMSPEED2_MIN)
+'        .MaxValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "DrumSpeed2.Max", DRUMSPEED2_MAX)
+'        .DefaultValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "DrumSpeed2.Default", DRUMSPEED2_DEFAULT)
+'        .Dimension = LimitsFile.ReadString(DRAIN_SECTION_NAME, "DrumSpeed2.Dimension", DRUMSPEED2_DIMENSION)
+'    End With
+'
+'    With Time2
+'        .MinValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "Time2.Min", TIME2_MIN)
+'        .MaxValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "Time2.Max", TIME2_MAX)
+'        .DefaultValue = LimitsFile.ReadInteger(DRAIN_SECTION_NAME, "Time2.Default", TIME2_DEFAULT)
+'        .Dimension = LimitsFile.ReadString(DRAIN_SECTION_NAME, "Time2.Dimension", TIME2_DIMENSION)
+'    End With
         
     Set LimitsFile = Nothing
 End Sub
@@ -213,8 +213,8 @@ Private Sub func_SetDefaults(frm As FormMain, _
     RecordDrain.RotationTime = RotationTime.DefaultValue
     RecordDrain.PauseTime = PauseTime.DefaultValue
     RecordDrain.DrumSpeed1 = DrumSpeed1.DefaultValue
-    RecordDrain.DrumSpeed2 = DrumSpeed2.DefaultValue
-    RecordDrain.Time2 = Time2.DefaultValue
+'    RecordDrain.DrumSpeed2 = DrumSpeed2.DefaultValue
+'    RecordDrain.Time2 = Time2.DefaultValue
     
     ' Сохраняем изменения
     'StepPointer = frm.Manager.DataPointer + frm.Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
@@ -233,7 +233,7 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordDrain As TYPE_WPC_DRAIN)
     
-    Dim I, J, Row As Integer
+    Dim I, J, row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
     
@@ -284,11 +284,11 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
                 Case DRAIN_DRUMSPEED1_FIELD:
                     ParamStr = ParamStr & DRAIN_PARAMETER_DESCR_DRUMSPEED1
                     
-                Case DRAIN_TIME2_FIELD:
-                    ParamStr = ParamStr & DRAIN_PARAMETER_DESCR_TIME2
-                    
-                Case DRAIN_DRUMSPEED2_FIELD:
-                    ParamStr = ParamStr & DRAIN_PARAMETER_DESCR_DRUMSPEED2
+'                Case DRAIN_TIME2_FIELD:
+'                    ParamStr = ParamStr & DRAIN_PARAMETER_DESCR_TIME2
+'
+'                Case DRAIN_DRUMSPEED2_FIELD:
+'                    ParamStr = ParamStr & DRAIN_PARAMETER_DESCR_DRUMSPEED2
                     
                 Case Else
                     ParamStr = ParamStr & IDLE_PARAMETER_DESCR_UNKNOWN
@@ -312,10 +312,10 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
         'CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .PropertyTable.Col = 1
+        .PropertyTable.col = 1
         
         For I = 1 To DRAIN_PARAMETERS_COUNT
-            .PropertyTable.Row = I
+            .PropertyTable.row = I
             .PropertyTable.CellAlignment = flexAlignRightCenter
             
             Select Case I
@@ -418,25 +418,25 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
                     End If
                     .PropertyTable.Text = "" & RecordDrain.DrumSpeed1
                 
-                Case DRAIN_TIME2_FIELD:
-                    If LimitsLoaded Then
-                        If RecordDrain.Time2 < Time2.MinValue Or RecordDrain.Time2 > Time2.MaxValue Then
-                            .PropertyTable.CellBackColor = &H8080FF
-                        Else
-                            .PropertyTable.CellBackColor = &H80000005
-                        End If
-                    End If
-                    .PropertyTable.Text = "" & RecordDrain.Time2
-                
-                Case DRAIN_DRUMSPEED2_FIELD:
-                    If LimitsLoaded Then
-                        If RecordDrain.DrumSpeed2 < DrumSpeed2.MinValue Or RecordDrain.DrumSpeed2 > DrumSpeed2.MaxValue Then
-                            .PropertyTable.CellBackColor = &H8080FF
-                        Else
-                            .PropertyTable.CellBackColor = &H80000005
-                        End If
-                    End If
-                    .PropertyTable.Text = "" & RecordDrain.DrumSpeed2
+'                Case DRAIN_TIME2_FIELD:
+'                    If LimitsLoaded Then
+'                        If RecordDrain.Time2 < Time2.MinValue Or RecordDrain.Time2 > Time2.MaxValue Then
+'                            .PropertyTable.CellBackColor = &H8080FF
+'                        Else
+'                            .PropertyTable.CellBackColor = &H80000005
+'                        End If
+'                    End If
+'                    .PropertyTable.Text = "" & RecordDrain.Time2
+'
+'                Case DRAIN_DRUMSPEED2_FIELD:
+'                    If LimitsLoaded Then
+'                        If RecordDrain.DrumSpeed2 < DrumSpeed2.MinValue Or RecordDrain.DrumSpeed2 > DrumSpeed2.MaxValue Then
+'                            .PropertyTable.CellBackColor = &H8080FF
+'                        Else
+'                            .PropertyTable.CellBackColor = &H80000005
+'                        End If
+'                    End If
+'                    .PropertyTable.Text = "" & RecordDrain.DrumSpeed2
                 
                 Case Else
                     .PropertyTable.CellBackColor = &H8000000F
@@ -491,7 +491,7 @@ Private Sub func_EditPropertyForDrain(frm As FormMain, _
         .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
         .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
-        Select Case .PropertyTable.Row
+        Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 .ComboCell.AddItem STRING_NO
@@ -525,7 +525,7 @@ Private Sub func_EditPropertyForDrain(frm As FormMain, _
                 .ComboCell.SetFocus
                 
             Case IDLE_FUNCTION_FIELD:
-                For I = 0 To 11
+                For I = 0 To NUMBER_OF_FUNCS - 1
                     .ComboCell.AddItem (FunctionsStrings(I))
                 Next I
                 .ComboCell.ListIndex = RecordDrain.Bits And &HF
@@ -617,33 +617,33 @@ Private Sub func_EditPropertyForDrain(frm As FormMain, _
                 .TextCell.Visible = True
                 .TextCell.SetFocus
             
-            Case DRAIN_TIME2_FIELD:
-                If LimitsLoaded Then
-                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
-                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
-                                                "Минимальное значение: " & Time2.MinValue & Chr(13) & Chr(10) & _
-                                                "Максимальное значение: " & Time2.MaxValue & Chr(13) & Chr(10) & _
-                                                "Значение по умолчанию: " & Time2.DefaultValue & Chr(13) & Chr(10) & _
-                                                "Размерность: [" & Time2.Dimension & "]"
-                    .LabelDescription.Visible = True
-                End If
-                .TextCell.Text = "" & RecordDrain.Time2
-                .TextCell.Visible = True
-                .TextCell.SetFocus
-            
-            Case DRAIN_DRUMSPEED2_FIELD:
-                If LimitsLoaded Then
-                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
-                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
-                                                "Минимальное значение: " & DrumSpeed2.MinValue & Chr(13) & Chr(10) & _
-                                                "Максимальное значение: " & DrumSpeed2.MaxValue & Chr(13) & Chr(10) & _
-                                                "Значение по умолчанию: " & DrumSpeed2.DefaultValue & Chr(13) & Chr(10) & _
-                                                "Размерность: [" & DrumSpeed2.Dimension & "]"
-                    .LabelDescription.Visible = True
-                End If
-                .TextCell.Text = "" & RecordDrain.DrumSpeed2
-                .TextCell.Visible = True
-                .TextCell.SetFocus
+'            Case DRAIN_TIME2_FIELD:
+'                If LimitsLoaded Then
+'                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+'                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+'                                                "Минимальное значение: " & Time2.MinValue & Chr(13) & Chr(10) & _
+'                                                "Максимальное значение: " & Time2.MaxValue & Chr(13) & Chr(10) & _
+'                                                "Значение по умолчанию: " & Time2.DefaultValue & Chr(13) & Chr(10) & _
+'                                                "Размерность: [" & Time2.Dimension & "]"
+'                    .LabelDescription.Visible = True
+'                End If
+'                .TextCell.Text = "" & RecordDrain.Time2
+'                .TextCell.Visible = True
+'                .TextCell.SetFocus
+'
+'            Case DRAIN_DRUMSPEED2_FIELD:
+'                If LimitsLoaded Then
+'                    .PropertyTable.Height = .PropertyTable.Height - .LabelDescription.Height
+'                    .LabelDescription.Caption = Chr(13) & Chr(10) & _
+'                                                "Минимальное значение: " & DrumSpeed2.MinValue & Chr(13) & Chr(10) & _
+'                                                "Максимальное значение: " & DrumSpeed2.MaxValue & Chr(13) & Chr(10) & _
+'                                                "Значение по умолчанию: " & DrumSpeed2.DefaultValue & Chr(13) & Chr(10) & _
+'                                                "Размерность: [" & DrumSpeed2.Dimension & "]"
+'                    .LabelDescription.Visible = True
+'                End If
+'                .TextCell.Text = "" & RecordDrain.DrumSpeed2
+'                .TextCell.Visible = True
+'                .TextCell.SetFocus
             
             Case Else
 
@@ -685,7 +685,7 @@ Private Sub func_SetComboPropertyForDrain(frm As FormMain, _
         'CopyMemory RecordDrain, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
-        Select Case .PropertyTable.Row
+        Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 Select Case .ComboCell.ListIndex
@@ -798,11 +798,11 @@ Private Sub func_SetComboPropertyForDrain(frm As FormMain, _
             Case DRAIN_DRUMSPEED1_FIELD:
                 RecordDrain.DrumSpeed1 = Val(.TextCell.Text)
 
-            Case DRAIN_TIME2_FIELD:
-                RecordDrain.Time2 = Val(.TextCell.Text)
-
-            Case DRAIN_DRUMSPEED2_FIELD:
-                RecordDrain.DrumSpeed2 = Val(.TextCell.Text)
+'            Case DRAIN_TIME2_FIELD:
+'                RecordDrain.Time2 = Val(.TextCell.Text)
+'
+'            Case DRAIN_DRUMSPEED2_FIELD:
+'                RecordDrain.DrumSpeed2 = Val(.TextCell.Text)
             
             Case Else
     

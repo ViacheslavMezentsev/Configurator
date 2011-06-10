@@ -1,10 +1,10 @@
 FormMain = 2, 0, 855, 910, Z, 30, 18, 858, 690, C
-TIniFiles = 15, 6, 886, 807, C
-TProgramManager = 16, 67, 883, 797, C
+TIniFiles = 15, 6, 886, 807, 
+TProgramManager = 16, 67, 883, 797, 
 Constants = 0, 0, 894, 881, 
 FormAbout = 27, 27, 658, 640, C, 0, 0, 631, 613, C
 Win32API = 10, 10, 884, 871, C
-UserFunctions = 0, 0, 631, 613, C
+UserFunctions = 0, 0, 631, 613, 
 UserTypes = 14, 37, 909, 865, 
 TModuleIdle = 0, 0, 983, 445, 
 TModuleFill = 27, 27, 600, 640, 
