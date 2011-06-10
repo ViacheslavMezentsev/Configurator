@@ -207,7 +207,7 @@ Private Sub func_ShowPropertyTableForCool(frm As FormMain, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordCool As TYPE_WPC_COOL)
     
-    Dim I, J, Row As Integer
+    Dim I, J, row As Integer
     Dim ParamStr, s As String
     Dim StepPointer As Long
     
@@ -280,9 +280,9 @@ Private Sub func_ShowPropertyTableForCool(frm As FormMain, _
         'CopyMemory RecordCool, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .PropertyTable.Col = 1
+        .PropertyTable.col = 1
         For I = 1 To COOL_PARAMETERS_COUNT
-            .PropertyTable.Row = I
+            .PropertyTable.row = I
             .PropertyTable.CellAlignment = flexAlignRightCenter
             
             Select Case I
@@ -441,7 +441,7 @@ Private Sub func_EditPropertyForCool(frm As FormMain, _
         .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
         .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
-        Select Case .PropertyTable.Row
+        Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 .ComboCell.AddItem STRING_NO
@@ -475,7 +475,7 @@ Private Sub func_EditPropertyForCool(frm As FormMain, _
                 .ComboCell.SetFocus
                 
             Case IDLE_FUNCTION_FIELD:
-                For I = 0 To 11
+                For I = 0 To NUMBER_OF_FUNCS - 1
                     .ComboCell.AddItem (FunctionsStrings(I))
                 Next I
                 .ComboCell.ListIndex = RecordCool.Bits And &HF
@@ -614,7 +614,7 @@ Private Sub func_SetComboPropertyForCool(frm As FormMain, _
         'CopyMemory RecordCool, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
-        Select Case .PropertyTable.Row
+        Select Case .PropertyTable.row
             ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:
                 Select Case .ComboCell.ListIndex

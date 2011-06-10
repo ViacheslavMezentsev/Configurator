@@ -133,9 +133,6 @@ Public Function GetLoadingsFromFuncN(ByVal FuncN As Long) As Long
             Num = 2 ^ LOADING_W_COLD_1 _
             Or 2 ^ LOADING_DRIVE
         
-        Case WPC_OPERATION_TRIN ' тех.полоскание
-            Num = 2 ^ LOADING_DRIVE
-        
         Case Else
     End Select
 

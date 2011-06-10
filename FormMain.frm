@@ -1,6 +1,5 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{38911DA0-E448-11D0-84A3-00DD01104159}#1.1#0"; "comct332.ocx"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Begin VB.Form FormMain 
@@ -22,7 +21,7 @@ Begin VB.Form FormMain
       Height          =   5052
       Left            =   2400
       MousePointer    =   9  'Size W E
-      TabIndex        =   7
+      TabIndex        =   5
       Top             =   360
       Width           =   60
    End
@@ -49,7 +48,7 @@ Begin VB.Form FormMain
       Height          =   5052
       Left            =   6516
       MousePointer    =   9  'Size W E
-      TabIndex        =   6
+      TabIndex        =   4
       Top             =   360
       Width           =   60
    End
@@ -57,7 +56,7 @@ Begin VB.Form FormMain
       Align           =   2  'Align Bottom
       Height          =   312
       Left            =   0
-      TabIndex        =   5
+      TabIndex        =   3
       Top             =   6108
       Width           =   8976
       _ExtentX        =   15833
@@ -94,14 +93,14 @@ Begin VB.Form FormMain
       EndProperty
       Height          =   5052
       Left            =   2520
-      TabIndex        =   4
+      TabIndex        =   2
       Top             =   360
       Width           =   3972
       Begin VB.Frame FrameCodeView 
          BorderStyle     =   0  'None
          Height          =   2172
          Left            =   120
-         TabIndex        =   10
+         TabIndex        =   8
          Top             =   2760
          Visible         =   0   'False
          Width           =   3732
@@ -120,7 +119,7 @@ Begin VB.Form FormMain
             Height          =   288
             Left            =   120
             MaxLength       =   3
-            TabIndex        =   15
+            TabIndex        =   13
             Top             =   1800
             Visible         =   0   'False
             Width           =   612
@@ -128,7 +127,7 @@ Begin VB.Form FormMain
          Begin MSFlexGridLib.MSFlexGrid CodeView 
             Height          =   1572
             Left            =   120
-            TabIndex        =   11
+            TabIndex        =   9
             Top             =   120
             Width           =   2772
             _ExtentX        =   4890
@@ -152,13 +151,13 @@ Begin VB.Form FormMain
          BorderStyle     =   0  'None
          Height          =   1812
          Left            =   120
-         TabIndex        =   8
+         TabIndex        =   6
          Top             =   240
          Width           =   3732
          Begin MSFlexGridLib.MSFlexGrid StepsView 
             Height          =   1452
             Left            =   120
-            TabIndex        =   9
+            TabIndex        =   7
             Top             =   240
             Width           =   2292
             _ExtentX        =   4043
@@ -186,14 +185,14 @@ Begin VB.Form FormMain
       EndProperty
       Height          =   5052
       Left            =   0
-      TabIndex        =   3
+      TabIndex        =   1
       Top             =   360
       Width           =   2172
       Begin VB.TextBox TextName 
          BorderStyle     =   0  'None
          Height          =   288
          Left            =   120
-         TabIndex        =   17
+         TabIndex        =   15
          Text            =   "Text1"
          Top             =   4680
          Visible         =   0   'False
@@ -202,7 +201,7 @@ Begin VB.Form FormMain
       Begin MSFlexGridLib.MSFlexGrid ListPrograms 
          Height          =   4332
          Left            =   120
-         TabIndex        =   16
+         TabIndex        =   14
          Top             =   240
          Width           =   1932
          _ExtentX        =   3408
@@ -211,8 +210,9 @@ Begin VB.Form FormMain
          Cols            =   1
          FixedCols       =   0
          AllowBigSelection=   0   'False
-         ScrollBars      =   2
+         ScrollBars      =   0
          SelectionMode   =   1
+         AllowUserResizing=   1
          BorderStyle     =   0
       End
    End
@@ -229,7 +229,7 @@ Begin VB.Form FormMain
       EndProperty
       Height          =   5052
       Left            =   6600
-      TabIndex        =   2
+      TabIndex        =   0
       Top             =   360
       Width           =   2292
       Begin VB.ComboBox ComboCell 
@@ -237,7 +237,7 @@ Begin VB.Form FormMain
          Height          =   288
          Left            =   120
          Style           =   2  'Dropdown List
-         TabIndex        =   14
+         TabIndex        =   12
          Top             =   4560
          Visible         =   0   'False
          Width           =   972
@@ -246,7 +246,7 @@ Begin VB.Form FormMain
          BorderStyle     =   0  'None
          Height          =   288
          Left            =   120
-         TabIndex        =   13
+         TabIndex        =   11
          Top             =   4200
          Visible         =   0   'False
          Width           =   732
@@ -254,7 +254,7 @@ Begin VB.Form FormMain
       Begin MSFlexGridLib.MSFlexGrid PropertyTable 
          Height          =   3852
          Left            =   120
-         TabIndex        =   12
+         TabIndex        =   10
          Top             =   240
          Width           =   2052
          _ExtentX        =   3620
@@ -278,7 +278,7 @@ Begin VB.Form FormMain
          EndProperty
          Height          =   552
          Left            =   1200
-         TabIndex        =   18
+         TabIndex        =   16
          Top             =   4320
          Visible         =   0   'False
          Width           =   972
@@ -294,53 +294,6 @@ Begin VB.Form FormMain
       ImageHeight     =   16
       MaskColor       =   12632256
       _Version        =   393216
-   End
-   Begin ComCtl3.CoolBar CoolBar1 
-      Align           =   1  'Align Top
-      Height          =   312
-      Left            =   0
-      TabIndex        =   0
-      Top             =   0
-      Width           =   8976
-      _ExtentX        =   15833
-      _ExtentY        =   550
-      BandCount       =   1
-      _CBWidth        =   8976
-      _CBHeight       =   312
-      _Version        =   "6.7.9782"
-      Child1          =   "Toolbar1"
-      MinHeight1      =   264
-      Width1          =   336
-      NewRow1         =   0   'False
-      Begin MSComctlLib.Toolbar Toolbar1 
-         Height          =   264
-         Left            =   24
-         TabIndex        =   1
-         Top             =   24
-         Width           =   8880
-         _ExtentX        =   15663
-         _ExtentY        =   466
-         ButtonWidth     =   487
-         ButtonHeight    =   466
-         Style           =   1
-         ImageList       =   "ImageListMainToolbar"
-         _Version        =   393216
-         BeginProperty Buttons {66833FE8-8583-11D1-B16A-00C0F0283628} 
-            NumButtons      =   3
-            BeginProperty Button1 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-               Object.ToolTipText     =   "Новый"
-               ImageIndex      =   1
-            EndProperty
-            BeginProperty Button2 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-               Object.ToolTipText     =   "Открыть"
-               ImageIndex      =   2
-            EndProperty
-            BeginProperty Button3 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-               Object.ToolTipText     =   "Сохранить"
-               ImageIndex      =   3
-            EndProperty
-         EndProperty
-      End
    End
    Begin MSComctlLib.ImageList ImageListMainToolbar 
       Left            =   0
@@ -387,6 +340,38 @@ Begin VB.Form FormMain
          EndProperty
       EndProperty
    End
+   Begin MSComctlLib.Toolbar Toolbar1 
+      Align           =   1  'Align Top
+      Height          =   288
+      Left            =   0
+      TabIndex        =   17
+      Top             =   0
+      Width           =   8976
+      _ExtentX        =   15833
+      _ExtentY        =   508
+      ButtonWidth     =   487
+      ButtonHeight    =   466
+      Appearance      =   1
+      Style           =   1
+      ImageList       =   "ImageListMainToolbar"
+      _Version        =   393216
+      BeginProperty Buttons {66833FE8-8583-11D1-B16A-00C0F0283628} 
+         NumButtons      =   3
+         BeginProperty Button1 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Новый"
+            ImageIndex      =   1
+         EndProperty
+         BeginProperty Button2 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Открыть"
+            ImageIndex      =   2
+         EndProperty
+         BeginProperty Button3 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Сохранить"
+            ImageIndex      =   3
+         EndProperty
+      EndProperty
+      BorderStyle     =   1
+   End
    Begin VB.Image ImageGrayed 
       Height          =   192
       Left            =   3120
@@ -414,22 +399,6 @@ Begin VB.Form FormMain
       Top             =   5640
       Visible         =   0   'False
       Width           =   192
-   End
-   Begin VB.Line LineLight 
-      BorderColor     =   &H80000005&
-      Visible         =   0   'False
-      X1              =   2292
-      X2              =   2292
-      Y1              =   480
-      Y2              =   5400
-   End
-   Begin VB.Line LineDark 
-      BorderColor     =   &H80000010&
-      Visible         =   0   'False
-      X1              =   2280
-      X2              =   2280
-      Y1              =   480
-      Y2              =   5400
    End
    Begin VB.Menu FileMainMenuItem 
       Caption         =   "&Файл"
@@ -507,9 +476,6 @@ Option Explicit
 
 Private Const TITLE_SECTION_NAME = "Title"
 
-Private SplitterRightMoving As Boolean
-Private SplitterLeftMoving As Boolean
-
 ' Режим отображения средней панели
 Private ViewMode As Integer
 ' Режимы отображения таблицы шагов
@@ -541,7 +507,11 @@ Public LimitsLoaded As Boolean
 
 Dim EndSound As TYPE_BOOL_DESCRIPTION
 Dim DoorUnlock As TYPE_BOOL_DESCRIPTION
-    
+
+Dim SplitterRightMoving As Boolean
+Dim SplitterLeftMoving As Boolean
+Dim BegX As Integer, BegY As Integer
+
 Private Sub SavePlacement()
     ' Размеры формы
     IniFile.WriteInteger "Placement", "Left", Left
@@ -622,9 +592,9 @@ Private Sub RefreshComponents(ByVal FramesOnly As Boolean)
     
     ' Обновление данных в компонентах
     If Not FramesOnly Then RefreshDataComponents
-
-    FrameLeft.Top = Me.ScaleTop + CoolBar1.Top + CoolBar1.Height
-    FrameLeft.Height = Me.ScaleHeight - (StatusBar.Height + CoolBar1.Top + CoolBar1.Height)
+    
+    FrameLeft.Top = Me.ScaleTop + Toolbar1.Top + Toolbar1.Height
+    FrameLeft.Height = Me.ScaleHeight - (StatusBar.Height + Toolbar1.Top + Toolbar1.Height)
         
     SplitterLeft.Left = FrameLeft.Left + FrameLeft.Width
     SplitterLeft.Top = FrameLeft.Top + 100
@@ -642,9 +612,6 @@ Private Sub RefreshComponents(ByVal FramesOnly As Boolean)
     FrameRight.Left = Me.ScaleWidth - FrameRight.Width
     FrameRight.Top = FrameLeft.Top
     FrameRight.Height = FrameLeft.Height
-    
-    LineDark.Y2 = LineDark.Y1 + FrameLeft.Height - 200
-    LineLight.Y2 = LineLight.Y1 + FrameLeft.Height - 200
     
     ' Обновление вида внутренних компонентов
     RefreshForm
@@ -773,13 +740,13 @@ Private Sub CloseMainMenuItem_Click()
 End Sub
 
 Private Sub CodeView_Click()
-    Dim x%, y%
+    Dim X%, Y%
     Dim col%, row%
     
     CodeView.Visible = False
     
-    x% = CodeView.col
-    y% = CodeView.row
+    X% = CodeView.col
+    Y% = CodeView.row
 
     For col% = 1 To CodeView.Cols - 2
         CodeView.col = col%
@@ -799,15 +766,15 @@ Private Sub CodeView_Click()
     Loop
     
     CodeView.row = 0
-    CodeView.col = x%
+    CodeView.col = X%
     CodeView.CellFontBold = True
     
-    CodeView.row = y%
+    CodeView.row = Y%
     CodeView.col = 0
     CodeView.CellFontBold = True
     
-    CodeView.col = x%
-    CodeView.row = y%
+    CodeView.col = X%
+    CodeView.row = Y%
     
     CodeView.Visible = True
     CodeView.SetFocus
@@ -979,6 +946,27 @@ Private Sub DeleteStepMenuItem_Click()
 End Sub
 
 Private Sub ExitMainMenuItem_Click()
+    If Modified = True Then
+        Dim vbRes%
+        vbRes = MsgBox("Сохранить изменения в файле?", vbYesNoCancel + vbExclamation, APP_NAME)
+        
+        Select Case vbRes
+        Case vbYes
+            SaveMainMenuItem_Click
+            UnHookKeyboard
+            
+        Case vbNo
+            UnHookKeyboard
+            
+        Case vbCancel
+            Exit Sub
+            
+        End Select
+    End If
+    
+    ' Сохраняем настройки интерфейса
+    SavePlacement
+    
     End
 End Sub
 
@@ -991,7 +979,7 @@ End Sub
 Private Sub Form_KeyDown(keyCode As Integer, Shift As Integer)
     Dim col As Integer, row As Integer
     
-    If keyCode = VBRUN.KeyCodeConstants.vbKeyF3 Then
+    If keyCode = VBRUN.KeyCodeConstants.vbKeyF3 And Shift = 0 Then
         If Not Manager.FileLoaded Then Exit Sub
         
         Select Case ViewMode
@@ -1013,7 +1001,9 @@ Private Sub Form_KeyDown(keyCode As Integer, Shift As Integer)
         Exit Sub
     End If
     
-    If keyCode = VBRUN.KeyCodeConstants.vbKeyF4 Then
+    If keyCode = VBRUN.KeyCodeConstants.vbKeyF4 And Shift = 0 Then
+        If ViewMode = CODE_VIEW Then Exit Sub
+        
         Select Case StepsViewMode
             Case TEXT_VIEW: StepsViewMode = CHECKS_VIEW
             Case CHECKS_VIEW: StepsViewMode = TEXT_VIEW
@@ -1214,7 +1204,6 @@ Private Sub Form_Load()
     FunctionsStrings(8) = "Слив"
     FunctionsStrings(9) = "Отжим"
     FunctionsStrings(10) = "Охлаждение"
-    FunctionsStrings(11) = "Тех. полоскание"
 
     ' Обновляем вид
     RefreshComponents (False)
@@ -1228,8 +1217,6 @@ Private Sub Form_Resize()
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-    UnHookKeyboard
-    
     If Modified = True Then
         Dim vbRes%
         vbRes = MsgBox("Сохранить изменения в файле?", vbYesNoCancel + vbExclamation, APP_NAME)
@@ -1239,9 +1226,13 @@ Private Sub Form_Unload(Cancel As Integer)
             SaveMainMenuItem_Click
             Unload Me
             Set FormMain = Nothing
+            UnHookKeyboard
+            
         Case vbNo
             Unload Me
             Set FormMain = Nothing
+            UnHookKeyboard
+            
         Case vbCancel
             Cancel = 1
         End Select
@@ -1273,7 +1264,7 @@ End Sub
 
 Private Sub ListPrograms_Click()
     Manager.ProgramIndex = ListPrograms.row - 1
-
+    
     Select Case ViewMode
         Case STEPS_VIEW
             RefreshFrameMain
@@ -1284,7 +1275,9 @@ Private Sub ListPrograms_Click()
             RefreshFrameMain
     End Select
 
+    RefreshFrameLeft
     RefreshProperties
+    RefreshFrameRight
 End Sub
 
 Private Sub ListPrograms_DblClick()
@@ -1310,7 +1303,7 @@ Private Sub ListPrograms_KeyDown(keyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     'проверка, нажата ли правая клавиша мыши
     If Button And vbRightButton Then PopupMenu PopupMenuPrograms
 End Sub
@@ -1430,13 +1423,13 @@ Private Sub StepMainMenuItem_Click()
 End Sub
 
 Private Sub StepsView_Click()
-    Dim x%, y%
+    Dim X%, Y%
     Dim col%, row%
     
     StepsView.Visible = False
     
-    x% = StepsView.col
-    y% = StepsView.row
+    X% = StepsView.col
+    Y% = StepsView.row
        
     For col% = 1 To StepsView.Cols - 2
         StepsView.col = col%
@@ -1456,17 +1449,17 @@ Private Sub StepsView_Click()
     Loop
        
     StepsView.row = 0
-    StepsView.col = x%
+    StepsView.col = X%
     StepsView.CellFontBold = True
     
-    StepsView.row = y%
+    StepsView.row = Y%
     StepsView.col = 0
     StepsView.CellFontBold = True
     
-    StepsView.col = x%
-    StepsView.row = y%
+    StepsView.col = X%
+    StepsView.row = Y%
     
-    Manager.StepIndex = x% - 1
+    Manager.StepIndex = X% - 1
     
     CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
         HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
@@ -1575,32 +1568,22 @@ Private Sub SaveMainMenuItem_Click()
     End If
 End Sub
 
-Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-' Показываем разделительную линию
-    LineDark.X1 = SplitterLeft.Left
-    LineDark.X2 = LineDark.X1
+Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    ' Показываем разделительную линию
+    SplitterLeft.BackColor = &H80000010
     
-    LineLight.X1 = LineDark.X1 + 10
-    LineLight.X2 = LineLight.X1
-
-    SplitterLeft.Visible = False
-    LineDark.Visible = True
-    LineLight.Visible = True
+    BegX = X
+    BegY = Y
     
     SplitterLeftMoving = True
 End Sub
 
-Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If SplitterLeftMoving = True Then
-        LineDark.X1 = SplitterLeft.Left + x
-        LineDark.X2 = LineDark.X1
-    
-        LineLight.X1 = LineDark.X1 + 10
-        LineLight.X2 = LineLight.X1
+        SplitterLeft.Left = SplitterLeft.Left + X - BegX
+        FrameLeft.Width = SplitterLeft.Left
         
-        FrameLeft.Width = LineDark.X1
-        
-        FrameMain.Left = LineDark.X1 + SplitterLeft.Width
+        FrameMain.Left = SplitterLeft.Left + SplitterLeft.Width
         FrameMain.Width = SplitterRight.Left - FrameMain.Left
         
         RefreshFrameLeft
@@ -1609,43 +1592,29 @@ Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, x As Sin
     End If
 End Sub
 
-Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    LineDark.Visible = False
-    LineLight.Visible = False
-    
-    SplitterLeft.Left = FrameLeft.Left + FrameLeft.Width
-    SplitterLeft.Visible = True
-    
+Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    SplitterLeft.BackColor = &H8000000F
     SplitterLeftMoving = False
 End Sub
 
-Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-' Показываем разделительную линию
-    LineDark.X1 = SplitterRight.Left
-    LineDark.X2 = LineDark.X1
+Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    ' Показываем разделительную линию
+    SplitterRight.BackColor = &H80000010
     
-    LineLight.X1 = LineDark.X1 + 10
-    LineLight.X2 = LineLight.X1
-
-    SplitterRight.Visible = False
-    LineDark.Visible = True
-    LineLight.Visible = True
+    BegX = X
+    BegY = Y
     
     SplitterRightMoving = True
 End Sub
 
-Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If SplitterRightMoving = True Then
-        LineDark.X1 = SplitterRight.Left + x
-        LineDark.X2 = LineDark.X1
-    
-        LineLight.X1 = LineDark.X1 + 10
-        LineLight.X2 = LineLight.X1
+        SplitterRight.Left = SplitterRight.Left + X - BegX
         
-        FrameRight.Left = LineDark.X1 + SplitterRight.Width
+        FrameRight.Left = SplitterRight.Left + SplitterRight.Width
         FrameRight.Width = Me.ScaleWidth - FrameRight.Left
         
-        FrameMain.Width = LineDark.X1 - FrameMain.Left
+        FrameMain.Width = SplitterRight.Left - FrameMain.Left
         
         RefreshFrameRight
         RefreshFrameMain
@@ -1653,13 +1622,8 @@ Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, x As Si
     End If
 End Sub
 
-Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    LineDark.Visible = False
-    LineLight.Visible = False
-    
-    SplitterRight.Visible = True
-    
-    SplitterRight.Left = FrameRight.Left - SplitterRight.Width
+Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    SplitterRight.BackColor = &H8000000F
     SplitterRightMoving = False
 End Sub
 
@@ -1681,7 +1645,7 @@ Private Sub StepsView_KeyDown(keyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     'проверка, нажата ли правая клавиша мыши
     If Button And vbRightButton Then PopupMenu StepMainMenuItem
 End Sub
@@ -1918,6 +1882,7 @@ Private Sub RefreshDataComponents()
     RefreshCodeView
     RefreshStepsView
     RefreshProperties
+    RefreshFrameRight
     RefreshStatusBar
 End Sub
 
@@ -1981,6 +1946,7 @@ Private Sub RefreshList()
         ListPrograms.row = Manager.ProgramIndex + 1
     End If
     
+    ListPrograms.ColWidth(0) = ListPrograms.Width
     ListPrograms.Visible = True
 End Sub
 
@@ -2171,7 +2137,7 @@ Private Function ValveEnabled(col As Integer, row As Integer) As Boolean
 End Function
 
 Private Sub RefreshStepsView()
-    Dim col%, row%, x%, y%, FuncN%
+    Dim col%, row%, X%, Y%, FuncN%
     Dim s As String
     
     ' Выходим из процедуры, если программы не загружены или отсутствуют
@@ -2186,9 +2152,13 @@ Private Sub RefreshStepsView()
         For col% = 1 To StepsView.Cols - 1
             StepsView.ColWidth(col%) = 250
             If col% < StepsView.Cols - 1 Then
-                s = s & col% & "|"
+                If col% < 10 Then
+                    s = s & "0" & col% & "|"
+                Else
+                    s = s & col% & "|"
+                End If
             Else
-                s = s & col%
+                 s = s & col%
             End If
             StepsView.col = col%
             StepsView.row = 0
@@ -2238,8 +2208,8 @@ Private Sub RefreshStepsView()
         
     StepsView.Visible = False
     
-    x% = StepsView.col
-    y% = StepsView.row
+    X% = StepsView.col
+    Y% = StepsView.row
     
     StepsView.Clear
     
@@ -2249,7 +2219,11 @@ Private Sub RefreshStepsView()
     For col% = 1 To StepsView.Cols - 1
         StepsView.ColWidth(col%) = 250
         If col% < StepsView.Cols - 1 Then
-            s = s & col% & "|"
+            If col% < 10 Then
+                s = s & "0" & col% & "|"
+            Else
+                s = s & col% & "|"
+            End If
         Else
             s = s & col%
         End If
@@ -2308,7 +2282,7 @@ Private Sub RefreshStepsView()
     For col% = 1 To MAX_NUMBER_OF_STEPS
         FuncN% = Manager.GetFunctionType(Manager.ProgramIndex + 1, col%)
         
-        If FuncN% > 0 And FuncN% < 12 Then
+        If FuncN% > 0 And FuncN% < 11 Then
             For row% = 1 To StepsView.Rows - 1
                 StepsView.col = col%
                 StepsView.row = row%
@@ -2319,8 +2293,12 @@ Private Sub RefreshStepsView()
                 If GetLoadingsFromFuncN(FuncN%) And (2 ^ (row% - 1)) Then
                     Select Case StepsViewMode
                         Case TEXT_VIEW:
-                            StepsView.CellBackColor = &HC000&
-                            
+                            If ValveEnabled(col%, row%) Then
+                                StepsView.CellBackColor = &HC000&
+                            Else
+                                StepsView.CellBackColor = &H8000000F
+                            End If
+                            StepsView.CellPictureAlignment = flexAlignCenterCenter
                         
                         Case CHECKS_VIEW:
                             StepsView.CellBackColor = &HFFFFFF
@@ -2355,8 +2333,8 @@ Private Sub RefreshStepsView()
         
      Next col%
     
-    StepsView.col = x%
-    StepsView.row = y%
+    StepsView.col = X%
+    StepsView.row = Y%
     
     ' После сделанных изменений можно визуализировать компонент
     StepsView.Visible = True

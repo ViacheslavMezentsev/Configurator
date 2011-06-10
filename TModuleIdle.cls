@@ -97,7 +97,7 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
     ByRef RecordTitle As TYPE_WPC_TITLE, _
     ByRef RecordStep As TYPE_WPC_STEP)
     
-    Dim I, J, Row As Integer
+    Dim I, J, row As Integer
     Dim StepPointer As Long
     Dim ParamStr, s As String
     
@@ -143,10 +143,10 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
         'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
         
-        .PropertyTable.Col = 1
+        .PropertyTable.col = 1
         
         For I = 1 To IDLE_PARAMETERS_COUNT
-            .PropertyTable.Row = I
+            .PropertyTable.row = I
             
             Select Case I
                 Case IDLE_PROGNAME_FIELD:
@@ -217,7 +217,7 @@ Private Sub func_EditPropertyForIdle(frm As FormMain, _
         .LabelDescription.Height = 5 * .PropertyTable.RowHeight(0)
         .LabelDescription.Top = .PropertyTable.Top + .PropertyTable.Height - .LabelDescription.Height
         
-        Select Case .PropertyTable.Row
+        Select Case .PropertyTable.row
             Case IDLE_ENDSOUND_FIELD:
             
             Case IDLE_DOORUNLOCK_FIELD:
@@ -248,7 +248,7 @@ Private Sub func_EditPropertyForIdle(frm As FormMain, _
                 .ComboCell.Top = .PropertyTable.Top + .PropertyTable.CellTop
                 .ComboCell.Width = .PropertyTable.CellWidth
                 .ComboCell.Clear
-                For I = 0 To 11
+                For I = 0 To NUMBER_OF_FUNCS - 1
                     .ComboCell.AddItem (FunctionsStrings(I))
                 Next I
                 .ComboCell.ListIndex = RecordStep.Bits And &HF
@@ -291,7 +291,7 @@ Private Sub func_SetComboPropertyForIdle(frm As FormMain, _
         'CopyMemory RecordStep, ByVal StepPointer, STEP_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
     
-        Select Case .PropertyTable.Row
+        Select Case .PropertyTable.row
             ' В режиме пропуска доступны для изменения только два поля
             Case IDLE_ENDSOUND_FIELD:
             Case IDLE_DOORUNLOCK_FIELD:

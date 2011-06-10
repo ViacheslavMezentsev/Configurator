@@ -66,10 +66,11 @@ Public Const LOADING_DRIVE = 17 '// Движок
 ' *  ~~~~~~~~~~ ~~~~~~~~~~
 ' *****************************************
 
+Public Const NUMBER_OF_FUNCS = 11
+
 ' Признак изменённости файла
 Public Modified As Boolean
 Public DesignMode As Boolean
-Public FunctionsStrings(0 To 11) As String
+Public FunctionsStrings(0 To NUMBER_OF_FUNCS - 1) As String
 Public Hook As Long, tMessage As Timer
-
 
