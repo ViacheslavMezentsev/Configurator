@@ -34,6 +34,81 @@ Public Function GetCellIndex(MSFlexGrid As MSFlexGrid, _
     GetCellIndex = row * MSFlexGrid.Cols + col
 End Function
 
+Public Function FromUTF8(instring As String) As String
+    Dim iStrSize    As Long
+    Dim s           As String
+    
+    iStrSize = Len(instring)
+    s = String$(iStrSize, 0&)
+
+    If iStrSize Then iStrSize = MultiByteToWideChar(CP_UTF8, 0&, instring, &HFFFF, StrPtr(s), iStrSize)
+    If iStrSize >= 0 Then
+        FromUTF8 = Left$(s, iStrSize - 1)
+    Else
+        'тут, наверное, тоже что-то надо сделать?
+    End If
+End Function
+
+Public Function ToUTF8(srcStr As String) As String
+  Dim utfStr() As Byte ' для исключения ошибок, связанных с дополнительной обработкой строк в VBA, _
+                         используем не строку, а массив байтов
+  Dim pAnsiStr As Long ' в API передаем не строки, а указатели на них
+  Dim pUtfStr As Long
+  
+  Dim sLen As Long     ' просто переменная
+  
+  pAnsiStr = StrPtr(srcStr) '  указатель на строку
+  ' определяем число байт, нужное для размещения строки в UTF-коде
+  sLen = WideCharToMultiByte(CP_UTF8, _
+                             0, _
+                             pAnsiStr, _
+                             -1, _
+                             0, _
+                             0, _
+                             0, _
+                             0)
+  If sLen > 0 Then
+    ReDim utfStr(sLen) ' выделяем буфер для преобразования
+    pUtfStr = VarPtr(utfStr(0)) ' указатель на этот буфер
+    
+    ' выполняем преобразование
+    sLen = WideCharToMultiByte(CP_UTF8, _
+                             0, _
+                             pAnsiStr, _
+                             Len(srcStr), _
+                             pUtfStr, _
+                             sLen, _
+                             0, _
+                             0)
+  End If
+  
+  If sLen > 0 Then
+    ' почто-то финальный 0 переходит в результат - уберем его
+    ReDim Preserve utfStr(sLen - 1)
+    ToUTF8 = StrConv(utfStr, vbUnicode)
+    ReDim utfStr(0)
+  Else
+    ToUTF8 = ""
+  End If
+End Function
+
+Public Function getGUID() As String
+    Dim Buffer(0 To 15) As Byte
+    Dim s As String
+    Dim ret As Long
+
+    s = String$(128, 0)
+
+    ' получает численный код
+    ret = CoCreateGuid(Buffer(0))
+    
+    ' преобразуем его в текст,
+    ' используя недокументированную функцию StrPtr
+    ret = StringFromGUID2(Buffer(0), StrPtr(s), 128)
+
+    getGUID = Left$(s, ret - 1) ' отсекаем "хвост"
+End Function
+
 Public Function DoesFileExist(ByVal strPath As String) As Boolean
     DoesFileExist = PathFileExists(strPath)
 End Function
@@ -143,8 +218,8 @@ End Function
 ' Note that we swap the low order bytes in a long so that
 ' we don't have to worry about overflow problems
 '
-Public Function SwapInteger(ByVal I As Long) As Long
-    SwapInteger = ((I \ &H100) And &HFF) Or ((I And &HFF) * &H100&)
+Public Function SwapInteger(ByVal i As Long) As Long
+    SwapInteger = ((i \ &H100) And &HFF) Or ((i And &HFF) * &H100&)
 End Function
 
 '

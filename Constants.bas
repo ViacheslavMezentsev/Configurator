@@ -18,6 +18,7 @@ Integer: [%], Long: [&], Currency: [@], Single: [!], Double: [#], String: [$]
 Public Const PATH_SEPARATOR As String = "\"
 Public Const APP_NAME As String = "Конфигуратор УП"
 Public Const DEFAULT_FILE_NAME As String = "Без имени"
+Public Const ProgramGUID As String = "{43CE9E0A-3657-4258-B573-8B18F6AC3B42}"
 
 ' Режимы отображения средней панели
 Public Const STEPS_VIEW = 0
@@ -61,6 +62,19 @@ Public Const LOADING_PUMP_2 = 15 ',   // Слив 2
 Public Const LOADING_HEAT = 16 '      // Нагрев
 Public Const LOADING_DRIVE = 17 '// Движок
 
+Public Const WC_COMPOSITECHECK = &H200
+Public Const WC_DEFAULTCHAR = &H40
+Public Const WC_DISCARDNS = &H10
+Public Const WC_SEPCHARS = &H20
+
+Public Const CP_ACP = 0
+Public Const CP_OEMCP = 1
+Public Const CP_MACCP = 2
+Public Const CP_THREAD_ACP = 3
+Public Const CP_SYMBOL = 42
+Public Const CP_UTF7 = 65000
+Public Const CP_UTF8 = 65001
+ 
 ' *****************************************
 ' *  ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 ' *  ~~~~~~~~~~ ~~~~~~~~~~
@@ -72,5 +86,6 @@ Public Const NUMBER_OF_FUNCS = 11
 Public Modified As Boolean
 Public DesignMode As Boolean
 Public FunctionsStrings(0 To NUMBER_OF_FUNCS - 1) As String
+Public JSONStepsTemplates(0 To NUMBER_OF_FUNCS - 1) As String
 Public Hook As Long, tMessage As Timer
 
