@@ -40,7 +40,7 @@ Begin VB.Form FormMain
       _Version        =   393216
       DefaultExt      =   "*.bin"
       DialogTitle     =   "Открыть"
-      Filter          =   "Файлы проекта|*.bin"
+      Filter          =   "Файлы проекта (*.bin)|*.bin|Конфигуратор УП 1.2 (*.js)|*.js"
       FilterIndex     =   1
    End
    Begin VB.Frame SplitterRight 
@@ -421,7 +421,71 @@ Begin VB.Form FormMain
          Caption         =   "&Закрыть"
          Shortcut        =   ^{F4}
       End
-      Begin VB.Menu Separator 
+      Begin VB.Menu Separator0 
+         Caption         =   "-"
+      End
+      Begin VB.Menu ImportMainMenuItem 
+         Caption         =   "&Импорт..."
+      End
+      Begin VB.Menu ExportMainMenuItem 
+         Caption         =   "&Экспорт..."
+      End
+      Begin VB.Menu Separator1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu MRUListMenu 
+         Caption         =   "Ранее открытые"
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   1
+         End
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   2
+            Visible         =   0   'False
+         End
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   3
+            Visible         =   0   'False
+         End
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   4
+            Visible         =   0   'False
+         End
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   5
+            Visible         =   0   'False
+         End
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   6
+            Visible         =   0   'False
+         End
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   7
+            Visible         =   0   'False
+         End
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   8
+            Visible         =   0   'False
+         End
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   9
+            Visible         =   0   'False
+         End
+         Begin VB.Menu MRUItems 
+            Caption         =   ""
+            Index           =   10
+            Visible         =   0   'False
+         End
+      End
+      Begin VB.Menu Separator2 
          Caption         =   "-"
       End
       Begin VB.Menu ExitMainMenuItem 
@@ -436,7 +500,7 @@ Begin VB.Form FormMain
       Begin VB.Menu CopyMainMenuItem 
          Caption         =   "&Копировать..."
       End
-      Begin VB.Menu Separator2 
+      Begin VB.Menu Separator3 
          Caption         =   "-"
       End
       Begin VB.Menu PopupMenuListClearAll 
@@ -486,6 +550,7 @@ Private FileName As String
 
 Public IniFile As TIniFiles
 Public Manager As TProgramManager
+Public MRUFileList As cMRUFileList
 
 Public ModuleIdle As TModuleIdle
 Public ModuleFill As TModuleFill
@@ -717,21 +782,25 @@ End Sub
 Private Sub CloseMainMenuItem_Click()
     If Modified = True Then
         Dim vbRes%
+        
         vbRes = MsgBox("Сохранить изменения в файле:" & _
-           Chr(13) & Chr(13) & """" & _
+           Chr(10) & Chr(13) & """" & _
            Manager.FileName & """?", vbYesNoCancel + vbExclamation, APP_NAME)
         
         Select Case vbRes
-        Case vbYes
-            SaveMainMenuItem_Click
-            Manager.CloseFile
-            SetModified False
-            RefreshComponents (False)
-        Case vbNo
-            Manager.CloseFile
-            SetModified False
-            RefreshComponents (False)
-        Case vbCancel
+            Case vbYes
+                SaveMainMenuItem_Click
+                Manager.CloseFile
+                SetModified False
+                RefreshComponents (False)
+                
+            Case vbNo
+                Manager.CloseFile
+                SetModified False
+                RefreshComponents (False)
+                
+            Case vbCancel
+        
         End Select
     Else
         Manager.CloseFile
@@ -740,12 +809,12 @@ Private Sub CloseMainMenuItem_Click()
 End Sub
 
 Private Sub CodeView_Click()
-    Dim X%, Y%
+    Dim x%, Y%
     Dim col%, row%
     
     CodeView.Visible = False
     
-    X% = CodeView.col
+    x% = CodeView.col
     Y% = CodeView.row
 
     For col% = 1 To CodeView.Cols - 2
@@ -762,18 +831,18 @@ Private Sub CodeView_Click()
     
         CodeView.CellFontBold = False
         row% = row% + 1
-        If row% > CodeView.Rows - 1 Then Exit Do
+        If row% > CodeView.rows - 1 Then Exit Do
     Loop
     
     CodeView.row = 0
-    CodeView.col = X%
+    CodeView.col = x%
     CodeView.CellFontBold = True
     
     CodeView.row = Y%
     CodeView.col = 0
     CodeView.CellFontBold = True
     
-    CodeView.col = X%
+    CodeView.col = x%
     CodeView.row = Y%
     
     CodeView.Visible = True
@@ -899,7 +968,7 @@ Private Sub ComboCell_KeyDown(keyCode As Integer, Shift As Integer)
             Dim row As Integer
             row = PropertyTable.row
             RefreshComponents (False)
-            If row < PropertyTable.Rows - 1 Then PropertyTable.row = row
+            If row < PropertyTable.rows - 1 Then PropertyTable.row = row
             PropertyTable.SetFocus
         End If
     End If
@@ -911,15 +980,15 @@ End Sub
 
 
 Private Sub CopyMainMenuItem_Click()
-    Dim I As Integer
+    Dim i As Integer
     
     FormCopy.List1.Clear
     FormCopy.List2.Clear
     
-    For I = 1 To Manager.ProgramsCount
-        FormCopy.List1.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
-        FormCopy.List2.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
-    Next I
+    For i = 1 To Manager.ProgramsCount
+        FormCopy.List1.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, i, 0))
+        FormCopy.List2.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, i, 0))
+    Next i
     
     FormCopy.List1.ListIndex = 0
     FormCopy.List2.ListIndex = 0
@@ -967,7 +1036,36 @@ Private Sub ExitMainMenuItem_Click()
     ' Сохраняем настройки интерфейса
     SavePlacement
     
+    ' Сохраняем список файлов
+    MRUFileList.Save IniFile
+    
+    IniFile.WriteString "GUID", "ProgID", getGUID()
     End
+End Sub
+
+Private Sub ExportMainMenuItem_Click()
+On Local Error GoTo errHandler
+    
+    Dim FName As String
+
+    SaveFileDialog.FileName = Left(Manager.FileName, InStrRev(Manager.FileName, ".")) + "json"
+    SaveFileDialog.DialogTitle = "Экспорт файла..."
+    SaveFileDialog.DefaultExt = ".json"
+    SaveFileDialog.Filter = "Конфигуратор УП 1.x (*.json)|*.json"
+    SaveFileDialog.FilterIndex = 1
+    SaveFileDialog.MaxFileSize = 32767
+    SaveFileDialog.InitDir = CurrentDir
+    SaveFileDialog.CancelError = True
+    SaveFileDialog.ShowSave
+
+    FName = SaveFileDialog.FileName
+    
+    If FName <> "" Then
+        Manager.ExportToJSON FName
+    End If
+    Exit Sub
+    
+errHandler:
 End Sub
 
 Private Sub FileMainMenuItem_Click()
@@ -1023,7 +1121,26 @@ Private Sub Form_KeyDown(keyCode As Integer, Shift As Integer)
     End If
 End Sub
 
+Private Sub DisplayMRU()
+    Dim iFile As Long
+    
+    ' Here I am assuming the MRU is held in a menu array
+    ' called mnuFile, to start at Index 2:
+     For iFile = 1 To MRUFileList.FileCount
+         If (MRUFileList.FileExists(iFile)) Then
+             If iFile = 1 Then MRUItems(iFile).Checked = True
+             MRUItems(iFile).Visible = True
+             MRUItems(iFile).Caption = MRUFileList.MenuCaption(iFile)
+             MRUItems(iFile).Tag = CStr(iFile)
+         End If
+     Next iFile
+     
+     MRUListMenu.Enabled = (MRUFileList.FileCount > 0)
+End Sub
+ 
 Private Sub Form_Load()
+On Local Error GoTo errHandler
+    
     Dim itm As ListItem
     Dim sitm As ListSubItem
     Dim IniFilePath As String
@@ -1075,6 +1192,9 @@ Private Sub Form_Load()
     Set Manager = New TProgramManager
     Manager.Create
     
+    ' Создаём экземпляр объекта
+    Set MRUFileList = New cMRUFileList
+    
     App.HelpFile = CurrentDir & "\cop.chm"
     
     ' Начальные пути для диалоговых окон
@@ -1110,7 +1230,11 @@ Private Sub Form_Load()
     
     ' Восстанавливаем положение формы и компонентов
     LoadPlacement
-        
+    
+    ' Восстанавливаем список используемых файлов
+    MRUFileList.Load IniFile
+    DisplayMRU
+    
     Dim s As String
     Dim col%, row%
     
@@ -1156,7 +1280,7 @@ Private Sub Form_Load()
     StepsView.FormatString = s
     
     ' "Тушим" все ячейки таблицы
-    For row% = 1 To StepsView.Rows - 1
+    For row% = 1 To StepsView.rows - 1
         For col% = 1 To MAX_NUMBER_OF_STEPS
             StepsView.col = col%
             StepsView.row = row%
@@ -1210,6 +1334,14 @@ Private Sub Form_Load()
     
     ' Симулируем изменение размером формы для вызова Resize()
     Move Left, Top, Width, Height
+    Exit Sub
+    
+errHandler:
+    ' Обновляем вид
+    RefreshComponents (False)
+    
+    ' Симулируем изменение размером формы для вызова Resize()
+    Move Left, Top, Width, Height
 End Sub
 
 Private Sub Form_Resize()
@@ -1240,12 +1372,58 @@ Private Sub Form_Unload(Cancel As Integer)
     
     ' Сохраняем настройки интерфейса
     SavePlacement
+    
+    ' Сохраняем список используемых файлов
+    MRUFileList.Save IniFile
+    
+    Set IniFile = Nothing
 End Sub
 
 Private Sub HelpMainMenuSubItem_Click()
     If DoesFileExist(App.HelpFile) Then
         Shell ("hh " & App.HelpFile), vbNormalFocus
     End If
+End Sub
+
+Private Sub ImportMainMenuItem_Click()
+    On Local Error GoTo errHandler
+
+    OpenFileDialog.DialogTitle = "Импорт файла..."
+    OpenFileDialog.DefaultExt = ".json"
+    OpenFileDialog.FileName = ""
+    OpenFileDialog.Filter = "Конфигуратор УП 1.x (*.json)|*.json"
+    OpenFileDialog.FilterIndex = 1
+    OpenFileDialog.MaxFileSize = 32767
+    OpenFileDialog.InitDir = CurrentDir
+    OpenFileDialog.CancelError = True
+    OpenFileDialog.ShowOpen
+
+    FileName = OpenFileDialog.FileName
+    
+    Dim Succes As Boolean
+    
+    If FileName <> "" Then
+        If Manager.FileLoaded Then
+            CloseMainMenuItem_Click
+        End If
+        
+        Succes = Manager.ImportFromJSON(FileName)
+        
+        If Succes = True Then
+            SetCaption (Manager.FileName)
+            SetModified True
+        
+            ViewMode = STEPS_VIEW
+            RefreshComponents (False)
+            'RefreshFrameRight
+        Else
+            
+        End If
+    End If
+
+    Exit Sub
+    
+errHandler:
 End Sub
 
 Private Sub InsertStepMenuItem_Click()
@@ -1303,12 +1481,47 @@ Private Sub ListPrograms_KeyDown(keyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     'проверка, нажата ли правая клавиша мыши
     If Button And vbRightButton Then PopupMenu PopupMenuPrograms
 End Sub
 
+Private Sub MRUItems_Click(index As Integer)
+    ' Открываем файл из списка
+    On Local Error GoTo errHandler
+    
+    Dim FName As String
+        
+    If MRUFileList.FileExists(index) Then
+        FName = MRUFileList.file(index)
+        
+        If Manager.FileLoaded Then
+            CloseMainMenuItem_Click
+        End If
+        
+        FileName = MiscExtractPathName(FName, False)
+        Manager.LoadFromFile (FName)
+        SetCaption (Manager.FileName)
+        
+        ViewMode = STEPS_VIEW
+        RefreshComponents (False)
+        'RefreshFrameRight
+        
+        SetModified False
+        CurrentDir = MiscExtractPathName(FName, True)
+        
+        MRUFileList.AddFile FName
+        DisplayMRU
+    End If
+
+    Exit Sub
+    
+errHandler:
+End Sub
+
 Private Sub NewMainMenuItem_Click()
+    If Manager.FileLoaded Then CloseMainMenuItem_Click
+
     Manager.CreateNewFile (DEFAULT_FILE_NAME)
     
     ' Очистить все программы из образа
@@ -1341,16 +1554,16 @@ Private Sub PopupMenuListClearAll_Click()
     Manager.ClearAll
     
     If LimitsLoaded Then
-        Dim I As Integer
+        Dim i As Integer
         
-        For I = 1 To Manager.ProgramsCount
-            SetDefaultProgramTitle I
+        For i = 1 To Manager.ProgramsCount
+            SetDefaultProgramTitle i
         
             ' Пересчитываем CRC поле записи программы
             Dim b As Byte
-            b = Manager.CalculateCRC8((I - 1) * PROGRAM_SIZE_IN_BYTES + 1, PROGRAM_SIZE_IN_BYTES - 1)
-            Manager.SetByte (I - 1) * PROGRAM_SIZE_IN_BYTES, b
-        Next I
+            b = Manager.CalculateCRC8((i - 1) * PROGRAM_SIZE_IN_BYTES + 1, PROGRAM_SIZE_IN_BYTES - 1)
+            Manager.SetByte (i - 1) * PROGRAM_SIZE_IN_BYTES, b
+        Next i
     End If
     
     SetModified True
@@ -1423,12 +1636,12 @@ Private Sub StepMainMenuItem_Click()
 End Sub
 
 Private Sub StepsView_Click()
-    Dim X%, Y%
+    Dim x%, Y%
     Dim col%, row%
     
     StepsView.Visible = False
     
-    X% = StepsView.col
+    x% = StepsView.col
     Y% = StepsView.row
        
     For col% = 1 To StepsView.Cols - 2
@@ -1445,21 +1658,21 @@ Private Sub StepsView_Click()
     
         StepsView.CellFontBold = False
         row% = row% + 1
-        If row% > StepsView.Rows - 1 Then Exit Do
+        If row% > StepsView.rows - 1 Then Exit Do
     Loop
        
     StepsView.row = 0
-    StepsView.col = X%
+    StepsView.col = x%
     StepsView.CellFontBold = True
     
     StepsView.row = Y%
     StepsView.col = 0
     StepsView.CellFontBold = True
     
-    StepsView.col = X%
+    StepsView.col = x%
     StepsView.row = Y%
     
-    Manager.StepIndex = X% - 1
+    Manager.StepIndex = x% - 1
     
     CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
         HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
@@ -1475,11 +1688,12 @@ Private Sub StepsView_Click()
 End Sub
 
 Private Sub OpenMainMenuItem_Click()
-    On Local Error GoTo errhandler
+    On Local Error GoTo errHandler
     Dim FileName As String
 
     OpenFileDialog.DialogTitle = "Открыть файл..."
     OpenFileDialog.DefaultExt = ".bin"
+    OpenFileDialog.FileName = ""
     OpenFileDialog.Filter = "Файлы проекта (*.bin)|*.bin"
     OpenFileDialog.FilterIndex = 1
     OpenFileDialog.MaxFileSize = 32767
@@ -1493,7 +1707,7 @@ Private Sub OpenMainMenuItem_Click()
         If Manager.FileLoaded Then
             CloseMainMenuItem_Click
         End If
-        
+               
         FileName = MiscExtractPathName(OpenFileDialog.FileName, False)
         Manager.LoadFromFile (OpenFileDialog.FileName)
         SetCaption (Manager.FileName)
@@ -1504,11 +1718,14 @@ Private Sub OpenMainMenuItem_Click()
         
         SetModified False
         CurrentDir = MiscExtractPathName(OpenFileDialog.FileName, True)
+        
+        MRUFileList.AddFile OpenFileDialog.FileName
+        DisplayMRU
     End If
 
     Exit Sub
     
-errhandler:
+errHandler:
 End Sub
 
 Private Sub SetCaption(FileName As String)
@@ -1528,7 +1745,7 @@ Private Sub SetCaption(FileName As String)
 End Sub
 
 Private Sub SaveAsMainMenuItem_Click()
-    On Local Error GoTo errhandler
+    On Local Error GoTo errHandler
     Dim FileName As String
 
     SaveFileDialog.FileName = Manager.FileName
@@ -1553,7 +1770,7 @@ Private Sub SaveAsMainMenuItem_Click()
     End If
     Exit Sub
     
-errhandler:
+errHandler:
 End Sub
 
 Private Sub SaveMainMenuItem_Click()
@@ -1565,22 +1782,25 @@ Private Sub SaveMainMenuItem_Click()
         Else
             SaveAsMainMenuItem_Click
         End If
+        
+        MRUFileList.AddFile Manager.FileName
+        DisplayMRU
     End If
 End Sub
 
-Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     ' Показываем разделительную линию
     SplitterLeft.BackColor = &H80000010
     
-    BegX = X
+    BegX = x
     BegY = Y
     
     SplitterLeftMoving = True
 End Sub
 
-Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If SplitterLeftMoving = True Then
-        SplitterLeft.Left = SplitterLeft.Left + X - BegX
+        SplitterLeft.Left = SplitterLeft.Left + x - BegX
         FrameLeft.Width = SplitterLeft.Left
         
         FrameMain.Left = SplitterLeft.Left + SplitterLeft.Width
@@ -1592,24 +1812,24 @@ Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, X As Sin
     End If
 End Sub
 
-Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     SplitterLeft.BackColor = &H8000000F
     SplitterLeftMoving = False
 End Sub
 
-Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     ' Показываем разделительную линию
     SplitterRight.BackColor = &H80000010
     
-    BegX = X
+    BegX = x
     BegY = Y
     
     SplitterRightMoving = True
 End Sub
 
-Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If SplitterRightMoving = True Then
-        SplitterRight.Left = SplitterRight.Left + X - BegX
+        SplitterRight.Left = SplitterRight.Left + x - BegX
         
         FrameRight.Left = SplitterRight.Left + SplitterRight.Width
         FrameRight.Width = Me.ScaleWidth - FrameRight.Left
@@ -1622,7 +1842,7 @@ Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, X As Si
     End If
 End Sub
 
-Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     SplitterRight.BackColor = &H8000000F
     SplitterRightMoving = False
 End Sub
@@ -1645,7 +1865,7 @@ Private Sub StepsView_KeyDown(keyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     'проверка, нажата ли правая клавиша мыши
     If Button And vbRightButton Then PopupMenu StepMainMenuItem
 End Sub
@@ -1788,7 +2008,7 @@ Private Sub TextCell_KeyDown(keyCode As Integer, Shift As Integer)
             Dim row As Integer
             row = PropertyTable.row
             RefreshComponents (False)
-            If row < PropertyTable.Rows - 1 Then PropertyTable.row = row
+            If row < PropertyTable.rows - 1 Then PropertyTable.row = row
             PropertyTable.SetFocus
         End If
     End If
@@ -1804,7 +2024,7 @@ Private Sub TextCell_LostFocus()
 End Sub
 
 Private Sub TextName_KeyDown(keyCode As Integer, Shift As Integer)
-    Dim I As Integer
+    Dim i As Integer
     Dim StepPointer As Long
     Dim RecordTitle As TYPE_WPC_TITLE
     
@@ -1817,13 +2037,13 @@ Private Sub TextName_KeyDown(keyCode As Integer, Shift As Integer)
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
         CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
         
-        For I = 1 To PROG_NAME_LENGTH - 1
-            If I <= Len(TextName.Text) Then
-                RecordTitle.ProgName(I) = Asc(Mid(TextName.Text, I, 1))
+        For i = 1 To PROG_NAME_LENGTH - 1
+            If i <= Len(TextName.Text) Then
+                RecordTitle.ProgName(i) = Asc(Mid(TextName.Text, i, 1))
             Else
-                RecordTitle.ProgName(I) = 0
+                RecordTitle.ProgName(i) = 0
             End If
-        Next I
+        Next i
         RecordTitle.ProgName(PROG_NAME_LENGTH) = 0
         ' Сохраняем изменения
         CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
@@ -1839,7 +2059,7 @@ Private Sub TextName_KeyDown(keyCode As Integer, Shift As Integer)
         row = ListPrograms.row
         RefreshComponents (False)
         
-        If row < ListPrograms.Rows - 1 Then ListPrograms.row = row
+        If row < ListPrograms.rows - 1 Then ListPrograms.row = row
         ListPrograms.SetFocus
     End If
 End Sub
@@ -1870,9 +2090,9 @@ Private Sub Timer1_Timer()
 End Sub
 
 Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
-    If (Button.Index = 1) Then NewMainMenuItem_Click
-    If (Button.Index = 2) Then OpenMainMenuItem_Click
-    If (Button.Index = 3) Then SaveMainMenuItem_Click
+    If (Button.index = 1) Then NewMainMenuItem_Click
+    If (Button.index = 2) Then OpenMainMenuItem_Click
+    If (Button.index = 3) Then SaveMainMenuItem_Click
 End Sub
 
 Private Sub RefreshDataComponents()
@@ -1891,7 +2111,7 @@ Private Sub RefreshList()
         FrameLeft.Caption = "Программы"
         ListPrograms.Clear
         ListPrograms.FormatString = "<Список"
-        ListPrograms.Rows = 1
+        ListPrograms.rows = 1
         FrameLeft.Enabled = False
         Exit Sub
     End If
@@ -1901,7 +2121,7 @@ Private Sub RefreshList()
     
     ListPrograms.Visible = False
     ListPrograms.Clear
-    ListPrograms.Rows = 1
+    ListPrograms.rows = 1
     ListPrograms.FormatString = "<Список"
     
     If Manager.ProgramsCount > 0 Then
@@ -1961,7 +2181,7 @@ Private Sub RefreshCodeView()
         CodeView.Visible = False
         CodeView.Clear
         
-        CodeView.Rows = 2
+        CodeView.rows = 2
         ' Инициализируем окно кода
         s = "<   |"
         For col = 1 To CodeView.Cols - 2
@@ -2022,9 +2242,9 @@ Private Sub RefreshCodeView()
     Dim HexValue As Long
    
     CodeView.ColWidth(0) = 600
-    CodeView.Rows = Manager.ImageSize / 16
+    CodeView.rows = Manager.ImageSize / 16
     
-    For row = 1 To CodeView.Rows - 1
+    For row = 1 To CodeView.rows - 1
         CodeView.col = 0
         CodeView.row = row
         
@@ -2072,7 +2292,7 @@ Private Sub RefreshCodeView()
         Next col
         
         row = row + 1
-        If (row > CodeView.Rows - 1) Then Exit Do
+        If (row > CodeView.rows - 1) Then Exit Do
     Loop
     
     ' После сделанных изменений можно визуализировать компонент
@@ -2137,7 +2357,7 @@ Private Function ValveEnabled(col As Integer, row As Integer) As Boolean
 End Function
 
 Private Sub RefreshStepsView()
-    Dim col%, row%, X%, Y%, FuncN%
+    Dim col%, row%, x%, Y%, FuncN%
     Dim s As String
     
     ' Выходим из процедуры, если программы не загружены или отсутствуют
@@ -2190,7 +2410,7 @@ Private Sub RefreshStepsView()
         StepsView.FormatString = s
         
         ' "Тушим" все ячейки таблицы
-        For row% = 1 To StepsView.Rows - 1
+        For row% = 1 To StepsView.rows - 1
             For col% = 1 To StepsView.Cols - 1
                 StepsView.col = col%
                 StepsView.row = row%
@@ -2208,7 +2428,7 @@ Private Sub RefreshStepsView()
         
     StepsView.Visible = False
     
-    X% = StepsView.col
+    x% = StepsView.col
     Y% = StepsView.row
     
     StepsView.Clear
@@ -2257,7 +2477,7 @@ Private Sub RefreshStepsView()
     StepsView.FormatString = s
     
     ' "Тушим" все ячейки таблицы
-    For row% = 1 To StepsView.Rows - 1
+    For row% = 1 To StepsView.rows - 1
         For col% = 1 To StepsView.Cols - 1
             StepsView.col = col%
             StepsView.row = row%
@@ -2283,7 +2503,7 @@ Private Sub RefreshStepsView()
         FuncN% = Manager.GetFunctionType(Manager.ProgramIndex + 1, col%)
         
         If FuncN% > 0 And FuncN% < 11 Then
-            For row% = 1 To StepsView.Rows - 1
+            For row% = 1 To StepsView.rows - 1
                 StepsView.col = col%
                 StepsView.row = row%
                 StepsView.CellAlignment = flexAlignCenterCenter
@@ -2323,7 +2543,7 @@ Private Sub RefreshStepsView()
                 End If
             Next row%
         Else
-            For row% = 1 To StepsView.Rows - 1
+            For row% = 1 To StepsView.rows - 1
                 StepsView.col = col%
                 StepsView.row = row%
                 StepsView.Text = ""
@@ -2333,7 +2553,7 @@ Private Sub RefreshStepsView()
         
      Next col%
     
-    StepsView.col = X%
+    StepsView.col = x%
     StepsView.row = Y%
     
     ' После сделанных изменений можно визуализировать компонент
@@ -2347,7 +2567,7 @@ Private Sub RefreshProperties()
     If Not Manager.FileLoaded Then
         FrameRight.Caption = "Свойства"
         PropertyTable.Visible = False
-        PropertyTable.Rows = 1
+        PropertyTable.rows = 1
         PropertyTable.Clear
         ParamStr = "<Параметр|Значение"
         PropertyTable.FormatString = ParamStr
@@ -2366,7 +2586,7 @@ Private Sub RefreshProperties()
     FuncN% = Manager.GetFunctionType(Manager.ProgramIndex + 1, Manager.StepIndex + 1)
     
     PropertyTable.Visible = False
-    PropertyTable.Rows = 2
+    PropertyTable.rows = 2
     PropertyTable.Clear
     ParamStr = "<Параметр|Значение"
     PropertyTable.FormatString = ParamStr

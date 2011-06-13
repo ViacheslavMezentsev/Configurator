@@ -135,6 +135,14 @@ Public Declare Function PathFileExists Lib "shlwapi.dll" _
     ByVal pszPath As String _
 ) As Long
 
+Public Declare Function CoCreateGuid Lib "ole32.dll" (Buffer As Byte) As Long
+    
+Public Declare Function StringFromGUID2 Lib "ole32.dll" ( _
+    Buffer As Byte, _
+    ByVal lpsz As Long, _
+    ByVal cbMax As Long _
+) As Long
+ 
 ' ******************************************************
 ' *  ‘”Õ ÷»» ƒÀﬂ –¿¡Œ“€ — ‘¿…À¿Ã» Œ“Œ¡–¿∆¿≈Ã€Ã» ¬ œ¿Ãﬂ“‹
 ' *  ~~~~~~~~ ~~~~~~~~~ ~ ~~~~~~~ ~~~~~~~~~~~~~ ~ ~~~~~~
@@ -213,13 +221,13 @@ Public Declare Sub CopyMemory Lib "kernel32.dll" _
     Alias "RtlMoveMemory" ( _
     ByRef Destination As Any, _
     ByRef Source As Any, _
-    ByVal Length As Long _
+    ByVal length As Long _
 )
 
 Public Declare Sub ZeroMemory Lib "kernel32.dll" _
     Alias "RtlZeroMemory" ( _
     ByRef Destination As Any, _
-    ByVal Length As Long _
+    ByVal length As Long _
 )
 
 ' ***********************************
@@ -248,4 +256,17 @@ Public Declare Function UnhookWindowsHookEx Lib "user32" ( _
 Public Declare Function GetAsyncKeyState Lib "user32" ( _
     ByVal vKey As Long _
 ) As Integer
+
+' ***********************************
+' *  ‘”Õ ÷»» ƒÀﬂ –¿¡Œ“€ — UNICODE
+' *  ~~~~~~~~ ~~~~~~~~~ ~ ~~~~~~~
+' ***********************************
+Public Declare Function MultiByteToWideChar Lib "kernel32.dll" (ByVal CodePage As Long, _
+    ByVal dwFlags As Long, ByVal lpMultiByteStr As String, ByVal cchMultiByte As Long, _
+    ByVal lpWideCharStr As Long, ByVal cchWideChar As Long) As Long
+    
+Public Declare Function WideCharToMultiByte Lib "kernel32.dll" (ByVal CodePage As Long, _
+    ByVal dwFlags As Long, ByVal lpWideCharStr As Long, ByVal cchWideChar As Long, _
+    ByVal lpMultiByteStr As Long, ByVal cchMultiByte As Long, _
+    ByVal lpDefaultChar As Long, ByVal lpUsedDefaultChar As Long) As Long
 
