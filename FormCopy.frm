@@ -82,8 +82,24 @@ Private Sub CommandCancel_Click()
 End Sub
 
 Private Sub CommandCopy_Click()
+    '<EhHeader>
+    On Error GoTo CommandCopy_Click_Err
+    '</EhHeader>
+
     If List1.SelCount > 0 And List2.SelCount > 0 Then
-        FormMain.Manager.CopyProgram List1.ListIndex, List2.ListIndex
-        FormMain.SetModified True
+    
+        Manager.CopyProgram List1.ListIndex, List2.ListIndex
+        SetModified True
+        FormMain.RefreshDataComponents
     End If
+    
+    '<EhFooter>
+    Exit Sub
+
+CommandCopy_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormCopy.CommandCopy_Click]: " _
+       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Resume Next
+    '</EhFooter>
 End Sub
+

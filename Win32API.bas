@@ -1,5 +1,17 @@
 Attribute VB_Name = "Win32API"
-' Задание явного объявления переменных
+'**
+'@author <a href="mailto:unihomelab@ya.ru">Мезенцев Вячеслав</a>
+'@revision Дата ревизии: 16.06.2011 г., время: 5:28:47
+'@rem <h1><b>Win32API</b></h1>
+'<pre>
+'--------------------------------------------------------------------------------
+' Проект   :       Конфигуратор управляющих программ
+' Модуль   :       Win32API
+' Описание :       Библиотека системых функций
+' Автор    :       Мезенцев Вячеслав
+' Изменён  :       16.06.2011 г., время: 5:28:47
+'--------------------------------------------------------------------------------
+'</pre>
 Option Explicit
 
 ' -=[ Суффиксы в Visual basic 6 ]=-
@@ -66,9 +78,25 @@ Public Const PAGE_READWRITE = 4&
 
 Public Const WH_KEYBOARD As Long = 2
 
+' ShowWindow() Commands
+Public Const SW_HIDE = 0
+Public Const SW_SHOWNORMAL = 1
+Public Const SW_NORMAL = 1
+Public Const SW_SHOWMINIMIZED = 2
+Public Const SW_SHOWMAXIMIZED = 3
+Public Const SW_MAXIMIZE = 3
+Public Const SW_SHOWNOACTIVATE = 4
+Public Const SW_SHOW = 5
+Public Const SW_MINIMIZE = 6
+Public Const SW_SHOWMINNOACTIVE = 7
+Public Const SW_SHOWNA = 8
+Public Const SW_RESTORE = 9
+Public Const SW_SHOWDEFAULT = 10
+Public Const SW_MAX = 10
+
 ' The WritePrivateProfileSection function replaces the keys and values
 ' under the specified section in an initialization file.
-Public Declare Function WritePrivateProfileSection Lib "kernel32" _
+Public Declare Function WritePrivateProfileSection Lib "Kernel32" _
     Alias "WritePrivateProfileSectionA" ( _
     ByVal lpAppName As String, _
     ByVal lpString As String, _
@@ -77,7 +105,7 @@ Public Declare Function WritePrivateProfileSection Lib "kernel32" _
     
 ' The WritePrivateProfileString function copies a string
 ' into the specified section of the specified initialization file.
-Public Declare Function WritePrivateProfileStringByKeyName% Lib "kernel32" _
+Public Declare Function WritePrivateProfileStringByKeyName% Lib "Kernel32" _
     Alias "WritePrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName$, _
@@ -85,7 +113,7 @@ Public Declare Function WritePrivateProfileStringByKeyName% Lib "kernel32" _
     ByVal lpFileName$ _
 )
 
-Public Declare Function WritePrivateProfileStringToDeleteKey% Lib "kernel32" _
+Public Declare Function WritePrivateProfileStringToDeleteKey% Lib "Kernel32" _
     Alias "WritePrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName$, _
@@ -93,7 +121,7 @@ Public Declare Function WritePrivateProfileStringToDeleteKey% Lib "kernel32" _
     ByVal lpFileName$ _
 )
 
-Public Declare Function WritePrivateProfileStringToDeleteSection% Lib "kernel32" _
+Public Declare Function WritePrivateProfileStringToDeleteSection% Lib "Kernel32" _
     Alias "WritePrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName&, _
@@ -103,7 +131,7 @@ Public Declare Function WritePrivateProfileStringToDeleteSection% Lib "kernel32"
 
 ' The GetPrivateProfileString function retrieves a string
 ' from the specified section in an initialization file.
-Public Declare Function GetPrivateProfileStringByKeyName& Lib "kernel32" _
+Public Declare Function GetPrivateProfileStringByKeyName& Lib "Kernel32" _
     Alias "GetPrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName$, _
@@ -113,7 +141,7 @@ Public Declare Function GetPrivateProfileStringByKeyName& Lib "kernel32" _
     ByVal lpFileName$ _
 )
 
-Public Declare Function GetPrivateProfileStringKeys& Lib "kernel32" _
+Public Declare Function GetPrivateProfileStringKeys& Lib "Kernel32" _
     Alias "GetPrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName&, _
@@ -123,7 +151,7 @@ Public Declare Function GetPrivateProfileStringKeys& Lib "kernel32" _
     ByVal lpFileName$ _
 )
 
-Public Declare Function GetModuleFileName Lib "kernel32" _
+Public Declare Function GetModuleFileName Lib "Kernel32" _
     Alias "GetModuleFileNameA" ( _
     ByVal hModule As Long, _
     ByVal lpFileName As String, _
@@ -142,13 +170,39 @@ Public Declare Function StringFromGUID2 Lib "ole32.dll" ( _
     ByVal lpsz As Long, _
     ByVal cbMax As Long _
 ) As Long
- 
+
+' ******************************************************
+' *     ФУНКЦИИ ДЛЯ РАБОТЫ С РЕЕСТРОМ
+' *     ~~~~~~~~ ~~~~~~~~~ ~ ~~~~~~~~
+' ******************************************************
+
+Public Declare Function RegOpenKeyEx Lib "advapi32" _
+    Alias "RegOpenKeyExA" ( _
+    ByVal hKey As Long, _
+    ByVal lpSubKey As String, _
+    ByVal ulOptions As Long, _
+    ByVal samDesired As Long, _
+    ByRef phkResult As Long _
+) As Long
+
+Public Declare Function RegQueryValueEx Lib "advapi32" _
+    Alias "RegQueryValueExA" ( _
+    ByVal hKey As Long, _
+    ByVal lpValueName As String, _
+    ByVal lpReserved As Long, _
+    ByRef lpType As Long, _
+    ByVal lpData As String, _
+    ByRef lpcbData As Long _
+) As Long
+
+Public Declare Function RegCloseKey Lib "advapi32" (ByVal hKey As Long) As Long
+
 ' ******************************************************
 ' *  ФУНКЦИИ ДЛЯ РАБОТЫ С ФАЙЛАМИ ОТОБРАЖАЕМЫМИ В ПАМЯТЬ
 ' *  ~~~~~~~~ ~~~~~~~~~ ~ ~~~~~~~ ~~~~~~~~~~~~~ ~ ~~~~~~
 ' ******************************************************
 
-Public Declare Function CreateFileMapping Lib "kernel32" _
+Public Declare Function CreateFileMapping Lib "Kernel32" _
     Alias "CreateFileMappingA" ( _
     ByVal hFile As Long, _
     lpFileMappigAttributes As SECURITY_ATTRIBUTES, _
@@ -158,14 +212,14 @@ Public Declare Function CreateFileMapping Lib "kernel32" _
     ByVal lpname As String _
 ) As Long
 
-Public Declare Function OpenFileMapping Lib "kernel32" _
+Public Declare Function OpenFileMapping Lib "Kernel32" _
     Alias "OpenFileMappingA" ( _
     ByVal dwDesiredAccess As Long, _
     ByVal bInheritHandle As Long, _
     ByVal lpname As String _
 ) As Long
 
-Public Declare Function MapViewOfFile Lib "kernel32" ( _
+Public Declare Function MapViewOfFile Lib "Kernel32" ( _
     ByVal hFileMappingObject As Long, _
     ByVal dwDesiredAccess As Long, _
     ByVal dwFileOffsetHigh As Long, _
@@ -173,15 +227,15 @@ Public Declare Function MapViewOfFile Lib "kernel32" ( _
     ByVal dwNumberOfBytesToMap As Long _
 ) As Long
 
-Public Declare Function UnmapViewOfFile Lib "kernel32" (ByVal lpBaseAddress As Long) As Long
-Public Declare Function FlushFileBuffers Lib "kernel32" (ByVal hFile As Long) As Long
+Public Declare Function UnmapViewOfFile Lib "Kernel32" (ByVal lpBaseAddress As Long) As Long
+Public Declare Function FlushFileBuffers Lib "Kernel32" (ByVal hFile As Long) As Long
 
 ' *********************************
 ' *  ФУНКЦИИ ДЛЯ РАБОТЫ С ФАЙЛАМИ
 ' *  ~~~~~~~~ ~~~~~~~~~ ~ ~~~~~~~
 ' *********************************
 
-Public Declare Function CreateFile Lib "kernel32" _
+Public Declare Function CreateFile Lib "Kernel32" _
     Alias "CreateFileA" ( _
     ByVal lpFileName As String, _
     ByVal dwDesiredAccess As Long, _
@@ -192,9 +246,9 @@ Public Declare Function CreateFile Lib "kernel32" _
     ByVal hTemplateFile As Long _
 ) As Long
 
-Public Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
+Public Declare Function CloseHandle Lib "Kernel32" (ByVal hObject As Long) As Long
 
-Public Declare Function WriteFile Lib "kernel32" ( _
+Public Declare Function WriteFile Lib "Kernel32" ( _
     ByVal hFile As Long, _
     lpBuffer As Any, _
     ByVal nNumberOfBytesToWrite As Long, _
@@ -202,7 +256,7 @@ Public Declare Function WriteFile Lib "kernel32" ( _
     ByVal lpOverlapped As Long _
 ) As Long
 
-Public Declare Function ReadFile Lib "kernel32" ( _
+Public Declare Function ReadFile Lib "Kernel32" ( _
     ByVal hFile As Long, _
     lpBuffer As Any, _
     ByVal nNumberOfBytesToRead As Long, _
@@ -210,7 +264,23 @@ Public Declare Function ReadFile Lib "kernel32" ( _
     ByVal lpOverlapped As Long _
 ) As Long
 
-Public Declare Function GetLastError Lib "kernel32" () As Long
+Public Declare Function DeleteFile Lib "Kernel32" _
+    Alias "DeleteFileA" ( _
+    ByVal lpFileName As String _
+) As Long
+
+Public Declare Function GetLastError Lib "Kernel32" () As Long
+
+Public Declare Function ShellExecute Lib "shell32.dll" _
+    Alias "ShellExecuteA" ( _
+    ByVal hwnd As Long, _
+    ByVal lpOperation As String, _
+    ByVal lpFile As String, _
+    ByVal lpParameters As String, _
+    ByVal lpDirectory As String, _
+    ByVal nShowCmd As Long _
+) As Long
+
 
 ' *********************************
 ' *  ФУНКЦИИ ДЛЯ РАБОТЫ С ПАМЯТЬЮ
