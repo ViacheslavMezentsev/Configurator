@@ -1,4 +1,9 @@
 Attribute VB_Name = "UserTypes"
+'**
+'@author Мезенцев В. Н.
+'@revision Wed Jun 15 19:13:32 GMT 2011
+'@rem Модуль содержит описание всех необходимых констант,
+'которые используются в программе.
 Option Explicit
 
 ' *****************************************
@@ -6,7 +11,11 @@ Option Explicit
 ' *  ~~~~~~~~~
 ' *****************************************
 
+'**
+'@rem Минимальное количество программ
 Public Const Program_MIN = 0
+'**
+'@rem Максимальное количество программ
 Public Const Program_MAX = 49
 
 Public Const ProgramFlash_MIN = 0
@@ -49,6 +58,17 @@ Public Const IDLE_PARAMETER_DESCR_FUNCTION = "Тип опер."
 ' *  ПОЛЬЗОВАТЕЛЬСКИЕ ТИПЫ
 ' *  ~~~~~~~~~~~~~~~~ ~~~~
 ' *****************************************
+
+'**
+'@rem Структура заголовка программы<br><pre>
+'Public Type <b>TYPE_WPC_TITLE</b>
+'  CRC As Byte
+'  LowBits As Byte
+'  HiBits As Byte
+'  ProgName(1 To PROG_NAME_LENGTH) As Byte
+'  Reserved(1 To 2) As Byte
+'End Type</pre>
+Public TYPE_WPC_TITLE As TYPE_WPC_TITLE
 
 ' Структура заголовка программы
 Public Type TYPE_WPC_TITLE

@@ -1,8 +1,9 @@
 VERSION 5.00
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form FormAbout 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "О программе"
-   ClientHeight    =   3120
+   ClientHeight    =   3192
    ClientLeft      =   2340
    ClientTop       =   1932
    ClientWidth     =   5412
@@ -11,96 +12,263 @@ Begin VB.Form FormAbout
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2148.041
-   ScaleMode       =   0  'User
-   ScaleWidth      =   5076.833
+   ScaleHeight     =   3192
+   ScaleWidth      =   5412
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin MSComctlLib.ImageList ImageListPhotos 
+      Left            =   600
+      Top             =   2640
+      _ExtentX        =   804
+      _ExtentY        =   804
+      BackColor       =   -2147483643
+      ImageWidth      =   64
+      ImageHeight     =   64
+      MaskColor       =   12632256
+      _Version        =   393216
+      BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
+         NumListImages   =   3
+         BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormAbout.frx":6432
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormAbout.frx":9484
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormAbout.frx":C4D8
+            Key             =   ""
+         EndProperty
+      EndProperty
+   End
+   Begin VB.Timer Timer 
+      Left            =   120
+      Top             =   2760
+   End
    Begin VB.PictureBox picIcon 
-      AutoSize        =   -1  'True
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       Height          =   768
-      Left            =   120
-      Picture         =   "FormAbout.frx":6432
+      Left            =   228
+      MouseIcon       =   "FormAbout.frx":F52C
+      MousePointer    =   99  'Custom
+      Picture         =   "FormAbout.frx":15B36
       ScaleHeight     =   526.236
       ScaleMode       =   0  'User
       ScaleWidth      =   526.236
       TabIndex        =   1
-      Top             =   240
+      Top             =   348
       Width           =   768
    End
    Begin VB.CommandButton cmdOK 
       Cancel          =   -1  'True
       Caption         =   "OK"
       Default         =   -1  'True
-      Height          =   345
+      Height          =   348
       Left            =   2040
       TabIndex        =   0
-      Top             =   2640
+      Top             =   2760
       Width           =   1260
+   End
+   Begin VB.Shape Shape8 
+      BorderColor     =   &H80000010&
+      Height          =   392
+      Left            =   110
+      Shape           =   4  'Rounded Rectangle
+      Top             =   2270
+      Width           =   5192
+   End
+   Begin VB.Shape Shape7 
+      BorderColor     =   &H80000010&
+      Height          =   752
+      Left            =   110
+      Shape           =   4  'Rounded Rectangle
+      Top             =   1430
+      Width           =   5192
+   End
+   Begin VB.Shape Shape6 
+      BorderColor     =   &H80000010&
+      Height          =   1236
+      Left            =   1190
+      Shape           =   4  'Rounded Rectangle
+      Top             =   110
+      Width           =   4112
+   End
+   Begin VB.Shape Shape5 
+      BorderColor     =   &H80000010&
+      Height          =   1232
+      Left            =   110
+      Shape           =   4  'Rounded Rectangle
+      Top             =   110
+      Width           =   992
+   End
+   Begin VB.Shape Shape4 
+      BorderColor     =   &H00FFFFFF&
+      Height          =   372
+      Left            =   120
+      Shape           =   4  'Rounded Rectangle
+      Top             =   2280
+      Width           =   5172
+   End
+   Begin VB.Shape Shape3 
+      BorderColor     =   &H00FFFFFF&
+      Height          =   732
+      Left            =   120
+      Shape           =   4  'Rounded Rectangle
+      Top             =   1440
+      Width           =   5172
+   End
+   Begin VB.Shape Shape2 
+      BorderColor     =   &H00FFFFFF&
+      Height          =   1212
+      Left            =   1200
+      Shape           =   4  'Rounded Rectangle
+      Top             =   120
+      Width           =   4092
+   End
+   Begin VB.Shape Shape1 
+      BorderColor     =   &H00FFFFFF&
+      Height          =   1212
+      Left            =   120
+      Shape           =   4  'Rounded Rectangle
+      Top             =   120
+      Width           =   972
+   End
+   Begin VB.Label Label3 
+      AutoSize        =   -1  'True
+      Caption         =   "Мезенцев Вячеслав [unihomelab@yandex.ru]"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000D&
+      Height          =   240
+      Left            =   1320
+      MouseIcon       =   "FormAbout.frx":16A09
+      MousePointer    =   99  'Custom
+      TabIndex        =   8
+      Top             =   1848
+      Width           =   3768
+   End
+   Begin VB.Label Label2 
+      AutoSize        =   -1  'True
+      Caption         =   "Зыков Василий [vassily@at.ur.ru]"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000D&
+      Height          =   240
+      Left            =   1320
+      MouseIcon       =   "FormAbout.frx":2CA23
+      MousePointer    =   99  'Custom
+      TabIndex        =   7
+      Top             =   1560
+      Width           =   2880
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
+      AutoSize        =   -1  'True
       Caption         =   "Екатеринбург, 2011 г."
-      Height          =   252
-      Left            =   1920
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   10.2
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   288
+      Left            =   1656
       TabIndex        =   6
-      Top             =   2160
-      Width           =   1812
-   End
-   Begin VB.Line Line1 
-      BorderColor     =   &H00808080&
-      BorderStyle     =   6  'Inside Solid
-      Index           =   1
-      X1              =   84.426
-      X2              =   5309.474
-      Y1              =   1687.451
-      Y2              =   1687.451
+      Top             =   2316
+      Width           =   2100
    End
    Begin VB.Label lblDescription 
       Caption         =   "Конфигуратор предназначен для создания или изменения управляющих программ"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   9
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       ForeColor       =   &H00000000&
-      Height          =   564
-      Left            =   1056
+      Height          =   444
+      Left            =   1320
       TabIndex        =   2
-      Top             =   1128
+      Top             =   780
       Width           =   3888
    End
    Begin VB.Label lblTitle 
+      AutoSize        =   -1  'True
       Caption         =   "Конфигуратор управляющих программ"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   10.2
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       ForeColor       =   &H00000000&
-      Height          =   480
-      Left            =   1050
+      Height          =   288
+      Left            =   1320
       TabIndex        =   4
-      Top             =   240
-      Width           =   3885
-   End
-   Begin VB.Line Line1 
-      BorderColor     =   &H00FFFFFF&
-      BorderWidth     =   2
-      Index           =   0
-      X1              =   98.497
-      X2              =   5309.474
-      Y1              =   1697.779
-      Y2              =   1697.779
+      Top             =   204
+      Width           =   3888
    End
    Begin VB.Label lblVersion 
+      AutoSize        =   -1  'True
       Caption         =   "Версия"
-      Height          =   225
-      Left            =   1050
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   10.2
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   288
+      Left            =   1320
       TabIndex        =   5
-      Top             =   780
-      Width           =   3885
+      Top             =   480
+      Width           =   708
    End
    Begin VB.Label lblDisclaimer 
-      Caption         =   "Авторы: Зыков Василий и Мезенцев Вячеслав"
+      AutoSize        =   -1  'True
+      Caption         =   "Авторы: "
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   10.2
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       ForeColor       =   &H00000000&
-      Height          =   228
-      Left            =   1080
+      Height          =   288
+      Left            =   264
       TabIndex        =   3
-      Top             =   1800
-      Width           =   3876
+      Top             =   1524
+      Width           =   852
    End
 End
 Attribute VB_Name = "FormAbout"
@@ -110,130 +278,168 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-' Reg Key Security Options...
-Const READ_CONTROL = &H20000
-Const KEY_QUERY_VALUE = &H1
-Const KEY_SET_VALUE = &H2
-Const KEY_CREATE_SUB_KEY = &H4
-Const KEY_ENUMERATE_SUB_KEYS = &H8
-Const KEY_NOTIFY = &H10
-Const KEY_CREATE_LINK = &H20
-Const KEY_ALL_ACCESS = KEY_QUERY_VALUE + KEY_SET_VALUE + _
-                       KEY_CREATE_SUB_KEY + KEY_ENUMERATE_SUB_KEYS + _
-                       KEY_NOTIFY + KEY_CREATE_LINK + READ_CONTROL
-                     
-' Reg Key ROOT Types...
-Const HKEY_LOCAL_MACHINE = &H80000002
-Const ERROR_SUCCESS = 0
-Const REG_SZ = 1                         ' Unicode nul terminated string
-Const REG_DWORD = 4                      ' 32-bit number
+Private Const AS_START = 0
+Private Const AS_COLLAPS = 1
+Private Const AS_EXPAND = 2
+Private Const AS_FINISH = 3
 
-Const gREGKEYSYSINFOLOC = "SOFTWARE\Microsoft\Shared Tools Location"
-Const gREGVALSYSINFOLOC = "MSINFO"
-Const gREGKEYSYSINFO = "SOFTWARE\Microsoft\Shared Tools\MSINFO"
-Const gREGVALSYSINFO = "PATH"
+Private Const FRAMES_COUNT = 6
 
-Private Declare Function RegOpenKeyEx Lib "advapi32" Alias "RegOpenKeyExA" (ByVal hKey As Long, ByVal lpSubKey As String, ByVal ulOptions As Long, ByVal samDesired As Long, ByRef phkResult As Long) As Long
-Private Declare Function RegQueryValueEx Lib "advapi32" Alias "RegQueryValueExA" (ByVal hKey As Long, ByVal lpValueName As String, ByVal lpReserved As Long, ByRef lpType As Long, ByVal lpData As String, ByRef lpcbData As Long) As Long
-Private Declare Function RegCloseKey Lib "advapi32" (ByVal hKey As Long) As Long
-
-
-Private Sub cmdSysInfo_Click()
-  Call StartSysInfo
-End Sub
+Dim AnimateState As Byte
+Dim AnimateCounter As Long, ImageCounter As Long
+Dim DX As Long, PicTop As Long, PicHeight As Long
 
 Private Sub cmdOK_Click()
-  Unload Me
+    Unload Me
 End Sub
 
 Private Sub Form_Load()
     'Me.Caption = "About " & App.Title
+    '<EhHeader>
+    On Error GoTo Form_Load_Err
+    '</EhHeader>
+    
     Me.Caption = "О программе"
     lblVersion.Caption = "Версия " & App.Major & "." & App.Minor & "." & App.Revision
     'lblTitle.Caption = App.Title
     lblTitle.Caption = "Конфигуратор управляющих программ"
+    
+    AnimateState = AS_FINISH
+    ImageCounter = 1
+    picIcon.Picture = ImageListPhotos.ListImages.Item(ImageCounter).Picture
+    
+    '<EhFooter>
+    Exit Sub
+
+Form_Load_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.Form_Load]: " _
+        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Resume Next
+    '</EhFooter>
 End Sub
 
-Public Sub StartSysInfo()
-    On Error GoTo SysInfoErr
-  
-    Dim rc As Long
-    Dim SysInfoPath As String
+Private Sub Label2_Click()
+    '<EhHeader>
+    On Error GoTo Label2_Click_Err
+    '</EhHeader>
     
-    ' Try To Get System Info Program Path\Name From Registry...
-    If GetKeyValue(HKEY_LOCAL_MACHINE, gREGKEYSYSINFO, gREGVALSYSINFO, SysInfoPath) Then
-    ' Try To Get System Info Program Path Only From Registry...
-    ElseIf GetKeyValue(HKEY_LOCAL_MACHINE, gREGKEYSYSINFOLOC, gREGVALSYSINFOLOC, SysInfoPath) Then
-        ' Validate Existance Of Known 32 Bit File Version
-        If (Dir(SysInfoPath & "\MSINFO32.EXE") <> "") Then
-            SysInfoPath = SysInfoPath & "\MSINFO32.EXE"
-            
-        ' Error - File Can Not Be Found...
-        Else
-            GoTo SysInfoErr
-        End If
-    ' Error - Registry Entry Can Not Be Found...
-    Else
-        GoTo SysInfoErr
-    End If
+    Dim Success As Integer
     
-    Call Shell(SysInfoPath, vbNormalFocus)
+    ' Вызываем почтовую программу по умолчанию
+    Success = ShellExecute(Me.hwnd, vbNullString, "mailto: vassily@at.ur.ru", vbNullString, vbNullString, SW_SHOWNORMAL)
+    
+    '<EhFooter>
+    Exit Sub
+
+Label2_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.Label2_Click]: " _
+        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub Label3_Click()
+    '<EhHeader>
+    On Error GoTo Label3_Click_Err
+    '</EhHeader>
+    
+    Dim Success As Integer
+    
+    ' Вызываем почтовую программу по умолчанию
+    Success = ShellExecute(Me.hwnd, vbNullString, "mailto: unihomelab@ya.ru", vbNullString, vbNullString, SW_SHOWNORMAL)
+    
+    '<EhFooter>
     
     Exit Sub
-SysInfoErr:
-    MsgBox "System Information Is Unavailable At This Time", vbOKOnly
+
+Label3_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.Label3_Click]: " _
+        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Resume Next
+    '</EhFooter>
 End Sub
 
-Public Function GetKeyValue(KeyRoot As Long, KeyName As String, SubKeyRef As String, ByRef KeyVal As String) As Boolean
-    Dim I As Long                                           ' Loop Counter
-    Dim rc As Long                                          ' Return Code
-    Dim hKey As Long                                        ' Handle To An Open Registry Key
-    Dim hDepth As Long                                      '
-    Dim KeyValType As Long                                  ' Data Type Of A Registry Key
-    Dim tmpVal As String                                    ' Tempory Storage For A Registry Key Value
-    Dim KeyValSize As Long                                  ' Size Of Registry Key Variable
-    '------------------------------------------------------------
-    ' Open RegKey Under KeyRoot {HKEY_LOCAL_MACHINE...}
-    '------------------------------------------------------------
-    rc = RegOpenKeyEx(KeyRoot, KeyName, 0, KEY_ALL_ACCESS, hKey) ' Open Registry Key
+Private Sub picIcon_Click()
+    '<EhHeader>
+    On Error GoTo picIcon_Click_Err
+    '</EhHeader>
     
-    If (rc <> ERROR_SUCCESS) Then GoTo GetKeyError          ' Handle Error...
+    Timer.Interval = 30
+    Timer.Enabled = True
+    AnimateState = AS_START
     
-    tmpVal = String$(1024, 0)                             ' Allocate Variable Space
-    KeyValSize = 1024                                       ' Mark Variable Size
+    '<EhFooter>
+    Exit Sub
+
+picIcon_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.picIcon_Click]: " _
+        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Resume Next
+    '</EhFooter>
+End Sub
+
+' Простой конечный автомат состояний
+Private Sub Timer_Timer()
+    '<EhHeader>
+    On Error Resume Next
+    '</EhHeader>
     
-    '------------------------------------------------------------
-    ' Retrieve Registry Key Value...
-    '------------------------------------------------------------
-    rc = RegQueryValueEx(hKey, SubKeyRef, 0, _
-                         KeyValType, tmpVal, KeyValSize)    ' Get/Create Key Value
-                        
-    If (rc <> ERROR_SUCCESS) Then GoTo GetKeyError          ' Handle Errors
+    Select Case AnimateState
     
-    If (Asc(Mid(tmpVal, KeyValSize, 1)) = 0) Then           ' Win95 Adds Null Terminated String...
-        tmpVal = Left(tmpVal, KeyValSize - 1)               ' Null Found, Extract From String
-    Else                                                    ' WinNT Does NOT Null Terminate String...
-        tmpVal = Left(tmpVal, KeyValSize)                   ' Null Not Found, Extract String Only
-    End If
-    '------------------------------------------------------------
-    ' Determine Key Value Type For Conversion...
-    '------------------------------------------------------------
-    Select Case KeyValType                                  ' Search Data Types...
-    Case REG_SZ                                             ' String Registry Key Data Type
-        KeyVal = tmpVal                                     ' Copy String Value
-    Case REG_DWORD                                          ' Double Word Registry Key Data Type
-        For I = Len(tmpVal) To 1 Step -1                    ' Convert Each Bit
-            KeyVal = KeyVal + Hex(Asc(Mid(tmpVal, I, 1)))   ' Build Value Char. By Char.
-        Next
-        KeyVal = Format$("&h" + KeyVal)                     ' Convert Double Word To String
+        Case AS_START
+        
+            AnimateState = AS_COLLAPS
+            AnimateCounter = FRAMES_COUNT
+            DX = Shape5.Height / (2 * (AnimateCounter + 1))
+            picIcon.AutoRedraw = False
+            PicTop = picIcon.Top
+            PicHeight = picIcon.Height
+        
+        Case AS_COLLAPS
+        
+            Shape5.Top = Shape5.Top + DX
+            Shape1.Top = Shape1.Top + DX
+            Shape5.Height = Shape5.Height - 2 * DX
+            Shape1.Height = Shape1.Height - 2 * DX
+            
+            If Shape5.Top > picIcon.Top Then picIcon.Top = Shape5.Top
+            If Shape5.Height < picIcon.Height Then picIcon.Height = Shape5.Height
+            
+            Dec AnimateCounter
+            
+            If AnimateCounter = 0 Then
+            
+                ' Меняем картинку и возвращаемся
+                Inc ImageCounter
+                ImageCounter = ((ImageCounter - 1) Mod ImageListPhotos.ListImages.Count) + 1
+                picIcon.Picture = ImageListPhotos.ListImages.Item(ImageCounter).Picture
+                AnimateState = AS_EXPAND
+            End If
+        
+        Case AS_EXPAND
+        
+            Shape1.Top = Shape1.Top - DX
+            Shape5.Top = Shape5.Top - DX
+            Shape1.Height = Shape1.Height + 2 * DX
+            Shape5.Height = Shape5.Height + 2 * DX
+            
+            If Shape5.Height > PicHeight Then
+                picIcon.Top = PicTop
+                picIcon.Height = PicHeight
+            Else
+                picIcon.Top = Shape5.Top
+                picIcon.Height = Shape5.Height
+            End If
+            
+            Inc AnimateCounter
+            
+            If AnimateCounter = FRAMES_COUNT Then AnimateState = AS_FINISH
+            
+        Case AS_FINISH
+        
+            Timer.Interval = 0
+            picIcon.AutoRedraw = True
+        
     End Select
     
-    GetKeyValue = True                                      ' Return Success
-    rc = RegCloseKey(hKey)                                  ' Close Registry Key
-    Exit Function                                           ' Exit
-    
-GetKeyError:      ' Cleanup After An Error Has Occured...
-    KeyVal = ""                                             ' Set Return Val To Empty String
-    GetKeyValue = False                                     ' Return Failure
-    rc = RegCloseKey(hKey)                                  ' Close Registry Key
-End Function
+End Sub
