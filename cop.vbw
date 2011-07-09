@@ -1,5 +1,5 @@
-FormMain = 2, 3, 518, 769, , 11, -4, 871, 762, C
-Constants = 0, 0, 894, 881, Z
+FormMain = 2, 3, 518, 769, Z, 11, -4, 871, 762, C
+Constants = 0, 0, 894, 881, 
 FormAbout = 27, 27, 658, 640, C, 0, 0, 631, 613, C
 Win32API = 10, 10, 884, 871, 
 UserFunctions = 0, 0, 631, 613, 
