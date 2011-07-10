@@ -96,7 +96,7 @@ Public Const SW_MAX = 10
 
 ' The WritePrivateProfileSection function replaces the keys and values
 ' under the specified section in an initialization file.
-Public Declare Function WritePrivateProfileSection Lib "Kernel32" _
+Public Declare Function WritePrivateProfileSection Lib "kernel32" _
     Alias "WritePrivateProfileSectionA" ( _
     ByVal lpAppName As String, _
     ByVal lpString As String, _
@@ -105,7 +105,7 @@ Public Declare Function WritePrivateProfileSection Lib "Kernel32" _
     
 ' The WritePrivateProfileString function copies a string
 ' into the specified section of the specified initialization file.
-Public Declare Function WritePrivateProfileStringByKeyName% Lib "Kernel32" _
+Public Declare Function WritePrivateProfileStringByKeyName% Lib "kernel32" _
     Alias "WritePrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName$, _
@@ -113,7 +113,7 @@ Public Declare Function WritePrivateProfileStringByKeyName% Lib "Kernel32" _
     ByVal lpFileName$ _
 )
 
-Public Declare Function WritePrivateProfileStringToDeleteKey% Lib "Kernel32" _
+Public Declare Function WritePrivateProfileStringToDeleteKey% Lib "kernel32" _
     Alias "WritePrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName$, _
@@ -121,7 +121,7 @@ Public Declare Function WritePrivateProfileStringToDeleteKey% Lib "Kernel32" _
     ByVal lpFileName$ _
 )
 
-Public Declare Function WritePrivateProfileStringToDeleteSection% Lib "Kernel32" _
+Public Declare Function WritePrivateProfileStringToDeleteSection% Lib "kernel32" _
     Alias "WritePrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName&, _
@@ -131,7 +131,7 @@ Public Declare Function WritePrivateProfileStringToDeleteSection% Lib "Kernel32"
 
 ' The GetPrivateProfileString function retrieves a string
 ' from the specified section in an initialization file.
-Public Declare Function GetPrivateProfileStringByKeyName& Lib "Kernel32" _
+Public Declare Function GetPrivateProfileStringByKeyName& Lib "kernel32" _
     Alias "GetPrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName$, _
@@ -141,7 +141,7 @@ Public Declare Function GetPrivateProfileStringByKeyName& Lib "Kernel32" _
     ByVal lpFileName$ _
 )
 
-Public Declare Function GetPrivateProfileStringKeys& Lib "Kernel32" _
+Public Declare Function GetPrivateProfileStringKeys& Lib "kernel32" _
     Alias "GetPrivateProfileStringA" ( _
     ByVal lpAppName$, _
     ByVal lpKeyName&, _
@@ -151,7 +151,7 @@ Public Declare Function GetPrivateProfileStringKeys& Lib "Kernel32" _
     ByVal lpFileName$ _
 )
 
-Public Declare Function GetModuleFileName Lib "Kernel32" _
+Public Declare Function GetModuleFileName Lib "kernel32" _
     Alias "GetModuleFileNameA" ( _
     ByVal hModule As Long, _
     ByVal lpFileName As String, _
@@ -163,10 +163,10 @@ Public Declare Function PathFileExists Lib "shlwapi.dll" _
     ByVal pszPath As String _
 ) As Long
 
-Public Declare Function CoCreateGuid Lib "ole32.dll" (Buffer As Byte) As Long
+Public Declare Function CoCreateGuid Lib "ole32.dll" (buffer As Byte) As Long
     
 Public Declare Function StringFromGUID2 Lib "ole32.dll" ( _
-    Buffer As Byte, _
+    buffer As Byte, _
     ByVal lpsz As Long, _
     ByVal cbMax As Long _
 ) As Long
@@ -202,7 +202,7 @@ Public Declare Function RegCloseKey Lib "advapi32" (ByVal hKey As Long) As Long
 ' *  ~~~~~~~~ ~~~~~~~~~ ~ ~~~~~~~ ~~~~~~~~~~~~~ ~ ~~~~~~
 ' ******************************************************
 
-Public Declare Function CreateFileMapping Lib "Kernel32" _
+Public Declare Function CreateFileMapping Lib "kernel32" _
     Alias "CreateFileMappingA" ( _
     ByVal hFile As Long, _
     lpFileMappigAttributes As SECURITY_ATTRIBUTES, _
@@ -212,14 +212,14 @@ Public Declare Function CreateFileMapping Lib "Kernel32" _
     ByVal lpname As String _
 ) As Long
 
-Public Declare Function OpenFileMapping Lib "Kernel32" _
+Public Declare Function OpenFileMapping Lib "kernel32" _
     Alias "OpenFileMappingA" ( _
     ByVal dwDesiredAccess As Long, _
     ByVal bInheritHandle As Long, _
     ByVal lpname As String _
 ) As Long
 
-Public Declare Function MapViewOfFile Lib "Kernel32" ( _
+Public Declare Function MapViewOfFile Lib "kernel32" ( _
     ByVal hFileMappingObject As Long, _
     ByVal dwDesiredAccess As Long, _
     ByVal dwFileOffsetHigh As Long, _
@@ -227,15 +227,15 @@ Public Declare Function MapViewOfFile Lib "Kernel32" ( _
     ByVal dwNumberOfBytesToMap As Long _
 ) As Long
 
-Public Declare Function UnmapViewOfFile Lib "Kernel32" (ByVal lpBaseAddress As Long) As Long
-Public Declare Function FlushFileBuffers Lib "Kernel32" (ByVal hFile As Long) As Long
+Public Declare Function UnmapViewOfFile Lib "kernel32" (ByVal lpBaseAddress As Long) As Long
+Public Declare Function FlushFileBuffers Lib "kernel32" (ByVal hFile As Long) As Long
 
 ' *********************************
 ' *  ‘”Õ ÷»» ƒÀﬂ –¿¡Œ“€ — ‘¿…À¿Ã»
 ' *  ~~~~~~~~ ~~~~~~~~~ ~ ~~~~~~~
 ' *********************************
 
-Public Declare Function CreateFile Lib "Kernel32" _
+Public Declare Function CreateFile Lib "kernel32" _
     Alias "CreateFileA" ( _
     ByVal lpFileName As String, _
     ByVal dwDesiredAccess As Long, _
@@ -246,9 +246,9 @@ Public Declare Function CreateFile Lib "Kernel32" _
     ByVal hTemplateFile As Long _
 ) As Long
 
-Public Declare Function CloseHandle Lib "Kernel32" (ByVal hObject As Long) As Long
+Public Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 
-Public Declare Function WriteFile Lib "Kernel32" ( _
+Public Declare Function WriteFile Lib "kernel32" ( _
     ByVal hFile As Long, _
     lpBuffer As Any, _
     ByVal nNumberOfBytesToWrite As Long, _
@@ -256,7 +256,7 @@ Public Declare Function WriteFile Lib "Kernel32" ( _
     ByVal lpOverlapped As Long _
 ) As Long
 
-Public Declare Function ReadFile Lib "Kernel32" ( _
+Public Declare Function ReadFile Lib "kernel32" ( _
     ByVal hFile As Long, _
     lpBuffer As Any, _
     ByVal nNumberOfBytesToRead As Long, _
@@ -264,12 +264,12 @@ Public Declare Function ReadFile Lib "Kernel32" ( _
     ByVal lpOverlapped As Long _
 ) As Long
 
-Public Declare Function DeleteFile Lib "Kernel32" _
+Public Declare Function DeleteFile Lib "kernel32" _
     Alias "DeleteFileA" ( _
     ByVal lpFileName As String _
 ) As Long
 
-Public Declare Function GetLastError Lib "Kernel32" () As Long
+Public Declare Function GetLastError Lib "kernel32" () As Long
 
 Public Declare Function ShellExecute Lib "shell32.dll" _
     Alias "ShellExecuteA" ( _
@@ -291,13 +291,13 @@ Public Declare Sub CopyMemory Lib "kernel32.dll" _
     Alias "RtlMoveMemory" ( _
     ByRef Destination As Any, _
     ByRef Source As Any, _
-    ByVal length As Long _
+    ByVal Length As Long _
 )
 
 Public Declare Sub ZeroMemory Lib "kernel32.dll" _
     Alias "RtlZeroMemory" ( _
     ByRef Destination As Any, _
-    ByVal length As Long _
+    ByVal Length As Long _
 )
 
 ' ***********************************
@@ -339,4 +339,14 @@ Public Declare Function WideCharToMultiByte Lib "kernel32.dll" (ByVal CodePage A
     ByVal dwFlags As Long, ByVal lpWideCharStr As Long, ByVal cchWideChar As Long, _
     ByVal lpMultiByteStr As Long, ByVal cchMultiByte As Long, _
     ByVal lpDefaultChar As Long, ByVal lpUsedDefaultChar As Long) As Long
+
+'**************************************
+'Windows API/Global Declarations for :Get Version Number for EXE, DLL or OCX files
+'**************************************
+Public Declare Function GetFileVersionInfo Lib "Version.dll" Alias "GetFileVersionInfoA" (ByVal lptstrFilename As String, ByVal dwhandle As Long, ByVal dwlen As Long, lpData As Any) As Long
+Public Declare Function GetFileVersionInfoSize Lib "Version.dll" Alias "GetFileVersionInfoSizeA" (ByVal lptstrFilename As String, lpdwHandle As Long) As Long
+Public Declare Function VerQueryValue Lib "Version.dll" Alias "VerQueryValueA" (pBlock As Any, ByVal lpSubBlock As String, lplpBuffer As Any, puLen As Long) As Long
+Public Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" (dest As Any, ByVal Source As Long, ByVal Length As Long)
+Public Declare Function lstrcpy Lib "kernel32" Alias "lstrcpyA" (ByVal lpString1 As String, ByVal lpString2 As Long) As Long
+
 

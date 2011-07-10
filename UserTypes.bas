@@ -68,6 +68,23 @@ Public Const IDLE_PARAMETER_DESCR_FUNCTION = "Тип опер."
 '  ProgName(1 To PROG_NAME_LENGTH) As Byte
 '  Reserved(1 To 2) As Byte
 'End Type</pre>
+
+Public Type FILEINFO
+    CompanyName As String
+    FileDescription As String
+    FileVersion As String
+    InternalName As String
+    LegalCopyright As String
+    OriginalFileName As String
+    ProductName As String
+    ProductVersion As String
+End Type
+
+Public Enum VerisonReturnValue
+    eOK = 1
+    eNoVersion = 2
+End Enum
+
 Public TYPE_WPC_TITLE As TYPE_WPC_TITLE
 
 ' Структура заголовка программы

@@ -144,18 +144,18 @@ Public Function ToUTF8(srcStr As String) As String
 End Function
 
 Public Function getGUID() As String
-    Dim Buffer(0 To 15) As Byte
+    Dim buffer(0 To 15) As Byte
     Dim s As String
     Dim ret As Long
 
     s = String$(128, 0)
 
     ' получает численный код
-    ret = CoCreateGuid(Buffer(0))
+    ret = CoCreateGuid(buffer(0))
     
     ' преобразуем его в текст,
     ' используя недокументированную функцию StrPtr
-    ret = StringFromGUID2(Buffer(0), StrPtr(s), 128)
+    ret = StringFromGUID2(buffer(0), StrPtr(s), 128)
 
     getGUID = Left$(s, ret - 1) ' отсекаем "хвост"
 End Function
@@ -278,8 +278,8 @@ End Function
 ' Note that we swap the low order bytes in a long so that
 ' we don't have to worry about overflow problems
 '
-Public Function SwapInteger(ByVal I As Long) As Long
-    SwapInteger = ((I \ &H100) And &HFF) Or ((I And &HFF) * &H100&)
+Public Function SwapInteger(ByVal i As Long) As Long
+    SwapInteger = ((i \ &H100) And &HFF) Or ((i And &HFF) * &H100&)
 End Function
 
 '
@@ -383,7 +383,7 @@ Public Function GetErrorMessageById(ErrNum As Long, ErrDescription As String) As
 End Function
 
 Public Function GetKeyValue(KeyRoot As Long, KeyName As String, SubKeyRef As String, ByRef KeyVal As String) As Boolean
-    Dim I As Long                                           ' Loop Counter
+    Dim i As Long                                           ' Loop Counter
     Dim rc As Long                                          ' Return Code
     Dim hKey As Long                                        ' Handle To An Open Registry Key
     Dim hDepth As Long                                      '
@@ -422,8 +422,8 @@ Public Function GetKeyValue(KeyRoot As Long, KeyName As String, SubKeyRef As Str
             KeyVal = tmpVal                                     ' Copy String Value
         Case REG_DWORD                                          ' Double Word Registry Key Data Type
 
-            For I = Len(tmpVal) To 1 Step -1                    ' Convert Each Bit
-                KeyVal = KeyVal + Hex$(Asc(Mid$(tmpVal, I, 1)))   ' Build Value Char. By Char.
+            For i = Len(tmpVal) To 1 Step -1                    ' Convert Each Bit
+                KeyVal = KeyVal + Hex$(Asc(Mid$(tmpVal, i, 1)))   ' Build Value Char. By Char.
             Next
             KeyVal = Format$("&h" + KeyVal)                     ' Convert Double Word To String
     End Select
@@ -477,3 +477,143 @@ StartSysInfo_Err:
     '</EhFooter>
 End Sub
 
+'**************************************
+' Name: Get Version Number for EXE, DLL or OCX files
+' Description:This function will retrieve the version number, product name, original program name (like if you right click on the EXE file and select properties, then select Version tab, it shows you all that information) etc
+' By: Serge
+'
+' Returns:FileInfo structure
+'
+' Assumes:Label (named Label1 and make it wide enough, also increase the height of the label to have size of the form), Common Dilaog Box (CommonDialog1) and a Command Button (Command1)
+'
+'This code is copyrighted and has' limited warranties.Please see http://www.Planet-Source-Code.com/vb/scripts/ShowCode.asp?txtCodeId=4976&lngWId=1'for details.'**************************************
+
+Public Function GetFileVersionInformation(ByRef pstrFieName As String, _
+                                          ByRef tFileInfo As FILEINFO) As VerisonReturnValue
+    '<EhHeader>
+    On Error GoTo GetFileVersionInformation_Err
+    '</EhHeader>
+    
+    Dim lBufferLen          As Long, lDummy As Long
+    Dim sBuffer()           As Byte
+    Dim lVerPointer         As Long
+    Dim lRet                As Long
+    Dim Lang_Charset_String As String
+    Dim HexNumber           As Long
+    Dim i                   As Integer
+    Dim strTemp             As String
+    
+    'Clear the Buffer tFileInfo
+    tFileInfo.CompanyName = ""
+    tFileInfo.FileDescription = ""
+    tFileInfo.FileVersion = ""
+    tFileInfo.InternalName = ""
+    tFileInfo.LegalCopyright = ""
+    tFileInfo.OriginalFileName = ""
+    tFileInfo.ProductName = ""
+    tFileInfo.ProductVersion = ""
+    
+    lBufferLen = GetFileVersionInfoSize(pstrFieName, lDummy)
+
+    If lBufferLen < 1 Then
+        GetFileVersionInformation = eNoVersion
+        Exit Function
+    End If
+    
+    ReDim sBuffer(lBufferLen)
+    
+    lRet = GetFileVersionInfo(pstrFieName, 0&, lBufferLen, sBuffer(0))
+
+    If lRet = 0 Then
+        GetFileVersionInformation = eNoVersion
+        Exit Function
+    End If
+    
+    lRet = VerQueryValue(sBuffer(0), "\VarFileInfo\Translation", lVerPointer, lBufferLen)
+
+    If lRet = 0 Then
+        GetFileVersionInformation = eNoVersion
+        Exit Function
+    End If
+    
+    Dim bytebuffer(255) As Byte
+    
+    MoveMemory bytebuffer(0), lVerPointer, lBufferLen
+    HexNumber = bytebuffer(2) + bytebuffer(3) * &H100 + bytebuffer(0) * &H10000 + bytebuffer(1) * &H1000000
+    Lang_Charset_String = Hex(HexNumber)
+
+    'Pull it all apart:
+    '04------= SUBLANG_ENGLISH_USA
+    '--09----= LANG_ENGLISH
+    ' ----04E4 = 1252 = Codepage for Windows:Multilingual
+    Do While Len(Lang_Charset_String) < 8
+        Lang_Charset_String = "0" & Lang_Charset_String
+    Loop
+    
+    Dim strVersionInfo(7) As String
+    
+    strVersionInfo(0) = "CompanyName"
+    strVersionInfo(1) = "FileDescription"
+    strVersionInfo(2) = "FileVersion"
+    strVersionInfo(3) = "InternalName"
+    strVersionInfo(4) = "LegalCopyright"
+    strVersionInfo(5) = "OriginalFileName"
+    strVersionInfo(6) = "ProductName"
+    strVersionInfo(7) = "ProductVersion"
+    
+    Dim buffer As String
+
+'<Modified by: Project Administrator at 7.10.2011-21:01:35 on machine: ALPHA>
+    For i = 2 To 2
+'</Modified by: Project Administrator at 7.10.2011-21:01:35 on machine: ALPHA>
+        buffer = String(255, 0)
+        strTemp = "\StringFileInfo\" & Lang_Charset_String & "\" & strVersionInfo(i)
+        lRet = VerQueryValue(sBuffer(0), strTemp, lVerPointer, lBufferLen)
+
+        If lRet = 0 Then
+            GetFileVersionInformation = eNoVersion
+            Exit Function
+        End If
+        
+        lstrcpy buffer, lVerPointer
+        buffer = Mid$(buffer, 1, InStr(buffer, vbNullChar) - 1)
+
+        Select Case i
+
+            Case 0
+                tFileInfo.CompanyName = buffer
+
+            Case 1
+                tFileInfo.FileDescription = buffer
+
+            Case 2
+                tFileInfo.FileVersion = buffer
+
+            Case 3
+                tFileInfo.InternalName = buffer
+
+            Case 4
+                tFileInfo.LegalCopyright = buffer
+
+            Case 5
+                tFileInfo.OriginalFileName = buffer
+
+            Case 6
+                tFileInfo.ProductName = buffer
+
+            Case 7
+                tFileInfo.ProductVersion = buffer
+        End Select
+    Next i
+
+    GetFileVersionInformation = eOK
+    
+    '<EhFooter>
+    Exit Function
+
+GetFileVersionInformation_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.UserFunctions.GetFileVersionInformation]: " _
+        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Resume Next
+    '</EhFooter>
+End Function

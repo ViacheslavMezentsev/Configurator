@@ -84,3 +84,6 @@ end;
 
 [_ISToolPreCompile]
 Name: D:\Projects\vbasic\Configurator\pack.bat; Parameters: ; Flags: runminimized
+
+[InnoIDE_PreCompile]
+Name: D:\Projects\vbasic\Projects\Configurator\pack.bat; Flags: RunMinimized;

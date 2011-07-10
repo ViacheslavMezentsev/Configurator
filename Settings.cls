@@ -47,7 +47,9 @@ Public LogFilePath As String
 '@param
 '@rem <h2>Class_Initialize</h2> - конструктор класса
 Private Sub Class_Initialize()
+
     SetDefaultSettings
+    
 End Sub
 
 '**
@@ -81,6 +83,7 @@ Private Sub SetDefaultSettings()
     FilePath = Replace(FilePath, ".exe", ".log")
 
     LogFilePath = FilePath
+    
 End Sub
 
 '**
@@ -116,6 +119,7 @@ Public Sub LoadSettings()
     FilePath = Replace(FilePath, ".exe", ".log")
 
     LogFilePath = IniFile.ReadString("Settings", "LogFilePath", FilePath)
+    
 End Sub
 
 '**
@@ -140,4 +144,5 @@ Public Sub SaveSettings()
     ' [Лог]
     IniFile.WriteBoolean "Settings", "RewriteLogFile", RewriteLogFile
     IniFile.WriteString "Settings", "LogFilePath", LogFilePath
+    
 End Sub
