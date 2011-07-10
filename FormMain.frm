@@ -1102,7 +1102,7 @@ Private Sub CloseMainMenuItem_Click()
         
         vbRes = MsgBox("Сохранить изменения в файле:" & _
            VBA.Constants.vbCrLf & VBA.Constants.vbCrLf & """" & Manager.FileName & """?", _
-           vbYesNoCancel + vbExclamation, APP_NAME)
+           vbYesNoCancel + vbQuestion, APP_NAME)
         
         Select Case vbRes
         
@@ -1416,14 +1416,14 @@ Private Sub CopyMainMenuItem_Click()
     On Error GoTo CopyMainMenuItem_Click_Err
     '</EhHeader>
     
-    Dim I As Integer
+    Dim i As Integer
     
     FormCopy.List1.Clear
     FormCopy.List2.Clear
     
-    For I = 1 To Manager.ProgramsCount
-        FormCopy.List1.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
-        FormCopy.List2.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
+    For i = 1 To Manager.ProgramsCount
+        FormCopy.List1.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, i, 0))
+        FormCopy.List2.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, i, 0))
     Next
     
     FormCopy.List1.ListIndex = 0
@@ -1689,10 +1689,13 @@ Private Sub Form_Load()
     Debug.Assert MakeTrue(WE_ARE_IN_IDE)
     
     If WE_ARE_IN_IDE Then
+    
         ' Код, выполняемый в runtime среды разработки
         DesignMode = True
         Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Режим разработки."
+        
     Else
+    
         ' Код, который будет в скомпилированном файле
         DesignMode = False
         
@@ -1700,6 +1703,7 @@ Private Sub Form_Load()
         Timer1.Interval = 0
     
         HookKeyboard Timer1
+        
     End If
     
     ' Создаём контейнер для работы с ошибками
@@ -1734,6 +1738,7 @@ Private Sub Form_Load()
     
     Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл лога: " & Settings.LogFilePath
     
+    'TODO: Проверить корректность всех файловых путей
     ' VBRUN.LogModeConstants.vbLogOverwrite не работает по невыясненной причине
     If Settings.RewriteLogFile Then
         Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл лога удалён."
@@ -1742,10 +1747,27 @@ Private Sub Form_Load()
     
     App.StartLogging Settings.LogFilePath, VBRUN.LogModeConstants.vbLogToFile
     
+    ' Версия программы
+    Dim strFile As String
+    Dim udtFileInfo As FILEINFO
+    
+    strFile = String(255, 0)
+    GetModuleFileName 0, strFile, 255
+
+    If GetFileVersionInformation(strFile, udtFileInfo) = eNoVersion Then
+        
+        udtFileInfo.FileVersion = "Версия " & App.Major & "." & App.Minor & "." & App.Revision
+    
+    Else
+    
+        udtFileInfo.FileVersion = "Версия " & udtFileInfo.FileVersion
+        
+    End If
+    
     App.LogEvent VBA.Constants.vbCrLf & VBA.Constants.vbCrLf _
        & "-----------------------------------------------------" & VBA.Constants.vbCrLf _
        & "Конфигуратор управляющих программ" & VBA.Constants.vbCrLf _
-       & "Версия " & App.Major & "." & App.Minor & "." & App.Revision & VBA.Constants.vbCrLf _
+       & udtFileInfo.FileVersion & VBA.Constants.vbCrLf _
        & "Уникальный идентификатор (GUID): " & ProgramGUID & VBA.Constants.vbCrLf _
        & "Дата запуска: " & Date & " г. в " & Time & VBA.Constants.vbCrLf _
        & "-----------------------------------------------------" & VBA.Constants.vbCrLf, _
@@ -1953,7 +1975,7 @@ Private Sub Form_Unload(Cancel As Integer)
         vbRes = MsgBox("Сохранить изменения в файле:" & _
            VBA.Constants.vbCrLf & VBA.Constants.vbCrLf & _
            """" & Manager.FileName & """?", _
-           vbYesNoCancel + vbExclamation, APP_NAME)
+           vbYesNoCancel + vbQuestion, APP_NAME)
            
         Select Case vbRes
         
@@ -2387,16 +2409,16 @@ Private Sub PopupMenuListClearAll_Click()
     
     If LimitsLoaded Then
         Dim CRC8Value As Byte
-        Dim I As Integer
+        Dim i As Integer
         Dim Address As Long
         Dim Size As Long
             
-        For I = 1 To Manager.ProgramsCount
+        For i = 1 To Manager.ProgramsCount
             ' Установка заголовка программы по умолчанию
-            Manager.SetDefaultProgramHeader I
+            Manager.SetDefaultProgramHeader i
         
             ' Пересчитываем CRC поле записи программы
-            Address = (I - 1) * PROGRAM_SIZE_IN_BYTES
+            Address = (i - 1) * PROGRAM_SIZE_IN_BYTES
             Size = PROGRAM_SIZE_IN_BYTES - 1
             
             CRC8Value = Manager.CalculateCRC8(Address + 1, Size)
@@ -3294,7 +3316,7 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo TextName_KeyDown_Err
     '</EhHeader>
     
-    Dim I As Integer
+    Dim i As Integer
     Dim StepPointer As Long
     Dim RecordTitle As TYPE_WPC_TITLE
     
@@ -3307,12 +3329,12 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
         CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
         
-        For I = 1 To PROG_NAME_LENGTH - 1
+        For i = 1 To PROG_NAME_LENGTH - 1
 
-            If I <= Len(TextName.Text) Then
-                RecordTitle.ProgName(I) = Asc(Mid$(TextName.Text, I, 1))
+            If i <= Len(TextName.Text) Then
+                RecordTitle.ProgName(i) = Asc(Mid$(TextName.Text, i, 1))
             Else
-                RecordTitle.ProgName(I) = 0
+                RecordTitle.ProgName(i) = 0
             End If
         Next
         

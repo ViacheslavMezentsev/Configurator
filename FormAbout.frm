@@ -300,10 +300,28 @@ Private Sub Form_Load()
     '</EhHeader>
     
     Me.Caption = "О программе"
-    lblVersion.Caption = "Версия " & App.Major & "." & App.Minor & "." & App.Revision
-    'lblTitle.Caption = App.Title
-    lblTitle.Caption = "Конфигуратор управляющих программ"
     
+    ' Версия программы
+    Dim strFile As String
+    Dim udtFileInfo As FILEINFO
+    
+    strFile = String(255, 0)
+    GetModuleFileName 0, strFile, 255
+
+    If GetFileVersionInformation(strFile, udtFileInfo) = eNoVersion Then
+        
+        udtFileInfo.FileVersion = "Версия " & App.Major & "." & App.Minor & "." & App.Revision
+    
+    Else
+        
+        udtFileInfo.FileVersion = "Версия " & udtFileInfo.FileVersion
+        
+    End If
+    
+    lblVersion.Caption = udtFileInfo.FileVersion
+
+    lblTitle.Caption = "Конфигуратор управляющих программ"
+
     AnimateState = AS_FINISH
     ImageCounter = 1
     picIcon.Picture = ImageListPhotos.ListImages.Item(ImageCounter).Picture
@@ -312,8 +330,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.Form_Load]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.Form_Load]: " & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
     '</EhFooter>
 End Sub
