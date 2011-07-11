@@ -167,12 +167,7 @@ Private Const TCI_SRCCODEPAGE = 2
 
 Private Declare Function GetACP Lib "Kernel32" () As Long
 
-Private Declare Function GetLocaleInfoA Lib "Kernel32" ( _
-    ByVal Locale As Long, _
-    ByVal LCType As Long, _
-    ByVal lpLCData As String, _
-    ByVal cchData As Long _
-) As Long
+Private Declare Function GetLocaleInfoA Lib "Kernel32" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 
 Private Declare Function GetSystemDefaultLCID Lib "Kernel32" () As Long
 Private Declare Function IsWindowUnicode Lib "user32" (ByVal hwnd As Long) As Long

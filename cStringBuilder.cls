@@ -42,8 +42,7 @@ Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 ' Adding "http://vbaccelerator.com/" 10,000 times to a string:</pre>
 Option Explicit
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" _
-      (pDst As Any, pSrc As Any, ByVal ByteLen As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (pDst As Any, pSrc As Any, ByVal ByteLen As Long)
       
       
 Private m_sString As String
