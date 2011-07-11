@@ -16,11 +16,9 @@ Option Explicit
 
 ' -=[ Суффиксы в Visual basic 6 ]=-
 
-' ( Техника указания типа данных с использованием знака типа _
-(%, &, !, #, @, $) считается устаревшей )
+' ( Техника указания типа данных с использованием знака типа (%, &, !, #, @, $) считается устаревшей )
 
-' Название типа: [Символ в качестве суффикса] _
-Integer: [%], Long: [&], Currency: [@], Single: [!], Double: [#], String: [$]
+' Название типа: [Символ в качестве суффикса] Integer: [%], Long: [&], Currency: [@], Single: [!], Double: [#], String: [$]
 
 ' *****************************************
 ' *  КОНСТАНТЫ
@@ -207,9 +205,7 @@ Public Const KEY_CREATE_SUB_KEY = &H4
 Public Const KEY_ENUMERATE_SUB_KEYS = &H8
 Public Const KEY_NOTIFY = &H10
 Public Const KEY_CREATE_LINK = &H20
-Public Const KEY_ALL_ACCESS = KEY_QUERY_VALUE + KEY_SET_VALUE + _
-                       KEY_CREATE_SUB_KEY + KEY_ENUMERATE_SUB_KEYS + _
-                       KEY_NOTIFY + KEY_CREATE_LINK + READ_CONTROL
+Public Const KEY_ALL_ACCESS = KEY_QUERY_VALUE + KEY_SET_VALUE + KEY_CREATE_SUB_KEY + KEY_ENUMERATE_SUB_KEYS + KEY_NOTIFY + KEY_CREATE_LINK + READ_CONTROL
                      
 ' Reg Key ROOT Types...
 Public Const HKEY_LOCAL_MACHINE = &H80000002
@@ -255,17 +251,7 @@ Public FunctionsStrings(0 To NUMBER_OF_FUNCS - 1) As String
 'простых шаблонов упрощается функция экспорта данных в JSON формат.
 '<br>
 'Пример такого шаблона:<pre>
-'    JSONStepsTemplates(WPC_OPERATION_FILL) = "{" _
-'       & """Type"": 1," _
-'       & """Pause"": false," _
-'       & """ColdWaterGate"": false," _
-'       & """HotWaterGate"": false," _
-'       & """RecycledWaterGate"": false," _
-'       & """Rotation"": true," _
-'       & """Level"": 15," _
-'       & """RotationTime"": 6," _
-'       & """PauseTime"": 12," _
-'       & """DrumSpeed"": 50}"
+'    JSONStepsTemplates(WPC_OPERATION_FILL) = "{" '       & """Type"": 1," '       & """Pause"": false," '       & """ColdWaterGate"": false," '       & """HotWaterGate"": false," '       & """RecycledWaterGate"": false," '       & """Rotation"": true," '       & """Level"": 15," '       & """RotationTime"": 6," '       & """PauseTime"": 12," '       & """DrumSpeed"": 50}"
 '</pre>
 Public JSONStepsTemplates(0 To NUMBER_OF_FUNCS - 1) As String
 
