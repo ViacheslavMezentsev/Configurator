@@ -1,4 +1,4 @@
-FormMain = 3, 4, 517, 768, , 11, -4, 871, 762, C
+FormMain = 3, 4, 517, 768, Z, 11, -4, 871, 762, C
 Constants = 0, 0, 894, 881, C
 FormAbout = 28, 28, 657, 639, , 0, 0, 631, 613, C
 Win32API = 10, 10, 884, 871, C
@@ -24,4 +24,4 @@ CModuleSpin = 54, 54, 871, 495, C
 CModuleTrin = 81, 81, 898, 522, C
 CModuleWashOrRinsOrJolt = 135, 135, 952, 576, C
 CIniFiles = 108, 108, 925, 549, C
-ModuleMain = 54, 54, 817, 577, Z
+ModuleMain = 54, 54, 817, 577, 
