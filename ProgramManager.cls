@@ -275,8 +275,8 @@ Public Property Get DataPointer() As Long
 End Property
 
 Public Sub CreateNewFile(FileName As String)
+    
     ' Закрываем файл, если открыт
-
     If FileLoaded Then
         CloseFile
 
@@ -305,9 +305,11 @@ Public Sub CreateNewFile(FileName As String)
 
     ' Устанавливаем количество программ
     ProgramsCount = MAX_NUMBER_OF_PROGRAMS
+    
 End Sub
 
 Public Sub ClearProgramN(ByVal Num As Long)
+
     Dim b As Byte
     Dim ProgPointer As Long
 
@@ -317,14 +319,17 @@ Public Sub ClearProgramN(ByVal Num As Long)
     ' Пересчитываем CRC поле записи программы
     b = CalculateCRC8((Num - 1) * PROGRAM_SIZE_IN_BYTES + 1, PROGRAM_SIZE_IN_BYTES - 1)
     SetByte (Num - 1) * PROGRAM_SIZE_IN_BYTES, b
+    
 End Sub
 
 Public Sub ClearAll()
+
     Dim Cnt As Long
 
     For Cnt = 1 To ProgramsCount
         ClearProgramN (Cnt)
     Next
+    
 End Sub
 
 Public Property Let StepIndex(ByVal vData As Long)
@@ -356,6 +361,7 @@ Public Property Get FileName() As String
 End Property
 
 Public Function GetByte(ByVal Offset As Long) As Byte
+
     Dim BytePointer As Long
     Dim ByteValue As Byte
 
@@ -363,16 +369,20 @@ Public Function GetByte(ByVal Offset As Long) As Byte
     CopyMemory ByteValue, ByVal BytePointer, 1
 
     GetByte = ByteValue
+    
 End Function
 
 Public Sub SetByte(ByVal Offset As Long, ByVal ByteValue As Byte)
+
     Dim BytePointer As Long
 
     BytePointer = DataPointer + Offset
     CopyMemory ByVal BytePointer, ByteValue, 1
+
 End Sub
 
 Public Sub LoadFromFile(FileName As String)
+
     Dim fileid% ' Идентификатор файла
     Dim ProgsCount%
 
@@ -408,6 +418,7 @@ Public Sub LoadFromFile(FileName As String)
     mvarProgramIndex = 0
     mvarStepIndex = 0
     ProgramsCount = ProgsCount%
+    
 End Sub
 
 '**
@@ -723,10 +734,13 @@ Private Function func_ImportFromJSON(FileName As String, _
     ' с поддерживаемыми программой, то прекращаем разбор
 
     If ProgramGUID <> p.Item(1).Item("ProgID") Then
+    
         Set p = Nothing
         FileLoaded = False
         func_ImportFromJSON = False
+        
         Exit Function
+        
     End If
 
     ' Создаём новый образ проекта в памяти и инициализируем его
@@ -735,12 +749,14 @@ Private Function func_ImportFromJSON(FileName As String, _
     ClearAll
 
     For I = 1 To ProgramsCount
+    
         If LimitsLoaded Then SetDefaultProgramHeader I
 
         ' Пересчитываем CRC поле записи программы
 
         b = CalculateCRC8((I - 1) * PROGRAM_SIZE_IN_BYTES + 1, PROGRAM_SIZE_IN_BYTES - 1)
         SetByte (I - 1) * PROGRAM_SIZE_IN_BYTES, b
+        
     Next
 
     'TODO: Добавить ловушки для возможных ошибок на всех этапах считывания
@@ -748,6 +764,7 @@ Private Function func_ImportFromJSON(FileName As String, _
     ProgsCount = p.Count - 1
 
     For I = 1 To ProgsCount
+    
         StepPointer = DataPointer + (I - 1) * PROGRAM_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
 
@@ -1036,43 +1053,6 @@ Public Function ImportFromJSON(FileName As String) As Boolean
     ImportFromJSON = func_ImportFromJSON(FileName, 0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
        RecordHeat, RecordWash, RecordDrain, RecordSpin, RecordCool)
 End Function
-
-Public Function LoadFromJSONFile(sFilePath As String) As String
-    On Error Resume Next
-
-    Dim handle As Integer ' Идентификатор файла
-
-    If LenB(Dir$(sFilePath)) > 0 Then
-        ' Получаем свободный идентификатор
-        handle = FreeFile
-
-        ' Получаем доступ к файлу
-        Open sFilePath For Binary As #handle
-
-        LoadFromJSONFile = Space$(LOF(handle))
-
-        Get #handle, , LoadFromJSONFile
-
-        ' Завершаем работу с файлом
-        Close #handle
-    End If
-End Function
-
-Public Sub SaveToJSONFile(ByVal FileName As String, ByVal NewValue As String)
-    Dim handle As Integer ' Идентификатор файла
-
-    ' Получаем свободный идентификатор
-    handle = FreeFile
-
-    ' Получаем доступ к файлу
-    Open FileName For Output As #handle
-
-    ' Выводим текст в файл
-    Print #handle, ToUTF8(NewValue)
-
-    ' Завершаем работу с файлом
-    Close #handle
-End Sub
 
 Public Sub SaveToFile(FileName As String)
     Dim handle As Integer ' Идентификатор файла

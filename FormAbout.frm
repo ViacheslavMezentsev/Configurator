@@ -139,7 +139,7 @@ Begin VB.Form FormAbout
       AutoSize        =   -1  'True
       Caption         =   "Мезенцев Вячеслав [unihomelab@yandex.ru]"
       BeginProperty Font 
-         Name            =   "Comic Sans MS"
+         Name            =   "Tahoma"
          Size            =   9
          Charset         =   204
          Weight          =   400
@@ -148,19 +148,19 @@ Begin VB.Form FormAbout
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H8000000D&
-      Height          =   240
+      Height          =   216
       Left            =   1320
       MouseIcon       =   "FormAbout.frx":16A09
       MousePointer    =   99  'Custom
       TabIndex        =   8
       Top             =   1848
-      Width           =   3768
+      Width           =   3684
    End
    Begin VB.Label Label2 
       AutoSize        =   -1  'True
       Caption         =   "Зыков Василий [vassily@at.ur.ru]"
       BeginProperty Font 
-         Name            =   "Comic Sans MS"
+         Name            =   "Tahoma"
          Size            =   9
          Charset         =   204
          Weight          =   400
@@ -169,20 +169,20 @@ Begin VB.Form FormAbout
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H8000000D&
-      Height          =   240
+      Height          =   216
       Left            =   1320
       MouseIcon       =   "FormAbout.frx":2CA23
       MousePointer    =   99  'Custom
       TabIndex        =   7
       Top             =   1560
-      Width           =   2880
+      Width           =   2688
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       Caption         =   "Екатеринбург, 2011 г."
       BeginProperty Font 
-         Name            =   "Comic Sans MS"
+         Name            =   "Tahoma"
          Size            =   10.2
          Charset         =   204
          Weight          =   400
@@ -190,16 +190,16 @@ Begin VB.Form FormAbout
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   288
-      Left            =   1656
+      Height          =   252
+      Left            =   1680
       TabIndex        =   6
       Top             =   2316
-      Width           =   2100
+      Width           =   2052
    End
    Begin VB.Label lblDescription 
       Caption         =   "Конфигуратор предназначен для создания или изменения управляющих программ"
       BeginProperty Font 
-         Name            =   "Comic Sans MS"
+         Name            =   "Tahoma"
          Size            =   9
          Charset         =   204
          Weight          =   400
@@ -218,7 +218,7 @@ Begin VB.Form FormAbout
       AutoSize        =   -1  'True
       Caption         =   "Конфигуратор управляющих программ"
       BeginProperty Font 
-         Name            =   "Comic Sans MS"
+         Name            =   "Tahoma"
          Size            =   10.2
          Charset         =   204
          Weight          =   400
@@ -227,17 +227,17 @@ Begin VB.Form FormAbout
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00000000&
-      Height          =   288
+      Height          =   252
       Left            =   1320
       TabIndex        =   4
       Top             =   204
-      Width           =   3888
+      Width           =   3636
    End
    Begin VB.Label lblVersion 
       AutoSize        =   -1  'True
       Caption         =   "Версия"
       BeginProperty Font 
-         Name            =   "Comic Sans MS"
+         Name            =   "Tahoma"
          Size            =   10.2
          Charset         =   204
          Weight          =   400
@@ -245,30 +245,30 @@ Begin VB.Form FormAbout
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   288
+      Height          =   252
       Left            =   1320
       TabIndex        =   5
       Top             =   480
-      Width           =   708
+      Width           =   660
    End
    Begin VB.Label lblDisclaimer 
       AutoSize        =   -1  'True
       Caption         =   "Авторы: "
       BeginProperty Font 
-         Name            =   "Comic Sans MS"
+         Name            =   "Tahoma"
          Size            =   10.2
-         Charset         =   0
+         Charset         =   204
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00000000&
-      Height          =   288
+      Height          =   252
       Left            =   264
       TabIndex        =   3
       Top             =   1524
-      Width           =   852
+      Width           =   828
    End
 End
 Attribute VB_Name = "FormAbout"
@@ -290,11 +290,28 @@ Dim AnimateCounter As Long, ImageCounter As Long
 Dim DX As Long, PicTop As Long, PicHeight As Long
 
 Private Sub cmdOK_Click()
+    '<EhHeader>
+    On Error GoTo cmdOK_Click_Err
+    '</EhHeader>
+
     Unload Me
+    
+    '<EhFooter>
+    Exit Sub
+
+cmdOK_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormAbout.cmdOK_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub Form_Load()
-    'Me.Caption = "About " & App.Title
+
     '<EhHeader>
     On Error GoTo Form_Load_Err
     '</EhHeader>
@@ -343,7 +360,7 @@ Private Sub Label2_Click()
     Dim Success As Integer
     
     ' Вызываем почтовую программу по умолчанию
-    Success = ShellExecute(Me.hwnd, vbNullString, "mailto: vassily@at.ur.ru", vbNullString, vbNullString, SW_SHOWNORMAL)
+    Success = ShellExecute(Me.hWnd, vbNullString, "mailto: vassily@at.ur.ru", vbNullString, vbNullString, SW_SHOWNORMAL)
     
     '<EhFooter>
     Exit Sub
@@ -363,7 +380,7 @@ Private Sub Label3_Click()
     Dim Success As Integer
     
     ' Вызываем почтовую программу по умолчанию
-    Success = ShellExecute(Me.hwnd, vbNullString, "mailto: unihomelab@ya.ru", vbNullString, vbNullString, SW_SHOWNORMAL)
+    Success = ShellExecute(Me.hWnd, vbNullString, "mailto: unihomelab@ya.ru", vbNullString, vbNullString, SW_SHOWNORMAL)
     
     '<EhFooter>
     

@@ -38,6 +38,11 @@ Public StepsViewFontItalic As Boolean
 Public RewriteLogFile As Boolean
 Public FilesHistoryLimitPaths As Boolean
 
+Public AutoUpdateEnabled As Boolean
+Public AutoUpdatePeriod As Long
+Public AutoUpdateLink As String
+Public AutoUpdateLastDate As String
+
 Public StepsViewFontSize As Long
 
 Public StepsViewFontName As String
@@ -84,6 +89,11 @@ Private Sub SetDefaultSettings()
 
     LogFilePath = FilePath
     
+    ' [Обновление]
+    AutoUpdateEnabled = False
+    AutoUpdatePeriod = AUP_EVERY_DAY
+    AutoUpdateLink = "http://x-uni-x.chat.ru/cop/update"
+    
 End Sub
 
 '**
@@ -120,6 +130,12 @@ Public Sub LoadSettings()
 
     LogFilePath = IniFile.ReadString("Settings", "LogFilePath", FilePath)
     
+    ' [Обновление]
+    AutoUpdateEnabled = IniFile.ReadBoolean("Settings", "AutoUpdateEnabled", False)
+    AutoUpdatePeriod = IniFile.ReadInteger("Settings", "AutoUpdatePeriod", AUP_EVERY_DAY)
+    AutoUpdateLink = IniFile.ReadString("Settings", "AutoUpdateLink", _
+            "http://x-uni-x.chat.ru/cop/update")
+            
 End Sub
 
 '**
@@ -144,5 +160,9 @@ Public Sub SaveSettings()
     ' [Лог]
     IniFile.WriteBoolean "Settings", "RewriteLogFile", RewriteLogFile
     IniFile.WriteString "Settings", "LogFilePath", LogFilePath
+    
+    ' [Обновление]
+    IniFile.WriteBoolean "Settings", "AutoUpdateEnabled", AutoUpdateEnabled
+    IniFile.WriteInteger "Settings", "AutoUpdatePeriod", AutoUpdatePeriod
     
 End Sub

@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "ComDlg32.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
-Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TabCtl32.Ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
+Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormOptions 
    BorderStyle     =   3  'Fixed Dialog
@@ -55,7 +55,7 @@ Begin VB.Form FormOptions
          Left            =   -74880
          ScaleHeight     =   3708
          ScaleWidth      =   5688
-         TabIndex        =   26
+         TabIndex        =   25
          TabStop         =   0   'False
          Top             =   360
          Width           =   5688
@@ -63,31 +63,31 @@ Begin VB.Form FormOptions
             Caption         =   "История файлов"
             Height          =   1188
             Left            =   0
-            TabIndex        =   27
+            TabIndex        =   31
             Top             =   0
             Width           =   5676
+            Begin VB.CheckBox CheckFilesHistoryLimitPaths 
+               Caption         =   "Ограничивать длину пути в меню"
+               Height          =   252
+               Left            =   120
+               TabIndex        =   33
+               Top             =   720
+               Width           =   4932
+            End
             Begin VB.TextBox TextFilesHistoryCount 
                Alignment       =   1  'Right Justify
                Height          =   288
                Left            =   1680
                MaxLength       =   2
-               TabIndex        =   30
+               TabIndex        =   32
                Text            =   "4"
                Top             =   312
                Width           =   408
             End
-            Begin VB.CheckBox CheckFilesHistoryLimitPaths 
-               Caption         =   "Ограничивать длину пути в меню"
-               Height          =   252
-               Left            =   120
-               TabIndex        =   29
-               Top             =   720
-               Width           =   4932
-            End
             Begin MSComCtl2.UpDown UpDownFilesHistoryCount 
                Height          =   288
                Left            =   2088
-               TabIndex        =   28
+               TabIndex        =   34
                Top             =   312
                Width           =   240
                _ExtentX        =   423
@@ -95,7 +95,7 @@ Begin VB.Form FormOptions
                _Version        =   393216
                Value           =   4
                BuddyControl    =   "TextFilesHistoryCount"
-               BuddyDispid     =   196627
+               BuddyDispid     =   196612
                OrigLeft        =   2028
                OrigTop         =   300
                OrigRight       =   2268
@@ -105,23 +105,63 @@ Begin VB.Form FormOptions
                BuddyProperty   =   65547
                Enabled         =   -1  'True
             End
-            Begin VB.Label Label6 
-               AutoSize        =   -1  'True
-               Caption         =   "Помнить не более"
-               Height          =   192
-               Left            =   120
-               TabIndex        =   32
-               Top             =   360
-               Width           =   1428
-            End
             Begin VB.Label Label8 
                AutoSize        =   -1  'True
+               BackStyle       =   0  'Transparent
                Caption         =   "файлов"
                Height          =   192
                Left            =   2424
-               TabIndex        =   31
+               TabIndex        =   36
                Top             =   360
                Width           =   612
+            End
+            Begin VB.Label Label6 
+               AutoSize        =   -1  'True
+               BackStyle       =   0  'Transparent
+               Caption         =   "Помнить не более"
+               Height          =   192
+               Left            =   120
+               TabIndex        =   35
+               Top             =   360
+               Width           =   1428
+            End
+         End
+         Begin VB.Frame FrameUpdateOptions 
+            Caption         =   "Обновление"
+            Height          =   972
+            Left            =   0
+            TabIndex        =   27
+            Top             =   1320
+            Width           =   5676
+            Begin VB.CheckBox CheckEnableAutoUpdate 
+               Caption         =   "Включить автоматическое обновление"
+               Height          =   252
+               Left            =   120
+               TabIndex        =   29
+               Top             =   240
+               Width           =   5412
+            End
+            Begin VB.ComboBox ComboAutoUpdatePeriod 
+               Enabled         =   0   'False
+               Height          =   288
+               ItemData        =   "FormOptions.frx":0060
+               Left            =   360
+               List            =   "FormOptions.frx":006D
+               Style           =   2  'Dropdown List
+               TabIndex        =   28
+               Top             =   552
+               Width           =   1692
+            End
+            Begin VB.Label LabelAutoUpdatePeriod 
+               AutoSize        =   -1  'True
+               BackStyle       =   0  'Transparent
+               Caption         =   "период автообновления"
+               Enabled         =   0   'False
+               Height          =   192
+               Left            =   2160
+               TabIndex        =   30
+               Top             =   600
+               Width           =   1932
             End
          End
       End
@@ -132,7 +172,7 @@ Begin VB.Form FormOptions
          Left            =   -74880
          ScaleHeight     =   3732
          ScaleWidth      =   5688
-         TabIndex        =   20
+         TabIndex        =   19
          TabStop         =   0   'False
          Top             =   360
          Width           =   5688
@@ -140,21 +180,21 @@ Begin VB.Form FormOptions
             Caption         =   "Параметры"
             Height          =   3708
             Left            =   0
-            TabIndex        =   21
+            TabIndex        =   20
             Top             =   0
             Width           =   5676
             Begin VB.CheckBox CheckRewriteLogFile 
                Caption         =   "Перезаписывать файл лога при запуске"
                Height          =   252
                Left            =   120
-               TabIndex        =   24
+               TabIndex        =   23
                Top             =   360
                Width           =   3612
             End
             Begin VB.TextBox TextLogFilePath 
                Height          =   288
                Left            =   120
-               TabIndex        =   23
+               TabIndex        =   22
                Top             =   1008
                Width           =   4212
             End
@@ -162,7 +202,7 @@ Begin VB.Form FormOptions
                Caption         =   "Обзор..."
                Height          =   372
                Left            =   4440
-               TabIndex        =   22
+               TabIndex        =   21
                Top             =   972
                Width           =   1092
             End
@@ -171,7 +211,7 @@ Begin VB.Form FormOptions
                Caption         =   "Путь к файлу:"
                Height          =   192
                Left            =   120
-               TabIndex        =   25
+               TabIndex        =   24
                Top             =   720
                Width           =   1092
             End
@@ -192,26 +232,26 @@ Begin VB.Form FormOptions
             Caption         =   "Импорт/экспорт"
             Height          =   732
             Left            =   0
-            TabIndex        =   15
+            TabIndex        =   14
             Top             =   2950
             Width           =   5676
-            Begin VB.ComboBox Combo1 
+            Begin VB.ComboBox ComboImportFormat 
                Height          =   288
-               ItemData        =   "FormOptions.frx":0060
+               ItemData        =   "FormOptions.frx":0099
                Left            =   1380
-               List            =   "FormOptions.frx":0067
+               List            =   "FormOptions.frx":00A0
                Style           =   2  'Dropdown List
-               TabIndex        =   17
+               TabIndex        =   16
                Top             =   240
                Width           =   852
             End
-            Begin VB.ComboBox Combo2 
+            Begin VB.ComboBox ComboExportFormat 
                Height          =   288
-               ItemData        =   "FormOptions.frx":0071
+               ItemData        =   "FormOptions.frx":00AA
                Left            =   4440
-               List            =   "FormOptions.frx":0078
+               List            =   "FormOptions.frx":00B1
                Style           =   2  'Dropdown List
-               TabIndex        =   16
+               TabIndex        =   15
                Top             =   240
                Width           =   852
             End
@@ -220,7 +260,7 @@ Begin VB.Form FormOptions
                Caption         =   "Импорт из:"
                Height          =   192
                Left            =   240
-               TabIndex        =   19
+               TabIndex        =   18
                Top             =   288
                Width           =   864
             End
@@ -229,7 +269,7 @@ Begin VB.Form FormOptions
                Caption         =   "Экспорт в:"
                Height          =   192
                Left            =   3336
-               TabIndex        =   18
+               TabIndex        =   17
                Top             =   288
                Width           =   828
             End
@@ -238,20 +278,20 @@ Begin VB.Form FormOptions
             Caption         =   "Вид"
             Height          =   2868
             Left            =   0
-            TabIndex        =   4
+            TabIndex        =   26
             Top             =   0
             Width           =   5676
             Begin VB.TextBox Text1 
                Height          =   288
                Left            =   2040
-               TabIndex        =   10
+               TabIndex        =   9
                Top             =   264
                Width           =   612
             End
             Begin VB.TextBox Text2 
                Height          =   288
                Left            =   2040
-               TabIndex        =   9
+               TabIndex        =   8
                Top             =   684
                Width           =   612
             End
@@ -259,14 +299,14 @@ Begin VB.Form FormOptions
                Caption         =   "Шрифт"
                Height          =   372
                Left            =   2880
-               TabIndex        =   8
+               TabIndex        =   7
                Top             =   720
                Width           =   972
             End
             Begin VB.Frame Frame2 
                Height          =   492
                Left            =   2880
-               TabIndex        =   6
+               TabIndex        =   5
                Top             =   120
                Width           =   2652
                Begin VB.Label LabelFont 
@@ -274,7 +314,7 @@ Begin VB.Form FormOptions
                   Caption         =   "FontName"
                   Height          =   192
                   Left            =   120
-                  TabIndex        =   7
+                  TabIndex        =   6
                   Top             =   192
                   Width           =   756
                End
@@ -283,14 +323,14 @@ Begin VB.Form FormOptions
                Caption         =   "Применить"
                Height          =   372
                Left            =   4440
-               TabIndex        =   5
+               TabIndex        =   4
                Top             =   720
                Width           =   1092
             End
             Begin MSFlexGridLib.MSFlexGrid StepsView 
                Height          =   1452
                Left            =   120
-               TabIndex        =   11
+               TabIndex        =   10
                TabStop         =   0   'False
                Top             =   1320
                Width           =   5412
@@ -309,7 +349,7 @@ Begin VB.Form FormOptions
                Caption         =   "Ширина столбца шага:"
                Height          =   192
                Left            =   120
-               TabIndex        =   14
+               TabIndex        =   13
                Top             =   360
                Width           =   1740
             End
@@ -317,7 +357,7 @@ Begin VB.Form FormOptions
                Caption         =   "Высота строк таблиц:"
                Height          =   252
                Left            =   120
-               TabIndex        =   13
+               TabIndex        =   12
                Top             =   720
                Width           =   1812
             End
@@ -326,7 +366,7 @@ Begin VB.Form FormOptions
                Caption         =   "Образец:"
                Height          =   192
                Left            =   120
-               TabIndex        =   12
+               TabIndex        =   11
                Top             =   1080
                Width           =   732
             End
@@ -386,6 +426,13 @@ Attribute VB_Exposed = False
 '</pre>
 Option Explicit
 
+Private Sub CheckEnableAutoUpdate_Click()
+
+    ComboAutoUpdatePeriod.Enabled = CheckEnableAutoUpdate.Value > 0
+    LabelAutoUpdatePeriod.Enabled = CheckEnableAutoUpdate.Value > 0
+
+End Sub
+
 '**
 '@rem <h2>cmdApply_Click</h2>
 'Обработчик кнопки "Применить". При её нажатии на образце таблицы будут показаны
@@ -394,9 +441,9 @@ Private Sub cmdApply_Click()
     '<EhHeader>
     On Error GoTo cmdApply_Click_Err
     '</EhHeader>
-    
+
     RefreshStepsView
-    
+
     '<EhFooter>
     Exit Sub
 
@@ -425,15 +472,15 @@ Private Sub cmdFont_Click()
     FontDialog.FontName = Settings.StepsViewFontName
     FontDialog.FontSize = Settings.StepsViewFontSize
     FontDialog.Flags = cdlCFBoth
-    
+
     FontDialog.ShowFont
-    
+
     LabelFont.FontBold = FontDialog.FontBold
     LabelFont.FontItalic = FontDialog.FontItalic
     LabelFont.FontName = FontDialog.FontName
     LabelFont.FontSize = FontDialog.FontSize
     LabelFont.Caption = LabelFont.FontName & ", " & CInt(LabelFont.FontSize)
-    
+
     '<EhFooter>
     Exit Sub
 
@@ -451,23 +498,30 @@ Private Sub cmdOK_Click()
 
     Settings.StepColWidth = CInt(Text1.Text)
     Settings.RowHeight = CInt(Text2.Text)
-    
+
     Settings.StepsViewFontBold = LabelFont.FontBold
     Settings.StepsViewFontItalic = LabelFont.FontItalic
     Settings.StepsViewFontName = LabelFont.FontName
     Settings.StepsViewFontSize = LabelFont.FontSize
     
+    ' [Лог]
     Settings.RewriteLogFile = CheckRewriteLogFile.Value > 0
     Settings.LogFilePath = TextLogFilePath.Text
     
+    ' [История файлов]
     Settings.FilesHistoryLimitPaths = CheckFilesHistoryLimitPaths.Value > 0
     MRUFileList.MaxFileCount = CInt(TextFilesHistoryCount.Text)
 
+    ' [Обновление]
+    Settings.AutoUpdateEnabled = CheckEnableAutoUpdate.Value > 0
+    Settings.AutoUpdatePeriod = ComboAutoUpdatePeriod.ListIndex + 1
+
+    ' Сохраняем изменения настроек в файле конфигурации
     Settings.SaveSettings
-    
+
     FormMain.RefreshComponents False
     Unload Me
-    
+
     '<EhFooter>
     Exit Sub
 
@@ -491,11 +545,11 @@ Private Sub cmdBrowse_Click()
     SaveFileDialog.MaxFileSize = 32767
     SaveFileDialog.InitDir = CurrentDir
     SaveFileDialog.CancelError = True
-    
+
     SaveFileDialog.ShowSave
 
     TextLogFilePath.Text = SaveFileDialog.FileName
-    
+
     '<EhFooter>
     Exit Sub
 
@@ -513,20 +567,20 @@ Private Sub RefreshStepsView()
 
     Dim s As String
     Dim col As Integer, row As Integer
-    
+
     StepsView.Visible = False
-    
+
     StepsView.Font.Bold = LabelFont.FontBold
     StepsView.Font.Italic = LabelFont.FontItalic
     StepsView.Font.Name = LabelFont.FontName
     StepsView.Font.Size = LabelFont.FontSize
-    
+
     StepsView.Cols = 10 + 1
-    
+
     s = "<   |"
 
     For col = 1 To StepsView.Cols - 1
-        
+
         If col < StepsView.Cols - 1 Then
 
             If col < 10 Then
@@ -541,9 +595,9 @@ Private Sub RefreshStepsView()
         StepsView.row = 0
         StepsView.CellAlignment = flexAlignCenterCenter
     Next
-    
+
     StepsView.FormatString = s
-       
+
     s = ";|" _
        & "Клапан горячей воды" & "|" _
        & "Клапан холодной воды 1" & "|" _
@@ -563,14 +617,14 @@ Private Sub RefreshStepsView()
        & "Слив 2" & "|" _
        & "Нагрев" & "|" _
        & "Мотор"
-    
+
     StepsView.FormatString = s
-    
+
     ' "Тушим" все ячейки таблицы
 
     For row = 1 To StepsView.rows - 1
         StepsView.RowHeight(row) = CInt(Text2.Text)
-        
+
         For col = 1 To 10
             StepsView.ColWidth(col) = CInt(Text1.Text)
             StepsView.col = col
@@ -578,12 +632,12 @@ Private Sub RefreshStepsView()
             StepsView.CellBackColor = &H8000000F
         Next
     Next
-    
+
     StepsView.col = 1
     StepsView.row = 1
-    
+
     StepsView.Visible = True
-    
+
     '<EhFooter>
     Exit Sub
 
@@ -601,35 +655,48 @@ Private Sub Form_Load()
 
     Text1.Text = "" & Settings.StepColWidth
     Text2.Text = "" & Settings.RowHeight
-    
-    Combo1.ListIndex = 0
-    Combo2.ListIndex = 0
-    
+
+    ComboImportFormat.ListIndex = 0
+    ComboExportFormat.ListIndex = 0
+
     LabelFont.FontBold = Settings.StepsViewFontBold
     LabelFont.FontItalic = Settings.StepsViewFontItalic
     LabelFont.FontName = Settings.StepsViewFontName
     LabelFont.FontSize = Settings.StepsViewFontSize
     LabelFont.Caption = LabelFont.FontName & ", " & CInt(LabelFont.FontSize)
-    
+
     TextFilesHistoryCount.Text = MRUFileList.MaxFileCount
-    
+
     Select Case Settings.FilesHistoryLimitPaths
         Case False: CheckFilesHistoryLimitPaths.Value = 0
         Case True: CheckFilesHistoryLimitPaths.Value = 1
     End Select
-    
+
     Select Case Settings.RewriteLogFile
         Case False: CheckRewriteLogFile.Value = 0
         Case True: CheckRewriteLogFile.Value = 1
     End Select
 
     TextLogFilePath.Text = Settings.LogFilePath
-    
+
+    ' [Обновление]
+    Select Case Settings.AutoUpdateEnabled
+
+        Case False: CheckEnableAutoUpdate.Value = 0
+
+        Case True: CheckEnableAutoUpdate.Value = 1
+
+    End Select
+
+    ComboAutoUpdatePeriod.ListIndex = Settings.AutoUpdatePeriod - 1
+    ComboAutoUpdatePeriod.Enabled = CheckEnableAutoUpdate.Value > 0
+    LabelAutoUpdatePeriod.Enabled = CheckEnableAutoUpdate.Value > 0
+
     RefreshStepsView
-    
-    'center the form
+
+    ' Перемещаем форму в центр экрана
     Me.Move (Screen.Width - Me.Width) / 2, (Screen.Height - Me.Height) / 2
-    
+
     '<EhFooter>
     Exit Sub
 
@@ -646,7 +713,7 @@ Private Sub Text1_KeyPress(KeyAscii As Integer)
     '</EhHeader>
 
     If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
-    
+
     '<EhFooter>
     Exit Sub
 
@@ -663,7 +730,7 @@ Private Sub Text2_KeyPress(KeyAscii As Integer)
     '</EhHeader>
 
     If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
-    
+
     '<EhFooter>
     Exit Sub
 
@@ -680,7 +747,7 @@ Private Sub TextFilesHistoryCount_Change()
     '<EhHeader>
     On Error GoTo TextFilesHistoryCount_Change_Err
     '</EhHeader>
-    
+
     If CInt(TextFilesHistoryCount.Text) > 10 Then
         TextFilesHistoryCount.Text = "10"
     ElseIf CInt(TextFilesHistoryCount.Text) < 1 Then
