@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "ComDlg32.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Begin VB.Form FormMain 
    Caption         =   "Конфигуратор УП"
    ClientHeight    =   6552
@@ -12,8 +12,13 @@ Begin VB.Form FormMain
    LinkTopic       =   "Form1"
    ScaleHeight     =   6552
    ScaleWidth      =   8976
+   Begin VB.Timer TimerAutoUpdate 
+      Interval        =   60000
+      Left            =   4560
+      Top             =   5760
+   End
    Begin VB.Timer TimerLogAnimate 
-      Left            =   3840
+      Left            =   6480
       Top             =   5760
    End
    Begin VB.Frame FrameLogSplitter 
@@ -38,11 +43,11 @@ Begin VB.Form FormMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   372
-      Left            =   4320
+      Left            =   6840
       TabIndex        =   18
       Top             =   5760
       Visible         =   0   'False
-      Width           =   4572
+      Width           =   2052
    End
    Begin MSComctlLib.ImageList ImageListMainToolbar_32x32 
       Left            =   960
@@ -461,10 +466,10 @@ Begin VB.Form FormMain
    End
    Begin VB.Image ImageGrayed 
       Height          =   192
-      Left            =   3720
+      Left            =   3480
       Picture         =   "FormMain.frx":8955
       Stretch         =   -1  'True
-      Top             =   5760
+      Top             =   5640
       Visible         =   0   'False
       Width           =   192
    End
@@ -630,6 +635,9 @@ Begin VB.Form FormMain
          Caption         =   "&Справка"
          Shortcut        =   {F1}
       End
+      Begin VB.Menu MenuItemDoUpdate 
+         Caption         =   "О&бновить"
+      End
       Begin VB.Menu AboutMainMenuItem 
          Caption         =   "&О программе"
       End
@@ -685,6 +693,11 @@ Public ModuleCool As CModuleCool
 '**
 '@rem
 Public ModuleTrin As CModuleTrin
+
+'**
+'@rem
+Private WithEvents Kachalka As clsKachalka
+Attribute Kachalka.VB_VarHelpID = -1
 
 Dim SplitterRightMoving As Boolean
 Dim SplitterLeftMoving As Boolean
@@ -1416,14 +1429,14 @@ Private Sub CopyMainMenuItem_Click()
     On Error GoTo CopyMainMenuItem_Click_Err
     '</EhHeader>
     
-    Dim i As Integer
+    Dim I As Integer
     
     FormCopy.List1.Clear
     FormCopy.List2.Clear
     
-    For i = 1 To Manager.ProgramsCount
-        FormCopy.List1.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, i, 0))
-        FormCopy.List2.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, i, 0))
+    For I = 1 To Manager.ProgramsCount
+        FormCopy.List1.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
+        FormCopy.List2.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
     Next
     
     FormCopy.List1.ListIndex = 0
@@ -1522,7 +1535,9 @@ Private Sub ExportMainMenuItem_Click()
     FName = SaveFileDialog.FileName
     
     If FName <> "" Then
+    
         Manager.ExportToJSON FName
+        
     End If
 
     '<EhFooter>
@@ -1668,6 +1683,7 @@ DisplayMRU_Err:
 End Sub
  
 Private Sub Form_Load()
+
     On Local Error GoTo Form_Load_Err
     
     Dim itm As ListItem
@@ -1738,11 +1754,20 @@ Private Sub Form_Load()
     
     Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл лога: " & Settings.LogFilePath
     
+    ' При загрузке выставляем флаг необходимости обновления
+    ' Он будет действовать до срабатывания таймера автообновления
+    If Settings.AutoUpdateEnabled Then AutoUpdateState = AUS_NOT_UPDATED
+
+    ' Инициализируем счётчик минут для таймера автообновления
+    AutoUpdateCounter = 0
+    
     'TODO: Проверить корректность всех файловых путей
     ' VBRUN.LogModeConstants.vbLogOverwrite не работает по невыясненной причине
     If Settings.RewriteLogFile Then
+    
         Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл лога удалён."
         DeleteFile Settings.LogFilePath
+        
     End If
     
     App.StartLogging Settings.LogFilePath, VBRUN.LogModeConstants.vbLogToFile
@@ -1764,6 +1789,8 @@ Private Sub Form_Load()
         
     End If
     
+    ' TODO: Добавить информацию о версии операционной системы и имени
+    ' текущего пользователя
     App.LogEvent VBA.Constants.vbCrLf & VBA.Constants.vbCrLf _
        & "-----------------------------------------------------" & VBA.Constants.vbCrLf _
        & "Конфигуратор управляющих программ" & VBA.Constants.vbCrLf _
@@ -1945,6 +1972,9 @@ Private Sub Form_Load()
     FunctionsStrings(9) = "Отжим"
     FunctionsStrings(10) = "Охлаждение"
 
+    ' Создаём образ "качалки"
+    Set Kachalka = New clsKachalka
+
     ' Обновляем вид
     RefreshComponents False
     
@@ -1970,6 +2000,7 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
 
     If Modified = True Then
+    
         Dim vbRes As Integer
         
         vbRes = MsgBox("Сохранить изменения в файле:" & _
@@ -1988,6 +2019,7 @@ Private Sub Form_Unload(Cancel As Integer)
                 Exit Sub
                 
         End Select
+        
     End If
     
     Settings.SaveSettings
@@ -2005,6 +2037,7 @@ Private Sub Form_Unload(Cancel As Integer)
     
     ВекторОшибок.removeAllElements
     Set ВекторОшибок = Nothing
+    
 End Sub
 
 Private Sub GotoMenuItem_Click()
@@ -2048,6 +2081,18 @@ Private Sub ImportMainMenuItem_Click()
     On Error GoTo ImportMainMenuItem_Click_Err
     '</EhHeader>
 
+    ' Если файл загружен, то спрашиваем о действии
+    If Manager.FileLoaded Then
+
+        CloseMainMenuItem_Click
+
+        ' Если пользователь нажал "Отмена" в диалоговом окне,
+        ' то файл остаётся открытым. В этом случае ничего не делаем
+        If Manager.FileLoaded Then Exit Sub
+
+    End If
+
+    ' Теперь можно импортировать файл
     OpenFileDialog.DialogTitle = "Импорт файла..."
     OpenFileDialog.DefaultExt = ".json"
     OpenFileDialog.FileName = ""
@@ -2283,6 +2328,65 @@ ListPrograms_MouseDown_Err:
     '</EhFooter>
 End Sub
 
+Private Sub MenuItemDoUpdate_Click()
+    '<EhHeader>
+    On Error GoTo MenuItemDoUpdate_Click_Err
+    '</EhHeader>
+
+    ' Проверяем интернет-соединение
+    Dim InternetConnected As Boolean
+    Dim Result As Boolean
+    Dim dwConnectionTypes As Long
+
+    StatusBar.Panels(1).Text = "Проверяю доступ к сети..."
+    
+    dwConnectionTypes = INTERNET_CONNECTION_MODEM + INTERNET_CONNECTION_LAN + _
+            INTERNET_CONNECTION_PROXY
+    
+    InternetConnected = InternetGetConnectedState(dwConnectionTypes, 0)
+
+    ' TODO: Отображать процесс автообновления в статус строке
+    ' Если имеется подключение к Интернет, то проверяем доступность сервера и
+    ' файла автообновления
+    If InternetConnected = True Then
+
+        StatusBar.Panels(1).Text = "Проверяю наличие обновлений..."
+        
+        ' Пытаемся обновиться
+        Result = DoAutoUpdate(Settings.AutoUpdateLink)
+
+        If Result = True Then
+
+            StatusBar.Panels(1).Text = "Проверка проведена"
+            
+            AutoUpdateState = AUS_UPDATED
+            
+            ' Останавливаем таймер и выходим
+            TimerAutoUpdate.Interval = 0
+            
+            Exit Sub
+
+        End If
+        
+        ' TODO: Подумать что тут написать пользователю
+        StatusBar.Panels(1).Text = ""
+        
+    End If
+    
+    '<EhFooter>
+    Exit Sub
+
+MenuItemDoUpdate_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.MenuItemDoUpdate_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub MRUItems_Click(Index As Integer)
     '<EhHeader>
     On Error GoTo MRUItems_Click_Err
@@ -2328,8 +2432,18 @@ Private Sub NewMainMenuItem_Click()
     On Error GoTo NewMainMenuItem_Click_Err
     '</EhHeader>
 
-    If Manager.FileLoaded Then CloseMainMenuItem_Click
+    ' Если файл загружен, то спрашиваем о действии
+    If Manager.FileLoaded Then
 
+        CloseMainMenuItem_Click
+
+        ' Если пользователь нажал "Отмена" в диалоговом окне,
+        ' то файл остаётся открытым. В этом случае ничего не делаем
+        If Manager.FileLoaded Then Exit Sub
+
+    End If
+
+    ' Теперь можно создавать новый файл
     Manager.CreateNewFile (DEFAULT_FILE_NAME)
     
     ' Очистить все программы из образа
@@ -2409,16 +2523,16 @@ Private Sub PopupMenuListClearAll_Click()
     
     If LimitsLoaded Then
         Dim CRC8Value As Byte
-        Dim i As Integer
+        Dim I As Integer
         Dim Address As Long
         Dim Size As Long
             
-        For i = 1 To Manager.ProgramsCount
+        For I = 1 To Manager.ProgramsCount
             ' Установка заголовка программы по умолчанию
-            Manager.SetDefaultProgramHeader i
+            Manager.SetDefaultProgramHeader I
         
             ' Пересчитываем CRC поле записи программы
-            Address = (i - 1) * PROGRAM_SIZE_IN_BYTES
+            Address = (I - 1) * PROGRAM_SIZE_IN_BYTES
             Size = PROGRAM_SIZE_IN_BYTES - 1
             
             CRC8Value = Manager.CalculateCRC8(Address + 1, Size)
@@ -2644,6 +2758,18 @@ Private Sub OpenMainMenuItem_Click()
     On Error GoTo OpenMainMenuItem_Click_Err
     '</EhHeader>
 
+    ' Если файл загружен, то спрашиваем о действии
+    If Manager.FileLoaded Then
+
+        CloseMainMenuItem_Click
+
+        ' Если пользователь нажал "Отмена" в диалоговом окне,
+        ' то файл остаётся открытым. В этом случае ничего не делаем
+        If Manager.FileLoaded Then Exit Sub
+
+    End If
+    
+    ' Теперь можно открывать новый файл
     Dim FileName As String
 
     OpenFileDialog.DialogTitle = "Открыть файл..."
@@ -2661,11 +2787,7 @@ Private Sub OpenMainMenuItem_Click()
     FileName = OpenFileDialog.FileName
         
     If FileName <> "" Then
-
-        If Manager.FileLoaded Then
-            CloseMainMenuItem_Click
-        End If
-               
+              
         FileName = MiscExtractPathName(OpenFileDialog.FileName, False)
         Manager.LoadFromFile (OpenFileDialog.FileName)
         SetCaption (Manager.FileName)
@@ -2777,15 +2899,20 @@ Private Sub SaveMainMenuItem_Click()
     If Modified Then
 
         If DoesFileExist(Manager.FileName) Then
+        
             Manager.SaveToFile (Manager.FileName)
             SetModified False
             RefreshDataComponents
+            
         Else
+        
             SaveAsMainMenuItem_Click
+            
         End If
         
         MRUFileList.AddFile Manager.FileName
         DisplayMRU
+        
     End If
     
     '<EhFooter>
@@ -3316,7 +3443,7 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo TextName_KeyDown_Err
     '</EhHeader>
     
-    Dim i As Integer
+    Dim I As Integer
     Dim StepPointer As Long
     Dim RecordTitle As TYPE_WPC_TITLE
     
@@ -3329,12 +3456,12 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
         CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
         
-        For i = 1 To PROG_NAME_LENGTH - 1
+        For I = 1 To PROG_NAME_LENGTH - 1
 
-            If i <= Len(TextName.Text) Then
-                RecordTitle.ProgName(i) = Asc(Mid$(TextName.Text, i, 1))
+            If I <= Len(TextName.Text) Then
+                RecordTitle.ProgName(I) = Asc(Mid$(TextName.Text, I, 1))
             Else
-                RecordTitle.ProgName(i) = 0
+                RecordTitle.ProgName(I) = 0
             End If
         Next
         
@@ -3421,12 +3548,17 @@ Private Sub Timer1_Timer()
     If TypeOf Me.ActiveControl Is MSFlexGrid Then
 
         If Me.ActiveControl.Name = "StepsView" Then
+        
             StepsView_KeyDown CInt(Timer1.Tag), 0
+            
         End If
         
         If Me.ActiveControl.Name = "ListPrograms" Then
+        
             ListPrograms_KeyDown CInt(Timer1.Tag), 0
+            
         End If
+        
     End If
     
     '<EhFooter>
@@ -3436,6 +3568,273 @@ Timer1_Timer_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextName_LostFocus]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
+    '<EhHeader>
+    On Error GoTo DoAutoUpdate_Err
+    '</EhHeader>
+
+    Dim Result As Boolean
+       
+    Result = False
+    
+    ' Создаём временный файл
+    Dim szBuffer As String, szTempFileName As String
+    Dim MAX_PATH As Long
+    Dim length As Integer
+    
+    MAX_PATH = 255
+    szBuffer = Space(255)
+    
+    ' Получаем путь к временной папке
+    length = GetTempPath(MAX_PATH, szBuffer)
+
+    ' Формируем путь к временному файлу
+    szTempFileName = Space(255)
+    GetTempFileName szBuffer, "cop", 0, szTempFileName
+       
+    ' Пытаемся скачать файл описания с сервера
+    Kachalka.DownloadToFile UpdateFileLink, szTempFileName
+    
+    ' Обрабатываем скачанный файл
+    Dim I As Integer
+    Dim CurrMajor As Integer, CurrMinor As Integer, CurrRevision As Integer, CurrBuild As Integer
+    Dim Major As Integer, Minor As Integer, Revision As Integer, Build As Integer
+    Dim sInputJson As String
+    Dim Version As String
+    Dim strFile As String
+    Dim DownloadLink As String
+    Dim VerArr() As String
+    
+    Dim udtFileInfo As FILEINFO
+    Dim p As Object
+    
+    strFile = String(255, 0)
+    GetModuleFileName 0, strFile, 255
+    
+    ' На время отладки задаём отладочный входной файл
+    If DesignMode Then szTempFileName = "D:\Projects\vbasic\Projects\Configurator\update"
+    
+    ' Считываем файл и декодируем его
+    sInputJson = FromUTF8(LoadFromJSONFile(szTempFileName))
+
+    ' Производим разбор данных из файла
+    Set p = JSON.parse(sInputJson)
+   
+    ' Ищем запись, имеющую необходимый GUID в поле ProgID
+    For I = 1 To p.Count
+    
+        If (ProgramGUID = p.Item(I).Item("ProgID")) Then
+        
+            ' Считываем информацию о версии
+            Major = p.Item(I).Item("Major")
+            Minor = p.Item(I).Item("Minor")
+            Revision = p.Item(I).Item("Revision")
+            Build = p.Item(I).Item("Build")
+            DownloadLink = p.Item(I).Item("DownloadLink")
+                       
+            ' Узнаём свою текущую версию
+            If GetFileVersionInformation(strFile, udtFileInfo) = eNoVersion Then
+                
+                CurrMajor = Major
+                CurrMinor = Minor
+                CurrRevision = Revision
+                CurrBuild = Build
+                           
+            Else
+                
+                VerArr = Split(udtFileInfo.FileVersion, ".")
+                
+                ' Косвенно проверяем формат своей версии
+                If (UBound(VerArr) = 3) Then
+                
+                    CurrMajor = CInt(VerArr(0))
+                    CurrMinor = CInt(VerArr(1))
+                    CurrRevision = CInt(VerArr(2))
+                    CurrBuild = CInt(VerArr(3))
+                    
+                Else
+                                  
+                    CurrMajor = Major
+                    CurrMinor = Minor
+                    CurrRevision = Revision
+                    CurrBuild = Build
+                
+                End If
+                
+            End If
+            
+            Dim NeedUpdate As Boolean
+            
+            NeedUpdate = False
+            
+            ' Если текущая версия устарела, то выводим сообщение об этом
+            If CurrMajor >= Major Then
+                
+                If CurrMinor >= Minor Then
+                    
+                    If CurrRevision >= Revision Then
+                        
+                        If CurrBuild >= Build Then
+                            
+                        Else
+                            
+                            NeedUpdate = True
+                            
+                        End If
+                    
+                    Else
+                        
+                        NeedUpdate = True
+                        
+                    End If
+                    
+                Else
+                    
+                    NeedUpdate = True
+                    
+                End If
+            
+            Else
+            
+                NeedUpdate = True
+                
+            End If
+            
+            ' Спрашиваем и качаем дистрибутив
+            If NeedUpdate = True Then
+            
+                Dim vbRes As Integer
+                
+                vbRes = MsgBox("Доступно обновление:" & _
+                    vbCrLf & vbCrLf & _
+                    "Новая версия: " & CStr(Major) & "." & CStr(Minor) & "." & CStr(Revision) & "." & CStr(Build) & vbCrLf & _
+                    "Текущая версия: " & CStr(CurrMajor) & "." & CStr(CurrMinor) & "." & CStr(CurrRevision) & "." & CStr(CurrBuild) & _
+                    vbCrLf & vbCrLf & "Загрузить обновление?", _
+                    vbYesNo + vbQuestion, APP_NAME)
+                
+                Select Case vbRes
+                
+                    Case vbYes
+                    
+                        Dim FileName As String
+                    
+                        SaveFileDialog.FileName = MiscExtractPathName(DownloadLink, False, "/")
+                        SaveFileDialog.DialogTitle = "Сохранить файл..."
+                        SaveFileDialog.DefaultExt = ""
+                        SaveFileDialog.Filter = "Все файлы (*.*)|*.*"
+                        SaveFileDialog.FilterIndex = 1
+                        SaveFileDialog.MaxFileSize = 32767
+                        SaveFileDialog.InitDir = CurrentDir
+                        SaveFileDialog.CancelError = True
+                        
+                        SaveFileDialog.ShowSave
+                    
+                        FileName = SaveFileDialog.FileName
+                        
+                        If FileName <> "" Then
+                                           
+                            ' Пытаемся скачать файл
+                            Kachalka.DownloadToFile DownloadLink, FileName
+                    
+                        End If
+                        
+                    Case vbNo
+                
+                End Select
+                
+            End If
+            
+            Result = True
+        
+            ' Выходим из цикла
+            Exit For
+            
+        End If
+        
+    Next
+    
+    ' Удаляем временный файл
+    If DoesFileExist(szTempFileName) Then DeleteFile szTempFileName
+       
+    Set p = Nothing
+       
+    DoAutoUpdate = Result
+    
+    '<EhFooter>
+    Exit Function
+
+DoAutoUpdate_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.DoAutoUpdate]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Function
+
+Private Sub TimerAutoUpdate_Timer()
+    '<EhHeader>
+    On Error GoTo TimerAutoUpdate_Timer_Err
+    '</EhHeader>
+
+    ' Если пользователь отменил автообновление
+    If Settings.AutoUpdateEnabled = False Then
+
+        ' Останавливаем таймер
+        TimerAutoUpdate.Interval = 0
+        Exit Sub
+
+    End If
+
+    ' Если обновились в текущем сеансе, то выходим
+    If AutoUpdateState = AUS_UPDATED Then
+
+        ' Останавливаем таймер
+        TimerAutoUpdate.Interval = 0
+        Exit Sub
+
+    End If
+
+    ' В режиме отладки проверка обновления будет происходить
+    ' каждую минуту
+    If DesignMode = True Then
+        
+    Else
+    
+        ' Будет делаться три попытки (каждый час по одной)
+        Inc (AutoUpdateCounter)
+    
+        ' Проверять файл обновления на сервере не чаще одного раза в час
+        ' Interval = 60000
+        If AutoUpdateCounter < 3600 Then Exit Sub
+    
+        ' Обнуляем счётчик минут (следующая попытка через час)
+        AutoUpdateCounter = 0
+        
+    End If
+
+    ' Выполняем обновление
+    MenuItemDoUpdate_Click
+
+    '<EhFooter>
+    Exit Sub
+
+TimerAutoUpdate_Timer_Err:
+    
+    StatusBar.Panels(1).Text = "Ошибка (см. лог)"
+    
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.TimerAutoUpdate_Timer]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 

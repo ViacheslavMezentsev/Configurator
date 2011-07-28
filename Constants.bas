@@ -221,6 +221,25 @@ Public Const gREGVALSYSINFO = "PATH"
 '**
 '@rem Количество типов функций шага программы
 Public Const NUMBER_OF_FUNCS = 11
+'**
+'@rem Приложение не обновлялось
+Public Const AUS_NOT_UPDATED = 0
+
+'**
+'@rem Приложение обновлено
+Public Const AUS_UPDATED = 1
+
+'**
+'@rem Проверка обновления: каждый день
+Public Const AUP_EVERY_DAY = 1
+
+'**
+'@rem Проверка обновления: раз в неделю
+Public Const AUP_ONES_PER_WEEK = 2
+
+'**
+'@rem Проверка обновления: раз в месяц
+Public Const AUP_ONES_PER_MONTH = 3
 
 ' *****************************************
 ' *  ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
@@ -236,6 +255,12 @@ Public DesignMode As Boolean
 '**
 '@rem Признак загрузки данных об уставках из файла limits.ini
 Public LimitsLoaded As Boolean
+'**
+'@rem Счётчик минут для таймена автообновления
+Public AutoUpdateCounter As Long
+'**
+'@rem Состояние процесса автообновления
+Public AutoUpdateState As Byte
 '**
 '@rem Хук для клавиатуры.
 Public Hook As Long
@@ -280,3 +305,4 @@ Public Manager As CProgramManager
 '**
 '@rem Класс для работы со списком ранее открытых файлов
 Public MRUFileList As cMRUFileList
+

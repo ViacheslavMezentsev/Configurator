@@ -47,6 +47,7 @@ Source: ..\mscomctl.ocx; DestDir: {app}; Flags: ignoreversion
 Source: ..\mscomct2.ocx; DestDir: {app}; Flags: ignoreversion
 Source: ..\comdlg32.ocx; DestDir: {app}; Flags: ignoreversion
 Source: ..\msflxgrd.ocx; DestDir: {app}; Flags: ignoreversion
+Source: ..\tabctl32.ocx; DestDir: {app}; Flags: ignoreversion
 Source: {#ButtonImage}; DestDir: {tmp}; Flags: dontcopy
 
 [Icons]
