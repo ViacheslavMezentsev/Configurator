@@ -122,7 +122,7 @@ Public Const INTERNET_CONNECTION_MODEM_BUSY = 8
 ' The WritePrivateProfileSection function replaces the keys and values
 ' under the specified section in an initialization file.
 Public Declare Function WritePrivateProfileSection _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "WritePrivateProfileSectionA" (ByVal lpAppName As String, _
                                                     ByVal lpString As String, _
                                                     ByVal lpFileName As String) As Boolean
@@ -130,21 +130,21 @@ Public Declare Function WritePrivateProfileSection _
 ' The WritePrivateProfileString function copies a string
 ' into the specified section of the specified initialization file.
 Public Declare Function WritePrivateProfileStringByKeyName% _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "WritePrivateProfileStringA" (ByVal lpAppName$, _
                                                    ByVal lpKeyName$, _
                                                    ByVal lpString$, _
                                                    ByVal lpFileName$)
 
 Public Declare Function WritePrivateProfileStringToDeleteKey% _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "WritePrivateProfileStringA" (ByVal lpAppName$, _
                                                    ByVal lpKeyName$, _
                                                    ByVal lpString&, _
                                                    ByVal lpFileName$)
 
 Public Declare Function WritePrivateProfileStringToDeleteSection% _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "WritePrivateProfileStringA" (ByVal lpAppName$, _
                                                    ByVal lpKeyName&, _
                                                    ByVal lpString&, _
@@ -153,7 +153,7 @@ Public Declare Function WritePrivateProfileStringToDeleteSection% _
 ' The GetPrivateProfileString function retrieves a string
 ' from the specified section in an initialization file.
 Public Declare Function GetPrivateProfileStringByKeyName& _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "GetPrivateProfileStringA" (ByVal lpAppName$, _
                                                  ByVal lpKeyName$, _
                                                  ByVal lpDefault$, _
@@ -162,7 +162,7 @@ Public Declare Function GetPrivateProfileStringByKeyName& _
                                                  ByVal lpFileName$)
 
 Public Declare Function GetPrivateProfileStringKeys& _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "GetPrivateProfileStringA" (ByVal lpAppName$, _
                                                  ByVal lpKeyName&, _
                                                  ByVal lpDefault$, _
@@ -171,7 +171,7 @@ Public Declare Function GetPrivateProfileStringKeys& _
                                                  ByVal lpFileName$)
 
 Public Declare Function GetModuleFileName _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "GetModuleFileNameA" (ByVal hModule As Long, _
                                            ByVal lpFileName As String, _
                                            ByVal nSize As Long) As Long
@@ -217,7 +217,7 @@ Public Declare Function RegCloseKey Lib "advapi32" (ByVal hKey As Long) As Long
 ' ******************************************************
 
 Public Declare Function CreateFileMapping _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "CreateFileMappingA" (ByVal hFile As Long, _
                                            lpFileMappigAttributes As SECURITY_ATTRIBUTES, _
                                            ByVal flProtect As Long, _
@@ -226,22 +226,22 @@ Public Declare Function CreateFileMapping _
                                            ByVal lpname As String) As Long
 
 Public Declare Function OpenFileMapping _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "OpenFileMappingA" (ByVal dwDesiredAccess As Long, _
                                          ByVal bInheritHandle As Long, _
                                          ByVal lpname As String) As Long
 
 Public Declare Function MapViewOfFile _
-               Lib "Kernel32" (ByVal hFileMappingObject As Long, _
+               Lib "kernel32" (ByVal hFileMappingObject As Long, _
                                ByVal dwDesiredAccess As Long, _
                                ByVal dwFileOffsetHigh As Long, _
                                ByVal dwFileOffsetLow As Long, _
                                ByVal dwNumberOfBytesToMap As Long) As Long
 
 Public Declare Function UnmapViewOfFile _
-               Lib "Kernel32" (ByVal lpBaseAddress As Long) As Long
+               Lib "kernel32" (ByVal lpBaseAddress As Long) As Long
 
-Public Declare Function FlushFileBuffers Lib "Kernel32" (ByVal hFile As Long) As Long
+Public Declare Function FlushFileBuffers Lib "kernel32" (ByVal hFile As Long) As Long
 
 ' *********************************
 ' *  ‘”Õ ÷»» ƒÀﬂ –¿¡Œ“€ — ‘¿…À¿Ã»
@@ -249,7 +249,7 @@ Public Declare Function FlushFileBuffers Lib "Kernel32" (ByVal hFile As Long) As
 ' *********************************
 
 Public Declare Function CreateFile _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "CreateFileA" (ByVal lpFileName As String, _
                                     ByVal dwDesiredAccess As Long, _
                                     ByVal dwShareMode As Long, _
@@ -258,27 +258,27 @@ Public Declare Function CreateFile _
                                     ByVal dwFlagsAndAttributes As Long, _
                                     ByVal hTemplateFile As Long) As Long
 
-Public Declare Function CloseHandle Lib "Kernel32" (ByVal hObject As Long) As Long
+Public Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 
 Public Declare Function WriteFile _
-               Lib "Kernel32" (ByVal hFile As Long, _
+               Lib "kernel32" (ByVal hFile As Long, _
                                lpBuffer As Any, _
                                ByVal nNumberOfBytesToWrite As Long, _
                                lpNumberOfBytesWritten As Long, _
                                ByVal lpOverlapped As Long) As Long
 
 Public Declare Function ReadFile _
-               Lib "Kernel32" (ByVal hFile As Long, _
+               Lib "kernel32" (ByVal hFile As Long, _
                                lpBuffer As Any, _
                                ByVal nNumberOfBytesToRead As Long, _
                                lpNumberOfBytesRead As Long, _
                                ByVal lpOverlapped As Long) As Long
 
 Public Declare Function DeleteFile _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "DeleteFileA" (ByVal lpFileName As String) As Long
 
-Public Declare Function GetLastError Lib "Kernel32" () As Long
+Public Declare Function GetLastError Lib "kernel32" () As Long
 
 Public Declare Function ShellExecute _
                Lib "shell32.dll" _
@@ -294,11 +294,12 @@ Public Declare Function GetTempPath _
                Alias "GetTempPathA" (ByVal nBufferLength As Long, _
                                      ByVal lpBuffer As String) As Long
 
-Declare Function GetTempFileName Lib "kernel32.dll" Alias "GetTempFileNameA" ( _
-     ByVal lpszPath As String, _
-     ByVal lpPrefixString As String, _
-     ByVal wUnique As Long, _
-     ByVal lpTempFileName As String) As Long
+Declare Function GetTempFileName _
+        Lib "kernel32.dll" _
+        Alias "GetTempFileNameA" (ByVal lpszPath As String, _
+                                  ByVal lpPrefixString As String, _
+                                  ByVal wUnique As Long, _
+                                  ByVal lpTempFileName As String) As Long
      
 ' *********************************
 ' *  ‘”Õ ÷»» ƒÀﬂ –¿¡Œ“€ — œ¿Ãﬂ“‹ﬁ
@@ -309,12 +310,12 @@ Public Declare Sub CopyMemory _
                Lib "kernel32.dll" _
                Alias "RtlMoveMemory" (ByRef Destination As Any, _
                                       ByRef Source As Any, _
-                                      ByVal length As Long)
+                                      ByVal Length As Long)
 
 Public Declare Sub ZeroMemory _
                Lib "kernel32.dll" _
                Alias "RtlZeroMemory" (ByRef Destination As Any, _
-                                      ByVal length As Long)
+                                      ByVal Length As Long)
 
 ' ***********************************
 ' *  ‘”Õ ÷»» ƒÀﬂ –¿¡Œ“€ — ÀŒ¬”ÿ ¿Ã»
@@ -383,13 +384,13 @@ Public Declare Function VerQueryValue _
                                        puLen As Long) As Long
 
 Public Declare Sub MoveMemory _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "RtlMoveMemory" (dest As Any, _
                                       ByVal Source As Long, _
-                                      ByVal length As Long)
+                                      ByVal Length As Long)
 
 Public Declare Function lstrcpy _
-               Lib "Kernel32" _
+               Lib "kernel32" _
                Alias "lstrcpyA" (ByVal lpString1 As String, _
                                  ByVal lpString2 As Long) As Long
 
@@ -401,3 +402,14 @@ Public Declare Function InternetGetConnectedState _
                Lib "wininet.dll" (ByRef lpdwFlags As Long, _
                                   ByVal dwReserved As Long) As Long
 
+Public Declare Function GetVersionEx _
+               Lib "kernel32" _
+               Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
+
+Public Declare Function GetCurrentDirectory Lib "kernel32.dll" Alias "GetCurrentDirectoryA" ( _
+     ByVal nBufferLength As Long, _
+     ByVal lpBuffer As String) As Long
+     
+Public Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" ( _
+     ByVal lpBuffer As String, _
+     ByRef nSize As Long) As Long

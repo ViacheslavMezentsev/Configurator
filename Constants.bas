@@ -256,8 +256,8 @@ Public DesignMode As Boolean
 '@rem Признак загрузки данных об уставках из файла limits.ini
 Public LimitsLoaded As Boolean
 '**
-'@rem Счётчик минут для таймена автообновления
-Public AutoUpdateCounter As Long
+'@rem
+Public SetCancel As Boolean
 '**
 '@rem Состояние процесса автообновления
 Public AutoUpdateState As Byte

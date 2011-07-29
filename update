@@ -2,9 +2,9 @@
     {
         "ProgID": "{43CE9E0A-3657-4258-B573-8B18F6AC3B42}",
         "Major": 1,
-        "Minor": 4,
-        "Revision": 0,
-        "Build": 1
-        "DownloadLink": "http:\/\/x-uni-x.chat.ru\/cop\/Configurator_1.3.0.160_setup.zip"
+        "Minor": 3,
+        "Revision": 1,
+        "Build": 100
+        "DownloadLink": "http:\/\/82.193.156.30\/cop\/Configurator_1.3.1.1_setup.zip"
     }
 ]
