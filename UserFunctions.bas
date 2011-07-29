@@ -131,6 +131,7 @@ FromUTF8_Err:
 End Function
 
 Public Function ToUTF8(srcStr As String) As String
+
     '<EhHeader>
     On Error GoTo ToUTF8_Err
     '</EhHeader>
@@ -172,9 +173,8 @@ Public Function ToUTF8(srcStr As String) As String
 
 ToUTF8_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.ToUTF8]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+            " [INFO] [cop.UserFunctions.ToUTF8]: " & GetErrorMessageById(Err.Number, _
+            Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
     Resume Next
 
@@ -188,18 +188,18 @@ Public Function getGUID() As String
 
     Dim buffer(0 To 15) As Byte
     Dim s As String
-    Dim ret As Long
+    Dim Ret As Long
 
     s = String$(128, 0)
 
     ' получает численный код
-    ret = CoCreateGuid(buffer(0))
+    Ret = CoCreateGuid(buffer(0))
     
     ' преобразуем его в текст,
     ' используя недокументированную функцию StrPtr
-    ret = StringFromGUID2(buffer(0), StrPtr(s), 128)
+    Ret = StringFromGUID2(buffer(0), StrPtr(s), 128)
 
-    getGUID = Left$(s, ret - 1) ' отсекаем "хвост"
+    getGUID = Left$(s, Ret - 1) ' отсекаем "хвост"
 
     '<EhFooter>
     Exit Function
@@ -887,3 +887,92 @@ SaveToJSONFile_Err:
     '</EhFooter>
 End Sub
 
+Public Function GetOSVersion() As String
+
+    ' Windows Version Data:
+    '
+    ' To determine the operating system that is running on a given system,
+    ' the following data is needed:
+    '
+    ' Win 95 Win 98 WinME WinNT 4 Win2000 Win XP
+    ' PlatformID 1 1 1 2 2 2
+    ' Major Ver 4 4 4 4 5 5
+    ' Minor Ver 0 10 90 0 0 1
+    '
+    '
+    Dim OSInfo As OSVERSIONINFO
+    Dim PId As String
+    Dim Ret As Long
+
+    ' set the structure size
+    OSInfo.dwOSVersionInfoSize = Len(OSInfo)
+    
+    ' get the Windows version
+    Ret = GetVersionEx(OSInfo)
+
+    ' check for errors
+    If Ret = 0 Then MsgBox "Error Getting Version Information": Exit Function
+
+    Select Case OSInfo.dwPlatformId
+
+        Case 0
+
+            PId = "Pre-Windows 95"
+
+            ' 95/98/ME
+        Case 1
+
+            Select Case OSInfo.dwMinorVersion
+
+                Case 0
+
+                    ' Windows 95
+                    PId = "Windows 95"
+
+                Case 10
+
+                    ' Windows 98
+                    PId = "Windows 98"
+
+                Case 90
+
+                    ' Windows ME
+                    PId = "Windows ME"
+
+            End Select
+
+            ' NT/2000/XP
+        Case 2
+
+            Select Case OSInfo.dwMajorVersion
+
+                Case 4
+
+                    ' NT version
+                    PId = "Windows NT"
+
+                Case 5
+
+                    ' 2000/XP version
+                    Select Case OSInfo.dwMinorVersion
+
+                        Case 0
+
+                            ' Windows 2000
+                            PId = "Windows 2000"
+
+                        Case 1
+
+                            ' Windows XP
+                            PId = "Windows XP"
+
+                    End Select
+
+            End Select
+
+    End Select
+
+    GetOSVersion = PId & " version" & str$(OSInfo.dwMajorVersion) & "." & LTrim(str( _
+            OSInfo.dwMinorVersion)) & " build " & str(OSInfo.dwBuildNumber)
+ 
+End Function

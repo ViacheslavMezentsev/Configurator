@@ -53,6 +53,17 @@ Public Const IDLE_PARAMETER_DESCR_PROGNAME = "Название"
 Public Const IDLE_PARAMETER_DESCR_STEP = "Шаг"
 Public Const IDLE_PARAMETER_DESCR_FUNCTION = "Тип опер."
 
+Public Type OSVERSIONINFO
+
+    dwOSVersionInfoSize As Long
+    dwMajorVersion As Long
+    dwMinorVersion As Long
+    dwBuildNumber As Long
+    dwPlatformId As Long
+    szCSDVersion As String * 128
+    
+End Type
+
 ' *****************************************
 ' *  ПОЛЬЗОВАТЕЛЬСКИЕ ТИПЫ
 ' *  ~~~~~~~~~~~~~~~~ ~~~~
@@ -92,14 +103,14 @@ Public Type TYPE_WPC_TITLE
   LowBits As Byte
   HiBits As Byte
   ProgName(1 To PROG_NAME_LENGTH) As Byte
-  Reserved(1 To 2) As Byte
+  reserved(1 To 2) As Byte
 End Type
 
 ' Общая структура шага
 Public Type TYPE_WPC_STEP
   Bits As Integer
   
-  Reserved(1 To 14) As Byte
+  reserved(1 To 14) As Byte
 End Type
 
 ' Структура программы
@@ -116,7 +127,7 @@ Public Type TYPE_WPC_FILL
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана
     
-    Reserved(1 To 10) As Byte
+    reserved(1 To 10) As Byte
 End Type
 
 ' структура шага МОЮЩИЕ
@@ -135,7 +146,7 @@ Public Type TYPE_WPC_DETERGENT
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана
     
-    Reserved(1 To 2) As Byte
+    reserved(1 To 2) As Byte
 End Type
 
 ' структура шага НАГРЕВ
@@ -146,7 +157,7 @@ Public Type TYPE_WPC_HEAT
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана
     
-    Reserved(1 To 10) As Byte
+    reserved(1 To 10) As Byte
 End Type
 
 ' структура шага СТИРКИ (ПОЛОСКАНИЕ, РАССТРЯСКА)
@@ -157,7 +168,7 @@ Public Type TYPE_WPC_WASH
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана
     
-    Reserved(1 To 10) As Byte
+    reserved(1 To 10) As Byte
 End Type
 
 ' структура шага СЛИВА
@@ -170,7 +181,7 @@ Public Type TYPE_WPC_DRAIN
 '    DrumSpeed2 As Integer ' скорость вращения барабана при раскладке
 '    Time2 As Byte ' время раскладки
     
-    Reserved(1 To 10) As Byte
+    reserved(1 To 10) As Byte
 End Type
 
 ' структура шага ОТЖИМА
@@ -179,7 +190,7 @@ Public Type TYPE_WPC_SPIN
     DrumSpeed As Integer ' скорость вращения барабана при отжиме
     Time As Byte ' время отжима
     
-    Reserved(1 To 11) As Byte
+    reserved(1 To 11) As Byte
 End Type
 
 ' структура шага ОХЛАЖДЕНИЕ
@@ -191,7 +202,7 @@ Public Type TYPE_WPC_COOL
     PauseTime As Byte ' время паузы вращения мотора
     DrumSpeed As Byte ' скорость вращения барабана при реверсе
     
-    Reserved(1 To 9) As Byte
+    reserved(1 To 9) As Byte
 End Type
 
 Public Type TYPE_BOOL_DESCRIPTION

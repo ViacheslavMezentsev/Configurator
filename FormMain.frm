@@ -4,22 +4,72 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Begin VB.Form FormMain 
    Caption         =   "Конфигуратор УП"
-   ClientHeight    =   6552
+   ClientHeight    =   7128
    ClientLeft      =   2532
    ClientTop       =   1944
-   ClientWidth     =   8976
+   ClientWidth     =   8916
    Icon            =   "FormMain.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   6552
-   ScaleWidth      =   8976
+   ScaleHeight     =   7128
+   ScaleWidth      =   8916
+   Begin VB.Frame FrameLog 
+      BorderStyle     =   0  'None
+      Height          =   1092
+      Left            =   5640
+      TabIndex        =   20
+      Top             =   5640
+      Visible         =   0   'False
+      Width           =   3252
+      Begin VB.TextBox TextLog 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Courier New"
+            Size            =   10.2
+            Charset         =   204
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   492
+         Left            =   120
+         MultiLine       =   -1  'True
+         ScrollBars      =   3  'Both
+         TabIndex        =   8
+         TabStop         =   0   'False
+         Top             =   480
+         Width           =   3012
+      End
+      Begin VB.Label LabelLogCaption 
+         BackColor       =   &H8000000D&
+         Caption         =   " Журнал"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   10.2
+            Charset         =   204
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000E&
+         Height          =   252
+         Left            =   120
+         MousePointer    =   7  'Size N S
+         TabIndex        =   21
+         Top             =   120
+         Width           =   3000
+      End
+   End
    Begin VB.Timer TimerAutoUpdate 
       Interval        =   60000
-      Left            =   4560
-      Top             =   5760
+      Left            =   3720
+      Top             =   5640
    End
    Begin VB.Timer TimerLogAnimate 
-      Left            =   6480
-      Top             =   5760
+      Interval        =   2000
+      Left            =   5160
+      Top             =   6240
    End
    Begin VB.Frame FrameLogSplitter 
       BorderStyle     =   0  'None
@@ -30,24 +80,6 @@ Begin VB.Form FormMain
       Top             =   5640
       Visible         =   0   'False
       Width           =   4572
-   End
-   Begin VB.TextBox TextLog 
-      Appearance      =   0  'Flat
-      BeginProperty Font 
-         Name            =   "Courier New"
-         Size            =   9
-         Charset         =   204
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   372
-      Left            =   6840
-      TabIndex        =   18
-      Top             =   5760
-      Visible         =   0   'False
-      Width           =   2052
    End
    Begin MSComctlLib.ImageList ImageListMainToolbar_32x32 
       Left            =   960
@@ -88,7 +120,7 @@ Begin VB.Form FormMain
       Height          =   4932
       Left            =   2400
       MousePointer    =   9  'Size W E
-      TabIndex        =   13
+      TabIndex        =   14
       Top             =   600
       Width           =   60
    End
@@ -115,7 +147,7 @@ Begin VB.Form FormMain
       Height          =   4812
       Left            =   6516
       MousePointer    =   9  'Size W E
-      TabIndex        =   12
+      TabIndex        =   13
       Top             =   600
       Width           =   60
    End
@@ -123,17 +155,17 @@ Begin VB.Form FormMain
       Align           =   2  'Align Bottom
       Height          =   312
       Left            =   0
-      TabIndex        =   11
-      Top             =   6240
-      Width           =   8976
-      _ExtentX        =   15833
+      TabIndex        =   12
+      Top             =   6816
+      Width           =   8916
+      _ExtentX        =   15727
       _ExtentY        =   550
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
          NumPanels       =   3
          BeginProperty Panel1 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             AutoSize        =   1
-            Object.Width           =   10915
+            Object.Width           =   10809
             MinWidth        =   1834
          EndProperty
          BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
@@ -160,14 +192,14 @@ Begin VB.Form FormMain
       EndProperty
       Height          =   5052
       Left            =   2520
-      TabIndex        =   10
+      TabIndex        =   11
       Top             =   480
       Width           =   3972
       Begin VB.Frame FrameCodeView 
          BorderStyle     =   0  'None
          Height          =   2172
          Left            =   120
-         TabIndex        =   15
+         TabIndex        =   16
          Top             =   2760
          Visible         =   0   'False
          Width           =   3732
@@ -220,7 +252,7 @@ Begin VB.Form FormMain
          BorderStyle     =   0  'None
          Height          =   1812
          Left            =   120
-         TabIndex        =   14
+         TabIndex        =   15
          Top             =   240
          Width           =   3732
          Begin MSFlexGridLib.MSFlexGrid StepsView 
@@ -255,7 +287,7 @@ Begin VB.Form FormMain
       EndProperty
       Height          =   5052
       Left            =   0
-      TabIndex        =   9
+      TabIndex        =   10
       Top             =   480
       Width           =   2172
       Begin VB.TextBox TextName 
@@ -301,7 +333,7 @@ Begin VB.Form FormMain
       EndProperty
       Height          =   5052
       Left            =   6600
-      TabIndex        =   8
+      TabIndex        =   9
       Top             =   480
       Width           =   2292
       Begin VB.ComboBox ComboCell 
@@ -359,7 +391,7 @@ Begin VB.Form FormMain
          EndProperty
          Height          =   552
          Left            =   1200
-         TabIndex        =   16
+         TabIndex        =   17
          Top             =   4320
          Visible         =   0   'False
          Width           =   972
@@ -429,10 +461,10 @@ Begin VB.Form FormMain
       Align           =   1  'Align Top
       Height          =   480
       Left            =   0
-      TabIndex        =   17
+      TabIndex        =   18
       Top             =   0
-      Width           =   8976
-      _ExtentX        =   15833
+      Width           =   8916
+      _ExtentX        =   15727
       _ExtentY        =   847
       ButtonWidth     =   826
       ButtonHeight    =   804
@@ -593,6 +625,13 @@ Begin VB.Form FormMain
    End
    Begin VB.Menu ViewMainMenuItem 
       Caption         =   "&Вид"
+      Begin VB.Menu MenuItemShowHideLog 
+         Caption         =   "&Журнал"
+         Shortcut        =   ^L
+      End
+      Begin VB.Menu Separator5 
+         Caption         =   "-"
+      End
       Begin VB.Menu OptionsMainMenuItem 
          Caption         =   "&Настройки..."
       End
@@ -609,7 +648,7 @@ Begin VB.Form FormMain
       Begin VB.Menu CopyMainMenuItem 
          Caption         =   "&Копировать..."
       End
-      Begin VB.Menu Separator5 
+      Begin VB.Menu Separator6 
          Caption         =   "-"
       End
       Begin VB.Menu PopupMenuListClearAll 
@@ -849,6 +888,7 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     RefreshFrameLeft
     RefreshFrameRight
     RefreshFrameMain
+    RefrefhFrameLog
     RefreshStatusBar
     
     '<EhFooter>
@@ -1045,6 +1085,39 @@ RefreshMainMenu_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshMainMenu]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub RefrefhFrameLog()
+    '<EhHeader>
+    On Error GoTo RefrefhFrameLog_Err
+    '</EhHeader>
+
+    FrameLog.Left = FormMain.ScaleLeft
+    FrameLog.Height = 1440
+    FrameLog.Top = StatusBar.Top - FrameLog.Height
+    FrameLog.Width = FormMain.ScaleWidth
+    
+    LabelLogCaption.Top = 0
+    LabelLogCaption.Left = 0
+    LabelLogCaption.Width = FrameLog.Width
+    
+    TextLog.Left = LabelLogCaption.Left
+    TextLog.Top = LabelLogCaption.Height
+    TextLog.Width = FrameLog.Width
+    TextLog.Height = FrameLog.Height - TextLog.Top
+    
+    '<EhFooter>
+    Exit Sub
+
+RefrefhFrameLog_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.RefrefhFrameLog]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -1579,6 +1652,7 @@ Private Sub FileMainMenuItem_Click()
 FileMainMenuItem_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.FileMainMenuItem_Click]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    
     Resume Next
     '</EhFooter>
 End Sub
@@ -1647,6 +1721,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 Form_KeyDown_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.Form_KeyDown]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    
     Resume Next
     '</EhFooter>
 End Sub
@@ -1757,10 +1832,7 @@ Private Sub Form_Load()
     ' При загрузке выставляем флаг необходимости обновления
     ' Он будет действовать до срабатывания таймера автообновления
     If Settings.AutoUpdateEnabled Then AutoUpdateState = AUS_NOT_UPDATED
-
-    ' Инициализируем счётчик минут для таймера автообновления
-    AutoUpdateCounter = 0
-    
+   
     'TODO: Проверить корректность всех файловых путей
     ' VBRUN.LogModeConstants.vbLogOverwrite не работает по невыясненной причине
     If Settings.RewriteLogFile Then
@@ -1773,9 +1845,13 @@ Private Sub Form_Load()
     App.StartLogging Settings.LogFilePath, VBRUN.LogModeConstants.vbLogToFile
     
     ' Версия программы
+    Dim MAX_PATH As Long
+    Dim Length As Long
     Dim strFile As String
-    Dim udtFileInfo As FILEINFO
+    Dim szCurrDir As String, szUserName As String
     
+    Dim udtFileInfo As FILEINFO
+        
     strFile = String(255, 0)
     GetModuleFileName 0, strFile, 255
 
@@ -1784,20 +1860,30 @@ Private Sub Form_Load()
         udtFileInfo.FileVersion = "Версия " & App.Major & "." & App.Minor & "." & App.Revision
     
     Else
-    
+        
         udtFileInfo.FileVersion = "Версия " & udtFileInfo.FileVersion
         
     End If
     
-    ' TODO: Добавить информацию о версии операционной системы и имени
-    ' текущего пользователя
+    MAX_PATH = 255
+    szCurrDir = Space(255)
+    Length = GetCurrentDirectory(MAX_PATH, szCurrDir)
+    szCurrDir = Left$(szCurrDir, Length)
+    
+    szUserName = Space(255)
+    GetUserName szUserName, Length
+    szUserName = Left$(szUserName, Length - 1)
+    
     App.LogEvent VBA.Constants.vbCrLf & VBA.Constants.vbCrLf _
-       & "-----------------------------------------------------" & VBA.Constants.vbCrLf _
-       & "Конфигуратор управляющих программ" & VBA.Constants.vbCrLf _
-       & udtFileInfo.FileVersion & VBA.Constants.vbCrLf _
-       & "Уникальный идентификатор (GUID): " & ProgramGUID & VBA.Constants.vbCrLf _
-       & "Дата запуска: " & Date & " г. в " & Time & VBA.Constants.vbCrLf _
-       & "-----------------------------------------------------" & VBA.Constants.vbCrLf, _
+       & "-----------------------------------------------------------------------" & vbCrLf _
+       & "Конфигуратор управляющих программ" & vbCrLf _
+       & udtFileInfo.FileVersion & vbCrLf _
+       & "Уникальный идентификатор (GUID): " & ProgramGUID & vbCrLf _
+       & "Дата запуска: " & Date & " г. в " & Time & vbCrLf _
+       & "Операционная система: " & GetOSVersion & vbCrLf _
+       & "Имя пользователя: " & szUserName & vbCrLf _
+       & "Текущая папка: " & szCurrDir & vbCrLf _
+       & "-----------------------------------------------------------------------" & vbCrLf, _
        VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
        
     ' Создаём экземпляр объекта
@@ -1989,15 +2075,22 @@ Form_Load_Err:
     
     ' Симулируем изменение размером формы для вызова Resize()
     Move Left, Top, Width, Height
+    
 End Sub
 
 Private Sub Form_Resize()
+    '<EhHeader>
+    On Error Resume Next
+    '</EhHeader>
     
     RefreshComponents True
     
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    '<EhHeader>
+    On Error GoTo Form_Unload_Err
+    '</EhHeader>
 
     If Modified = True Then
     
@@ -2031,13 +2124,28 @@ Private Sub Form_Unload(Cancel As Integer)
     MRUFileList.Save IniFile
     
     Unload Me
+    Unload FormDownload
     
+    Set FormDownload = Nothing
     Set FormMain = Nothing
+    
     UnHookKeyboard
     
     ВекторОшибок.removeAllElements
     Set ВекторОшибок = Nothing
     
+    '<EhFooter>
+    Exit Sub
+
+Form_Unload_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.Form_Unload]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub GotoMenuItem_Click()
@@ -2175,6 +2283,117 @@ InsertStepMenuItem_Click_Err:
     Resume Next
     '</EhFooter>
 End Sub
+
+Private Sub Kachalka_Complete(ByVal Status As kach_tlb.BINDSTATUS, ByVal StatusText As String)
+    '<EhHeader>
+    On Error GoTo Kachalka_Complete_Err
+    '</EhHeader>
+    
+    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Загрузка завершена"
+    FormDownload.Caption = "Загрузка завершена"
+    
+    MenuItemDoUpdate.Enabled = True
+
+    '<EhFooter>
+    Exit Sub
+
+Kachalka_Complete_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.Kachalka_Complete]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub Kachalka_DataAvailable(ByVal EventType As kach_tlb.BSCF, ByVal Data As String, ByVal DataFormat As Long)
+
+    ' Пропускаем
+    
+End Sub
+
+Private Sub Kachalka_Progress(ByVal Progress As Long, ByVal ProgressMax As Long, ByVal Status As Long, ByVal StatusText As String, Cancel As Boolean)
+    '<EhHeader>
+    On Error GoTo Kachalka_Progress_Err
+    '</EhHeader>
+
+    Dim sProgress As String
+    
+    If ProgressMax Then
+    
+        sProgress = Format(Progress / ProgressMax, "00.00%")
+        
+    Else
+    
+        sProgress = "???"
+        
+    End If
+     
+    If FormDownload.Visible = True Then
+    
+        FormDownload.ProgressBar.Value = CInt((100 * Progress) / ProgressMax)
+        FormDownload.Caption = "Загрузка: " & sProgress
+        
+    End If
+    
+    ' Обновляем интерфейс
+    DoEvents
+    
+    Cancel = SetCancel
+
+    '<EhFooter>
+    Exit Sub
+
+Kachalka_Progress_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.Kachalka_Progress]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Function LookupStatus(ByVal ulStatusCode As kach_tlb.BINDSTATUS) As String
+    
+    If ulStatusCode <= 0 Then
+    
+        LookupStatus = Hex(ulStatusCode)
+        
+    Else
+    
+        LookupStatus = Choose(ulStatusCode, _
+            "BINDSTATUS_FINDINGRESOURCE", "BINDSTATUS_CONNECTING", _
+            "BINDSTATUS_REDIRECTING", "BINDSTATUS_BEGINDOWNLOADDATA", _
+            "BINDSTATUS_DOWNLOADINGDATA", "BINDSTATUS_ENDDOWNLOADDATA", _
+            "BINDSTATUS_BEGINDOWNLOADCOMPONENTS", "BINDSTATUS_INSTALLINGCOMPONENTS", _
+            "BINDSTATUS_ENDDOWNLOADCOMPONENTS", "BINDSTATUS_USINGCACHEDCOPY", _
+            "BINDSTATUS_SENDINGREQUEST", "BINDSTATUS_CLASSIDAVAILABLE", _
+            "BINDSTATUS_MIMETYPEAVAILABLE", "BINDSTATUS_CACHEFILENAMEAVAILABLE", _
+            "BINDSTATUS_BEGINSYNCOPERATION", "BINDSTATUS_ENDSYNCOPERATION", _
+            "BINDSTATUS_BEGINUPLOADDATA", "BINDSTATUS_UPLOADINGDATA", _
+            "BINDSTATUS_ENDUPLOADDATA", "BINDSTATUS_PROTOCOLCLASSID", _
+            "BINDSTATUS_ENCODING", "BINDSTATUS_VERIFIEDMIMETYPEAVAILABLE", _
+            "BINDSTATUS_CLASSINSTALLLOCATION", "BINDSTATUS_DECODING", _
+            "BINDSTATUS_LOADINGMIMEHANDLER", "BINDSTATUS_CONTENTDISPOSITIONATTACH", _
+            "BINDSTATUS_FILTERREPORTMIMETYPE", "BINDSTATUS_CLSIDCANINSTANTIATE", _
+            "BINDSTATUS_IUNKNOWNAVAILABLE", "BINDSTATUS_DIRECTBIND", _
+            "BINDSTATUS_RAWMIMETYPE", "BINDSTATUS_PROXYDETECTING", _
+            "BINDSTATUS_ACCEPTRANGES", "BINDSTATUS_COOKIE_SENT", _
+            "BINDSTATUS_COMPACT_POLICY_RECEIVED", "BINDSTATUS_COOKIE_SUPPRESSED", _
+            "BINDSTATUS_COOKIE_STATE_UNKNOWN", "BINDSTATUS_COOKIE_STATE_ACCEPT", _
+            "BINDSTATUS_COOKIE_STATE_REJECT", "BINDSTATUS_COOKIE_STATE_PROMPT", _
+            "BINDSTATUS_COOKIE_STATE_LEASH", "BINDSTATUS_COOKIE_STATE_DOWNGRADE", _
+            "BINDSTATUS_POLICY_HREF", "BINDSTATUS_P3P_HEADER", _
+            "BINDSTATUS_SESSION_COOKIE_RECEIVED", "BINDSTATUS_PERSISTENT_COOKIE_RECEIVED", _
+            "BINDSTATUS_SESSION_COOKIES_ALLOWED")
+    
+    End If
+
+End Function
 
 Public Sub ListPrograms_Click()
     '<EhHeader>
@@ -2338,7 +2557,8 @@ Private Sub MenuItemDoUpdate_Click()
     Dim Result As Boolean
     Dim dwConnectionTypes As Long
 
-    StatusBar.Panels(1).Text = "Проверяю доступ к сети..."
+    StatusBar.Panels(1).Text = "Проверяю доступ к сети"
+    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Проверяю доступ к сети"
     
     dwConnectionTypes = INTERNET_CONNECTION_MODEM + INTERNET_CONNECTION_LAN + _
             INTERNET_CONNECTION_PROXY
@@ -2350,7 +2570,8 @@ Private Sub MenuItemDoUpdate_Click()
     ' файла автообновления
     If InternetConnected = True Then
 
-        StatusBar.Panels(1).Text = "Проверяю наличие обновлений..."
+        StatusBar.Panels(1).Text = "Проверяю наличие обновлений"
+        TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Проверяю наличие обновлений"
         
         ' Пытаемся обновиться
         Result = DoAutoUpdate(Settings.AutoUpdateLink)
@@ -2358,6 +2579,7 @@ Private Sub MenuItemDoUpdate_Click()
         If Result = True Then
 
             StatusBar.Panels(1).Text = "Проверка проведена"
+            TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Проверка проведена"
             
             AutoUpdateState = AUS_UPDATED
             
@@ -2379,6 +2601,27 @@ Private Sub MenuItemDoUpdate_Click()
 MenuItemDoUpdate_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
             " [INFO] [cop.FormMain.MenuItemDoUpdate_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub MenuItemShowHideLog_Click()
+    '<EhHeader>
+    On Error GoTo MenuItemShowHideLog_Click_Err
+    '</EhHeader>
+
+    FrameLog.Visible = Not FrameLog.Visible
+    
+    '<EhFooter>
+    Exit Sub
+
+MenuItemShowHideLog_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.MenuItemShowHideLog_Click]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
@@ -3583,18 +3826,20 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     ' Создаём временный файл
     Dim szBuffer As String, szTempFileName As String
     Dim MAX_PATH As Long
-    Dim length As Integer
+    Dim Length As Integer
     
     MAX_PATH = 255
     szBuffer = Space(255)
     
     ' Получаем путь к временной папке
-    length = GetTempPath(MAX_PATH, szBuffer)
+    Length = GetTempPath(MAX_PATH, szBuffer)
 
     ' Формируем путь к временному файлу
     szTempFileName = Space(255)
     GetTempFileName szBuffer, "cop", 0, szTempFileName
        
+    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Загрузка файла обновления"
+    
     ' Пытаемся скачать файл описания с сервера
     Kachalka.DownloadToFile UpdateFileLink, szTempFileName
     
@@ -3623,11 +3868,14 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     ' Производим разбор данных из файла
     Set p = JSON.parse(sInputJson)
    
+    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Поиск информации об обновлении"
     ' Ищем запись, имеющую необходимый GUID в поле ProgID
     For I = 1 To p.Count
     
         If (ProgramGUID = p.Item(I).Item("ProgID")) Then
         
+            TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Сверка версий"
+            
             ' Считываем информацию о версии
             Major = p.Item(I).Item("Major")
             Minor = p.Item(I).Item("Minor")
@@ -3736,8 +3984,23 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
                         
                         If FileName <> "" Then
                                            
+                            TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & _
+                                "Загрузка файла:" & vbCrLf & FileName
+                            
+                            FormDownload.LabelFrom = "Откуда: " & DownloadLink
+                            FormDownload.LabelTo = "Куда: " & FileName
+                            
+                            ' Показываем форму загрузки
+                            FormDownload.Show
+                            
                             ' Пытаемся скачать файл
                             Kachalka.DownloadToFile DownloadLink, FileName
+                            
+                            ' Устанавливаем признак успешной загрузки
+                            AutoUpdateState = AUS_UPDATED
+                            
+                            ' Запоминаем дату
+                            Settings.AutoUpdateLastDate = CStr(Date)
                     
                         End If
                         
@@ -3767,12 +4030,25 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     Exit Function
 
 DoAutoUpdate_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.DoAutoUpdate]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-
-    Resume Next
+    If Err.Number = cdlCancel Then
+        
+        ' Удаляем временный файл
+        If DoesFileExist(szTempFileName) Then DeleteFile szTempFileName
+        
+        Set p = Nothing
+        
+        DoAutoUpdate = False
+    
+    Else
+    
+        App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+                " [INFO] [cop.FormMain.DoAutoUpdate]: " & GetErrorMessageById( _
+                Err.Number, Err.Description), _
+                VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+                
+        Resume Next
+        
+    End If
 
     '</EhFooter>
 End Function
@@ -3800,21 +4076,57 @@ Private Sub TimerAutoUpdate_Timer()
 
     End If
 
-    ' В режиме отладки проверка обновления будет происходить
-    ' каждую минуту
+    Dim Days As Long
+    
+    ' В режиме отладки проверка обновления будет происходить сразу
     If DesignMode = True Then
+        
+        Days = DateDiff("d", Now, CDate(Settings.AutoUpdateLastDate))
+        
+        Debug.Print "Разница в днях: " & Days
         
     Else
     
-        ' Будет делаться три попытки (каждый час по одной)
-        Inc (AutoUpdateCounter)
-    
-        ' Проверять файл обновления на сервере не чаще одного раза в час
-        ' Interval = 60000
-        If AutoUpdateCounter < 3600 Then Exit Sub
-    
-        ' Обнуляем счётчик минут (следующая попытка через час)
-        AutoUpdateCounter = 0
+        Days = Abs(DateDiff("d", CDate(Settings.AutoUpdateLastDate), Now))
+               
+        Select Case Settings.AutoUpdatePeriod
+        
+            Case AUP_EVERY_DAY:
+                
+                If Days < 1 Then
+                
+                    ' Останавливаем таймер
+                    TimerAutoUpdate.Interval = 0
+                    Exit Sub
+                    
+                End If
+                
+            Case AUP_ONES_PER_WEEK:
+            
+                If Days < 7 Then
+                
+                    ' Останавливаем таймер
+                    TimerAutoUpdate.Interval = 0
+                    Exit Sub
+                    
+                End If
+                
+            Case AUP_ONES_PER_MONTH:
+            
+                If Days < 30 Then
+                
+                    ' Останавливаем таймер
+                    TimerAutoUpdate.Interval = 0
+                    Exit Sub
+                    
+                End If
+                
+            Case Else:
+            
+                    TimerAutoUpdate.Interval = 0
+                    Exit Sub
+                    
+        End Select
         
     End If
 
@@ -3826,7 +4138,7 @@ Private Sub TimerAutoUpdate_Timer()
 
 TimerAutoUpdate_Timer_Err:
     
-    StatusBar.Panels(1).Text = "Ошибка (см. лог)"
+    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Ошибка (см. лог)"
     
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
             " [INFO] [cop.FormMain.TimerAutoUpdate_Timer]: " & GetErrorMessageById( _
@@ -4631,3 +4943,23 @@ LoadLimits_Err:
     '</EhFooter>
 End Sub
 
+Private Sub ViewMainMenuItem_Click()
+    '<EhHeader>
+    On Error GoTo ViewMainMenuItem_Click_Err
+    '</EhHeader>
+
+    MenuItemShowHideLog.Checked = FrameLog.Visible
+
+    '<EhFooter>
+    Exit Sub
+
+ViewMainMenuItem_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.ViewMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub

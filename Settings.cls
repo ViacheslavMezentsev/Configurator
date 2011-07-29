@@ -92,7 +92,8 @@ Private Sub SetDefaultSettings()
     ' [Обновление]
     AutoUpdateEnabled = False
     AutoUpdatePeriod = AUP_EVERY_DAY
-    AutoUpdateLink = "http://x-uni-x.chat.ru/cop/update"
+    AutoUpdateLastDate = CStr(Date)
+    AutoUpdateLink = "http://82.193.156.30/cop/update"
     
 End Sub
 
@@ -113,7 +114,8 @@ Public Sub LoadSettings()
 
     ' [История файлов]
     ' Ограничивать длину путей в меню
-    FilesHistoryLimitPaths = IniFile.ReadBoolean("Settings", "FilesHistoryLimitPaths", True)
+    FilesHistoryLimitPaths = IniFile.ReadBoolean("Settings", "FilesHistoryLimitPaths", _
+            True)
 
     ' [Лог]
     ' Перезаписывать лог файл при каждом запуске программы
@@ -133,8 +135,9 @@ Public Sub LoadSettings()
     ' [Обновление]
     AutoUpdateEnabled = IniFile.ReadBoolean("Settings", "AutoUpdateEnabled", False)
     AutoUpdatePeriod = IniFile.ReadInteger("Settings", "AutoUpdatePeriod", AUP_EVERY_DAY)
+    AutoUpdateLastDate = IniFile.ReadString("Settings", "AutoUpdateLastDate", CStr(Date))
     AutoUpdateLink = IniFile.ReadString("Settings", "AutoUpdateLink", _
-            "http://x-uni-x.chat.ru/cop/update")
+            "http://82.193.156.30/cop/update")
             
 End Sub
 
@@ -164,5 +167,7 @@ Public Sub SaveSettings()
     ' [Обновление]
     IniFile.WriteBoolean "Settings", "AutoUpdateEnabled", AutoUpdateEnabled
     IniFile.WriteInteger "Settings", "AutoUpdatePeriod", AutoUpdatePeriod
+    IniFile.WriteString "Settings", "AutoUpdateLastDate", AutoUpdateLastDate
+    IniFile.WriteString "Settings", "AutoUpdateLink", AutoUpdateLink
     
 End Sub
