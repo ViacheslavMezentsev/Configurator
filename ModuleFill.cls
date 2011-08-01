@@ -620,7 +620,9 @@ Private Sub func_EditPropertyForFill(frm As FormMain, _
 
         .TextCell.SelStart = 0
         .TextCell.SelLength = Len(.TextCell.Text)
+        
     End With
+    
 End Sub
 
 Public Sub EditPropertyForFill(frm As FormMain)

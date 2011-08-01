@@ -259,8 +259,14 @@ Private Sub func_EditPropertyForIdle(frm As FormMain, _
                 .ComboCell.SetFocus
 
             Case Else
+            
         End Select
+        
+        .TextCell.SelStart = 0
+        .TextCell.SelLength = Len(.TextCell.Text)
+        
     End With
+    
 End Sub
 
 Public Sub EditPropertyForIdle(frm As FormMain)
