@@ -30,11 +30,14 @@ Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
 ' Инициализация настроек
-Public StepColWidth As Long
-Public RowHeight As Long
-
 Public StepsViewFontBold As Boolean
 Public StepsViewFontItalic As Boolean
+Public StepsVSelectorEnabled As Boolean
+Public StepsHSelectorEnabled As Boolean
+Public StepsSelectorWidth As Long
+Public StepsColWidth As Long
+Public StepsRowHeight As Long
+
 Public RewriteLogFile As Boolean
 Public FilesHistoryLimitPaths As Boolean
 
@@ -63,9 +66,13 @@ End Sub
 Private Sub SetDefaultSettings()
 
     ' [Основные]
-    StepColWidth = 250
-    RowHeight = 250
-
+    StepsColWidth = 250
+    StepsRowHeight = 250
+    
+    StepsVSelectorEnabled = True
+    StepsHSelectorEnabled = False
+    StepsSelectorWidth = 20
+    
     StepsViewFontBold = False
     StepsViewFontItalic = False
     StepsViewFontName = "Courier New"
@@ -104,8 +111,12 @@ End Sub
 Public Sub LoadSettings()
 
     ' [Основные]
-    StepColWidth = IniFile.ReadInteger("Settings", "StepColWidth", 300)
-    RowHeight = IniFile.ReadInteger("Settings", "RowHeight", 300)
+    StepsColWidth = IniFile.ReadInteger("Settings", "StepsColWidth", 300)
+    StepsRowHeight = IniFile.ReadInteger("Settings", "StepsRowHeight", 300)
+
+    StepsVSelectorEnabled = IniFile.ReadBoolean("Settings", "StepsVSelectorEnabled", True)
+    StepsHSelectorEnabled = IniFile.ReadBoolean("Settings", "StepsHSelectorEnabled", False)
+    StepsSelectorWidth = IniFile.ReadInteger("Settings", "StepsSelectorWidth", 20)
 
     StepsViewFontBold = IniFile.ReadBoolean("Settings", "StepsViewFontBold", False)
     StepsViewFontItalic = IniFile.ReadBoolean("Settings", "StepsViewFontItalic", False)
@@ -148,8 +159,12 @@ End Sub
 Public Sub SaveSettings()
 
     ' [Основные]
-    IniFile.WriteInteger "Settings", "StepColWidth", StepColWidth
-    IniFile.WriteInteger "Settings", "RowHeight", RowHeight
+    IniFile.WriteInteger "Settings", "StepsColWidth", StepsColWidth
+    IniFile.WriteInteger "Settings", "StepsRowHeight", StepsRowHeight
+
+    IniFile.WriteBoolean "Settings", "StepsVSelectorEnabled", StepsVSelectorEnabled
+    IniFile.WriteBoolean "Settings", "StepsHSelectorEnabled", StepsHSelectorEnabled
+    IniFile.WriteInteger "Settings", "StepsSelectorWidth", StepsSelectorWidth
 
     IniFile.WriteBoolean "Settings", "StepsViewFontBold", StepsViewFontBold
     IniFile.WriteBoolean "Settings", "StepsViewFontItalic", StepsViewFontItalic

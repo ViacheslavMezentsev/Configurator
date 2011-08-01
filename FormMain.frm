@@ -197,10 +197,10 @@ Begin VB.Form FormMain
       Width           =   3972
       Begin VB.Frame FrameCodeView 
          BorderStyle     =   0  'None
-         Height          =   2172
+         Height          =   1452
          Left            =   120
          TabIndex        =   16
-         Top             =   2760
+         Top             =   3480
          Visible         =   0   'False
          Width           =   3732
          Begin VB.TextBox TextByte 
@@ -220,18 +220,18 @@ Begin VB.Form FormMain
             MaxLength       =   3
             TabIndex        =   6
             TabStop         =   0   'False
-            Top             =   1800
+            Top             =   1080
             Visible         =   0   'False
             Width           =   612
          End
          Begin MSFlexGridLib.MSFlexGrid CodeView 
-            Height          =   1572
-            Left            =   120
+            Height          =   1092
+            Left            =   0
             TabIndex        =   2
-            Top             =   120
+            Top             =   0
             Width           =   2772
             _ExtentX        =   4890
-            _ExtentY        =   2773
+            _ExtentY        =   1926
             _Version        =   393216
             Cols            =   17
             HighLight       =   0
@@ -250,16 +250,128 @@ Begin VB.Form FormMain
       End
       Begin VB.Frame FrameGridView 
          BorderStyle     =   0  'None
-         Height          =   1812
+         Height          =   2892
          Left            =   120
          TabIndex        =   15
          Top             =   240
          Width           =   3732
+         Begin VB.PictureBox PictureHSelRight 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   252
+            Left            =   2640
+            ScaleHeight     =   252
+            ScaleWidth      =   24
+            TabIndex        =   29
+            TabStop         =   0   'False
+            Top             =   480
+            Visible         =   0   'False
+            Width           =   24
+         End
+         Begin VB.PictureBox PictureHSelBottom 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   20
+            Left            =   120
+            ScaleHeight     =   24
+            ScaleWidth      =   2556
+            TabIndex        =   28
+            TabStop         =   0   'False
+            Top             =   720
+            Visible         =   0   'False
+            Width           =   2556
+         End
+         Begin VB.PictureBox PictureHSelTop 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   20
+            Left            =   120
+            ScaleHeight     =   24
+            ScaleWidth      =   2556
+            TabIndex        =   27
+            TabStop         =   0   'False
+            Top             =   480
+            Visible         =   0   'False
+            Width           =   2556
+         End
+         Begin VB.PictureBox PictureHSelLeft 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   252
+            Left            =   120
+            ScaleHeight     =   252
+            ScaleWidth      =   24
+            TabIndex        =   26
+            TabStop         =   0   'False
+            Top             =   480
+            Visible         =   0   'False
+            Width           =   24
+         End
+         Begin VB.PictureBox PictureVSelBottom 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   20
+            Left            =   1200
+            ScaleHeight     =   24
+            ScaleWidth      =   396
+            TabIndex        =   25
+            TabStop         =   0   'False
+            Top             =   1680
+            Visible         =   0   'False
+            Width           =   400
+         End
+         Begin VB.PictureBox PictureVSelRight 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   1692
+            Left            =   1560
+            ScaleHeight     =   1692
+            ScaleWidth      =   24
+            TabIndex        =   24
+            TabStop         =   0   'False
+            Top             =   0
+            Visible         =   0   'False
+            Width           =   20
+         End
+         Begin VB.PictureBox PictureVSelLeft 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   1692
+            Left            =   1200
+            ScaleHeight     =   1692
+            ScaleWidth      =   24
+            TabIndex        =   23
+            TabStop         =   0   'False
+            Top             =   0
+            Visible         =   0   'False
+            Width           =   20
+         End
+         Begin VB.PictureBox PictureVSelTop 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   20
+            Left            =   1200
+            ScaleHeight     =   24
+            ScaleWidth      =   396
+            TabIndex        =   22
+            TabStop         =   0   'False
+            Top             =   0
+            Visible         =   0   'False
+            Width           =   400
+         End
          Begin MSFlexGridLib.MSFlexGrid StepsView 
             Height          =   1452
-            Left            =   120
+            Left            =   0
             TabIndex        =   1
-            Top             =   240
+            Top             =   0
             Width           =   2292
             _ExtentX        =   4043
             _ExtentY        =   2561
@@ -944,14 +1056,22 @@ Private Sub RefreshFrameMain()
             StepsView.Height = FrameGridView.Height
 
             If Manager.FileLoaded Then
+            
                 FrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
                    ".Шаг" & Manager.StepIndex + 1 & "]"
+                               
             Else
+            
                 FrameMain.Caption = "Шаги"
+                
             End If
-
+                
+            ' Отображаем горизонтальный и вертикальный селекторы
+            ShowHorizontalSelector
+            ShowVerticalSelector
+            
             FrameGridView.Visible = True
-
+    
         Case CODE_VIEW
         
             FrameGridView.Visible = False
@@ -966,9 +1086,13 @@ Private Sub RefreshFrameMain()
             CodeView.Height = FrameCodeView.Height
             
             If Manager.FileLoaded Then
+            
                 FrameMain.Caption = "Код - [" & ListPrograms.Text & "]"
+                
             Else
+            
                 FrameMain.Caption = "Код"
+                
             End If
             
             ' Отображение данных в CodeView зависит от видимости строк
@@ -1846,7 +1970,7 @@ Private Sub Form_Load()
     
     ' Версия программы
     Dim MAX_PATH As Long
-    Dim Length As Long
+    Dim length As Long
     Dim strFile As String
     Dim szCurrDir As String, szUserName As String
     
@@ -1867,12 +1991,12 @@ Private Sub Form_Load()
     
     MAX_PATH = 255
     szCurrDir = Space(255)
-    Length = GetCurrentDirectory(MAX_PATH, szCurrDir)
-    szCurrDir = Left$(szCurrDir, Length)
+    length = GetCurrentDirectory(MAX_PATH, szCurrDir)
+    szCurrDir = Left$(szCurrDir, length)
     
     szUserName = Space(255)
-    GetUserName szUserName, Length
-    szUserName = Left$(szUserName, Length - 1)
+    GetUserName szUserName, length
+    szUserName = Left$(szUserName, length - 1)
     
     App.LogEvent VBA.Constants.vbCrLf & VBA.Constants.vbCrLf _
        & "-----------------------------------------------------------------------" & vbCrLf _
@@ -1961,16 +2085,25 @@ Private Sub Form_Load()
     s = "<   |"
 
     For col = 1 To StepsView.Cols - 1
-        StepsView.ColWidth(col) = 250
+            
+        ' Изменяем размер каждого столбца
+        StepsView.ColWidth(col) = Settings.StepsColWidth
+        
 
         If col < StepsView.Cols - 1 Then
+        
             s = s & col & "|"
+            
         Else
+        
             s = s & col
+            
         End If
+        
         StepsView.col = col
         StepsView.row = 0
         StepsView.CellAlignment = flexAlignCenterCenter
+        
     Next
     
     StepsView.FormatString = s
@@ -1998,16 +2131,21 @@ Private Sub Form_Load()
     StepsView.FormatString = s
     
     ' "Тушим" все ячейки таблицы
-
     For row = 1 To StepsView.rows - 1
-        StepsView.RowHeight(row) = Settings.RowHeight
+    
+        StepsView.RowHeight(row) = Settings.StepsRowHeight
         
         For col = 1 To MAX_NUMBER_OF_STEPS
-            StepsView.ColWidth(col) = Settings.StepColWidth
+        
+            ' Изменяем размер каждого столбца
+            StepsView.ColWidth(col) = Settings.StepsColWidth
+            
             StepsView.col = col
             StepsView.row = row
-            StepsView.CellBackColor = &H8000000F
+            StepsView.CellBackColor = &HC8D0D4
+            
         Next
+        
     Next
     
     StepsView.col = 1
@@ -2019,7 +2157,9 @@ Private Sub Form_Load()
     s = "<   |"
 
     For col = 1 To CodeView.Cols - 1
-        CodeView.ColWidth(col) = Settings.StepColWidth
+    
+        ' Изменяем размер каждого столбца
+        CodeView.ColWidth(col) = Settings.StepsColWidth
 
         If col < CodeView.Cols - 1 Then
 
@@ -2042,6 +2182,7 @@ Private Sub Form_Load()
         CodeView.col = col
         CodeView.row = 0
         CodeView.CellAlignment = flexAlignCenterCenter
+        
     Next
     
     CodeView.FormatString = s
@@ -2854,7 +2995,6 @@ Private Sub PropertyTable_KeyDown(KeyCode As Integer, Shift As Integer)
     row = PropertyTable.row
     
     ' На всякий случай пропускаем фиксированные ячейки
-
     If col = 0 Or row = 0 Then Exit Sub
        
     ' Действуем в зависимости от типа функции шага
@@ -2937,21 +3077,29 @@ Private Sub StepsView_Click()
 
     Dim x As Integer, Y As Integer
     Dim col As Integer, row As Integer
-    
+       
+    ' Отображаем горизонтальный и вертикальный селекторы
+    ShowHorizontalSelector
+    ShowVerticalSelector
+    StepsView.Refresh
+            
     StepsView.Redraw = False
     
     x = StepsView.col
     Y = StepsView.row
     
     For col = 1 To StepsView.Cols - 2
+    
         StepsView.col = col
         StepsView.row = 0
         StepsView.CellFontBold = False
+        
     Next
     
     row = StepsView.TopRow
     
     Do While StepsView.RowIsVisible(row)
+    
         StepsView.col = 0
         StepsView.row = row
     
@@ -2959,6 +3107,7 @@ Private Sub StepsView_Click()
         row = row + 1
 
         If row > StepsView.rows - 1 Then Exit Do
+        
     Loop
        
     StepsView.row = 0
@@ -3044,6 +3193,7 @@ Private Sub OpenMainMenuItem_Click()
         
         MRUFileList.AddFile OpenFileDialog.FileName
         DisplayMRU
+        
     End If
 
     '<EhFooter>
@@ -3112,12 +3262,14 @@ Private Sub SaveAsMainMenuItem_Click()
     FileName = SaveFileDialog.FileName
     
     If FileName <> "" Then
+    
         FileName = MiscExtractPathName(SaveFileDialog.FileName, False)
         SetCaption (FileName)
         Manager.SaveToFile (SaveFileDialog.FileName)
         SetModified False
         CurrentDir = MiscExtractPathName(SaveFileDialog.FileName, True)
         RefreshDataComponents
+        
     End If
 
     '<EhFooter>
@@ -3125,12 +3277,17 @@ Private Sub SaveAsMainMenuItem_Click()
 
 SaveAsMainMenuItem_Click_Err:
     If Err.Number = cdlCancel Then
+    
+    
     Else
+    
         App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SaveAsMainMenuItem_Click]: " _
            & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+           
+        Resume Next
+        
     End If
     
-    Resume Next
     '</EhFooter>
 End Sub
 
@@ -3370,19 +3527,27 @@ Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
     '</EhHeader>
 
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyInsert Then
+    
         InsertStepMenuItem_Click
         Exit Sub
+        
     End If
         
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyDelete Then
+    
         DeleteStepMenuItem_Click
         Exit Sub
+        
     End If
         
-    If KeyCode = VBRUN.KeyCodeConstants.vbKeyLeft Or _
-       KeyCode = VBRUN.KeyCodeConstants.vbKeyRight Then
+    If KeyCode = VBRUN.KeyCodeConstants.vbKeyLeft _
+        Or KeyCode = VBRUN.KeyCodeConstants.vbKeyRight _
+        Or KeyCode = VBRUN.KeyCodeConstants.vbKeyUp _
+        Or KeyCode = VBRUN.KeyCodeConstants.vbKeyDown Then
         
         StepsView_Click
+        Exit Sub
+        
     End If
     
     '<EhFooter>
@@ -3411,6 +3576,161 @@ StepsView_MouseDown_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.StepsView_MouseDown]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub ShowHorizontalSelector()
+    '<EhHeader>
+    On Error GoTo ShowHorizontalSelector_Err
+    '</EhHeader>
+
+    ' Отображаем вертикальный селектор
+    If Settings.StepsHSelectorEnabled And Manager.FileLoaded Then
+    
+        PictureHSelLeft.Top = StepsView.Top + StepsView.RowPos(StepsView.RowSel) - Settings.StepsSelectorWidth / 2
+        PictureHSelLeft.Left = StepsView.Left
+        PictureHSelLeft.Width = Settings.StepsSelectorWidth
+        PictureHSelLeft.Height = StepsView.RowHeight(StepsView.RowSel)
+        
+        PictureHSelRight.Top = PictureHSelLeft.Top
+        PictureHSelRight.Left = PictureHSelLeft.Left + StepsView.ColWidth(0) + Settings.StepsColWidth * (StepsView.Cols - 1)
+        PictureHSelRight.Height = PictureHSelLeft.Height
+        PictureHSelRight.Width = Settings.StepsSelectorWidth
+        
+        PictureHSelTop.Left = PictureHSelLeft.Left
+        PictureHSelTop.Top = PictureHSelLeft.Top
+        PictureHSelTop.Height = Settings.StepsSelectorWidth
+        PictureHSelTop.Width = PictureHSelRight.Left
+        
+        PictureHSelBottom.Left = PictureHSelLeft.Left
+        PictureHSelBottom.Top = PictureHSelLeft.Top + PictureHSelLeft.Height
+        PictureHSelBottom.Height = Settings.StepsSelectorWidth
+        PictureHSelBottom.Width = PictureHSelTop.Width
+        
+        If StepsView.RowIsVisible(StepsView.RowSel) Then
+        
+            PictureHSelLeft.Visible = True
+            PictureHSelRight.Visible = True
+            PictureHSelTop.Visible = True
+            PictureHSelBottom.Visible = True
+        
+        Else
+        
+            PictureHSelLeft.Visible = False
+            PictureHSelRight.Visible = False
+            PictureHSelTop.Visible = False
+            PictureHSelBottom.Visible = False
+        
+        End If
+
+    Else
+        
+        PictureHSelLeft.Visible = False
+        PictureHSelRight.Visible = False
+        PictureHSelTop.Visible = False
+        PictureHSelBottom.Visible = False
+            
+    End If
+
+    '<EhFooter>
+    Exit Sub
+
+ShowHorizontalSelector_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.ShowHorizontalSelector]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub ShowVerticalSelector()
+    '<EhHeader>
+    On Error GoTo ShowVerticalSelector_Err
+    '</EhHeader>
+
+    ' Отображаем вертикальный селектор
+    If Settings.StepsVSelectorEnabled And Manager.FileLoaded Then
+            
+        PictureVSelLeft.Top = StepsView.Top
+        PictureVSelLeft.Left = StepsView.Left + StepsView.ColPos(StepsView.ColSel) - Settings.StepsSelectorWidth / 2
+        PictureVSelLeft.Width = Settings.StepsSelectorWidth
+        PictureVSelLeft.Height = StepsView.RowHeight(StepsView.RowSel) * StepsView.rows
+        
+        PictureVSelRight.Top = PictureVSelLeft.Top
+        PictureVSelRight.Left = PictureVSelLeft.Left + StepsView.ColWidth(StepsView.ColSel)
+        PictureVSelRight.Height = PictureVSelLeft.Height
+        PictureVSelRight.Width = Settings.StepsSelectorWidth
+        
+        PictureVSelTop.Left = PictureVSelLeft.Left
+        PictureVSelTop.Top = StepsView.Top
+        PictureVSelTop.Height = Settings.StepsSelectorWidth
+        PictureVSelTop.Width = StepsView.ColWidth(StepsView.ColSel)
+        
+        PictureVSelBottom.Left = PictureVSelLeft.Left
+        PictureVSelBottom.Top = PictureVSelLeft.Height - Settings.StepsSelectorWidth
+        PictureVSelBottom.Height = Settings.StepsSelectorWidth
+        PictureVSelBottom.Width = PictureVSelTop.Width
+        
+        If StepsView.ColIsVisible(StepsView.ColSel) Then
+        
+            PictureVSelLeft.Visible = True
+            PictureVSelRight.Visible = True
+            PictureVSelTop.Visible = True
+            PictureVSelBottom.Visible = True
+        
+        Else
+        
+            PictureVSelLeft.Visible = False
+            PictureVSelRight.Visible = False
+            PictureVSelTop.Visible = False
+            PictureVSelBottom.Visible = False
+        
+        End If
+        
+    Else
+    
+        PictureVSelLeft.Visible = False
+        PictureVSelRight.Visible = False
+        PictureVSelTop.Visible = False
+        PictureVSelBottom.Visible = False
+        
+    End If
+
+    '<EhFooter>
+    Exit Sub
+
+ShowVerticalSelector_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.ShowVerticalSelector]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub StepsView_Scroll()
+    '<EhHeader>
+    On Error GoTo StepsView_Scroll_Err
+    '</EhHeader>
+
+    ShowVerticalSelector
+    
+    '<EhFooter>
+    Exit Sub
+
+StepsView_Scroll_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.StepsView_Scroll]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -3556,20 +3876,22 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
     '</EhHeader>
 
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
+    
         TextCell.Visible = False
         LabelDescription.Visible = False
         ShapeDescription.Visible = False
         RefreshFrameRight
         PropertyTable.SetFocus
+        
     End If
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
+    
         Dim FuncN As Integer
         
         FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Manager.StepIndex + 1)
         
         ' Сохраняем изменённое значение
-
         If FuncN < 12 Then
 
             Select Case FuncN
@@ -3630,8 +3952,11 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
             RefreshComponents False
 
             If row < PropertyTable.rows - 1 Then PropertyTable.row = row
+            
             PropertyTable.SetFocus
+            
         End If
+        
     End If
     
     '<EhFooter>
@@ -3826,13 +4151,13 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     ' Создаём временный файл
     Dim szBuffer As String, szTempFileName As String
     Dim MAX_PATH As Long
-    Dim Length As Integer
+    Dim length As Integer
     
     MAX_PATH = 255
     szBuffer = Space(255)
     
     ' Получаем путь к временной папке
-    Length = GetTempPath(MAX_PATH, szBuffer)
+    length = GetTempPath(MAX_PATH, szBuffer)
 
     ' Формируем путь к временному файлу
     szTempFileName = Space(255)
@@ -4215,20 +4540,27 @@ Private Sub RefreshListSelection()
         CRC8Value = Manager.CalculateCRC8(Cnt * PROGRAM_SIZE_IN_BYTES, PROGRAM_SIZE_IN_BYTES)
         
         If CRC8Value = CRC8_FOR_DEFAULT_PROGRAM Then
-            ListPrograms.CellBackColor = &H8000000F
+        
+            ListPrograms.CellBackColor = &HC8D0D4
+            
         End If
         
         CRC8Value = Manager.CalculateCRC8(Cnt * PROGRAM_SIZE_IN_BYTES + 1, _
            PROGRAM_SIZE_IN_BYTES - 1)
 
         If Not CRC8Value = Manager.GetByte(Cnt * PROGRAM_SIZE_IN_BYTES) Then
+        
             ListPrograms.CellBackColor = &H8080FF
+            
         End If
         
         If ListPrograms.row = Manager.ProgramIndex + 1 Then
+        
             ListPrograms.CellForeColor = &H80000005
             ListPrograms.CellBackColor = &H8000000D
+            
         End If
+        
     Next
 
     '<EhFooter>
@@ -4247,6 +4579,7 @@ Private Sub RefreshList()
     '</EhHeader>
 
     If Not Manager.FileLoaded Then
+    
         FrameLeft.Caption = "Программы"
         ListPrograms.Clear
         ListPrograms.Font.Bold = Settings.StepsViewFontBold
@@ -4256,7 +4589,9 @@ Private Sub RefreshList()
         ListPrograms.FormatString = "<Список"
         ListPrograms.rows = 1
         FrameLeft.Enabled = False
+        
         Exit Sub
+        
     End If
     
     FrameLeft.Enabled = True
@@ -4274,6 +4609,7 @@ Private Sub RefreshList()
     ListPrograms.FormatString = "<Список"
     
     If Manager.ProgramsCount > 0 Then
+    
         Dim b As Byte, N As Byte
         Dim Cnt As Integer
         Dim StepPointer As Long, Value As Long
@@ -4281,33 +4617,45 @@ Private Sub RefreshList()
         Dim RecordTitle As TYPE_WPC_TITLE
         
         For Cnt = 1 To Manager.ProgramsCount
+        
             StepPointer = Manager.DataPointer + (Cnt - 1) * PROGRAM_SIZE_IN_BYTES
             CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
             
             Value = 0
 
             For N = 1 To PROG_NAME_LENGTH - 1
+            
                 Value = Value + CLng(RecordTitle.ProgName(N))
+                
             Next
             
             If Value = 0 Then
+            
                 ListPrograms.AddItem "Программа" & Cnt
                 ListPrograms.row = Cnt
-                ListPrograms.CellBackColor = &HC0FFFF
+                ListPrograms.CellBackColor = &HC8D0D4
+                
             Else
+            
                 s = ""
 
                 For N = 1 To PROG_NAME_LENGTH - 1
+                
                     s = s & Chr$(RecordTitle.ProgName(N))
+                    
                 Next
+                
                 ListPrograms.AddItem s
+                
             End If
+            
         Next
     
         ' Обновляем задний фон ячеек списка в зависимости от состояния
         RefreshListSelection
         
         ListPrograms.row = Manager.ProgramIndex + 1
+        
     End If
 
     ListPrograms.ColWidth(0) = ListPrograms.Width
@@ -4349,7 +4697,7 @@ Private Sub RefreshCodeView()
         s = "<   |"
 
         For col = 1 To CodeView.Cols - 2
-            CodeView.ColWidth(col) = Settings.StepColWidth
+            CodeView.ColWidth(col) = Settings.StepsColWidth
 
             If col < CodeView.Cols - 1 Then
 
@@ -4390,7 +4738,7 @@ Private Sub RefreshCodeView()
     s = "<   |"
 
     For col = 1 To CodeView.Cols - 2
-        CodeView.ColWidth(col) = Settings.StepColWidth
+        CodeView.ColWidth(col) = Settings.StepsColWidth
 
         If col < CodeView.Cols - 1 Then
 
@@ -4417,7 +4765,7 @@ Private Sub RefreshCodeView()
     ' Формируем заголовки строк
     Dim HexValue As Long
    
-    CodeView.ColWidth(0) = 2 * Settings.StepColWidth
+    CodeView.ColWidth(0) = 2 * Settings.StepsColWidth
     CodeView.rows = Manager.ImageSize / 16
     
     For row = 1 To CodeView.rows - 1
@@ -4453,7 +4801,7 @@ Private Sub RefreshCodeView()
     
     Do While CodeView.RowIsVisible(row)
 
-        CodeView.RowHeight(row) = Settings.RowHeight
+        CodeView.RowHeight(row) = Settings.StepsRowHeight
         
         For col = 1 To CodeView.Cols - 2
             CodeView.col = col
@@ -4575,37 +4923,50 @@ Private Sub RefreshStepsView()
     Dim s As String
     
     ' Выходим из процедуры, если программы не загружены или отсутствуют
-
     If Not Manager.FileLoaded Then
+    
         FrameMain.Caption = "Шаги"
         StepsView.Redraw = False
         StepsView.Clear
         
+        ' Настраиваем параметры отображения текста
         StepsView.Font.Bold = Settings.StepsViewFontBold
         StepsView.Font.Italic = Settings.StepsViewFontItalic
         StepsView.Font.Name = Settings.StepsViewFontName
         StepsView.Font.Size = Settings.StepsViewFontSize
     
+        ' Устанавливаем количество столбцов таблицы
         StepsView.Cols = MAX_NUMBER_OF_STEPS + 1
         
         s = "<   |"
 
         For col = 1 To StepsView.Cols - 1
-            StepsView.ColWidth(col) = Settings.StepColWidth
+        
+            ' Изменяем размер каждого столбца
+            StepsView.ColWidth(col) = Settings.StepsColWidth
             
             If col < StepsView.Cols - 1 Then
 
                 If col < 10 Then
+                
                     s = s & "0" & col & "|"
+                    
                 Else
+                
                     s = s & col & "|"
+                    
                 End If
+                
             Else
+            
                 s = s & col
+                
             End If
+            
             StepsView.col = col
             StepsView.row = 0
             StepsView.CellAlignment = flexAlignCenterCenter
+            
         Next
         
         StepsView.FormatString = s
@@ -4635,55 +4996,79 @@ Private Sub RefreshStepsView()
         ' "Тушим" все ячейки таблицы
 
         For row = 1 To StepsView.rows - 1
-            StepsView.RowHeight(row) = Settings.RowHeight
+        
+            StepsView.RowHeight(row) = Settings.StepsRowHeight
             
             For col = 1 To StepsView.Cols - 1
-                StepsView.ColWidth(col) = Settings.StepColWidth
+            
+                ' Изменяем размер каждого столбца
+                StepsView.ColWidth(col) = Settings.StepsColWidth
+                
                 StepsView.col = col
                 StepsView.row = row
-                StepsView.CellBackColor = &H8000000F
+                StepsView.CellBackColor = &HC8D0D4
+                
             Next
+            
         Next
         
         StepsView.col = 1
         StepsView.row = 1
         StepsView.Redraw = True
         FrameMain.Enabled = False
+        
         Exit Sub
+        
     End If
         
+    ' Отключаем прорисовку компонента
     StepsView.Redraw = False
     
+    ' Сохраняем координаты
     x = StepsView.col
     Y = StepsView.row
     
+    ' Очищаем настройки и данные компонента
     StepsView.Clear
     
+    ' Настраиваем параметры отображения текста
     StepsView.Font.Bold = Settings.StepsViewFontBold
     StepsView.Font.Italic = Settings.StepsViewFontItalic
     StepsView.Font.Name = Settings.StepsViewFontName
     StepsView.Font.Size = Settings.StepsViewFontSize
         
+    ' Устанавливаем количество столбцов таблицы
     StepsView.Cols = MAX_NUMBER_OF_STEPS + 1
     
     s = "<   |"
 
     For col = 1 To StepsView.Cols - 1
-        StepsView.ColWidth(col) = Settings.StepColWidth
+    
+        ' Изменяем размер каждого столбца
+        StepsView.ColWidth(col) = Settings.StepsColWidth
         
         If col < StepsView.Cols - 1 Then
 
             If col < 10 Then
+            
                 s = s & "0" & col & "|"
+                
             Else
+            
                 s = s & col & "|"
+                
             End If
+            
         Else
+        
             s = s & col
+            
         End If
+        
         StepsView.col = col
         StepsView.row = 0
         StepsView.CellAlignment = flexAlignCenterCenter
+        
     Next
     
     StepsView.FormatString = s
@@ -4713,20 +5098,29 @@ Private Sub RefreshStepsView()
     ' "Тушим" все ячейки таблицы
 
     For row = 1 To StepsView.rows - 1
-        StepsView.RowHeight(row) = Settings.RowHeight
+    
+        StepsView.RowHeight(row) = Settings.StepsRowHeight
         
         For col = 1 To StepsView.Cols - 1
+        
+            ' Изменяем размер каждого столбца
+            StepsView.ColWidth(col) = Settings.StepsColWidth
+        
             StepsView.col = col
             StepsView.row = row
-            StepsView.CellBackColor = &H8000000F
+            StepsView.CellBackColor = &HC8D0D4
+            
         Next
+        
     Next
     
     'col = StepsView.LeftCol
     
+    ' Настраиваем таблицу
     StepsView.col = 1
     StepsView.row = 1
     
+    ' Настраиваем картинки
     ImageChecked.Width = StepsView.CellWidth
     ImageChecked.Height = StepsView.CellHeight
     
@@ -4737,61 +5131,89 @@ Private Sub RefreshStepsView()
     ImageGrayed.Height = StepsView.CellHeight
     
     For col = 1 To MAX_NUMBER_OF_STEPS
+    
+        ' Изменяем размер каждого столбца
+        StepsView.ColWidth(col) = Settings.StepsColWidth
+    
         FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, col)
         
         If FuncN > 0 And FuncN < 11 Then
 
             For row = 1 To StepsView.rows - 1
+            
                 StepsView.col = col
                 StepsView.row = row
                 StepsView.CellAlignment = flexAlignCenterCenter
                 
                 If StepsViewMode = TEXT_VIEW Then StepsView.Text = Mid$(FunctionsStrings(FuncN), row, 1)
                 
+                ' Если нагрузку можно изменять, то показываем состояние ячейки таблицы
                 If GetLoadingsFromFuncN(FuncN) And (2 ^ (row - 1)) Then
 
                     Select Case StepsViewMode
+                    
                         Case TEXT_VIEW:
 
                             If ValveEnabled(col, row) Then
+                            
                                 StepsView.CellBackColor = &HC000&
+                                
                             Else
-                                StepsView.CellBackColor = &H8000000F
+                            
+                                StepsView.CellBackColor = &HC8D0D4
+                                
                             End If
+                            
                             StepsView.CellPictureAlignment = flexAlignCenterCenter
                         
+                        
                         Case CHECKS_VIEW:
+                        
                             StepsView.CellBackColor = &HFFFFFF
 
                             If ValveEnabled(col, row) Then
+                            
                                 Set StepsView.CellPicture = ImageChecked.Picture
+                                
                             Else
+                            
                                 Set StepsView.CellPicture = ImageUnchecked.Picture
+                                
                             End If
+                            
                             StepsView.CellPictureAlignment = flexAlignCenterCenter
                         
                     End Select
+                    
                 Else
 
                     Select Case StepsViewMode
-                        Case TEXT_VIEW: StepsView.CellBackColor = &H80000005
+                    
+                        Case TEXT_VIEW: StepsView.CellBackColor = &HFFFFFF
                     
                         Case CHECKS_VIEW:
-                            StepsView.CellBackColor = &H80000005
+                        
+                            StepsView.CellBackColor = &HFFFFFF
                             Set StepsView.CellPicture = ImageGrayed.Picture
                             StepsView.CellPictureAlignment = flexAlignCenterCenter
                         
                     End Select
+                    
                 End If
+                
             Next
+            
         Else
 
             For row = 1 To StepsView.rows - 1
+            
                 StepsView.col = col
                 StepsView.row = row
                 StepsView.Text = ""
-                StepsView.CellBackColor = &H8000000F
+                StepsView.CellBackColor = &HC8D0D4
+                
             Next
+            
         End If
         
     Next
