@@ -3,7 +3,7 @@ Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form FormAbout 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "О программе"
-   ClientHeight    =   3192
+   ClientHeight    =   3528
    ClientLeft      =   2340
    ClientTop       =   1932
    ClientWidth     =   5412
@@ -12,13 +12,13 @@ Begin VB.Form FormAbout
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3192
+   ScaleHeight     =   3528
    ScaleWidth      =   5412
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin MSComctlLib.ImageList ImageListPhotos 
-      Left            =   600
-      Top             =   2640
+      Left            =   720
+      Top             =   3000
       _ExtentX        =   804
       _ExtentY        =   804
       BackColor       =   -2147483643
@@ -43,8 +43,8 @@ Begin VB.Form FormAbout
       EndProperty
    End
    Begin VB.Timer Timer 
-      Left            =   120
-      Top             =   2760
+      Left            =   240
+      Top             =   3120
    End
    Begin VB.PictureBox picIcon 
       BorderStyle     =   0  'None
@@ -68,16 +68,38 @@ Begin VB.Form FormAbout
       Height          =   348
       Left            =   2040
       TabIndex        =   0
-      Top             =   2760
+      Top             =   3120
       Width           =   1260
+   End
+   Begin VB.Label LabelCompany 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "ООО НПФ ""Авторские технологии"""
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000D&
+      Height          =   216
+      Left            =   1320
+      MouseIcon       =   "FormAbout.frx":16A09
+      MousePointer    =   99  'Custom
+      TabIndex        =   9
+      Top             =   2400
+      Width           =   2868
    End
    Begin VB.Shape Shape8 
       BorderColor     =   &H80000010&
-      Height          =   392
-      Left            =   110
+      Height          =   756
+      Left            =   108
       Shape           =   4  'Rounded Rectangle
-      Top             =   2270
-      Width           =   5192
+      Top             =   2268
+      Width           =   5196
    End
    Begin VB.Shape Shape7 
       BorderColor     =   &H80000010&
@@ -105,7 +127,7 @@ Begin VB.Form FormAbout
    End
    Begin VB.Shape Shape4 
       BorderColor     =   &H00FFFFFF&
-      Height          =   372
+      Height          =   732
       Left            =   120
       Shape           =   4  'Rounded Rectangle
       Top             =   2280
@@ -150,7 +172,7 @@ Begin VB.Form FormAbout
       ForeColor       =   &H8000000D&
       Height          =   216
       Left            =   1320
-      MouseIcon       =   "FormAbout.frx":16A09
+      MouseIcon       =   "FormAbout.frx":2CA23
       MousePointer    =   99  'Custom
       TabIndex        =   8
       Top             =   1848
@@ -171,7 +193,7 @@ Begin VB.Form FormAbout
       ForeColor       =   &H8000000D&
       Height          =   216
       Left            =   1320
-      MouseIcon       =   "FormAbout.frx":2CA23
+      MouseIcon       =   "FormAbout.frx":42A3D
       MousePointer    =   99  'Custom
       TabIndex        =   7
       Top             =   1560
@@ -193,11 +215,11 @@ Begin VB.Form FormAbout
       Height          =   252
       Left            =   1680
       TabIndex        =   6
-      Top             =   2316
+      Top             =   2676
       Width           =   2052
    End
    Begin VB.Label lblDescription 
-      Caption         =   "Конфигуратор предназначен для создания или изменения управляющих программ"
+      Caption         =   "Предназначен для создания или изменения управляющих программ контроллера MCU-401"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9
@@ -390,6 +412,30 @@ Label3_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.Label3_Click]: " _
         & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub LabelCompany_Click()
+    '<EhHeader>
+    On Error GoTo LabelCompany_Click_Err
+    '</EhHeader>
+
+    Dim Success As Integer
+    
+    ' Переходим на страничку
+    Success = ShellExecute(Me.hWnd, vbNullString, "http://www.at.ur.ru", vbNullString, vbNullString, SW_SHOWNORMAL)
+
+    '<EhFooter>
+    Exit Sub
+
+LabelCompany_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormAbout.LabelCompany_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 

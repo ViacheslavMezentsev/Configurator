@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form FormDownload 
    Caption         =   "Загрузка..."
-   ClientHeight    =   1536
+   ClientHeight    =   2712
    ClientLeft      =   2772
    ClientTop       =   3768
    ClientWidth     =   5328
@@ -10,7 +10,7 @@ Begin VB.Form FormDownload
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1536
+   ScaleHeight     =   2712
    ScaleWidth      =   5328
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton CommanClose 
@@ -18,7 +18,7 @@ Begin VB.Form FormDownload
       Height          =   360
       Left            =   4080
       TabIndex        =   4
-      Top             =   1080
+      Top             =   2280
       Width           =   1092
    End
    Begin VB.CommandButton CancelButton 
@@ -26,20 +26,74 @@ Begin VB.Form FormDownload
       Height          =   372
       Left            =   2760
       TabIndex        =   2
-      Top             =   1080
+      Top             =   2280
       Width           =   1212
    End
    Begin MSComctlLib.ProgressBar ProgressBar 
       Height          =   252
       Left            =   120
       TabIndex        =   3
-      Top             =   720
-      Width           =   5120
+      Top             =   1920
+      Width           =   5124
       _ExtentX        =   9038
       _ExtentY        =   445
       _Version        =   393216
       BorderStyle     =   1
       Appearance      =   0
+   End
+   Begin VB.Label LabelAttMessage 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Пожалуйста, дождитесь окончания загрузки, затем нажмите кнопку ""Закрыть""."
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   10.2
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   552
+      Left            =   240
+      TabIndex        =   6
+      Top             =   600
+      Width           =   4920
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label LabelAttention 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Внимание"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   10.2
+         Charset         =   204
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   252
+      Left            =   1920
+      TabIndex        =   5
+      Top             =   240
+      Width           =   1068
+   End
+   Begin VB.Shape Shape2 
+      BorderColor     =   &H00FFFFFF&
+      Height          =   1092
+      Left            =   132
+      Shape           =   4  'Rounded Rectangle
+      Top             =   132
+      Width           =   5052
+   End
+   Begin VB.Shape Shape6 
+      BorderColor     =   &H80000010&
+      Height          =   1116
+      Left            =   120
+      Shape           =   4  'Rounded Rectangle
+      Top             =   120
+      Width           =   5076
    End
    Begin VB.Label LabelTo 
       AutoSize        =   -1  'True
@@ -48,7 +102,7 @@ Begin VB.Form FormDownload
       Height          =   192
       Left            =   120
       TabIndex        =   1
-      Top             =   360
+      Top             =   1560
       Width           =   420
    End
    Begin VB.Label LabelFrom 
@@ -58,7 +112,7 @@ Begin VB.Form FormDownload
       Height          =   192
       Left            =   120
       TabIndex        =   0
-      Top             =   120
+      Top             =   1320
       Width           =   612
    End
 End
