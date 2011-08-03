@@ -55,7 +55,7 @@ Begin VB.Form FormOptions
          Left            =   -74880
          ScaleHeight     =   3708
          ScaleWidth      =   5688
-         TabIndex        =   20
+         TabIndex        =   19
          TabStop         =   0   'False
          Top             =   360
          Width           =   5688
@@ -63,7 +63,7 @@ Begin VB.Form FormOptions
             Caption         =   "Импорт/экспорт"
             Height          =   732
             Left            =   0
-            TabIndex        =   32
+            TabIndex        =   31
             Top             =   2400
             Width           =   5676
             Begin VB.ComboBox ComboExportFormat 
@@ -72,7 +72,7 @@ Begin VB.Form FormOptions
                Left            =   4440
                List            =   "FormOptions.frx":0067
                Style           =   2  'Dropdown List
-               TabIndex        =   34
+               TabIndex        =   33
                Top             =   240
                Width           =   852
             End
@@ -82,7 +82,7 @@ Begin VB.Form FormOptions
                Left            =   1380
                List            =   "FormOptions.frx":0078
                Style           =   2  'Dropdown List
-               TabIndex        =   33
+               TabIndex        =   32
                Top             =   240
                Width           =   852
             End
@@ -92,7 +92,7 @@ Begin VB.Form FormOptions
                Caption         =   "Экспорт в:"
                Height          =   192
                Left            =   3336
-               TabIndex        =   36
+               TabIndex        =   35
                Top             =   288
                Width           =   828
             End
@@ -102,7 +102,7 @@ Begin VB.Form FormOptions
                Caption         =   "Импорт из:"
                Height          =   192
                Left            =   240
-               TabIndex        =   35
+               TabIndex        =   34
                Top             =   288
                Width           =   864
             End
@@ -111,14 +111,14 @@ Begin VB.Form FormOptions
             Caption         =   "История файлов"
             Height          =   1188
             Left            =   0
-            TabIndex        =   26
+            TabIndex        =   25
             Top             =   0
             Width           =   5676
             Begin VB.CheckBox CheckFilesHistoryLimitPaths 
                Caption         =   "Ограничивать длину пути в меню"
                Height          =   252
                Left            =   120
-               TabIndex        =   28
+               TabIndex        =   27
                Top             =   720
                Width           =   4932
             End
@@ -127,7 +127,7 @@ Begin VB.Form FormOptions
                Height          =   288
                Left            =   1680
                MaxLength       =   2
-               TabIndex        =   27
+               TabIndex        =   26
                Text            =   "4"
                Top             =   312
                Width           =   408
@@ -135,7 +135,7 @@ Begin VB.Form FormOptions
             Begin MSComCtl2.UpDown UpDownFilesHistoryCount 
                Height          =   288
                Left            =   2088
-               TabIndex        =   29
+               TabIndex        =   28
                Top             =   312
                Width           =   240
                _ExtentX        =   423
@@ -159,7 +159,7 @@ Begin VB.Form FormOptions
                Caption         =   "файлов"
                Height          =   192
                Left            =   2424
-               TabIndex        =   31
+               TabIndex        =   30
                Top             =   360
                Width           =   612
             End
@@ -169,7 +169,7 @@ Begin VB.Form FormOptions
                Caption         =   "Помнить не более"
                Height          =   192
                Left            =   120
-               TabIndex        =   30
+               TabIndex        =   29
                Top             =   360
                Width           =   1428
             End
@@ -178,14 +178,14 @@ Begin VB.Form FormOptions
             Caption         =   "Обновление"
             Height          =   972
             Left            =   0
-            TabIndex        =   22
+            TabIndex        =   21
             Top             =   1320
             Width           =   5676
             Begin VB.CheckBox CheckEnableAutoUpdate 
                Caption         =   "Включить автоматическое обновление"
                Height          =   252
                Left            =   120
-               TabIndex        =   24
+               TabIndex        =   23
                Top             =   240
                Width           =   5412
             End
@@ -196,7 +196,7 @@ Begin VB.Form FormOptions
                Left            =   360
                List            =   "FormOptions.frx":008F
                Style           =   2  'Dropdown List
-               TabIndex        =   23
+               TabIndex        =   22
                Top             =   552
                Width           =   1692
             End
@@ -207,7 +207,7 @@ Begin VB.Form FormOptions
                Enabled         =   0   'False
                Height          =   192
                Left            =   2160
-               TabIndex        =   25
+               TabIndex        =   24
                Top             =   600
                Width           =   1932
             End
@@ -220,7 +220,7 @@ Begin VB.Form FormOptions
          Left            =   -74880
          ScaleHeight     =   3732
          ScaleWidth      =   5688
-         TabIndex        =   14
+         TabIndex        =   13
          TabStop         =   0   'False
          Top             =   360
          Width           =   5688
@@ -228,21 +228,21 @@ Begin VB.Form FormOptions
             Caption         =   "Параметры"
             Height          =   3708
             Left            =   0
-            TabIndex        =   15
+            TabIndex        =   14
             Top             =   0
             Width           =   5676
             Begin VB.CheckBox CheckRewriteLogFile 
                Caption         =   "Перезаписывать файл лога при запуске"
                Height          =   252
                Left            =   120
-               TabIndex        =   18
+               TabIndex        =   17
                Top             =   360
                Width           =   3612
             End
             Begin VB.TextBox TextLogFilePath 
                Height          =   288
                Left            =   120
-               TabIndex        =   17
+               TabIndex        =   16
                Top             =   1008
                Width           =   4212
             End
@@ -250,7 +250,7 @@ Begin VB.Form FormOptions
                Caption         =   "Обзор..."
                Height          =   372
                Left            =   4440
-               TabIndex        =   16
+               TabIndex        =   15
                Top             =   972
                Width           =   1092
             End
@@ -259,7 +259,7 @@ Begin VB.Form FormOptions
                Caption         =   "Путь к файлу:"
                Height          =   192
                Left            =   120
-               TabIndex        =   19
+               TabIndex        =   18
                Top             =   720
                Width           =   1092
             End
@@ -280,9 +280,16 @@ Begin VB.Form FormOptions
             Caption         =   "Вид"
             Height          =   3708
             Left            =   0
-            TabIndex        =   21
+            TabIndex        =   20
             Top             =   0
             Width           =   5676
+            Begin VB.TextBox TextSelThickness 
+               Height          =   288
+               Left            =   2040
+               TabIndex        =   46
+               Top             =   1080
+               Width           =   612
+            End
             Begin VB.PictureBox PictureHSelRight 
                AutoRedraw      =   -1  'True
                BackColor       =   &H8000000D&
@@ -291,7 +298,7 @@ Begin VB.Form FormOptions
                Left            =   5400
                ScaleHeight     =   252
                ScaleWidth      =   24
-               TabIndex        =   46
+               TabIndex        =   45
                TabStop         =   0   'False
                Top             =   2520
                Visible         =   0   'False
@@ -305,7 +312,7 @@ Begin VB.Form FormOptions
                Left            =   120
                ScaleHeight     =   24
                ScaleWidth      =   5316
-               TabIndex        =   45
+               TabIndex        =   44
                TabStop         =   0   'False
                Top             =   2760
                Visible         =   0   'False
@@ -319,7 +326,7 @@ Begin VB.Form FormOptions
                Left            =   120
                ScaleHeight     =   252
                ScaleWidth      =   24
-               TabIndex        =   44
+               TabIndex        =   43
                TabStop         =   0   'False
                Top             =   2520
                Visible         =   0   'False
@@ -333,7 +340,7 @@ Begin VB.Form FormOptions
                Left            =   120
                ScaleHeight     =   24
                ScaleWidth      =   5316
-               TabIndex        =   43
+               TabIndex        =   42
                TabStop         =   0   'False
                Top             =   2520
                Visible         =   0   'False
@@ -347,7 +354,7 @@ Begin VB.Form FormOptions
                Left            =   2760
                ScaleHeight     =   24
                ScaleWidth      =   396
-               TabIndex        =   42
+               TabIndex        =   41
                TabStop         =   0   'False
                Top             =   3600
                Visible         =   0   'False
@@ -361,9 +368,9 @@ Begin VB.Form FormOptions
                Left            =   2760
                ScaleHeight     =   24
                ScaleWidth      =   396
-               TabIndex        =   41
+               TabIndex        =   40
                TabStop         =   0   'False
-               Top             =   1800
+               Top             =   2280
                Visible         =   0   'False
                Width           =   400
             End
@@ -371,13 +378,13 @@ Begin VB.Form FormOptions
                AutoRedraw      =   -1  'True
                BackColor       =   &H8000000D&
                BorderStyle     =   0  'None
-               Height          =   1812
+               Height          =   1332
                Left            =   3120
-               ScaleHeight     =   1812
+               ScaleHeight     =   1332
                ScaleWidth      =   24
-               TabIndex        =   40
+               TabIndex        =   39
                TabStop         =   0   'False
-               Top             =   1800
+               Top             =   2280
                Visible         =   0   'False
                Width           =   20
             End
@@ -385,13 +392,13 @@ Begin VB.Form FormOptions
                AutoRedraw      =   -1  'True
                BackColor       =   &H8000000D&
                BorderStyle     =   0  'None
-               Height          =   1812
+               Height          =   1332
                Left            =   2760
-               ScaleHeight     =   1812
+               ScaleHeight     =   1332
                ScaleWidth      =   24
-               TabIndex        =   39
+               TabIndex        =   38
                TabStop         =   0   'False
-               Top             =   1800
+               Top             =   2280
                Visible         =   0   'False
                Width           =   20
             End
@@ -399,44 +406,44 @@ Begin VB.Form FormOptions
                Caption         =   "Горизонтальный селектор"
                Height          =   252
                Left            =   120
-               TabIndex        =   38
-               Top             =   1440
-               Width           =   3132
+               TabIndex        =   37
+               Top             =   1680
+               Width           =   2772
             End
             Begin VB.CheckBox CheckVSelector 
                Caption         =   "Вертикальный селектор"
                Height          =   252
                Left            =   120
-               TabIndex        =   37
-               Top             =   1200
-               Width           =   3252
+               TabIndex        =   36
+               Top             =   1440
+               Width           =   2772
             End
             Begin VB.TextBox Text1 
                Height          =   288
                Left            =   2040
-               TabIndex        =   9
-               Top             =   264
+               TabIndex        =   8
+               Top             =   312
                Width           =   612
             End
             Begin VB.TextBox Text2 
                Height          =   288
                Left            =   2040
-               TabIndex        =   8
-               Top             =   684
+               TabIndex        =   7
+               Top             =   702
                Width           =   612
             End
             Begin VB.CommandButton cmdFont 
                Caption         =   "Шрифт"
                Height          =   372
-               Left            =   2880
-               TabIndex        =   7
+               Left            =   4560
+               TabIndex        =   6
                Top             =   720
                Width           =   972
             End
             Begin VB.Frame Frame2 
                Height          =   492
                Left            =   2880
-               TabIndex        =   5
+               TabIndex        =   4
                Top             =   120
                Width           =   2652
                Begin VB.Label LabelFont 
@@ -444,28 +451,20 @@ Begin VB.Form FormOptions
                   Caption         =   "FontName"
                   Height          =   192
                   Left            =   120
-                  TabIndex        =   6
+                  TabIndex        =   5
                   Top             =   192
                   Width           =   756
                End
             End
-            Begin VB.CommandButton cmdApply 
-               Caption         =   "Применить"
-               Height          =   372
-               Left            =   4440
-               TabIndex        =   4
-               Top             =   720
-               Width           =   1092
-            End
             Begin MSFlexGridLib.MSFlexGrid StepsView 
-               Height          =   1452
+               Height          =   1332
                Left            =   120
-               TabIndex        =   10
+               TabIndex        =   9
                TabStop         =   0   'False
-               Top             =   2160
+               Top             =   2280
                Width           =   5412
                _ExtentX        =   9546
-               _ExtentY        =   2561
+               _ExtentY        =   2350
                _Version        =   393216
                Rows            =   16
                Cols            =   81
@@ -475,12 +474,22 @@ Begin VB.Form FormOptions
                BorderStyle     =   0
                Appearance      =   0
             End
+            Begin VB.Label LabelSelThickness 
+               AutoSize        =   -1  'True
+               BackStyle       =   0  'Transparent
+               Caption         =   "Толщина селектора:"
+               Height          =   192
+               Left            =   120
+               TabIndex        =   47
+               Top             =   1128
+               Width           =   1596
+            End
             Begin VB.Label Label1 
                AutoSize        =   -1  'True
                Caption         =   "Ширина столбца шага:"
                Height          =   192
                Left            =   120
-               TabIndex        =   13
+               TabIndex        =   12
                Top             =   360
                Width           =   1740
             End
@@ -488,7 +497,7 @@ Begin VB.Form FormOptions
                Caption         =   "Высота строк таблиц:"
                Height          =   252
                Left            =   120
-               TabIndex        =   12
+               TabIndex        =   11
                Top             =   720
                Width           =   1812
             End
@@ -497,8 +506,8 @@ Begin VB.Form FormOptions
                Caption         =   "Образец:"
                Height          =   192
                Left            =   120
-               TabIndex        =   11
-               Top             =   1920
+               TabIndex        =   10
+               Top             =   2040
                Width           =   732
             End
          End
@@ -569,27 +578,31 @@ Private Sub ShowHorizontalSelector()
     On Error GoTo ShowHorizontalSelector_Err
     '</EhHeader>
 
+    Dim SelectorWidth As Integer
+    
+    SelectorWidth = CInt(TextSelThickness.Text)
+    
     ' Отображаем вертикальный селектор
     If CheckHSelector.Value > 0 Then
     
-        PictureHSelLeft.Top = StepsView.Top + StepsView.RowPos(StepsView.RowSel) - Settings.StepsSelectorWidth / 2
+        PictureHSelLeft.Top = StepsView.Top + StepsView.RowPos(StepsView.RowSel) - SelectorWidth / 2
         PictureHSelLeft.Left = StepsView.Left
-        PictureHSelLeft.Width = Settings.StepsSelectorWidth
+        PictureHSelLeft.Width = SelectorWidth
         PictureHSelLeft.Height = StepsView.RowHeight(StepsView.RowSel)
         
         PictureHSelRight.Top = PictureHSelLeft.Top
         PictureHSelRight.Left = PictureHSelLeft.Left + StepsView.ColWidth(0) + StepsView.ColWidth(1) * (StepsView.Cols - 1)
         PictureHSelRight.Height = PictureHSelLeft.Height
-        PictureHSelRight.Width = Settings.StepsSelectorWidth
+        PictureHSelRight.Width = SelectorWidth
         
         PictureHSelTop.Left = PictureHSelLeft.Left
         PictureHSelTop.Top = PictureHSelLeft.Top
-        PictureHSelTop.Height = Settings.StepsSelectorWidth
+        PictureHSelTop.Height = SelectorWidth
         PictureHSelTop.Width = PictureHSelRight.Left
         
         PictureHSelBottom.Left = PictureHSelLeft.Left
         PictureHSelBottom.Top = PictureHSelLeft.Top + PictureHSelLeft.Height
-        PictureHSelBottom.Height = Settings.StepsSelectorWidth
+        PictureHSelBottom.Height = SelectorWidth
         PictureHSelBottom.Width = PictureHSelTop.Width
         
         If StepsView.RowIsVisible(StepsView.RowSel) Then
@@ -636,27 +649,31 @@ Private Sub ShowVerticalSelector()
     On Error GoTo ShowVerticalSelector_Err
     '</EhHeader>
 
+    Dim SelectorWidth As Integer
+    
+    SelectorWidth = CInt(TextSelThickness.Text)
+    
     ' Отображаем вертикальный селектор
     If CheckVSelector.Value > 0 Then
             
         PictureVSelLeft.Top = StepsView.Top
-        PictureVSelLeft.Left = StepsView.Left + StepsView.ColPos(StepsView.ColSel) - Settings.StepsSelectorWidth / 2
-        PictureVSelLeft.Width = Settings.StepsSelectorWidth
+        PictureVSelLeft.Left = StepsView.Left + StepsView.ColPos(StepsView.ColSel) - SelectorWidth / 2
+        PictureVSelLeft.Width = SelectorWidth
         PictureVSelLeft.Height = StepsView.RowHeight(StepsView.RowSel) * StepsView.rows
         
         PictureVSelRight.Top = PictureVSelLeft.Top
         PictureVSelRight.Left = PictureVSelLeft.Left + StepsView.ColWidth(StepsView.ColSel)
         PictureVSelRight.Height = PictureVSelLeft.Height
-        PictureVSelRight.Width = Settings.StepsSelectorWidth
+        PictureVSelRight.Width = SelectorWidth
         
         PictureVSelTop.Left = PictureVSelLeft.Left
         PictureVSelTop.Top = StepsView.Top
-        PictureVSelTop.Height = Settings.StepsSelectorWidth
+        PictureVSelTop.Height = SelectorWidth
         PictureVSelTop.Width = StepsView.ColWidth(StepsView.ColSel)
         
         PictureVSelBottom.Left = PictureVSelLeft.Left
-        PictureVSelBottom.Top = PictureVSelLeft.Height - Settings.StepsSelectorWidth
-        PictureVSelBottom.Height = Settings.StepsSelectorWidth
+        PictureVSelBottom.Top = PictureVSelLeft.Height - SelectorWidth
+        PictureVSelBottom.Height = SelectorWidth
         PictureVSelBottom.Width = PictureVSelTop.Width
         
         If StepsView.ColIsVisible(StepsView.ColSel) Then
@@ -703,8 +720,7 @@ Private Sub CheckHSelector_Click()
     On Error GoTo CheckHSelector_Click_Err
     '</EhHeader>
 
-    ' Отображаем горизонтальный селектор
-    ShowHorizontalSelector
+    RefreshStepsView
     
     '<EhFooter>
     Exit Sub
@@ -725,8 +741,7 @@ Private Sub CheckVSelector_Click()
     On Error GoTo CheckVSelector_Click_Err
     '</EhHeader>
 
-    ' Отображаем вертикальный селектор
-    ShowVerticalSelector
+    RefreshStepsView
     
     '<EhFooter>
     Exit Sub
@@ -742,29 +757,25 @@ CheckVSelector_Click_Err:
     '</EhFooter>
 End Sub
 
-'**
-'@rem <h2>cmdApply_Click</h2>
-'Обработчик кнопки "Применить". При её нажатии на образце таблицы будут показаны
-'результаты сделанных изменений в настройках интерфейса.
-Private Sub cmdApply_Click()
+Private Sub cmdCancel_Click()
     '<EhHeader>
-    On Error GoTo cmdApply_Click_Err
+    On Error GoTo cmdCancel_Click_Err
     '</EhHeader>
 
-    RefreshStepsView
-
+    Unload Me
+    
     '<EhFooter>
     Exit Sub
 
-cmdApply_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.cmdApply_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
-End Sub
+cmdCancel_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.cmdCancel_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
-Private Sub cmdCancel_Click()
-    Unload Me
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 '**
@@ -790,6 +801,8 @@ Private Sub cmdFont_Click()
     LabelFont.FontSize = FontDialog.FontSize
     LabelFont.Caption = LabelFont.FontName & ", " & CInt(LabelFont.FontSize)
 
+    RefreshStepsView
+    
     '<EhFooter>
     Exit Sub
 
@@ -807,6 +820,7 @@ Private Sub cmdOK_Click()
 
     Settings.StepsColWidth = CInt(Text1.Text)
     Settings.StepsRowHeight = CInt(Text2.Text)
+    Settings.StepsSelectorWidth = CInt(TextSelThickness.Text)
 
     Settings.StepsVSelectorEnabled = CheckVSelector.Value > 0
     Settings.StepsHSelectorEnabled = CheckHSelector.Value > 0
@@ -962,6 +976,12 @@ Private Sub RefreshStepsView()
     StepsView.row = 1
 
     StepsView.Visible = True
+    
+    ' Отображаем горизонтальный селектор
+    ShowHorizontalSelector
+
+    ' Отображаем вертикальный селектор
+    ShowVerticalSelector
 
     '<EhFooter>
     Exit Sub
@@ -978,8 +998,9 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     '</EhHeader>
 
-    Text1.Text = "" & Settings.StepsColWidth
-    Text2.Text = "" & Settings.StepsRowHeight
+    Text1.Text = CStr(Settings.StepsColWidth)
+    Text2.Text = CStr(Settings.StepsRowHeight)
+    TextSelThickness.Text = CStr(Settings.StepsSelectorWidth)
 
     ComboImportFormat.ListIndex = 0
     ComboExportFormat.ListIndex = 0
@@ -1065,6 +1086,27 @@ Text1_KeyPress_Err:
     '</EhFooter>
 End Sub
 
+Private Sub Text1_LostFocus()
+    '<EhHeader>
+    On Error GoTo Text1_LostFocus_Err
+    '</EhHeader>
+
+    RefreshStepsView
+
+    '<EhFooter>
+    Exit Sub
+
+Text1_LostFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.Text1_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub Text2_KeyPress(KeyAscii As Integer)
     '<EhHeader>
     On Error GoTo Text2_KeyPress_Err
@@ -1082,6 +1124,27 @@ Text2_KeyPress_Err:
     '</EhFooter>
 End Sub
 
+Private Sub Text2_LostFocus()
+    '<EhHeader>
+    On Error GoTo Text2_LostFocus_Err
+    '</EhHeader>
+
+    RefreshStepsView
+
+    '<EhFooter>
+    Exit Sub
+
+Text2_LostFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.Text2_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 '**
 '@rem <h2>TextFilesHistoryCount_Change</h2>
 Private Sub TextFilesHistoryCount_Change()
@@ -1090,10 +1153,15 @@ Private Sub TextFilesHistoryCount_Change()
     '</EhHeader>
 
     If CInt(TextFilesHistoryCount.Text) > 10 Then
+    
         TextFilesHistoryCount.Text = "10"
+        
     ElseIf CInt(TextFilesHistoryCount.Text) < 1 Then
+    
         TextFilesHistoryCount.Text = "1"
+        
     End If
+    
     '<EhFooter>
     Exit Sub
 
@@ -1101,5 +1169,26 @@ TextFilesHistoryCount_Change_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.TextFilesHistoryCount_Change]: " _
         & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub TextSelThickness_LostFocus()
+    '<EhHeader>
+    On Error GoTo TextSelThickness_LostFocus_Err
+    '</EhHeader>
+
+    RefreshStepsView
+    
+    '<EhFooter>
+    Exit Sub
+
+TextSelThickness_LostFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.TextSelThickness_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub

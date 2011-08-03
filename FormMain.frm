@@ -451,7 +451,9 @@ Begin VB.Form FormMain
       Begin VB.ComboBox ComboCell 
          Appearance      =   0  'Flat
          Height          =   288
+         ItemData        =   "FormMain.frx":78B1
          Left            =   120
+         List            =   "FormMain.frx":78B3
          Style           =   2  'Dropdown List
          TabIndex        =   5
          TabStop         =   0   'False
@@ -533,19 +535,19 @@ Begin VB.Form FormMain
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   4
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":78B1
+            Picture         =   "FormMain.frx":78B5
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":7C05
+            Picture         =   "FormMain.frx":7C09
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":7F59
+            Picture         =   "FormMain.frx":7F5D
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":82AD
+            Picture         =   "FormMain.frx":82B1
             Key             =   ""
          EndProperty
       EndProperty
@@ -564,7 +566,7 @@ Begin VB.Form FormMain
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   1
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":8601
+            Picture         =   "FormMain.frx":8605
             Key             =   ""
          EndProperty
       EndProperty
@@ -611,7 +613,7 @@ Begin VB.Form FormMain
    Begin VB.Image ImageGrayed 
       Height          =   192
       Left            =   3480
-      Picture         =   "FormMain.frx":8955
+      Picture         =   "FormMain.frx":8959
       Stretch         =   -1  'True
       Top             =   5640
       Visible         =   0   'False
@@ -620,7 +622,7 @@ Begin VB.Form FormMain
    Begin VB.Image ImageChecked 
       Height          =   192
       Left            =   3240
-      Picture         =   "FormMain.frx":8CB5
+      Picture         =   "FormMain.frx":8CB9
       Stretch         =   -1  'True
       Top             =   5640
       Visible         =   0   'False
@@ -630,7 +632,7 @@ Begin VB.Form FormMain
       Appearance      =   0  'Flat
       Height          =   192
       Left            =   3000
-      Picture         =   "FormMain.frx":9027
+      Picture         =   "FormMain.frx":902B
       Stretch         =   -1  'True
       Top             =   5640
       Visible         =   0   'False
@@ -771,6 +773,50 @@ Begin VB.Form FormMain
       Caption         =   "&Шаг"
       Begin VB.Menu InsertStepMenuItem 
          Caption         =   "&Вставить"
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Пропуск"
+            Index           =   0
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Налив"
+            Index           =   1
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Моющие"
+            Index           =   2
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Нагрев"
+            Index           =   3
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Стирка"
+            Index           =   4
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Полоскание"
+            Index           =   5
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Расстряска"
+            Index           =   6
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Пауза"
+            Index           =   7
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Слив"
+            Index           =   8
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Отжим"
+            Index           =   9
+         End
+         Begin VB.Menu InsertStepByNum 
+            Caption         =   "Охлаждение"
+            Index           =   10
+         End
       End
       Begin VB.Menu DeleteStepMenuItem 
          Caption         =   "&Удалить"
@@ -852,6 +898,7 @@ Attribute Kachalka.VB_VarHelpID = -1
 
 Dim SplitterRightMoving As Boolean
 Dim SplitterLeftMoving As Boolean
+Dim LogFrameResizing As Boolean
 Dim BegX As Integer, BegY As Integer
 
 '**
@@ -1000,7 +1047,7 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     RefreshFrameLeft
     RefreshFrameRight
     RefreshFrameMain
-    RefrefhFrameLog
+    RefreshFrameLog
     RefreshStatusBar
     
     '<EhFooter>
@@ -1212,14 +1259,13 @@ RefreshMainMenu_Err:
     '</EhFooter>
 End Sub
 
-Private Sub RefrefhFrameLog()
+Private Sub RefreshFrameLog()
     '<EhHeader>
     On Error GoTo RefrefhFrameLog_Err
     '</EhHeader>
 
+    FrameLog.Height = StatusBar.Top - FrameLog.Top
     FrameLog.Left = FormMain.ScaleLeft
-    FrameLog.Height = 1440
-    FrameLog.Top = StatusBar.Top - FrameLog.Height
     FrameLog.Width = FormMain.ScaleWidth
     
     LabelLogCaption.Top = 0
@@ -1355,12 +1401,12 @@ Private Sub CodeView_Click()
     On Error GoTo CodeView_Click_Err
     '</EhHeader>
     
-    Dim x As Integer, Y As Integer
+    Dim X As Integer, Y As Integer
     Dim col As Integer, row As Integer
     
     CodeView.Visible = False
     
-    x = CodeView.col
+    X = CodeView.col
     Y = CodeView.row
 
     For col = 1 To CodeView.Cols - 2
@@ -1382,14 +1428,14 @@ Private Sub CodeView_Click()
     Loop
     
     CodeView.row = 0
-    CodeView.col = x
+    CodeView.col = X
     CodeView.CellFontBold = True
     
     CodeView.row = Y
     CodeView.col = 0
     CodeView.CellFontBold = True
     
-    CodeView.col = x
+    CodeView.col = X
     CodeView.row = Y
     
     CodeView.Visible = True
@@ -1509,11 +1555,13 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
     '</EhHeader>
 
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
+    
         ComboCell.Visible = False
         LabelDescription.Visible = False
         ShapeDescription.Visible = False
         RefreshFrameRight
         PropertyTable.SetFocus
+        
     End If
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
@@ -1863,10 +1911,19 @@ Private Sub DisplayMRU()
     For iFile = 1 To MRUFileList.FileCount
 
         If (MRUFileList.FileExists(iFile)) Then
+        
             MRUItems(iFile).Visible = True
             MRUItems(iFile).Caption = MRUFileList.MenuCaption(iFile, Settings.FilesHistoryLimitPaths)
             MRUItems(iFile).Tag = CStr(iFile)
+            
+        Else
+        
+            MRUItems(iFile).Visible = False
+            MRUItems(iFile).Caption = ""
+            MRUItems(iFile).Tag = CStr(0)
+            
         End If
+        
     Next
      
     MRUListMenu.Enabled = (MRUFileList.FileCount > 0)
@@ -1894,7 +1951,8 @@ Private Sub Form_Load()
     Debug.Print Date & " " & Time & ": " & "Версия: " & App.Major & "." & App.Minor & "." & App.Revision
     
     KeyPreview = True
-    
+    LogFrameResizing = False
+        
     ' Среда разработки часто "вылетает" из-за кода внутри
     ' Поэтому его тестирование нужно проводить только на
     ' откомпилированном приложении
@@ -2392,24 +2450,13 @@ ImportMainMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub InsertStepMenuItem_Click()
+Private Sub InsertStepByNum_Click(Index As Integer)
     '<EhHeader>
-    On Error GoTo InsertStepMenuItem_Click_Err
+    On Error GoTo InsertStepByNum_Click_Err
     '</EhHeader>
 
-    Manager.InsertStep
-            
-    ' Пересчитываем CRC поле записи программы
-    Dim CRC8Value As Byte
-    Dim Address As Long
-    Dim Size As Long
-    
-    Address = Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-    Size = PROGRAM_SIZE_IN_BYTES - 1
-    
-    CRC8Value = Manager.CalculateCRC8(Address + 1, Size)
-    Manager.SetByte Address, CRC8Value
-            
+    Manager.InsertStep Me, Index
+                      
     SetModified True
     RefreshDataComponents
 
@@ -2418,10 +2465,14 @@ Private Sub InsertStepMenuItem_Click()
     '<EhFooter>
     Exit Sub
 
-InsertStepMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.InsertStepMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+InsertStepByNum_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.InsertStepByNum_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2535,6 +2586,92 @@ Private Function LookupStatus(ByVal ulStatusCode As kach_tlb.BINDSTATUS) As Stri
     End If
 
 End Function
+
+Private Sub LabelLogCaption_DblClick()
+    '<EhHeader>
+    On Error GoTo LabelLogCaption_DblClick_Err
+    '</EhHeader>
+
+    MenuItemShowHideLog_Click
+
+    '<EhFooter>
+    Exit Sub
+
+LabelLogCaption_DblClick_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.LabelLogCaption_DblClick]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub LabelLogCaption_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    '<EhHeader>
+    On Error GoTo LabelLogCaption_MouseDown_Err
+    '</EhHeader>
+
+    LogFrameResizing = True
+    BegX = X
+    BegY = Y
+
+    '<EhFooter>
+    Exit Sub
+
+LabelLogCaption_MouseDown_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.LabelLogCaption_MouseDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub LabelLogCaption_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    '<EhHeader>
+    On Error GoTo LabelLogCaption_MouseMove_Err
+    '</EhHeader>
+    
+    If LogFrameResizing = True Then
+    
+        FrameLog.Top = FrameLog.Top + Y - BegY
+        
+        RefreshFrameLog
+        
+    End If
+
+    '<EhFooter>
+    Exit Sub
+
+LabelLogCaption_MouseMove_Err:
+
+    '</EhFooter>
+End Sub
+
+Private Sub LabelLogCaption_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    '<EhHeader>
+    On Error GoTo LabelLogCaption_MouseUp_Err
+    '</EhHeader>
+
+    LogFrameResizing = False
+    
+    '<EhFooter>
+    Exit Sub
+
+LabelLogCaption_MouseUp_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.LabelLogCaption_MouseUp]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
 
 Public Sub ListPrograms_Click()
     '<EhHeader>
@@ -2670,7 +2807,7 @@ ListPrograms_KeyDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo ListPrograms_MouseDown_Err
     '</EhHeader>
@@ -2779,11 +2916,15 @@ Private Sub MRUItems_Click(Index As Integer)
     ' Открываем файл из списка
     Dim FName As String
         
+    ' Если файл существует, то пытаемся его открыть
     If MRUFileList.FileExists(Index) Then
+    
         FName = MRUFileList.file(Index)
         
         If Manager.FileLoaded Then
+        
             CloseMainMenuItem_Click
+            
         End If
         
         FileName = MiscExtractPathName(FName, False)
@@ -2799,6 +2940,7 @@ Private Sub MRUItems_Click(Index As Integer)
         
         MRUFileList.AddFile FName
         DisplayMRU
+        
     End If
     
     '<EhFooter>
@@ -3075,7 +3217,7 @@ Private Sub StepsView_Click()
     On Error GoTo StepsView_Click_Err
     '</EhHeader>
 
-    Dim x As Integer, Y As Integer
+    Dim X As Integer, Y As Integer
     Dim col As Integer, row As Integer
        
     ' Отображаем горизонтальный и вертикальный селекторы
@@ -3085,7 +3227,7 @@ Private Sub StepsView_Click()
             
     StepsView.Redraw = False
     
-    x = StepsView.col
+    X = StepsView.col
     Y = StepsView.row
     
     For col = 1 To StepsView.Cols - 2
@@ -3111,17 +3253,17 @@ Private Sub StepsView_Click()
     Loop
        
     StepsView.row = 0
-    StepsView.col = x
+    StepsView.col = X
     StepsView.CellFontBold = True
     
     StepsView.row = Y
     StepsView.col = 0
     StepsView.CellFontBold = True
     
-    StepsView.col = x
+    StepsView.col = X
     StepsView.row = Y
     
-    Manager.StepIndex = x - 1
+    Manager.StepIndex = X - 1
     
     CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
        HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
@@ -3325,7 +3467,7 @@ SaveMainMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseDown_Err
     '</EhHeader>
@@ -3333,7 +3475,7 @@ Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, x As Sin
     ' Показываем разделительную линию
     SplitterLeft.BackColor = &H80000010
     
-    BegX = x
+    BegX = X
     BegY = Y
     
     SplitterLeftMoving = True
@@ -3348,13 +3490,13 @@ SplitterLeft_MouseDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseMove_Err
     '</EhHeader>
 
     If SplitterLeftMoving = True Then
-        SplitterLeft.Left = SplitterLeft.Left + x - BegX
+        SplitterLeft.Left = SplitterLeft.Left + X - BegX
         FrameLeft.Width = SplitterLeft.Left
         
         FrameMain.Left = SplitterLeft.Left + SplitterLeft.Width
@@ -3375,7 +3517,7 @@ SplitterLeft_MouseMove_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseUp_Err
     '</EhHeader>
@@ -3393,7 +3535,7 @@ SplitterLeft_MouseUp_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     ' Показываем разделительную линию
     '<EhHeader>
     On Error GoTo SplitterRight_MouseDown_Err
@@ -3401,7 +3543,7 @@ Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, x As Si
     
     SplitterRight.BackColor = &H80000010
     
-    BegX = x
+    BegX = X
     BegY = Y
     
     SplitterRightMoving = True
@@ -3416,13 +3558,13 @@ SplitterRight_MouseDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterRight_MouseMove_Err
     '</EhHeader>
 
     If SplitterRightMoving = True Then
-        SplitterRight.Left = SplitterRight.Left + x - BegX
+        SplitterRight.Left = SplitterRight.Left + X - BegX
         
         FrameRight.Left = SplitterRight.Left + SplitterRight.Width
         FrameRight.Width = Me.ScaleWidth - FrameRight.Left
@@ -3444,7 +3586,7 @@ SplitterRight_MouseMove_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterRight_MouseUp_Err
     '</EhHeader>
@@ -3528,7 +3670,7 @@ Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
 
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyInsert Then
     
-        InsertStepMenuItem_Click
+        InsertStepByNum_Click 0
         Exit Sub
         
     End If
@@ -3560,7 +3702,7 @@ StepsView_KeyDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo StepsView_MouseDown_Err
     '</EhHeader>
@@ -4919,7 +5061,7 @@ Private Sub RefreshStepsView()
     On Error GoTo RefreshStepsView_Err
     '</EhHeader>
     
-    Dim col As Integer, row As Integer, x As Integer, Y As Integer, FuncN As Integer
+    Dim col As Integer, row As Integer, X As Integer, Y As Integer, FuncN As Integer
     Dim s As String
     
     ' Выходим из процедуры, если программы не загружены или отсутствуют
@@ -5025,7 +5167,7 @@ Private Sub RefreshStepsView()
     StepsView.Redraw = False
     
     ' Сохраняем координаты
-    x = StepsView.col
+    X = StepsView.col
     Y = StepsView.row
     
     ' Очищаем настройки и данные компонента
@@ -5218,7 +5360,7 @@ Private Sub RefreshStepsView()
         
     Next
     
-    StepsView.col = x
+    StepsView.col = X
     StepsView.row = Y
     
     ' После сделанных изменений можно визуализировать компонент

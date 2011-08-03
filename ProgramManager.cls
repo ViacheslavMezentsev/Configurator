@@ -224,8 +224,15 @@ Public Sub DeleteStep()
        (MAX_NUMBER_OF_STEPS - 1) * STEP_SIZE_IN_BYTES, STEP_SIZE_IN_BYTES
 End Sub
 
-' Вставляем пустой шаг в текущую позицию со сдвигом всех шагов вправо
-Public Sub InsertStep()
+' Функция-посредник
+Private Sub func_InsertStep(frm As FormMain, _
+       ByVal begin_of_pointers As Long, _
+       ByRef RecordTitle As TYPE_WPC_TITLE, _
+       ByRef RecordStep As TYPE_WPC_STEP, _
+       ByVal FuncNumber As Integer)
+       
+    Dim StepPointer As Long
+    
     ' Копируем все шаги вниз, относительно текущей
     CopyMemory ByVal DataPointer + _
        ProgramIndex * PROGRAM_SIZE_IN_BYTES + HEADER_SIZE_IN_BYTES + _
@@ -239,6 +246,79 @@ Public Sub InsertStep()
     ZeroMemory ByVal DataPointer + _
        ProgramIndex * PROGRAM_SIZE_IN_BYTES + HEADER_SIZE_IN_BYTES + _
        StepIndex * STEP_SIZE_IN_BYTES, STEP_SIZE_IN_BYTES
+       
+    StepPointer = DataPointer + ProgramIndex * PROGRAM_SIZE_IN_BYTES
+       
+    PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+
+    StepPointer = DataPointer + _
+       ProgramIndex * PROGRAM_SIZE_IN_BYTES + HEADER_SIZE_IN_BYTES + _
+       StepIndex * STEP_SIZE_IN_BYTES
+
+    PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
+    
+    ' записать новое значение в поле типа функции
+    RecordStep.Bits = RecordStep.Bits Or (FuncNumber And &HF)
+    
+    With frm
+    
+        Select Case FuncNumber And &HF
+        
+            Case WPC_OPERATION_IDLE ' пропуск
+                .ModuleIdle.SetDefaults frm
+    
+            Case WPC_OPERATION_FILL ' Налив
+                .ModuleFill.SetDefaults frm
+    
+            Case WPC_OPERATION_DTRG ' моющие
+                .ModuleDTRG.SetDefaults frm
+    
+            Case WPC_OPERATION_HEAT ' нагрев
+                .ModuleHeat.SetDefaults frm
+    
+                ' стирка, полоскание, расстряска
+            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+                .ModuleWashOrRinsOrJolt.SetDefaults frm
+    
+            Case WPC_OPERATION_DRAIN ' слив
+                .ModuleDrain.SetDefaults frm
+    
+            Case WPC_OPERATION_SPIN ' отжим
+                .ModuleSpin.SetDefaults frm
+    
+            Case WPC_OPERATION_COOL ' охлаждение
+                .ModuleCool.SetDefaults frm
+    
+            Case WPC_OPERATION_TRIN ' тех.полоскание
+                .ModuleTrin.SetDefaults frm
+    
+            Case Else
+    
+        End Select
+    
+    End With
+    
+    ' Пересчитываем CRC поле записи программы
+    Dim CRC8Value As Byte
+    Dim Address As Long
+    Dim Size As Long
+    
+    Address = ProgramIndex * PROGRAM_SIZE_IN_BYTES
+    Size = PROGRAM_SIZE_IN_BYTES - 1
+    
+    CRC8Value = CalculateCRC8(Address + 1, Size)
+    SetByte Address, CRC8Value
+    
+End Sub
+
+' Вставляем пустой шаг в текущую позицию со сдвигом всех шагов вправо
+Public Sub InsertStep(frm As FormMain, Optional FuncNumber As Integer = 0)
+    
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordStep As TYPE_WPC_STEP
+    
+    func_InsertStep frm, 0&, RecordTitle, RecordStep, FuncNumber
+
 End Sub
 
 Public Sub CloseFile()

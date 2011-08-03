@@ -274,6 +274,7 @@ Public Sub EditPropertyForIdle(frm As FormMain)
     Dim RecordStep As TYPE_WPC_STEP
 
     func_EditPropertyForIdle frm, 0&, RecordTitle, RecordStep
+    
 End Sub
 
 ' Функция-посредник
