@@ -798,13 +798,53 @@ Private Function func_ValveEnabled(frm As FormMain, _
 
             Case Else
                 func_ValveEnabled = False
+                
         End Select
+        
     End With
+    
 End Function
 
 Public Function ValveEnabled(frm As FormMain, StepIndex As Integer, Num As Integer) As Boolean
+    
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordHeat As TYPE_WPC_HEAT
 
     ValveEnabled = func_ValveEnabled(frm, 0&, RecordTitle, RecordHeat, StepIndex, Num)
+    
+End Function
+
+Private Function func_GetTemperature(frm As FormMain, _
+       ByVal begin_of_pointers As Long, _
+       ByRef RecordTitle As TYPE_WPC_TITLE, _
+       ByRef RecordHeat As TYPE_WPC_HEAT, _
+       ByVal StepIndex As Integer) As Long
+       
+    Dim StepPointer As Long
+
+    With frm
+    
+        StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+
+        StepPointer = Manager.DataPointer + _
+           Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+           HEADER_SIZE_IN_BYTES + _
+           StepIndex * STEP_SIZE_IN_BYTES
+
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
+        
+        func_GetTemperature = RecordHeat.Temperature
+        
+    End With
+       
+End Function
+
+Public Function GetTemperature(frm As FormMain, StepIndex As Integer) As Long
+
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordHeat As TYPE_WPC_HEAT
+
+    GetTemperature = func_GetTemperature(frm, 0&, RecordTitle, RecordHeat, StepIndex)
+    
 End Function

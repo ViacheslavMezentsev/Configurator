@@ -492,6 +492,7 @@ Public Function KeyboardProc(ByVal ncode As Long, _
         End If
 
     Else
+    
         KeyboardProc = CallNextHookEx(Hook, ncode, wParam, ByVal lParam)
 
     End If

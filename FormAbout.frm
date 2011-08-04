@@ -3,7 +3,7 @@ Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form FormAbout 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "О программе"
-   ClientHeight    =   3528
+   ClientHeight    =   3708
    ClientLeft      =   2340
    ClientTop       =   1932
    ClientWidth     =   5412
@@ -12,13 +12,49 @@ Begin VB.Form FormAbout
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3528
+   ScaleHeight     =   3708
    ScaleWidth      =   5412
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.PictureBox PictureLogoAT 
+      Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      AutoSize        =   -1  'True
+      BackColor       =   &H80000005&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H80000008&
+      Height          =   768
+      Left            =   204
+      MouseIcon       =   "FormAbout.frx":6432
+      MousePointer    =   99  'Custom
+      Picture         =   "FormAbout.frx":1C44C
+      ScaleHeight     =   768
+      ScaleWidth      =   768
+      TabIndex        =   11
+      TabStop         =   0   'False
+      Top             =   2352
+      Width           =   768
+   End
+   Begin VB.PictureBox PictureLogoVyazma 
+      Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      AutoSize        =   -1  'True
+      BackColor       =   &H80000005&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H80000008&
+      Height          =   768
+      Left            =   4440
+      Picture         =   "FormAbout.frx":1F490
+      ScaleHeight     =   768
+      ScaleWidth      =   768
+      TabIndex        =   10
+      TabStop         =   0   'False
+      Top             =   2352
+      Width           =   768
+   End
    Begin MSComctlLib.ImageList ImageListPhotos 
       Left            =   720
-      Top             =   3000
+      Top             =   3240
       _ExtentX        =   804
       _ExtentY        =   804
       BackColor       =   -2147483643
@@ -29,31 +65,31 @@ Begin VB.Form FormAbout
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   3
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormAbout.frx":6432
+            Picture         =   "FormAbout.frx":224D4
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormAbout.frx":9484
+            Picture         =   "FormAbout.frx":25526
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormAbout.frx":C4D8
+            Picture         =   "FormAbout.frx":2857A
             Key             =   ""
          EndProperty
       EndProperty
    End
    Begin VB.Timer Timer 
       Left            =   240
-      Top             =   3120
+      Top             =   3360
    End
    Begin VB.PictureBox picIcon 
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       Height          =   768
       Left            =   228
-      MouseIcon       =   "FormAbout.frx":F52C
+      MouseIcon       =   "FormAbout.frx":2B5CE
       MousePointer    =   99  'Custom
-      Picture         =   "FormAbout.frx":15B36
+      Picture         =   "FormAbout.frx":31BD8
       ScaleHeight     =   526.236
       ScaleMode       =   0  'User
       ScaleWidth      =   526.236
@@ -66,99 +102,14 @@ Begin VB.Form FormAbout
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   348
-      Left            =   2040
+      Left            =   2076
       TabIndex        =   0
-      Top             =   3120
+      Top             =   3276
       Width           =   1260
-   End
-   Begin VB.Label LabelCompany 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "ООО НПФ ""Авторские технологии"""
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9
-         Charset         =   204
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H8000000D&
-      Height          =   216
-      Left            =   1320
-      MouseIcon       =   "FormAbout.frx":16A09
-      MousePointer    =   99  'Custom
-      TabIndex        =   9
-      Top             =   2400
-      Width           =   2868
-   End
-   Begin VB.Shape Shape8 
-      BorderColor     =   &H80000010&
-      Height          =   756
-      Left            =   108
-      Shape           =   4  'Rounded Rectangle
-      Top             =   2268
-      Width           =   5196
-   End
-   Begin VB.Shape Shape7 
-      BorderColor     =   &H80000010&
-      Height          =   752
-      Left            =   110
-      Shape           =   4  'Rounded Rectangle
-      Top             =   1430
-      Width           =   5192
-   End
-   Begin VB.Shape Shape6 
-      BorderColor     =   &H80000010&
-      Height          =   1236
-      Left            =   1190
-      Shape           =   4  'Rounded Rectangle
-      Top             =   110
-      Width           =   4112
-   End
-   Begin VB.Shape Shape5 
-      BorderColor     =   &H80000010&
-      Height          =   1232
-      Left            =   110
-      Shape           =   4  'Rounded Rectangle
-      Top             =   110
-      Width           =   992
-   End
-   Begin VB.Shape Shape4 
-      BorderColor     =   &H00FFFFFF&
-      Height          =   732
-      Left            =   120
-      Shape           =   4  'Rounded Rectangle
-      Top             =   2280
-      Width           =   5172
-   End
-   Begin VB.Shape Shape3 
-      BorderColor     =   &H00FFFFFF&
-      Height          =   732
-      Left            =   120
-      Shape           =   4  'Rounded Rectangle
-      Top             =   1440
-      Width           =   5172
-   End
-   Begin VB.Shape Shape2 
-      BorderColor     =   &H00FFFFFF&
-      Height          =   1212
-      Left            =   1200
-      Shape           =   4  'Rounded Rectangle
-      Top             =   120
-      Width           =   4092
-   End
-   Begin VB.Shape Shape1 
-      BorderColor     =   &H00FFFFFF&
-      Height          =   1212
-      Left            =   120
-      Shape           =   4  'Rounded Rectangle
-      Top             =   120
-      Width           =   972
    End
    Begin VB.Label Label3 
       AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
       Caption         =   "Мезенцев Вячеслав [unihomelab@yandex.ru]"
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -172,7 +123,7 @@ Begin VB.Form FormAbout
       ForeColor       =   &H8000000D&
       Height          =   216
       Left            =   1320
-      MouseIcon       =   "FormAbout.frx":2CA23
+      MouseIcon       =   "FormAbout.frx":32AAB
       MousePointer    =   99  'Custom
       TabIndex        =   8
       Top             =   1848
@@ -180,6 +131,7 @@ Begin VB.Form FormAbout
    End
    Begin VB.Label Label2 
       AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
       Caption         =   "Зыков Василий [vassily@at.ur.ru]"
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -193,16 +145,16 @@ Begin VB.Form FormAbout
       ForeColor       =   &H8000000D&
       Height          =   216
       Left            =   1320
-      MouseIcon       =   "FormAbout.frx":42A3D
+      MouseIcon       =   "FormAbout.frx":48AC5
       MousePointer    =   99  'Custom
       TabIndex        =   7
       Top             =   1560
       Width           =   2688
    End
-   Begin VB.Label Label1 
-      Alignment       =   2  'Center
+   Begin VB.Label lblDisclaimer 
       AutoSize        =   -1  'True
-      Caption         =   "Екатеринбург, 2011 г."
+      BackStyle       =   0  'Transparent
+      Caption         =   "Авторы: "
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   10.2
@@ -212,32 +164,16 @@ Begin VB.Form FormAbout
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   252
-      Left            =   1680
-      TabIndex        =   6
-      Top             =   2676
-      Width           =   2052
-   End
-   Begin VB.Label lblDescription 
-      Caption         =   "Предназначен для создания или изменения управляющих программ контроллера MCU-401"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9
-         Charset         =   204
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       ForeColor       =   &H00000000&
-      Height          =   444
-      Left            =   1320
-      TabIndex        =   2
-      Top             =   780
-      Width           =   3888
+      Height          =   252
+      Left            =   264
+      TabIndex        =   3
+      Top             =   1524
+      Width           =   828
    End
    Begin VB.Label lblTitle 
       AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
       Caption         =   "Конфигуратор управляющих программ"
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -257,6 +193,7 @@ Begin VB.Form FormAbout
    End
    Begin VB.Label lblVersion 
       AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
       Caption         =   "Версия"
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -273,9 +210,30 @@ Begin VB.Form FormAbout
       Top             =   480
       Width           =   660
    End
-   Begin VB.Label lblDisclaimer 
+   Begin VB.Label lblDescription 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Предназначен для создания или изменения управляющих программ контроллера MCU-401"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00000000&
+      Height          =   444
+      Left            =   1320
+      TabIndex        =   2
+      Top             =   780
+      Width           =   3888
+   End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
       AutoSize        =   -1  'True
-      Caption         =   "Авторы: "
+      BackStyle       =   0  'Transparent
+      Caption         =   "Екатеринбург, 2011 г."
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   10.2
@@ -285,12 +243,103 @@ Begin VB.Form FormAbout
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00000000&
       Height          =   252
-      Left            =   264
-      TabIndex        =   3
-      Top             =   1524
-      Width           =   828
+      Left            =   1680
+      TabIndex        =   6
+      Top             =   2760
+      Width           =   2052
+   End
+   Begin VB.Label LabelCompany 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "ООО НПФ ""Авторские технологии"""
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000D&
+      Height          =   216
+      Left            =   1320
+      MouseIcon       =   "FormAbout.frx":5EADF
+      MousePointer    =   99  'Custom
+      TabIndex        =   9
+      Top             =   2400
+      Width           =   2868
+   End
+   Begin VB.Shape Shape8 
+      BorderColor     =   &H80000010&
+      Height          =   936
+      Left            =   108
+      Shape           =   4  'Rounded Rectangle
+      Top             =   2268
+      Width           =   5196
+   End
+   Begin VB.Shape Shape7 
+      BorderColor     =   &H80000010&
+      Height          =   756
+      Left            =   108
+      Shape           =   4  'Rounded Rectangle
+      Top             =   1416
+      Width           =   5196
+   End
+   Begin VB.Shape Shape6 
+      BorderColor     =   &H80000010&
+      Height          =   1236
+      Left            =   1190
+      Shape           =   4  'Rounded Rectangle
+      Top             =   110
+      Width           =   4112
+   End
+   Begin VB.Shape Shape5 
+      BorderColor     =   &H80000010&
+      Height          =   1232
+      Left            =   110
+      Shape           =   4  'Rounded Rectangle
+      Top             =   110
+      Width           =   992
+   End
+   Begin VB.Shape Shape4 
+      BackColor       =   &H00F4E0E0&
+      BackStyle       =   1  'Opaque
+      BorderColor     =   &H00FFFFFF&
+      Height          =   912
+      Left            =   120
+      Shape           =   4  'Rounded Rectangle
+      Top             =   2280
+      Width           =   5172
+   End
+   Begin VB.Shape Shape3 
+      BackColor       =   &H00F4E0E0&
+      BackStyle       =   1  'Opaque
+      BorderColor     =   &H00FFFFFF&
+      Height          =   732
+      Left            =   120
+      Shape           =   4  'Rounded Rectangle
+      Top             =   1428
+      Width           =   5172
+   End
+   Begin VB.Shape Shape2 
+      BackColor       =   &H00F4E0E0&
+      BackStyle       =   1  'Opaque
+      BorderColor     =   &H00FFFFFF&
+      Height          =   1212
+      Left            =   1200
+      Shape           =   4  'Rounded Rectangle
+      Top             =   120
+      Width           =   4092
+   End
+   Begin VB.Shape Shape1 
+      BorderColor     =   &H00FFFFFF&
+      Height          =   1212
+      Left            =   120
+      Shape           =   4  'Rounded Rectangle
+      Top             =   120
+      Width           =   972
    End
 End
 Attribute VB_Name = "FormAbout"
@@ -455,6 +504,27 @@ picIcon_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.picIcon_Click]: " _
         & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub PictureLogoAT_Click()
+    '<EhHeader>
+    On Error GoTo PictureLogoAT_Click_Err
+    '</EhHeader>
+
+    LabelCompany_Click
+
+    '<EhFooter>
+    Exit Sub
+
+PictureLogoAT_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormAbout.PictureLogoAT_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 
