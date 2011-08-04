@@ -485,14 +485,9 @@ Begin VB.Form FormMain
          AllowUserResizing=   1
          BorderStyle     =   0
       End
-      Begin VB.Shape ShapeDescription 
-         Height          =   564
-         Left            =   1200
-         Top             =   4332
-         Width           =   960
-      End
       Begin VB.Label LabelDescription 
          BackColor       =   &H00C0FFFF&
+         BackStyle       =   0  'Transparent
          Caption         =   "Label"
          BeginProperty Font 
             Name            =   "Courier New"
@@ -509,6 +504,16 @@ Begin VB.Form FormMain
          Top             =   4320
          Visible         =   0   'False
          Width           =   972
+      End
+      Begin VB.Shape ShapeDescription 
+         BackColor       =   &H00F4E0E0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         Height          =   564
+         Left            =   1200
+         Shape           =   4  'Rounded Rectangle
+         Top             =   4332
+         Width           =   960
       End
    End
    Begin MSComctlLib.ImageList ImageList1 
@@ -1181,7 +1186,9 @@ Private Sub RefreshFrameRight()
         ShapeDescription.Width = PropertyTable.Width
         
     Else
+    
         PropertyTable.Height = FrameRight.Height - PropertyTable.Top - 120
+        
     End If
     
     FrameRight.FontSize = Settings.StepsViewFontSize
@@ -1189,6 +1196,7 @@ Private Sub RefreshFrameRight()
     If PropertyTable.Width > PropertyTable.ColWidth(0) Then
     
         PropertyTable.ColWidth(1) = PropertyTable.Width - PropertyTable.ColWidth(0)
+        
     End If
     
     TextCell.Width = PropertyTable.ColWidth(1)
@@ -1401,13 +1409,13 @@ Private Sub CodeView_Click()
     On Error GoTo CodeView_Click_Err
     '</EhHeader>
     
-    Dim X As Integer, Y As Integer
+    Dim x As Integer, y As Integer
     Dim col As Integer, row As Integer
     
     CodeView.Visible = False
     
-    X = CodeView.col
-    Y = CodeView.row
+    x = CodeView.col
+    y = CodeView.row
 
     For col = 1 To CodeView.Cols - 2
         CodeView.col = col
@@ -1428,15 +1436,15 @@ Private Sub CodeView_Click()
     Loop
     
     CodeView.row = 0
-    CodeView.col = X
+    CodeView.col = x
     CodeView.CellFontBold = True
     
-    CodeView.row = Y
+    CodeView.row = y
     CodeView.col = 0
     CodeView.CellFontBold = True
     
-    CodeView.col = X
-    CodeView.row = Y
+    CodeView.col = x
+    CodeView.row = y
     
     CodeView.Visible = True
     CodeView.SetFocus
@@ -2313,7 +2321,7 @@ Private Sub Form_Unload(Cancel As Integer)
         End Select
         
     End If
-    
+       
     Settings.SaveSettings
     
     ' Сохраняем настройки интерфейса
@@ -2322,9 +2330,11 @@ Private Sub Form_Unload(Cancel As Integer)
     ' Сохраняем список используемых файлов
     MRUFileList.Save IniFile
     
-    Unload Me
+    Unload FormOptions
     Unload FormDownload
+    Unload Me
     
+    Set FormOptions = Nothing
     Set FormDownload = Nothing
     Set FormMain = Nothing
     
@@ -2482,7 +2492,9 @@ Private Sub Kachalka_Complete(ByVal Status As kach_tlb.BINDSTATUS, ByVal StatusT
     '</EhHeader>
     
     TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Загрузка завершена"
-    FormDownload.Caption = "Загрузка завершена"
+    
+    FormDownload.SetProgress 0
+    FormDownload.ShowStateText "Загрузка завершена"
     
     MenuItemDoUpdate.Enabled = True
 
@@ -2525,8 +2537,8 @@ Private Sub Kachalka_Progress(ByVal Progress As Long, ByVal ProgressMax As Long,
      
     If FormDownload.Visible = True Then
     
-        FormDownload.ProgressBar.Value = CInt((100 * Progress) / ProgressMax)
-        FormDownload.Caption = "Загрузка: " & sProgress
+        FormDownload.SetProgress CInt((100 * Progress) / ProgressMax)
+        FormDownload.ShowStateText "Загрузка: " & sProgress
         
     End If
     
@@ -2608,14 +2620,14 @@ LabelLogCaption_DblClick_Err:
     '</EhFooter>
 End Sub
 
-Private Sub LabelLogCaption_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub LabelLogCaption_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo LabelLogCaption_MouseDown_Err
     '</EhHeader>
 
     LogFrameResizing = True
-    BegX = X
-    BegY = Y
+    BegX = x
+    BegY = y
 
     '<EhFooter>
     Exit Sub
@@ -2631,14 +2643,14 @@ LabelLogCaption_MouseDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub LabelLogCaption_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub LabelLogCaption_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo LabelLogCaption_MouseMove_Err
     '</EhHeader>
     
     If LogFrameResizing = True Then
     
-        FrameLog.Top = FrameLog.Top + Y - BegY
+        FrameLog.Top = FrameLog.Top + y - BegY
         
         RefreshFrameLog
         
@@ -2652,7 +2664,7 @@ LabelLogCaption_MouseMove_Err:
     '</EhFooter>
 End Sub
 
-Private Sub LabelLogCaption_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub LabelLogCaption_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo LabelLogCaption_MouseUp_Err
     '</EhHeader>
@@ -2695,8 +2707,9 @@ Public Sub ListPrograms_Click()
     CRC8Value = Manager.CalculateCRC8(Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, PROGRAM_SIZE_IN_BYTES)
 
     If CRC8Value = CRC8_FOR_DEFAULT_PROGRAM Then
-
-        ListPrograms.CellBackColor = &H8000000F
+        
+        ' Указание конкретного цвета
+        ListPrograms.CellBackColor = &HC8D0D4
 
     Else
 
@@ -2711,17 +2724,24 @@ Public Sub ListPrograms_Click()
         Value = 0
 
         For N = 1 To PROG_NAME_LENGTH - 1
+        
             Value = Value + CLng(RecordTitle.ProgName(N))
+            
         Next
 
         If Value = 0 Then
+        
             ListPrograms.CellBackColor = &HC0FFFF
+            
         Else
-            ListPrograms.CellBackColor = &H80000005
+        
+            ListPrograms.CellBackColor = &HFFFFFF
+            
         End If
 
     End If
 
+    ' Выделенная ячейка
     ListPrograms.row = CurrentSelectedRow
     ListPrograms.CellForeColor = &H8000000E
     ListPrograms.CellBackColor = &H8000000D
@@ -2807,7 +2827,7 @@ ListPrograms_KeyDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo ListPrograms_MouseDown_Err
     '</EhHeader>
@@ -3217,7 +3237,7 @@ Private Sub StepsView_Click()
     On Error GoTo StepsView_Click_Err
     '</EhHeader>
 
-    Dim X As Integer, Y As Integer
+    Dim x As Integer, y As Integer
     Dim col As Integer, row As Integer
        
     ' Отображаем горизонтальный и вертикальный селекторы
@@ -3227,8 +3247,8 @@ Private Sub StepsView_Click()
             
     StepsView.Redraw = False
     
-    X = StepsView.col
-    Y = StepsView.row
+    x = StepsView.col
+    y = StepsView.row
     
     For col = 1 To StepsView.Cols - 2
     
@@ -3253,17 +3273,17 @@ Private Sub StepsView_Click()
     Loop
        
     StepsView.row = 0
-    StepsView.col = X
+    StepsView.col = x
     StepsView.CellFontBold = True
     
-    StepsView.row = Y
+    StepsView.row = y
     StepsView.col = 0
     StepsView.CellFontBold = True
     
-    StepsView.col = X
-    StepsView.row = Y
+    StepsView.col = x
+    StepsView.row = y
     
-    Manager.StepIndex = X - 1
+    Manager.StepIndex = x - 1
     
     CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
        HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
@@ -3467,7 +3487,7 @@ SaveMainMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseDown_Err
     '</EhHeader>
@@ -3475,8 +3495,8 @@ Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, X As Sin
     ' Показываем разделительную линию
     SplitterLeft.BackColor = &H80000010
     
-    BegX = X
-    BegY = Y
+    BegX = x
+    BegY = y
     
     SplitterLeftMoving = True
     
@@ -3490,13 +3510,13 @@ SplitterLeft_MouseDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseMove_Err
     '</EhHeader>
 
     If SplitterLeftMoving = True Then
-        SplitterLeft.Left = SplitterLeft.Left + X - BegX
+        SplitterLeft.Left = SplitterLeft.Left + x - BegX
         FrameLeft.Width = SplitterLeft.Left
         
         FrameMain.Left = SplitterLeft.Left + SplitterLeft.Width
@@ -3517,7 +3537,7 @@ SplitterLeft_MouseMove_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseUp_Err
     '</EhHeader>
@@ -3535,7 +3555,7 @@ SplitterLeft_MouseUp_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     ' Показываем разделительную линию
     '<EhHeader>
     On Error GoTo SplitterRight_MouseDown_Err
@@ -3543,8 +3563,8 @@ Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, X As Si
     
     SplitterRight.BackColor = &H80000010
     
-    BegX = X
-    BegY = Y
+    BegX = x
+    BegY = y
     
     SplitterRightMoving = True
     
@@ -3558,13 +3578,13 @@ SplitterRight_MouseDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo SplitterRight_MouseMove_Err
     '</EhHeader>
 
     If SplitterRightMoving = True Then
-        SplitterRight.Left = SplitterRight.Left + X - BegX
+        SplitterRight.Left = SplitterRight.Left + x - BegX
         
         FrameRight.Left = SplitterRight.Left + SplitterRight.Width
         FrameRight.Width = Me.ScaleWidth - FrameRight.Left
@@ -3586,7 +3606,7 @@ SplitterRight_MouseMove_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo SplitterRight_MouseUp_Err
     '</EhHeader>
@@ -3702,13 +3722,12 @@ StepsView_KeyDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo StepsView_MouseDown_Err
     '</EhHeader>
     
     'проверка, нажата ли правая клавиша мыши
-
     If Button And vbRightButton Then PopupMenu StepMainMenuItem
     
     '<EhFooter>
@@ -4275,9 +4294,9 @@ Private Sub Timer1_Timer()
     Exit Sub
 
 Timer1_Timer_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextName_LostFocus]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    
     Resume Next
+    
     '</EhFooter>
 End Sub
 
@@ -4295,21 +4314,37 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     Dim MAX_PATH As Long
     Dim length As Integer
     
-    MAX_PATH = 255
-    szBuffer = Space(255)
+    ' На время отладки задаём отладочный входной файл
+    If DesignMode Then
+        
+        szTempFileName = "D:\Projects\vbasic\Projects\Configurator\update"
+        
+    Else
     
-    ' Получаем путь к временной папке
-    length = GetTempPath(MAX_PATH, szBuffer)
-
-    ' Формируем путь к временному файлу
-    szTempFileName = Space(255)
-    GetTempFileName szBuffer, "cop", 0, szTempFileName
-       
-    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Загрузка файла обновления"
+        MAX_PATH = 255
+        szBuffer = Space(255)
+        
+        ' Получаем путь к временной папке
+        length = GetTempPath(MAX_PATH, szBuffer)
     
-    ' Пытаемся скачать файл описания с сервера
-    Kachalka.DownloadToFile UpdateFileLink, szTempFileName
+        ' Формируем путь к временному файлу
+        szTempFileName = Space(255)
+        GetTempFileName szBuffer, "cop", 0, szTempFileName
+           
+        TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Загрузка файла обновления"
+        
+        ' Пытаемся скачать файл описания с сервера
+        Kachalka.DownloadToFile UpdateFileLink, szTempFileName
     
+    End If
+    
+    If Not DoesFileExist(szTempFileName) Then
+        
+        Debug.Print Date & " " & Time & ": " & "Файл обновления отсутствует"
+        Exit Function
+        
+    End If
+        
     ' Обрабатываем скачанный файл
     Dim I As Integer
     Dim CurrMajor As Integer, CurrMinor As Integer, CurrRevision As Integer, CurrBuild As Integer
@@ -4326,8 +4361,7 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     strFile = String(255, 0)
     GetModuleFileName 0, strFile, 255
     
-    ' На время отладки задаём отладочный входной файл
-    If DesignMode Then szTempFileName = "D:\Projects\vbasic\Projects\Configurator\update"
+
     
     ' Считываем файл и декодируем его
     sInputJson = FromUTF8(LoadFromJSONFile(szTempFileName))
@@ -4454,8 +4488,8 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
                             TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & _
                                 "Загрузка файла:" & vbCrLf & FileName
                             
-                            FormDownload.LabelFrom = "Откуда: " & DownloadLink
-                            FormDownload.LabelTo = "Куда: " & FileName
+                            FormDownload.ShowFromText DownloadLink
+                            FormDownload.ShowToText FileName
                             
                             ' Показываем форму загрузки
                             FormDownload.Show
@@ -4487,7 +4521,7 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     Next
     
     ' Удаляем временный файл
-    If DoesFileExist(szTempFileName) Then DeleteFile szTempFileName
+    If DoesFileExist(szTempFileName) And Not DesignMode Then DeleteFile szTempFileName
        
     Set p = Nothing
        
@@ -4500,7 +4534,7 @@ DoAutoUpdate_Err:
     If Err.Number = cdlCancel Then
         
         ' Удаляем временный файл
-        If DoesFileExist(szTempFileName) Then DeleteFile szTempFileName
+        If DoesFileExist(szTempFileName) And Not DesignMode Then DeleteFile szTempFileName
         
         Set p = Nothing
         
@@ -4513,7 +4547,12 @@ DoAutoUpdate_Err:
                 Err.Number, Err.Description), _
                 VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
                 
-        Resume Next
+        ' Удаляем временный файл
+        If DoesFileExist(szTempFileName) And Not DesignMode Then DeleteFile szTempFileName
+           
+        Set p = Nothing
+           
+        DoAutoUpdate = False
         
     End If
 
@@ -5061,7 +5100,7 @@ Private Sub RefreshStepsView()
     On Error GoTo RefreshStepsView_Err
     '</EhHeader>
     
-    Dim col As Integer, row As Integer, X As Integer, Y As Integer, FuncN As Integer
+    Dim col As Integer, row As Integer, x As Integer, y As Integer, FuncN As Integer
     Dim s As String
     
     ' Выходим из процедуры, если программы не загружены или отсутствуют
@@ -5167,8 +5206,8 @@ Private Sub RefreshStepsView()
     StepsView.Redraw = False
     
     ' Сохраняем координаты
-    X = StepsView.col
-    Y = StepsView.row
+    x = StepsView.col
+    y = StepsView.row
     
     ' Очищаем настройки и данные компонента
     StepsView.Clear
@@ -5298,6 +5337,14 @@ Private Sub RefreshStepsView()
 
                             If ValveEnabled(col, row) Then
                             
+                                Select Case (row - 1)
+                                
+                                    Case LOADING_HEAT:
+                                    
+                                        StepsView.Text = CStr(ModuleHeat.GetTemperature(Me, col - 1))
+                                
+                                End Select
+                            
                                 StepsView.CellBackColor = &HC000&
                                 
                             Else
@@ -5360,8 +5407,8 @@ Private Sub RefreshStepsView()
         
     Next
     
-    StepsView.col = X
-    StepsView.row = Y
+    StepsView.col = x
+    StepsView.row = y
     
     ' После сделанных изменений можно визуализировать компонент
     StepsView.Redraw = True

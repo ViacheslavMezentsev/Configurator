@@ -2,547 +2,357 @@ VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormOptions 
-   BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Настройки"
-   ClientHeight    =   4908
-   ClientLeft      =   2568
-   ClientTop       =   1500
-   ClientWidth     =   6132
+   ClientHeight    =   7248
+   ClientLeft      =   2580
+   ClientTop       =   1512
+   ClientWidth     =   6984
    Icon            =   "FormOptions.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4908
-   ScaleWidth      =   6132
-   ShowInTaskbar   =   0   'False
-   StartUpPosition =   1  'CenterOwner
+   ScaleHeight     =   7248
+   ScaleWidth      =   6984
    Begin TabDlg.SSTab SSTab 
-      Height          =   4212
-      Left            =   120
-      TabIndex        =   2
-      Top             =   120
-      Width           =   5892
-      _ExtentX        =   10393
-      _ExtentY        =   7430
+      Height          =   6612
+      Left            =   0
+      TabIndex        =   1
+      Top             =   0
+      Width           =   6972
+      _ExtentX        =   12298
+      _ExtentY        =   11663
       _Version        =   393216
       Style           =   1
+      Tabs            =   2
+      TabsPerRow      =   8
       TabHeight       =   420
-      TabCaption(0)   =   "Вид "
-      TabPicture(0)   =   "FormOptions.frx":000C
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   204
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      TabCaption(0)   =   "Приложение "
+      TabPicture(0)   =   "FormOptions.frx":23D2
       Tab(0).ControlEnabled=   -1  'True
-      Tab(0).Control(0)=   "picOptions(0)"
+      Tab(0).Control(0)=   "FrameSettings"
       Tab(0).Control(0).Enabled=   0   'False
-      Tab(0).ControlCount=   1
-      TabCaption(1)   =   "Лог "
-      TabPicture(1)   =   "FormOptions.frx":0028
+      Tab(0).Control(1)=   "FrameSplitterUpDown"
+      Tab(0).Control(1).Enabled=   0   'False
+      Tab(0).Control(2)=   "FrameDescription"
+      Tab(0).Control(2).Enabled=   0   'False
+      Tab(0).ControlCount=   3
+      TabCaption(1)   =   "Образец "
+      TabPicture(1)   =   "FormOptions.frx":23EE
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "picOptions(1)"
-      Tab(1).Control(0).Enabled=   0   'False
+      Tab(1).Control(0)=   "FrameExample"
       Tab(1).ControlCount=   1
-      TabCaption(2)   =   "Другое "
-      TabPicture(2)   =   "FormOptions.frx":0044
-      Tab(2).ControlEnabled=   0   'False
-      Tab(2).Control(0)=   "picOptions(2)"
-      Tab(2).Control(0).Enabled=   0   'False
-      Tab(2).ControlCount=   1
-      Begin VB.PictureBox picOptions 
-         BorderStyle     =   0  'None
-         Height          =   3708
-         Index           =   2
+      Begin VB.Frame FrameExample 
+         Caption         =   "Шаги"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   204
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   6012
          Left            =   -74880
-         ScaleHeight     =   3708
-         ScaleWidth      =   5688
-         TabIndex        =   19
-         TabStop         =   0   'False
+         TabIndex        =   6
          Top             =   360
-         Width           =   5688
-         Begin VB.Frame Frame1 
-            Caption         =   "Импорт/экспорт"
-            Height          =   732
-            Left            =   0
-            TabIndex        =   31
-            Top             =   2400
-            Width           =   5676
-            Begin VB.ComboBox ComboExportFormat 
-               Height          =   288
-               ItemData        =   "FormOptions.frx":0060
-               Left            =   4440
-               List            =   "FormOptions.frx":0067
-               Style           =   2  'Dropdown List
-               TabIndex        =   33
-               Top             =   240
-               Width           =   852
-            End
-            Begin VB.ComboBox ComboImportFormat 
-               Height          =   288
-               ItemData        =   "FormOptions.frx":0071
-               Left            =   1380
-               List            =   "FormOptions.frx":0078
-               Style           =   2  'Dropdown List
-               TabIndex        =   32
-               Top             =   240
-               Width           =   852
-            End
-            Begin VB.Label Label5 
-               AutoSize        =   -1  'True
-               BackStyle       =   0  'Transparent
-               Caption         =   "Экспорт в:"
-               Height          =   192
-               Left            =   3336
-               TabIndex        =   35
-               Top             =   288
-               Width           =   828
-            End
-            Begin VB.Label Label4 
-               AutoSize        =   -1  'True
-               BackStyle       =   0  'Transparent
-               Caption         =   "Импорт из:"
-               Height          =   192
-               Left            =   240
-               TabIndex        =   34
-               Top             =   288
-               Width           =   864
-            End
-         End
-         Begin VB.Frame FrameOptionsFilesHistory 
-            Caption         =   "История файлов"
-            Height          =   1188
-            Left            =   0
-            TabIndex        =   25
-            Top             =   0
-            Width           =   5676
-            Begin VB.CheckBox CheckFilesHistoryLimitPaths 
-               Caption         =   "Ограничивать длину пути в меню"
-               Height          =   252
-               Left            =   120
-               TabIndex        =   27
-               Top             =   720
-               Width           =   4932
-            End
-            Begin VB.TextBox TextFilesHistoryCount 
-               Alignment       =   1  'Right Justify
-               Height          =   288
-               Left            =   1680
-               MaxLength       =   2
-               TabIndex        =   26
-               Text            =   "4"
-               Top             =   312
-               Width           =   408
-            End
-            Begin MSComCtl2.UpDown UpDownFilesHistoryCount 
-               Height          =   288
-               Left            =   2088
-               TabIndex        =   28
-               Top             =   312
-               Width           =   240
-               _ExtentX        =   423
-               _ExtentY        =   508
-               _Version        =   393216
-               Value           =   4
-               BuddyControl    =   "TextFilesHistoryCount"
-               BuddyDispid     =   196617
-               OrigLeft        =   2028
-               OrigTop         =   300
-               OrigRight       =   2268
-               OrigBottom      =   612
-               Min             =   1
-               SyncBuddy       =   -1  'True
-               BuddyProperty   =   65547
-               Enabled         =   -1  'True
-            End
-            Begin VB.Label Label8 
-               AutoSize        =   -1  'True
-               BackStyle       =   0  'Transparent
-               Caption         =   "файлов"
-               Height          =   192
-               Left            =   2424
-               TabIndex        =   30
-               Top             =   360
-               Width           =   612
-            End
-            Begin VB.Label Label6 
-               AutoSize        =   -1  'True
-               BackStyle       =   0  'Transparent
-               Caption         =   "Помнить не более"
-               Height          =   192
-               Left            =   120
-               TabIndex        =   29
-               Top             =   360
-               Width           =   1428
-            End
-         End
-         Begin VB.Frame FrameUpdateOptions 
-            Caption         =   "Обновление"
-            Height          =   972
-            Left            =   0
-            TabIndex        =   21
-            Top             =   1320
-            Width           =   5676
-            Begin VB.CheckBox CheckEnableAutoUpdate 
-               Caption         =   "Включить автоматическое обновление"
-               Height          =   252
-               Left            =   120
-               TabIndex        =   23
-               Top             =   240
-               Width           =   5412
-            End
-            Begin VB.ComboBox ComboAutoUpdatePeriod 
-               Enabled         =   0   'False
-               Height          =   288
-               ItemData        =   "FormOptions.frx":0082
-               Left            =   360
-               List            =   "FormOptions.frx":008F
-               Style           =   2  'Dropdown List
-               TabIndex        =   22
-               Top             =   552
-               Width           =   1692
-            End
-            Begin VB.Label LabelAutoUpdatePeriod 
-               AutoSize        =   -1  'True
-               BackStyle       =   0  'Transparent
-               Caption         =   "период автообновления"
-               Enabled         =   0   'False
-               Height          =   192
-               Left            =   2160
-               TabIndex        =   24
-               Top             =   600
-               Width           =   1932
-            End
-         End
-      End
-      Begin VB.PictureBox picOptions 
-         BorderStyle     =   0  'None
-         Height          =   3732
-         Index           =   1
-         Left            =   -74880
-         ScaleHeight     =   3732
-         ScaleWidth      =   5688
-         TabIndex        =   13
-         TabStop         =   0   'False
-         Top             =   360
-         Width           =   5688
-         Begin VB.Frame Frame4 
-            Caption         =   "Параметры"
-            Height          =   3708
-            Left            =   0
+         Width           =   6612
+         Begin VB.PictureBox PictureHSelRight 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   252
+            Left            =   5400
+            ScaleHeight     =   252
+            ScaleWidth      =   24
             TabIndex        =   14
-            Top             =   0
-            Width           =   5676
-            Begin VB.CheckBox CheckRewriteLogFile 
-               Caption         =   "Перезаписывать файл лога при запуске"
-               Height          =   252
-               Left            =   120
-               TabIndex        =   17
-               Top             =   360
-               Width           =   3612
-            End
-            Begin VB.TextBox TextLogFilePath 
-               Height          =   288
-               Left            =   120
-               TabIndex        =   16
-               Top             =   1008
-               Width           =   4212
-            End
-            Begin VB.CommandButton cmdBrowse 
-               Caption         =   "Обзор..."
-               Height          =   372
-               Left            =   4440
-               TabIndex        =   15
-               Top             =   972
-               Width           =   1092
-            End
-            Begin VB.Label Label7 
-               AutoSize        =   -1  'True
-               Caption         =   "Путь к файлу:"
-               Height          =   192
-               Left            =   120
-               TabIndex        =   18
-               Top             =   720
-               Width           =   1092
-            End
+            TabStop         =   0   'False
+            Top             =   720
+            Visible         =   0   'False
+            Width           =   24
+         End
+         Begin VB.PictureBox PictureHSelBottom 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   20
+            Left            =   120
+            ScaleHeight     =   24
+            ScaleWidth      =   5316
+            TabIndex        =   13
+            TabStop         =   0   'False
+            Top             =   960
+            Visible         =   0   'False
+            Width           =   5316
+         End
+         Begin VB.PictureBox PictureHSelLeft 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   252
+            Left            =   120
+            ScaleHeight     =   252
+            ScaleWidth      =   24
+            TabIndex        =   12
+            TabStop         =   0   'False
+            Top             =   720
+            Visible         =   0   'False
+            Width           =   24
+         End
+         Begin VB.PictureBox PictureHSelTop 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   20
+            Left            =   120
+            ScaleHeight     =   24
+            ScaleWidth      =   5316
+            TabIndex        =   11
+            TabStop         =   0   'False
+            Top             =   720
+            Visible         =   0   'False
+            Width           =   5316
+         End
+         Begin VB.PictureBox PictureVSelBottom 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   20
+            Left            =   1320
+            ScaleHeight     =   24
+            ScaleWidth      =   396
+            TabIndex        =   10
+            TabStop         =   0   'False
+            Top             =   1560
+            Visible         =   0   'False
+            Width           =   400
+         End
+         Begin VB.PictureBox PictureVSelTop 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   20
+            Left            =   1320
+            ScaleHeight     =   24
+            ScaleWidth      =   396
+            TabIndex        =   9
+            TabStop         =   0   'False
+            Top             =   240
+            Visible         =   0   'False
+            Width           =   400
+         End
+         Begin VB.PictureBox PictureVSelRight 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   1332
+            Left            =   1680
+            ScaleHeight     =   1332
+            ScaleWidth      =   24
+            TabIndex        =   8
+            TabStop         =   0   'False
+            Top             =   240
+            Visible         =   0   'False
+            Width           =   20
+         End
+         Begin VB.PictureBox PictureVSelLeft 
+            AutoRedraw      =   -1  'True
+            BackColor       =   &H8000000D&
+            BorderStyle     =   0  'None
+            Height          =   1332
+            Left            =   1320
+            ScaleHeight     =   1332
+            ScaleWidth      =   24
+            TabIndex        =   7
+            TabStop         =   0   'False
+            Top             =   240
+            Visible         =   0   'False
+            Width           =   20
+         End
+         Begin MSFlexGridLib.MSFlexGrid StepsView 
+            Height          =   5292
+            Left            =   120
+            TabIndex        =   15
+            TabStop         =   0   'False
+            Top             =   240
+            Width           =   6372
+            _ExtentX        =   11240
+            _ExtentY        =   9335
+            _Version        =   393216
+            Rows            =   16
+            Cols            =   81
+            AllowBigSelection=   0   'False
+            ScrollBars      =   0
+            AllowUserResizing=   1
+            BorderStyle     =   0
+            Appearance      =   0
+         End
+         Begin VB.Label LabelFont 
+            AutoSize        =   -1  'True
+            BackStyle       =   0  'Transparent
+            Caption         =   "LabelFont"
+            Height          =   192
+            Left            =   120
+            TabIndex        =   17
+            Top             =   5640
+            Visible         =   0   'False
+            Width           =   720
          End
       End
-      Begin VB.PictureBox picOptions 
+      Begin VB.Frame FrameDescription 
          BorderStyle     =   0  'None
-         Height          =   3708
-         Index           =   0
+         Height          =   816
          Left            =   120
-         ScaleHeight     =   3708
-         ScaleWidth      =   5688
-         TabIndex        =   3
-         TabStop         =   0   'False
-         Top             =   360
-         Width           =   5688
-         Begin VB.Frame fraSample1 
-            Caption         =   "Вид"
-            Height          =   3708
-            Left            =   0
+         TabIndex        =   5
+         Top             =   5760
+         Width           =   6672
+         Begin VB.Label LabelDescription 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Пояснение"
+            BeginProperty Font 
+               Name            =   "Tahoma"
+               Size            =   10.2
+               Charset         =   204
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   612
+            Left            =   120
             TabIndex        =   20
+            Top             =   120
+            Width           =   6420
+            WordWrap        =   -1  'True
+         End
+         Begin VB.Shape ShapeMessageBorderLight 
+            BackColor       =   &H00F4E0E0&
+            BackStyle       =   1  'Opaque
+            BorderColor     =   &H00FFFFFF&
+            Height          =   792
+            Left            =   12
+            Shape           =   4  'Rounded Rectangle
+            Top             =   12
+            Width           =   6648
+         End
+         Begin VB.Shape ShapeMessageBorderDark 
+            BorderColor     =   &H80000010&
+            Height          =   816
+            Left            =   0
+            Shape           =   4  'Rounded Rectangle
             Top             =   0
-            Width           =   5676
-            Begin VB.TextBox TextSelThickness 
-               Height          =   288
-               Left            =   2040
-               TabIndex        =   46
-               Top             =   1080
-               Width           =   612
-            End
-            Begin VB.PictureBox PictureHSelRight 
-               AutoRedraw      =   -1  'True
-               BackColor       =   &H8000000D&
-               BorderStyle     =   0  'None
-               Height          =   252
-               Left            =   5400
-               ScaleHeight     =   252
-               ScaleWidth      =   24
-               TabIndex        =   45
-               TabStop         =   0   'False
-               Top             =   2520
-               Visible         =   0   'False
-               Width           =   24
-            End
-            Begin VB.PictureBox PictureHSelBottom 
-               AutoRedraw      =   -1  'True
-               BackColor       =   &H8000000D&
-               BorderStyle     =   0  'None
-               Height          =   20
-               Left            =   120
-               ScaleHeight     =   24
-               ScaleWidth      =   5316
-               TabIndex        =   44
-               TabStop         =   0   'False
-               Top             =   2760
-               Visible         =   0   'False
-               Width           =   5316
-            End
-            Begin VB.PictureBox PictureHSelLeft 
-               AutoRedraw      =   -1  'True
-               BackColor       =   &H8000000D&
-               BorderStyle     =   0  'None
-               Height          =   252
-               Left            =   120
-               ScaleHeight     =   252
-               ScaleWidth      =   24
-               TabIndex        =   43
-               TabStop         =   0   'False
-               Top             =   2520
-               Visible         =   0   'False
-               Width           =   24
-            End
-            Begin VB.PictureBox PictureHSelTop 
-               AutoRedraw      =   -1  'True
-               BackColor       =   &H8000000D&
-               BorderStyle     =   0  'None
-               Height          =   20
-               Left            =   120
-               ScaleHeight     =   24
-               ScaleWidth      =   5316
-               TabIndex        =   42
-               TabStop         =   0   'False
-               Top             =   2520
-               Visible         =   0   'False
-               Width           =   5316
-            End
-            Begin VB.PictureBox PictureVSelBottom 
-               AutoRedraw      =   -1  'True
-               BackColor       =   &H8000000D&
-               BorderStyle     =   0  'None
-               Height          =   20
-               Left            =   2760
-               ScaleHeight     =   24
-               ScaleWidth      =   396
-               TabIndex        =   41
-               TabStop         =   0   'False
-               Top             =   3600
-               Visible         =   0   'False
-               Width           =   400
-            End
-            Begin VB.PictureBox PictureVSelTop 
-               AutoRedraw      =   -1  'True
-               BackColor       =   &H8000000D&
-               BorderStyle     =   0  'None
-               Height          =   20
-               Left            =   2760
-               ScaleHeight     =   24
-               ScaleWidth      =   396
-               TabIndex        =   40
-               TabStop         =   0   'False
-               Top             =   2280
-               Visible         =   0   'False
-               Width           =   400
-            End
-            Begin VB.PictureBox PictureVSelRight 
-               AutoRedraw      =   -1  'True
-               BackColor       =   &H8000000D&
-               BorderStyle     =   0  'None
-               Height          =   1332
-               Left            =   3120
-               ScaleHeight     =   1332
-               ScaleWidth      =   24
-               TabIndex        =   39
-               TabStop         =   0   'False
-               Top             =   2280
-               Visible         =   0   'False
-               Width           =   20
-            End
-            Begin VB.PictureBox PictureVSelLeft 
-               AutoRedraw      =   -1  'True
-               BackColor       =   &H8000000D&
-               BorderStyle     =   0  'None
-               Height          =   1332
-               Left            =   2760
-               ScaleHeight     =   1332
-               ScaleWidth      =   24
-               TabIndex        =   38
-               TabStop         =   0   'False
-               Top             =   2280
-               Visible         =   0   'False
-               Width           =   20
-            End
-            Begin VB.CheckBox CheckHSelector 
-               Caption         =   "Горизонтальный селектор"
-               Height          =   252
-               Left            =   120
-               TabIndex        =   37
-               Top             =   1680
-               Width           =   2772
-            End
-            Begin VB.CheckBox CheckVSelector 
-               Caption         =   "Вертикальный селектор"
-               Height          =   252
-               Left            =   120
-               TabIndex        =   36
-               Top             =   1440
-               Width           =   2772
-            End
-            Begin VB.TextBox Text1 
-               Height          =   288
-               Left            =   2040
-               TabIndex        =   8
-               Top             =   312
-               Width           =   612
-            End
-            Begin VB.TextBox Text2 
-               Height          =   288
-               Left            =   2040
-               TabIndex        =   7
-               Top             =   702
-               Width           =   612
-            End
-            Begin VB.CommandButton cmdFont 
-               Caption         =   "Шрифт"
-               Height          =   372
-               Left            =   4560
-               TabIndex        =   6
-               Top             =   720
-               Width           =   972
-            End
-            Begin VB.Frame Frame2 
-               Height          =   492
-               Left            =   2880
-               TabIndex        =   4
-               Top             =   120
-               Width           =   2652
-               Begin VB.Label LabelFont 
-                  AutoSize        =   -1  'True
-                  Caption         =   "FontName"
-                  Height          =   192
-                  Left            =   120
-                  TabIndex        =   5
-                  Top             =   192
-                  Width           =   756
-               End
-            End
-            Begin MSFlexGridLib.MSFlexGrid StepsView 
-               Height          =   1332
-               Left            =   120
-               TabIndex        =   9
-               TabStop         =   0   'False
-               Top             =   2280
-               Width           =   5412
-               _ExtentX        =   9546
-               _ExtentY        =   2350
-               _Version        =   393216
-               Rows            =   16
-               Cols            =   81
-               AllowBigSelection=   0   'False
-               ScrollBars      =   0
-               AllowUserResizing=   1
-               BorderStyle     =   0
-               Appearance      =   0
-            End
-            Begin VB.Label LabelSelThickness 
-               AutoSize        =   -1  'True
-               BackStyle       =   0  'Transparent
-               Caption         =   "Толщина селектора:"
-               Height          =   192
-               Left            =   120
-               TabIndex        =   47
-               Top             =   1128
-               Width           =   1596
-            End
-            Begin VB.Label Label1 
-               AutoSize        =   -1  'True
-               Caption         =   "Ширина столбца шага:"
-               Height          =   192
-               Left            =   120
-               TabIndex        =   12
-               Top             =   360
-               Width           =   1740
-            End
-            Begin VB.Label Label2 
-               Caption         =   "Высота строк таблиц:"
-               Height          =   252
-               Left            =   120
-               TabIndex        =   11
-               Top             =   720
-               Width           =   1812
-            End
-            Begin VB.Label Label3 
-               AutoSize        =   -1  'True
-               Caption         =   "Образец:"
-               Height          =   192
-               Left            =   120
-               TabIndex        =   10
-               Top             =   2040
-               Width           =   732
-            End
+            Width           =   6672
+         End
+      End
+      Begin VB.Frame FrameSplitterUpDown 
+         BackColor       =   &H00F4C0C0&
+         BorderStyle     =   0  'None
+         Height          =   40
+         Left            =   0
+         MousePointer    =   7  'Size N S
+         TabIndex        =   4
+         Top             =   5640
+         Width           =   6888
+      End
+      Begin VB.Frame FrameSettings 
+         BorderStyle     =   0  'None
+         Height          =   5172
+         Left            =   120
+         TabIndex        =   2
+         Top             =   360
+         Width           =   6660
+         Begin VB.CommandButton CommandBrowse 
+            Caption         =   "..."
+            Height          =   240
+            Left            =   1560
+            TabIndex        =   19
+            Top             =   4920
+            Visible         =   0   'False
+            Width           =   252
+         End
+         Begin VB.ComboBox ComboCell 
+            Height          =   288
+            Left            =   840
+            Style           =   2  'Dropdown List
+            TabIndex        =   18
+            Top             =   4920
+            Visible         =   0   'False
+            Width           =   732
+         End
+         Begin VB.TextBox TextCell 
+            BorderStyle     =   0  'None
+            Height          =   288
+            Left            =   0
+            TabIndex        =   16
+            Top             =   4920
+            Visible         =   0   'False
+            Width           =   732
+         End
+         Begin MSFlexGridLib.MSFlexGrid MSFGSettings 
+            Height          =   4932
+            Left            =   0
+            TabIndex        =   3
+            Top             =   0
+            Width           =   6660
+            _ExtentX        =   11748
+            _ExtentY        =   8700
+            _Version        =   393216
+            FixedCols       =   0
+            BackColor       =   16048352
+            BackColorFixed  =   16040128
+            BackColorBkg    =   16048352
+            GridColor       =   13160660
+            GridColorFixed  =   13160660
+            AllowBigSelection=   0   'False
+            HighLight       =   0
+            GridLinesFixed  =   1
+            ScrollBars      =   2
+            AllowUserResizing=   1
+            BorderStyle     =   0
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "Tahoma"
+               Size            =   9
+               Charset         =   204
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
          End
       End
    End
    Begin MSComDlg.CommonDialog SaveFileDialog 
-      Left            =   600
-      Top             =   4440
+      Left            =   480
+      Top             =   6840
       _ExtentX        =   677
       _ExtentY        =   677
       _Version        =   393216
    End
    Begin MSComDlg.CommonDialog FontDialog 
-      Left            =   120
-      Top             =   4440
+      Left            =   0
+      Top             =   6840
       _ExtentX        =   677
       _ExtentY        =   677
       _Version        =   393216
       DialogTitle     =   "Шрифт"
    End
-   Begin VB.CommandButton cmdCancel 
-      Cancel          =   -1  'True
-      Caption         =   "Отмена"
-      Height          =   375
-      Left            =   4920
-      TabIndex        =   1
-      Top             =   4455
-      Width           =   1095
-   End
    Begin VB.CommandButton cmdOK 
       Caption         =   "OK"
       Height          =   375
-      Left            =   3696
+      Left            =   5760
       TabIndex        =   0
-      Top             =   4455
+      Top             =   6768
       Width           =   1095
    End
 End
@@ -566,11 +376,125 @@ Attribute VB_Exposed = False
 '</pre>
 Option Explicit
 
-Private Sub CheckEnableAutoUpdate_Click()
+Dim SplitterMoving As Boolean
+Dim BegX As Integer, BegY As Integer
 
-    ComboAutoUpdatePeriod.Enabled = CheckEnableAutoUpdate.Value > 0
-    LabelAutoUpdatePeriod.Enabled = CheckEnableAutoUpdate.Value > 0
+'**
+'@see
+'@rem Загружаем настройки внешнего вида интерфейса.
+Private Sub LoadPlacement()
+    '<EhHeader>
+    On Error GoTo LoadPlacement_Err
+    '</EhHeader>
+    
+    ' Размеры формы
+    Left = IniFile.ReadInteger("FormOptions", "Left", 2532)
+    Top = IniFile.ReadInteger("FormOptions", "Top", 1176)
+    Width = IniFile.ReadInteger("FormOptions", "Width", 7080)
+    Height = IniFile.ReadInteger("FormOptions", "Height", 7632)
+    
+    ' Размеры и положение компонентов
+    ' TabControl
+    SSTab.Left = IniFile.ReadInteger("FormOptions", "SSTab.Left", 0)
+    SSTab.Top = IniFile.ReadInteger("FormOptions", "SSTab.Top", 0)
+    SSTab.Width = IniFile.ReadInteger("FormOptions", "SSTab.Width", ScaleWidth)
+    SSTab.Height = IniFile.ReadInteger("FormOptions", "SSTab.Height", 6612)
 
+    ' Вкладка "Приложение"
+    FrameSettings.Left = IniFile.ReadInteger("FormOptions", "FrameSettings.Left", 0)
+    FrameSettings.Top = IniFile.ReadInteger("FormOptions", "FrameSettings.Top", SSTab.TabHeight)
+    FrameSettings.Width = IniFile.ReadInteger("FormOptions", "FrameSettings.Width", SSTab.Width)
+    FrameSettings.Height = IniFile.ReadInteger("FormOptions", "FrameSettings.Height", 5172)
+    
+    FrameSplitterUpDown.Left = IniFile.ReadInteger("FormOptions", "FrameSplitterUpDown.Left", FrameSettings.Left)
+    FrameSplitterUpDown.Top = IniFile.ReadInteger("FormOptions", "FrameSplitterUpDown.Top", FrameSettings.Top + FrameSettings.Height)
+    FrameSplitterUpDown.Width = IniFile.ReadInteger("FormOptions", "FrameSplitterUpDown.Width", FrameSettings.Width)
+    FrameSplitterUpDown.Height = IniFile.ReadInteger("FormOptions", "FrameSplitterUpDown.Height", Settings.SplittersThickness)
+    
+    FrameDescription.Left = IniFile.ReadInteger("FormOptions", "FrameDescription.Left", FrameSettings.Left)
+    FrameDescription.Top = IniFile.ReadInteger("FormOptions", "FrameDescription.Top", FrameSplitterUpDown.Top + FrameSplitterUpDown.Height)
+    FrameDescription.Width = IniFile.ReadInteger("FormOptions", "FrameDescription.Width", FrameSettings.Width)
+    FrameDescription.Height = IniFile.ReadInteger("FormOptions", "FrameDescription.Height", SSTab.Height - SSTab.TabHeight - FrameDescription.Top)
+    
+    MSFGSettings.Left = IniFile.ReadInteger("FormOptions", "MSFGSettings.Left", 0)
+    MSFGSettings.Top = IniFile.ReadInteger("FormOptions", "MSFGSettings.Top", 0)
+    MSFGSettings.Width = IniFile.ReadInteger("FormOptions", "MSFGSettings.Width", FrameSettings.Width)
+    MSFGSettings.Height = IniFile.ReadInteger("FormOptions", "MSFGSettings.Height", FrameSettings.Height)
+    
+    MSFGSettings.ColWidth(0) = IniFile.ReadInteger("FormOptions", "MSFGSettings.ColWidth0", MSFGSettings.Width / 2)
+    MSFGSettings.ColWidth(1) = IniFile.ReadInteger("FormOptions", "MSFGSettings.ColWidth1", MSFGSettings.Width / 2)
+    
+    '<EhFooter>
+    Exit Sub
+
+LoadPlacement_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.LoadPlacement]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+'**
+'@see
+'@rem Сохранение внешнего вида интерфейса.
+Private Sub SavePlacement()
+    '<EhHeader>
+    On Error GoTo SavePlacement_Err
+    '</EhHeader>
+
+    ' Размеры формы
+    IniFile.WriteInteger "FormOptions", "Left", Left
+    IniFile.WriteInteger "FormOptions", "Top", Top
+    IniFile.WriteInteger "FormOptions", "Width", Width
+    IniFile.WriteInteger "FormOptions", "Height", Height
+    
+    ' Размеры и положение компонентов
+    ' TabControl
+    IniFile.WriteInteger "FormOptions", "SSTab.Left", SSTab.Left
+    IniFile.WriteInteger "FormOptions", "SSTab.Top", SSTab.Top
+    IniFile.WriteInteger "FormOptions", "SSTab.Width", SSTab.Width
+    IniFile.WriteInteger "FormOptions", "SSTab.Height", SSTab.Height
+    
+    ' Вкладка "Приложение"
+    IniFile.WriteInteger "FormOptions", "FrameSettings.Left", FrameSettings.Left
+    IniFile.WriteInteger "FormOptions", "FrameSettings.Top", FrameSettings.Top
+    IniFile.WriteInteger "FormOptions", "FrameSettings.Width", FrameSettings.Width
+    IniFile.WriteInteger "FormOptions", "FrameSettings.Height", FrameSettings.Height
+    
+    IniFile.WriteInteger "FormOptions", "FrameSplitterUpDown.Left", FrameSplitterUpDown.Left
+    IniFile.WriteInteger "FormOptions", "FrameSplitterUpDown.Top", FrameSplitterUpDown.Top
+    IniFile.WriteInteger "FormOptions", "FrameSplitterUpDown.Width", FrameSplitterUpDown.Width
+    IniFile.WriteInteger "FormOptions", "FrameSplitterUpDown.Height", FrameSplitterUpDown.Height
+       
+    IniFile.WriteInteger "FormOptions", "FrameDescription.Left", FrameDescription.Left
+    IniFile.WriteInteger "FormOptions", "FrameDescription.Top", FrameDescription.Top
+    IniFile.WriteInteger "FormOptions", "FrameDescription.Width", FrameDescription.Width
+    IniFile.WriteInteger "FormOptions", "FrameDescription.Height", FrameDescription.Height
+
+    IniFile.WriteInteger "FormOptions", "MSFGSettings.Left", MSFGSettings.Left
+    IniFile.WriteInteger "FormOptions", "MSFGSettings.Top", MSFGSettings.Top
+    IniFile.WriteInteger "FormOptions", "MSFGSettings.Width", MSFGSettings.Width
+    IniFile.WriteInteger "FormOptions", "MSFGSettings.Height", MSFGSettings.Height
+    
+    IniFile.WriteInteger "FormOptions", "MSFGSettings.ColWidth0", MSFGSettings.ColWidth(0)
+    IniFile.WriteInteger "FormOptions", "MSFGSettings.ColWidth1", MSFGSettings.ColWidth(1)
+    
+    '<EhFooter>
+    Exit Sub
+
+SavePlacement_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.SavePlacement]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub ShowHorizontalSelector()
@@ -580,10 +504,10 @@ Private Sub ShowHorizontalSelector()
 
     Dim SelectorWidth As Integer
     
-    SelectorWidth = CInt(TextSelThickness.Text)
+    SelectorWidth = Settings.StepsSelectorWidth
     
-    ' Отображаем вертикальный селектор
-    If CheckHSelector.Value > 0 Then
+    ' Отображаем горизонтальный селектор
+    If Settings.StepsHSelectorEnabled Then
     
         PictureHSelLeft.Top = StepsView.Top + StepsView.RowPos(StepsView.RowSel) - SelectorWidth / 2
         PictureHSelLeft.Left = StepsView.Left
@@ -598,12 +522,12 @@ Private Sub ShowHorizontalSelector()
         PictureHSelTop.Left = PictureHSelLeft.Left
         PictureHSelTop.Top = PictureHSelLeft.Top
         PictureHSelTop.Height = SelectorWidth
-        PictureHSelTop.Width = PictureHSelRight.Left
+        PictureHSelTop.Width = StepsView.ColWidth(0) + StepsView.ColWidth(1) * (StepsView.Cols - 1) + SelectorWidth
         
         PictureHSelBottom.Left = PictureHSelLeft.Left
         PictureHSelBottom.Top = PictureHSelLeft.Top + PictureHSelLeft.Height
         PictureHSelBottom.Height = SelectorWidth
-        PictureHSelBottom.Width = PictureHSelTop.Width
+        PictureHSelBottom.Width = StepsView.ColWidth(0) + StepsView.ColWidth(1) * (StepsView.Cols - 1) + SelectorWidth
         
         If StepsView.RowIsVisible(StepsView.RowSel) Then
         
@@ -651,15 +575,15 @@ Private Sub ShowVerticalSelector()
 
     Dim SelectorWidth As Integer
     
-    SelectorWidth = CInt(TextSelThickness.Text)
+    SelectorWidth = Settings.StepsSelectorWidth
     
     ' Отображаем вертикальный селектор
-    If CheckVSelector.Value > 0 Then
+    If Settings.StepsVSelectorEnabled Then
             
         PictureVSelLeft.Top = StepsView.Top
         PictureVSelLeft.Left = StepsView.Left + StepsView.ColPos(StepsView.ColSel) - SelectorWidth / 2
         PictureVSelLeft.Width = SelectorWidth
-        PictureVSelLeft.Height = StepsView.RowHeight(StepsView.RowSel) * StepsView.rows
+        PictureVSelLeft.Height = StepsView.RowHeight(0) + StepsView.RowHeight(1) * (StepsView.rows - 1)
         
         PictureVSelRight.Top = PictureVSelLeft.Top
         PictureVSelRight.Left = PictureVSelLeft.Left + StepsView.ColWidth(StepsView.ColSel)
@@ -669,12 +593,12 @@ Private Sub ShowVerticalSelector()
         PictureVSelTop.Left = PictureVSelLeft.Left
         PictureVSelTop.Top = StepsView.Top
         PictureVSelTop.Height = SelectorWidth
-        PictureVSelTop.Width = StepsView.ColWidth(StepsView.ColSel)
+        PictureVSelTop.Width = StepsView.ColWidth(StepsView.ColSel) + SelectorWidth / 2
         
         PictureVSelBottom.Left = PictureVSelLeft.Left
-        PictureVSelBottom.Top = PictureVSelLeft.Height - SelectorWidth
+        PictureVSelBottom.Top = PictureVSelLeft.Top + StepsView.RowHeight(0) + StepsView.RowHeight(1) * (StepsView.rows - 1)
         PictureVSelBottom.Height = SelectorWidth
-        PictureVSelBottom.Width = PictureVSelTop.Width
+        PictureVSelBottom.Width = PictureVSelTop.Width + SelectorWidth / 2
         
         If StepsView.ColIsVisible(StepsView.ColSel) Then
         
@@ -715,137 +639,14 @@ ShowVerticalSelector_Err:
     '</EhFooter>
 End Sub
 
-Private Sub CheckHSelector_Click()
-    '<EhHeader>
-    On Error GoTo CheckHSelector_Click_Err
-    '</EhHeader>
-
-    RefreshStepsView
-    
-    '<EhFooter>
-    Exit Sub
-
-CheckHSelector_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.CheckHSelector_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-
-    Resume Next
-
-    '</EhFooter>
-End Sub
-
-Private Sub CheckVSelector_Click()
-    '<EhHeader>
-    On Error GoTo CheckVSelector_Click_Err
-    '</EhHeader>
-
-    RefreshStepsView
-    
-    '<EhFooter>
-    Exit Sub
-
-CheckVSelector_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.CheckVSelector_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-
-    Resume Next
-
-    '</EhFooter>
-End Sub
-
-Private Sub cmdCancel_Click()
-    '<EhHeader>
-    On Error GoTo cmdCancel_Click_Err
-    '</EhHeader>
-
-    Unload Me
-    
-    '<EhFooter>
-    Exit Sub
-
-cmdCancel_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.cmdCancel_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-
-    Resume Next
-
-    '</EhFooter>
-End Sub
-
-'**
-'@rem <h2>cmdFont_Click</h2>
-'Обработчик кнопки "Шрифт". Вызывается стандартное окно выбора параметров
-'шрифта.
-Private Sub cmdFont_Click()
-    '<EhHeader>
-    On Error GoTo cmdFont_Click_Err
-    '</EhHeader>
-
-    FontDialog.FontBold = Settings.StepsViewFontBold
-    FontDialog.FontItalic = Settings.StepsViewFontItalic
-    FontDialog.FontName = Settings.StepsViewFontName
-    FontDialog.FontSize = Settings.StepsViewFontSize
-    FontDialog.Flags = cdlCFBoth
-
-    FontDialog.ShowFont
-
-    LabelFont.FontBold = FontDialog.FontBold
-    LabelFont.FontItalic = FontDialog.FontItalic
-    LabelFont.FontName = FontDialog.FontName
-    LabelFont.FontSize = FontDialog.FontSize
-    LabelFont.Caption = LabelFont.FontName & ", " & CInt(LabelFont.FontSize)
-
-    RefreshStepsView
-    
-    '<EhFooter>
-    Exit Sub
-
-cmdFont_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.cmdFont_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
-End Sub
-
 Private Sub cmdOK_Click()
     '<EhHeader>
     On Error GoTo cmdOK_Click_Err
     '</EhHeader>
 
-    Settings.StepsColWidth = CInt(Text1.Text)
-    Settings.StepsRowHeight = CInt(Text2.Text)
-    Settings.StepsSelectorWidth = CInt(TextSelThickness.Text)
-
-    Settings.StepsVSelectorEnabled = CheckVSelector.Value > 0
-    Settings.StepsHSelectorEnabled = CheckHSelector.Value > 0
-
-    Settings.StepsViewFontBold = LabelFont.FontBold
-    Settings.StepsViewFontItalic = LabelFont.FontItalic
-    Settings.StepsViewFontName = LabelFont.FontName
-    Settings.StepsViewFontSize = LabelFont.FontSize
-    
-    ' [Лог]
-    Settings.RewriteLogFile = CheckRewriteLogFile.Value > 0
-    Settings.LogFilePath = TextLogFilePath.Text
-    
-    ' [История файлов]
-    Settings.FilesHistoryLimitPaths = CheckFilesHistoryLimitPaths.Value > 0
-    MRUFileList.MaxFileCount = CInt(TextFilesHistoryCount.Text)
-
-    ' [Обновление]
-    Settings.AutoUpdateEnabled = CheckEnableAutoUpdate.Value > 0
-    Settings.AutoUpdatePeriod = ComboAutoUpdatePeriod.ListIndex + 1
-
-    ' Сохраняем изменения настроек в файле конфигурации
-    Settings.SaveSettings
-
+    ' Применяем параметры к интерфейсу программы
     FormMain.RefreshComponents False
+       
     Unload Me
 
     '<EhFooter>
@@ -858,32 +659,166 @@ cmdOK_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub cmdBrowse_Click()
-    '<EhHeader>
-    On Error GoTo cmdBrowse_Click_Err
-    '</EhHeader>
+Private Sub RefreshSettingsView()
 
-    SaveFileDialog.FileName = Settings.LogFilePath
-    SaveFileDialog.DialogTitle = "Обзор..."
-    SaveFileDialog.DefaultExt = ".log"
-    SaveFileDialog.Filter = "Файл лога (*.log)|*.log|Все файлы (*.*)|(*.*)"
-    SaveFileDialog.FilterIndex = 1
-    SaveFileDialog.MaxFileSize = 32767
-    SaveFileDialog.InitDir = CurrentDir
-    SaveFileDialog.CancelError = True
+    Dim I As Integer
+    
+    ' ------
+    ' Загружаем установки в таблицу
+    ' Отключаем отображение
+    With MSFGSettings
+    
+        ' Обновляем значения параметров
+        .Redraw = False
+        
+        .col = 1
+        
+        For I = 1 To .rows - 1
+        
+            Select Case .RowData(I)
+            
+                Case SETTINGS_STEPS_COL_WIDTH:
+                    
+                    .row = I
+                    .Text = CStr(Settings.StepsColWidth)
+                    .CellBackColor = &HFFFFFF
+                    
+                Case SETTINGS_STEPS_ROW_HEIGHT:
 
-    SaveFileDialog.ShowSave
+                    .row = I
+                    .Text = CStr(Settings.StepsRowHeight)
+                    .CellBackColor = &HFFFFFF
 
-    TextLogFilePath.Text = SaveFileDialog.FileName
+                Case SETTINGS_STEPSVIEW_FONT:
 
-    '<EhFooter>
-    Exit Sub
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+                    .Text = Settings.StepsViewFontName & ", " & CStr(Settings.StepsViewFontSize)
+                    .CellFontBold = Settings.StepsViewFontBold
+                    .CellFontItalic = Settings.StepsViewFontItalic
+                    .CellFontName = Settings.StepsViewFontName
+                    .CellFontSize = Settings.StepsViewFontSize
+                    .CellBackColor = &HFFFFFF
 
-cmdBrowse_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.cmdBrowse_Click]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
+                Case SETTINGS_STEPS_SELECTOR_WIDTH:
+
+                    .row = I
+                    .Text = CStr(Settings.StepsSelectorWidth)
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_STEPS_VSELECTOR_ENABLED:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+
+                    Select Case Settings.StepsVSelectorEnabled
+                        Case False: .Text = STRING_NO
+                        Case True: .Text = STRING_YES
+                    End Select
+
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_STEPS_HSELECTOR_ENABLED:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+
+                    Select Case Settings.StepsHSelectorEnabled
+                        Case False: .Text = STRING_NO
+                        Case True: .Text = STRING_YES
+                    End Select
+
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_REWRITE_LOGFILE:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+
+                    Select Case Settings.RewriteLogFile
+                        Case False: .Text = STRING_NO
+                        Case True: .Text = STRING_YES
+                    End Select
+
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_LOG_FILEPATH:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+                    .Text = Settings.LogFilePath
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_FILES_HISTORY_SIZE:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+                    .Text = CStr(MRUFileList.MaxFileCount)
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_FILES_HISTORY_LIMIT_PATHS:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+
+                    Select Case Settings.FilesHistoryLimitPaths
+                        Case False: .Text = STRING_NO
+                        Case True: .Text = STRING_YES
+                    End Select
+
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_AUTOUPDATE_ENABLED:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+
+                    Select Case Settings.AutoUpdateEnabled
+                        Case False: .Text = STRING_NO
+                        Case True: .Text = STRING_YES
+                    End Select
+
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_AUTOUPDATE_PERIOD:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+
+                    Select Case Settings.AutoUpdatePeriod
+
+                        Case AUP_EVERY_DAY: .Text = "каждый день"
+
+                        Case AUP_ONES_PER_WEEK: .Text = "раз в неделю"
+
+                        Case AUP_ONES_PER_MONTH: .Text = "раз в месяц"
+
+                    End Select
+
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_IMPORT_JSON_CODEPAGE:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+                    .Text = "UTF-8"
+                    .CellBackColor = &HFFFFFF
+
+                Case SETTINGS_EXPORT_JSON_CODEPAGE:
+
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+                    .Text = "UTF-8"
+                    .CellBackColor = &HFFFFFF
+
+            End Select
+            
+        Next
+    
+        .Redraw = True
+    
+    End With
+    
 End Sub
 
 Private Sub RefreshStepsView()
@@ -894,7 +829,7 @@ Private Sub RefreshStepsView()
     Dim s As String
     Dim col As Integer, row As Integer
 
-    StepsView.Visible = False
+    StepsView.Redraw = False
 
     StepsView.Font.Bold = LabelFont.FontBold
     StepsView.Font.Italic = LabelFont.FontItalic
@@ -959,11 +894,11 @@ Private Sub RefreshStepsView()
 
     For row = 1 To StepsView.rows - 1
     
-        StepsView.RowHeight(row) = CInt(Text2.Text)
+        StepsView.RowHeight(row) = Settings.StepsRowHeight
 
         For col = 1 To 10
         
-            StepsView.ColWidth(col) = CInt(Text1.Text)
+            StepsView.ColWidth(col) = Settings.StepsColWidth
             StepsView.col = col
             StepsView.row = row
             StepsView.CellBackColor = &HC8D0D4
@@ -975,7 +910,7 @@ Private Sub RefreshStepsView()
     StepsView.col = 1
     StepsView.row = 1
 
-    StepsView.Visible = True
+    StepsView.Redraw = True
     
     ' Отображаем горизонтальный селектор
     ShowHorizontalSelector
@@ -993,61 +928,410 @@ RefreshStepsView_Err:
     '</EhFooter>
 End Sub
 
+Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
+
+    If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
+    
+        ComboCell.Visible = False
+        RefreshTabControl
+        MSFGSettings.SetFocus
+        
+    End If
+    
+    If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
+     
+        With MSFGSettings
+        
+            ' Если первая колонка (имена параметров), то ничего не делаем
+            If .col = 0 Then Exit Sub
+        
+            Select Case .RowData(.row)
+            
+                Case SETTINGS_STEPS_COL_WIDTH:
+                    
+                Case SETTINGS_STEPS_ROW_HEIGHT:
+                
+                Case SETTINGS_STEPSVIEW_FONT:
+
+                Case SETTINGS_STEPS_SELECTOR_WIDTH:
+                
+                Case SETTINGS_STEPS_VSELECTOR_ENABLED:
+                
+                    Select Case ComboCell.ListIndex
+                        Case 0: Settings.StepsVSelectorEnabled = False
+                        Case 1: Settings.StepsVSelectorEnabled = True
+                    End Select
+                
+                Case SETTINGS_STEPS_HSELECTOR_ENABLED:
+
+                    Select Case ComboCell.ListIndex
+                        Case 0: Settings.StepsHSelectorEnabled = False
+                        Case 1: Settings.StepsHSelectorEnabled = True
+                    End Select
+                    
+                Case SETTINGS_REWRITE_LOGFILE:
+
+                    Select Case ComboCell.ListIndex
+                        Case 0: Settings.RewriteLogFile = False
+                        Case 1: Settings.RewriteLogFile = True
+                    End Select
+                    
+                Case SETTINGS_LOG_FILEPATH:
+
+                Case SETTINGS_FILES_HISTORY_SIZE:
+
+                Case SETTINGS_FILES_HISTORY_LIMIT_PATHS:
+
+                    Select Case ComboCell.ListIndex
+                        Case 0: Settings.FilesHistoryLimitPaths = False
+                        Case 1: Settings.FilesHistoryLimitPaths = True
+                    End Select
+                    
+                Case SETTINGS_AUTOUPDATE_ENABLED:
+                    
+                    Select Case ComboCell.ListIndex
+                        Case 0: Settings.AutoUpdateEnabled = False
+                        Case 1: Settings.AutoUpdateEnabled = True
+                    End Select
+                    
+                Case SETTINGS_AUTOUPDATE_PERIOD:
+                    
+                    Select Case ComboCell.ListIndex
+                        Case 0: Settings.AutoUpdatePeriod = AUP_EVERY_DAY
+                        Case 1: Settings.AutoUpdatePeriod = AUP_ONES_PER_WEEK
+                        Case 2: Settings.AutoUpdatePeriod = AUP_ONES_PER_MONTH
+                    End Select
+                    
+                Case SETTINGS_IMPORT_JSON_CODEPAGE:
+
+                Case SETTINGS_EXPORT_JSON_CODEPAGE:
+
+            End Select
+        
+            ComboCell.Visible = False
+            
+            Dim row As Integer
+            
+            row = .row
+            
+            RefreshSettingsView
+            RefreshStepsView
+            
+            If row < .rows - 1 Then .row = row
+            
+            .SetFocus
+        
+        End With
+            
+    End If
+
+End Sub
+
+Private Sub ComboCell_LostFocus()
+    
+    ComboCell.Visible = False
+    
+End Sub
+
+Private Sub CommandBrowse_Click()
+    '<EhHeader>
+    On Error GoTo CommandBrowse_Click_Err
+    '</EhHeader>
+
+    SaveFileDialog.FileName = Settings.LogFilePath
+    SaveFileDialog.DialogTitle = "Обзор..."
+    SaveFileDialog.DefaultExt = ".log"
+    SaveFileDialog.Filter = "Файл лога (*.log)|*.log|Все файлы (*.*)|(*.*)"
+    SaveFileDialog.FilterIndex = 1
+    SaveFileDialog.MaxFileSize = 32767
+    SaveFileDialog.InitDir = CurrentDir
+    SaveFileDialog.CancelError = True
+
+    SaveFileDialog.ShowSave
+
+    TextCell.Text = SaveFileDialog.FileName
+    TextCell.SelStart = Len(TextCell.Text)
+    TextCell.SelLength = 0
+    TextCell.SetFocus
+
+    '<EhFooter>
+    Exit Sub
+
+CommandBrowse_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.CommandBrowse_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub RefreshTabControl()
+
+    SSTab.Top = 0
+    SSTab.Left = 0
+    SSTab.Width = ScaleWidth
+    SSTab.Height = ScaleHeight - 576
+    
+    Select Case SSTab.Tab
+    
+        Case 0:
+        
+            FrameExample.Visible = False
+        
+            FrameDescription.Visible = True
+            FrameSplitterUpDown.Visible = True
+            FrameSettings.Visible = True
+            
+            FrameDescription.Top = SSTab.Height - FrameDescription.Height - 40
+            FrameDescription.Left = SSTab.Left + 40
+            FrameDescription.Width = SSTab.Width - 80
+            
+            FrameSplitterUpDown.Height = Settings.SplittersThickness
+            FrameSplitterUpDown.Top = FrameDescription.Top - FrameSplitterUpDown.Height
+            FrameSplitterUpDown.Left = FrameDescription.Left
+            FrameSplitterUpDown.Width = FrameDescription.Width
+            
+            FrameSettings.Top = SSTab.Top + SSTab.TabHeight + 40
+            FrameSettings.Left = SSTab.Left + 40
+            FrameSettings.Width = SSTab.Width - 80
+            FrameSettings.Height = FrameSplitterUpDown.Top - FrameSettings.Top
+        
+            ShapeMessageBorderLight.Top = 12
+            ShapeMessageBorderLight.Left = 12
+            ShapeMessageBorderLight.Width = FrameDescription.Width - ShapeMessageBorderLight.Left - 12
+            ShapeMessageBorderLight.Height = FrameDescription.Height - ShapeMessageBorderLight.Top - 12
+            
+            ShapeMessageBorderDark.Top = 0
+            ShapeMessageBorderDark.Left = 0
+            ShapeMessageBorderDark.Width = FrameDescription.Width
+            ShapeMessageBorderDark.Height = FrameDescription.Height
+        
+            MSFGSettings.Top = 0
+            MSFGSettings.Left = 0
+            MSFGSettings.Width = FrameSettings.Width - MSFGSettings.Left
+            MSFGSettings.Height = FrameSettings.Height
+              
+            ' Если строки не умещаются во фрейме, то появляется вертикальная полоска прокрутки
+            ' Корректируем ширину столбцов для этого случая
+            Dim ScrollWidth As Long
+            
+            ScrollWidth = Screen.TwipsPerPixelX * GetSystemMetrics(SM_CXVSCROLL)
+            
+            If MSFGSettings.rows * MSFGSettings.RowHeight(0) > MSFGSettings.Height Then
+    
+                If MSFGSettings.Width > (MSFGSettings.ColWidth(0) + ScrollWidth) Then
+                    
+                    MSFGSettings.ColWidth(1) = MSFGSettings.Width - MSFGSettings.ColWidth(0) - ScrollWidth
+                
+                End If
+            
+            Else
+                
+                If MSFGSettings.Width > MSFGSettings.ColWidth(0) Then
+                    
+                    MSFGSettings.ColWidth(1) = MSFGSettings.Width - MSFGSettings.ColWidth(0)
+                
+                End If
+
+            End If
+        
+        Case 1:
+    
+            FrameDescription.Visible = False
+            FrameSplitterUpDown.Visible = False
+            FrameSettings.Visible = False
+            
+            FrameExample.Visible = True
+            
+            FrameExample.Top = SSTab.TabHeight
+            FrameExample.Left = 0
+            FrameExample.Width = SSTab.Width
+            FrameExample.Height = SSTab.Height - SSTab.TabHeight
+            
+            LabelFont.FontBold = Settings.StepsViewFontBold
+            LabelFont.FontItalic = Settings.StepsViewFontItalic
+            LabelFont.FontName = Settings.StepsViewFontName
+            LabelFont.FontSize = Settings.StepsViewFontSize
+    
+            FrameExample.FontSize = Settings.StepsViewFontSize
+            
+            StepsView.Top = 240
+            StepsView.Left = 120
+            StepsView.Width = FrameExample.Width - StepsView.Left - 120
+            StepsView.Height = FrameExample.Height - StepsView.Top - 120
+            
+            RefreshStepsView
+    
+    End Select
+    
+End Sub
+
+Private Sub RefreshButtons()
+
+    cmdOK.Top = ScaleHeight - 456
+    cmdOK.Left = ScaleWidth - 1224
+    
+End Sub
+
+Private Sub RefreshComponents(Optional RefreshWithData As Boolean = False)
+
+    If RefreshWithData = True Then RefreshSettingsView
+
+    RefreshTabControl
+    RefreshButtons
+    
+End Sub
+
 Private Sub Form_Load()
     '<EhHeader>
     On Error GoTo Form_Load_Err
     '</EhHeader>
-
-    Text1.Text = CStr(Settings.StepsColWidth)
-    Text2.Text = CStr(Settings.StepsRowHeight)
-    TextSelThickness.Text = CStr(Settings.StepsSelectorWidth)
-
-    ComboImportFormat.ListIndex = 0
-    ComboExportFormat.ListIndex = 0
-
-    Select Case Settings.StepsVSelectorEnabled
-        Case False: CheckVSelector.Value = 0
-        Case True: CheckVSelector.Value = 1
-    End Select
+   
+    ' Восстанавливаем положение формы и компонентов
+    LoadPlacement
     
-    Select Case Settings.StepsHSelectorEnabled
-        Case False: CheckHSelector.Value = 0
-        Case True: CheckHSelector.Value = 1
-    End Select
+    ' ------
+    ' Загружаем установки в таблицу
+    ' Отключаем отображение
+    With MSFGSettings
     
-    LabelFont.FontBold = Settings.StepsViewFontBold
-    LabelFont.FontItalic = Settings.StepsViewFontItalic
-    LabelFont.FontName = Settings.StepsViewFontName
-    LabelFont.FontSize = Settings.StepsViewFontSize
-    LabelFont.Caption = LabelFont.FontName & ", " & CInt(LabelFont.FontSize)
+        .Redraw = False
+    
+        .rows = 20
+    
+        ' Очищаем таблицу установок
+        .Clear
+    
+        .FormatString = "<Параметр|Значение"
+        .col = 1
+        .row = 0
+        .CellAlignment = flexAlignRightCenter
+    
+        ' -----------------------------------------------
+        .col = 0
+        .row = 1
+        .Text = "Вид"
+        .CellFontBold = True
+    
+        .row = 2
+        .RowData(.row) = SETTINGS_STEPS_COL_WIDTH
+        .Text = "Ширина столбца шага"
+        .CellBackColor = &HFFFFFF
+    
+        ' -----------------------------------------------
+        .col = 0
+        .row = 3
+        .RowData(.row) = SETTINGS_STEPS_ROW_HEIGHT
+        .Text = "Высота строк таблиц"
+        .CellBackColor = &HFFFFFF
+    
+        ' -----------------------------------------------
+        .col = 0
+        .row = 4
+        .RowData(.row) = SETTINGS_STEPSVIEW_FONT
+        .Text = "Шрифт"
+        .CellBackColor = &HFFFFFF
+       
+        ' -----------------------------------------------
+        .col = 0
+        .row = 5
+        .RowData(.row) = SETTINGS_STEPS_SELECTOR_WIDTH
+        .Text = "Толщина селектора"
+        .CellBackColor = &HFFFFFF
+    
+        ' -----------------------------------------------
+        .col = 0
+        .row = 6
+        .RowData(.row) = SETTINGS_STEPS_VSELECTOR_ENABLED
+        .Text = "Вертикальный селектор"
+        .CellBackColor = &HFFFFFF
+    
+        ' -----------------------------------------------
+        .col = 0
+        .row = 7
+        .RowData(.row) = SETTINGS_STEPS_HSELECTOR_ENABLED
+        .Text = "Горизонтальный селектор"
+        .CellBackColor = &HFFFFFF
+    
+        ' -----------------------------------------------
+        .col = 0
+        .row = 8
+        .Text = "Лог"
+        .CellFontBold = True
+    
+        .row = 9
+        .RowData(.row) = SETTINGS_REWRITE_LOGFILE
+        .Text = "Перезаписывать файл лога при запуске"
+        .CellBackColor = &HFFFFFF
+    
+        ' -----------------------------------------------
+        .col = 0
+        .row = 10
+        .RowData(.row) = SETTINGS_LOG_FILEPATH
+        .Text = "Путь к файлу"
+        .CellBackColor = &HFFFFFF
+    
+        ' -----------------------------------------------
+        .col = 0
+        .row = 11
+        .Text = "История файлов"
+        .CellFontBold = True
+    
+        .row = 12
+        .RowData(.row) = SETTINGS_FILES_HISTORY_SIZE
+        .Text = "Помнить не более (файлов)"
+        .CellBackColor = &HFFFFFF
+    
+        ' -----------------------------------------------
+        .col = 0
+        .row = 13
+        .RowData(.row) = SETTINGS_FILES_HISTORY_LIMIT_PATHS
+        .Text = "Ограничивать длину пути"
+        .CellBackColor = &HFFFFFF
 
-    TextFilesHistoryCount.Text = MRUFileList.MaxFileCount
+        ' -----------------------------------------------
+        .col = 0
+        .row = 14
+        .Text = "Обновление"
+        .CellFontBold = True
+    
+        .row = 15
+        .RowData(.row) = SETTINGS_AUTOUPDATE_ENABLED
+        .Text = "Автоматическое обновление"
+        .CellBackColor = &HFFFFFF
 
-    Select Case Settings.FilesHistoryLimitPaths
-        Case False: CheckFilesHistoryLimitPaths.Value = 0
-        Case True: CheckFilesHistoryLimitPaths.Value = 1
-    End Select
+        ' -----------------------------------------------
+        .col = 0
+        .row = 16
+        .RowData(.row) = SETTINGS_AUTOUPDATE_PERIOD
+        .Text = "Период автообновления"
+        .CellBackColor = &HFFFFFF
 
-    Select Case Settings.RewriteLogFile
-        Case False: CheckRewriteLogFile.Value = 0
-        Case True: CheckRewriteLogFile.Value = 1
-    End Select
+        ' -----------------------------------------------
+        .col = 0
+        .row = 17
+        .Text = "Импорт/экспорт (JSON)"
+        .CellFontBold = True
+    
+        .row = 18
+        .RowData(.row) = SETTINGS_IMPORT_JSON_CODEPAGE
+        .Text = "Кодировка импорта"
+        .CellBackColor = &HFFFFFF
 
-    TextLogFilePath.Text = Settings.LogFilePath
+        ' -----------------------------------------------
+        .col = 0
+        .row = 19
+        .RowData(.row) = SETTINGS_EXPORT_JSON_CODEPAGE
+        .Text = "Кодировка экспорта"
+        .CellBackColor = &HFFFFFF
 
-    ' [Обновление]
-    Select Case Settings.AutoUpdateEnabled
-
-        Case False: CheckEnableAutoUpdate.Value = 0
-
-        Case True: CheckEnableAutoUpdate.Value = 1
-
-    End Select
-
-    ComboAutoUpdatePeriod.ListIndex = Settings.AutoUpdatePeriod - 1
-    ComboAutoUpdatePeriod.Enabled = CheckEnableAutoUpdate.Value > 0
-    LabelAutoUpdatePeriod.Enabled = CheckEnableAutoUpdate.Value > 0
-
+        .Redraw = True
+    
+    End With
+        
     RefreshStepsView
 
     StepsView.row = 1
@@ -1056,8 +1340,10 @@ Private Sub Form_Load()
     ShowHorizontalSelector
     ShowVerticalSelector
     
-    ' Перемещаем форму в центр экрана
-    Me.Move (Screen.Width - Me.Width) / 2, (Screen.Height - Me.Height) / 2
+    RefreshComponents True
+       
+    ' Симулируем изменение размером формы для вызова Resize()
+    Move Left, Top, Width, Height
 
     '<EhFooter>
     Exit Sub
@@ -1069,36 +1355,28 @@ Form_Load_Err:
     '</EhFooter>
 End Sub
 
-Private Sub Text1_KeyPress(KeyAscii As Integer)
+Private Sub Form_Resize()
     '<EhHeader>
-    On Error GoTo Text1_KeyPress_Err
+    On Error Resume Next
     '</EhHeader>
 
-    If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
+    RefreshComponents
 
-    '<EhFooter>
-    Exit Sub
-
-Text1_KeyPress_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.Text1_KeyPress]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
 End Sub
 
-Private Sub Text1_LostFocus()
+Private Sub Form_Unload(Cancel As Integer)
     '<EhHeader>
-    On Error GoTo Text1_LostFocus_Err
+    On Error GoTo Form_Unload_Err
     '</EhHeader>
 
-    RefreshStepsView
+    SavePlacement
 
     '<EhFooter>
     Exit Sub
 
-Text1_LostFocus_Err:
+Form_Unload_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.Text1_LostFocus]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormOptions.Form_Unload]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
@@ -1107,36 +1385,123 @@ Text1_LostFocus_Err:
     '</EhFooter>
 End Sub
 
-Private Sub Text2_KeyPress(KeyAscii As Integer)
-    '<EhHeader>
-    On Error GoTo Text2_KeyPress_Err
-    '</EhHeader>
+Private Sub FrameSplitterUpDown_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
-
-    '<EhFooter>
-    Exit Sub
-
-Text2_KeyPress_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.Text2_KeyPress]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
+    SplitterMoving = True
+    BegX = x
+    BegY = y
+    
 End Sub
 
-Private Sub Text2_LostFocus()
+Private Sub FrameSplitterUpDown_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
+    If SplitterMoving Then
+    
+        FrameDescription.Height = FrameDescription.Height - y + BegY
+        
+        RefreshTabControl
+    
+    End If
+    
+End Sub
+
+Private Sub FrameSplitterUpDown_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+
+    SplitterMoving = False
+    
+End Sub
+
+Private Sub MSFGSettings_Click()
     '<EhHeader>
-    On Error GoTo Text2_LostFocus_Err
+    On Error GoTo MSFGSettings_Click_Err
     '</EhHeader>
 
-    RefreshStepsView
+        With MSFGSettings
+        
+            Select Case .RowData(.row)
+            
+                Case SETTINGS_STEPS_COL_WIDTH:
+                
+                    LabelDescription.Caption = "Изменение ширины всех колонок шагов"
+                    Exit Sub
+                
+                Case SETTINGS_STEPS_ROW_HEIGHT:
+                
+                    LabelDescription.Caption = "Изменение высоты всех строк таблицы шагов"
+                    Exit Sub
+                
+                Case SETTINGS_STEPSVIEW_FONT:
 
+                    LabelDescription.Caption = "Настройки шрифта для таблицы шагов"
+                    Exit Sub
+                    
+                Case SETTINGS_STEPS_SELECTOR_WIDTH:
+                
+                    LabelDescription.Caption = "Толщина рамки селектора"
+                    Exit Sub
+                    
+                Case SETTINGS_STEPS_VSELECTOR_ENABLED:
+
+                    LabelDescription.Caption = "Показать/скрыть вертикальный селектор"
+                    Exit Sub
+                    
+                Case SETTINGS_STEPS_HSELECTOR_ENABLED:
+
+                    LabelDescription.Caption = "Показать/скрыть горизонтальный селектор"
+                    Exit Sub
+                    
+                Case SETTINGS_REWRITE_LOGFILE:
+
+                    LabelDescription.Caption = "Перезаписывать файл лога при запуске программы"
+                    Exit Sub
+                    
+                Case SETTINGS_LOG_FILEPATH:
+                    
+                    LabelDescription.Caption = "Путь к файлу лога программы"
+                    Exit Sub
+                    
+                Case SETTINGS_FILES_HISTORY_SIZE:
+                    
+                    LabelDescription.Caption = "Количество файлов в истории (максимально 10)"
+                    Exit Sub
+                    
+                Case SETTINGS_FILES_HISTORY_LIMIT_PATHS:
+
+                    LabelDescription.Caption = "Ограничение длины пути файла в истории"
+                    Exit Sub
+                    
+                Case SETTINGS_AUTOUPDATE_ENABLED:
+
+                    LabelDescription.Caption = "Настройка режима обновления: автомат или ручное"
+                    Exit Sub
+                    
+                Case SETTINGS_AUTOUPDATE_PERIOD:
+                    
+                    LabelDescription.Caption = "Настройка интервала обновления в автомате"
+                    Exit Sub
+                    
+                Case SETTINGS_IMPORT_JSON_CODEPAGE:
+
+                    LabelDescription.Caption = "Тип кодировки при импорте из JSON-формата"
+                    Exit Sub
+
+                Case SETTINGS_EXPORT_JSON_CODEPAGE:
+
+                    LabelDescription.Caption = "Тип кодировки при экспорте в JSON-формат"
+                    Exit Sub
+
+            End Select
+
+            LabelDescription.Caption = ""
+            
+        End With
+            
     '<EhFooter>
     Exit Sub
 
-Text2_LostFocus_Err:
+MSFGSettings_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.Text2_LostFocus]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormOptions.MSFGSettings_Click]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
@@ -1145,50 +1510,356 @@ Text2_LostFocus_Err:
     '</EhFooter>
 End Sub
 
-'**
-'@rem <h2>TextFilesHistoryCount_Change</h2>
-Private Sub TextFilesHistoryCount_Change()
+Private Sub MSFGSettings_DblClick()
     '<EhHeader>
-    On Error GoTo TextFilesHistoryCount_Change_Err
+    On Error GoTo MSFGSettings_DblClick_Err
     '</EhHeader>
 
-    If CInt(TextFilesHistoryCount.Text) > 10 Then
+    MSFGSettings_KeyDown VBRUN.KeyCodeConstants.vbKeyReturn, 0
+
+    '<EhFooter>
+    Exit Sub
+
+MSFGSettings_DblClick_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.MSFGSettings_DblClick]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub MSFGSettings_KeyDown(KeyCode As Integer, Shift As Integer)
+    '<EhHeader>
+    On Error GoTo MSFGSettings_KeyDown_Err
+    '</EhHeader>
+
+    If KeyCode = VBRUN.vbKeyReturn Then
     
-        TextFilesHistoryCount.Text = "10"
+        With MSFGSettings
         
-    ElseIf CInt(TextFilesHistoryCount.Text) < 1 Then
+            ' Если первая колонка (имена параметров), то ничего не делаем
+            If .col = 0 Or .RowData(.row) = 0 Then
+            
+                Exit Sub
+                
+            Else
+                
+                TextCell.FontName = .CellFontName
+                TextCell.FontSize = .CellFontSize
+        
+                TextCell.Top = .Top + .CellTop
+                TextCell.Left = .Left + .CellLeft
+                TextCell.Width = .CellWidth
+                TextCell.Height = .CellHeight
+                
+                ComboCell.Left = .Left + .CellLeft
+                ComboCell.Top = .Top + .CellTop
+                ComboCell.Width = .CellWidth
+                ComboCell.Clear
+                        
+                Select Case .RowData(.row)
+                
+                    Case SETTINGS_STEPS_COL_WIDTH, SETTINGS_STEPS_ROW_HEIGHT, _
+                        SETTINGS_STEPS_SELECTOR_WIDTH, SETTINGS_FILES_HISTORY_SIZE:
+                    
+                        TextCell.Text = .Text
+                        TextCell.SelStart = 0
+                        TextCell.SelLength = Len(TextCell.Text)
+                        TextCell.Visible = True
+                        TextCell.SetFocus
+                    
+                    Case SETTINGS_STEPS_VSELECTOR_ENABLED:
+                    
+                        ComboCell.AddItem STRING_NO
+                        ComboCell.AddItem STRING_YES
+                        
+                        Select Case Settings.StepsVSelectorEnabled
+                            Case False: ComboCell.ListIndex = 0
+                            Case True: ComboCell.ListIndex = 1
+                        End Select
+                        
+                        ComboCell.Visible = True
+                        ComboCell.SetFocus
+                    
+                    Case SETTINGS_STEPS_HSELECTOR_ENABLED:
+                    
+                        ComboCell.AddItem STRING_NO
+                        ComboCell.AddItem STRING_YES
+                        
+                        Select Case Settings.StepsHSelectorEnabled
+                            Case False: ComboCell.ListIndex = 0
+                            Case True: ComboCell.ListIndex = 1
+                        End Select
+                        
+                        ComboCell.Visible = True
+                        ComboCell.SetFocus
+                    
+                    Case SETTINGS_REWRITE_LOGFILE:
+                    
+                        ComboCell.AddItem STRING_NO
+                        ComboCell.AddItem STRING_YES
+                        
+                        Select Case Settings.RewriteLogFile
+                            Case False: ComboCell.ListIndex = 0
+                            Case True: ComboCell.ListIndex = 1
+                        End Select
+                        
+                        ComboCell.Visible = True
+                        ComboCell.SetFocus
+                        
+                    Case SETTINGS_FILES_HISTORY_LIMIT_PATHS:
+                    
+                        ComboCell.AddItem STRING_NO
+                        ComboCell.AddItem STRING_YES
+                        
+                        Select Case Settings.FilesHistoryLimitPaths
+                            Case False: ComboCell.ListIndex = 0
+                            Case True: ComboCell.ListIndex = 1
+                        End Select
+                        
+                        ComboCell.Visible = True
+                        ComboCell.SetFocus
+                        
+                    Case SETTINGS_AUTOUPDATE_ENABLED:
+                        
+                        ComboCell.AddItem STRING_NO
+                        ComboCell.AddItem STRING_YES
+                        
+                        Select Case Settings.AutoUpdateEnabled
+                            Case False: ComboCell.ListIndex = 0
+                            Case True: ComboCell.ListIndex = 1
+                        End Select
+                        
+                        ComboCell.Visible = True
+                        ComboCell.SetFocus
     
-        TextFilesHistoryCount.Text = "1"
+                    Case SETTINGS_STEPSVIEW_FONT:
+
+                        FontDialog.FontBold = Settings.StepsViewFontBold
+                        FontDialog.FontItalic = Settings.StepsViewFontItalic
+                        FontDialog.FontName = Settings.StepsViewFontName
+                        FontDialog.FontSize = Settings.StepsViewFontSize
+                        FontDialog.Flags = cdlCFBoth
+                    
+                        FontDialog.ShowFont
+                        
+                        Settings.StepsViewFontBold = FontDialog.FontBold
+                        Settings.StepsViewFontItalic = FontDialog.FontItalic
+                        Settings.StepsViewFontName = FontDialog.FontName
+                        Settings.StepsViewFontSize = FontDialog.FontSize
+                        
+                        LabelFont.FontBold = FontDialog.FontBold
+                        LabelFont.FontItalic = FontDialog.FontItalic
+                        LabelFont.FontName = FontDialog.FontName
+                        LabelFont.FontSize = FontDialog.FontSize
+                                   
+                        Dim row As Integer
+                        
+                        row = .row
+                        
+                        RefreshSettingsView
+                        RefreshStepsView
+                        
+                        If row < .rows - 1 Then .row = row
+                        
+                        .SetFocus
+
+                    Case SETTINGS_LOG_FILEPATH:
+                        
+                        TextCell.Width = TextCell.Width - CommandBrowse.Width
+                        TextCell.Text = .Text
+                        TextCell.SelStart = Len(TextCell.Text)
+                        TextCell.SelLength = 0
+                        CommandBrowse.Left = TextCell.Left + TextCell.Width
+                        CommandBrowse.Top = TextCell.Top
+                        CommandBrowse.Height = TextCell.Height
+                        
+                        TextCell.Visible = True
+                        CommandBrowse.Visible = True
+                        CommandBrowse.SetFocus
+    
+                    Case SETTINGS_AUTOUPDATE_PERIOD:
+                        
+                        ComboCell.AddItem "каждый день"
+                        ComboCell.AddItem "раз в неделю"
+                        ComboCell.AddItem "раз в месяц"
+                        
+                        Select Case Settings.AutoUpdatePeriod
+                            Case AUP_EVERY_DAY: ComboCell.ListIndex = 0
+                            Case AUP_ONES_PER_WEEK: ComboCell.ListIndex = 1
+                            Case AUP_ONES_PER_MONTH: ComboCell.ListIndex = 2
+                        End Select
+                        
+                        ComboCell.Visible = True
+                        ComboCell.SetFocus
+                        
+                    Case SETTINGS_IMPORT_JSON_CODEPAGE:
+    
+                    Case SETTINGS_EXPORT_JSON_CODEPAGE:
+    
+                End Select
+                
+            End If
         
+        End With
+    
+    End If
+
+    '<EhFooter>
+    Exit Sub
+
+MSFGSettings_KeyDown_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.MSFGSettings_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub SSTab_Click(PreviousTab As Integer)
+    '<EhHeader>
+    On Error GoTo SSTab_Click_Err
+    '</EhHeader>
+
+    RefreshTabControl
+
+    '<EhFooter>
+    Exit Sub
+
+SSTab_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.SSTab_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
+    '<EhHeader>
+    On Error GoTo TextCell_KeyDown_Err
+    '</EhHeader>
+
+    If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
+    
+        TextCell.Visible = False
+        RefreshTabControl
+        MSFGSettings.SetFocus
+        
+    End If
+    
+    If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
+     
+        With MSFGSettings
+        
+            ' Если первая колонка (имена параметров), то ничего не делаем
+            If .col = 0 Then Exit Sub
+        
+            Select Case .RowData(.row)
+            
+                Case SETTINGS_STEPS_COL_WIDTH:
+                
+                    Settings.StepsColWidth = CLng(TextCell.Text)
+                    
+                Case SETTINGS_STEPS_ROW_HEIGHT:
+                
+                    Settings.StepsRowHeight = CLng(TextCell.Text)
+
+                Case SETTINGS_STEPSVIEW_FONT:
+
+                Case SETTINGS_STEPS_SELECTOR_WIDTH:
+                
+                    Settings.StepsSelectorWidth = CLng(TextCell.Text)
+
+                Case SETTINGS_STEPS_VSELECTOR_ENABLED:
+
+                Case SETTINGS_STEPS_HSELECTOR_ENABLED:
+
+                Case SETTINGS_REWRITE_LOGFILE:
+
+                Case SETTINGS_LOG_FILEPATH:
+                
+                    Settings.LogFilePath = TextCell.Text
+
+                Case SETTINGS_FILES_HISTORY_SIZE:
+                
+                    MRUFileList.MaxFileCount = CLng(TextCell.Text)
+
+                Case SETTINGS_FILES_HISTORY_LIMIT_PATHS:
+
+                Case SETTINGS_AUTOUPDATE_ENABLED:
+
+                Case SETTINGS_AUTOUPDATE_PERIOD:
+
+                Case SETTINGS_IMPORT_JSON_CODEPAGE:
+
+                Case SETTINGS_EXPORT_JSON_CODEPAGE:
+
+            End Select
+        
+            TextCell.Visible = False
+            
+            Dim row As Integer
+            
+            row = .row
+            
+            RefreshSettingsView
+            RefreshStepsView
+            
+            If row < .rows - 1 Then .row = row
+            
+            .SetFocus
+        
+        End With
+            
     End If
     
     '<EhFooter>
     Exit Sub
 
-TextFilesHistoryCount_Change_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.TextFilesHistoryCount_Change]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
-End Sub
-
-Private Sub TextSelThickness_LostFocus()
-    '<EhHeader>
-    On Error GoTo TextSelThickness_LostFocus_Err
-    '</EhHeader>
-
-    RefreshStepsView
-    
-    '<EhFooter>
-    Exit Sub
-
-TextSelThickness_LostFocus_Err:
+TextCell_KeyDown_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.TextSelThickness_LostFocus]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormOptions.TextCell_KeyDown]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
     Resume Next
 
     '</EhFooter>
+End Sub
+
+Private Sub TextCell_KeyPress(KeyAscii As Integer)
+    '<EhHeader>
+    On Error GoTo TextCell_KeyPress_Err
+    '</EhHeader>
+
+    If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
+
+    '<EhFooter>
+    Exit Sub
+
+TextCell_KeyPress_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.TextCell_KeyPress]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub TextCell_LostFocus()
+
+    TextCell.Visible = False
+    CommandBrowse.Visible = False
+    
 End Sub

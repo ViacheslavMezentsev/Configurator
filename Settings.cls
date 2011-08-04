@@ -51,6 +51,8 @@ Public StepsViewFontSize As Long
 Public StepsViewFontName As String
 Public LogFilePath As String
 
+Public SplittersThickness As Long
+
 '**
 '@param
 '@rem <h2>Class_Initialize</h2> - конструктор класса
@@ -102,6 +104,9 @@ Private Sub SetDefaultSettings()
     AutoUpdateLastDate = CStr(Date)
     AutoUpdateLink = "http://82.193.156.30/cop/update"
     
+    ' [Интерфейс]
+    SplittersThickness = 60
+    
 End Sub
 
 '**
@@ -150,6 +155,9 @@ Public Sub LoadSettings()
     AutoUpdateLink = IniFile.ReadString("Settings", "AutoUpdateLink", _
             "http://82.193.156.30/cop/update")
             
+    ' [Интерфейс]
+    SplittersThickness = IniFile.ReadInteger("Settings", "SplittersThickness", 60)
+
 End Sub
 
 '**
@@ -184,5 +192,8 @@ Public Sub SaveSettings()
     IniFile.WriteInteger "Settings", "AutoUpdatePeriod", AutoUpdatePeriod
     IniFile.WriteString "Settings", "AutoUpdateLastDate", AutoUpdateLastDate
     IniFile.WriteString "Settings", "AutoUpdateLink", AutoUpdateLink
+    
+    ' [Интерфейс]
+    IniFile.WriteInteger "Settings", "SplittersThickness", SplittersThickness
     
 End Sub
