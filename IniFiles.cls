@@ -37,7 +37,9 @@ Private FFileName As String
 '@rem <h2>Create</h2>
 'Конструктор с параметром имени файла.
 Public Sub Create(FileName As String)
+
     FFileName = FileName
+    
 End Sub
 
 '**
@@ -47,8 +49,10 @@ End Sub
 '@rem <h2>WriteString</h2>
 'Запись значения ключа в виде строки.
 Public Sub WriteString(Section As String, Ident As String, Value As String)
+
     Dim Result As Boolean
     Result = WritePrivateProfileStringByKeyName(Section, Ident, Value, FFileName)
+    
 End Sub
 
 '**
@@ -69,12 +73,17 @@ Public Function ReadString(Section As String, Ident As String, Default As String
        KeyValue$, 127, FFileName)
 
     If (characters > 0) Then
+    
         KeyValue$ = Left$(KeyValue$, characters)
+        
     Else
+    
         KeyValue$ = Default
+        
     End If
 
     ReadString = KeyValue$
+    
 End Function
 
 '**
@@ -84,10 +93,12 @@ End Function
 '@rem <h2>WriteInteger</h2>
 'Запись значения ключа в виде целого числа.
 Public Sub WriteInteger(Section As String, Ident As String, Value As Long)
+
     Dim Result As Boolean
     Dim StrVal As String
     StrVal = str$(Value)
     Result = WritePrivateProfileStringByKeyName(Section, Ident, StrVal, FFileName)
+    
 End Sub
 
 '**
@@ -98,21 +109,26 @@ End Sub
 '@rem <h2>ReadInteger</h2>
 'Чтение значения ключа в виде целого числа.
 Public Function ReadInteger(Section As String, Ident As String, Default As Long) As Long
+
     Dim KeyValue$
     Dim characters As Long
 
     ' Инициализируем буфер
     KeyValue$ = String$(128, 0)
 
-    characters = GetPrivateProfileStringByKeyName(Section, Ident, "", _
-       KeyValue$, 127, FFileName)
+    characters = GetPrivateProfileStringByKeyName(Section, Ident, "", KeyValue$, 127, _
+            FFileName)
 
     If (characters > 0) Then
+
         KeyValue$ = Left$(KeyValue$, characters)
         ReadInteger = Round(Val(KeyValue$))
+        
     Else
         ReadInteger = Default
+
     End If
+
 End Function
 
 '**
@@ -122,10 +138,12 @@ End Function
 '@rem <h2>WriteBoolean</h2>
 'Запись значения ключа в виде логического значения.
 Public Sub WriteBoolean(Section As String, Ident As String, Value As Boolean)
+
     Select Case Value
         Case False: WriteInteger Section, Ident, 0
         Case True: WriteInteger Section, Ident, 1
     End Select
+    
 End Sub
 
 '**
@@ -136,8 +154,10 @@ End Sub
 '@rem <h2>ReadBoolean</h2>
 'Чтение значения ключа в виде логического значения.
 Public Function ReadBoolean(Section As String, Ident As String, Default As Boolean) As Boolean
+
     Select Case Default
         Case False: ReadBoolean = ReadInteger(Section, Ident, 0) > 0
         Case True: ReadBoolean = ReadInteger(Section, Ident, 1) > 0
     End Select
+    
 End Function
