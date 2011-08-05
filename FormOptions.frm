@@ -1555,6 +1555,9 @@ Private Sub MSFGSettings_KeyDown(KeyCode As Integer, Shift As Integer)
                 TextCell.Width = .CellWidth
                 TextCell.Height = .CellHeight
                 
+                ComboCell.FontName = .CellFontName
+                ComboCell.FontSize = .CellFontSize
+                
                 ComboCell.Left = .Left + .CellLeft
                 ComboCell.Top = .Top + .CellTop
                 ComboCell.Width = .CellWidth

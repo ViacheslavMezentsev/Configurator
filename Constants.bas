@@ -48,6 +48,8 @@ Public Const TITLE_SECTION_NAME = "Title"
 '@rem GUID для программы "Конфигуратор УП 1.x (*.json)"
 Public Const ProgramGUID As String = "{43CE9E0A-3657-4258-B573-8B18F6AC3B42}"
 
+Public Const ElementGUID As String = "{E0B1357B-0FE5-460D-B85F-22F50E3289B9}"
+
 '**
 '@rem
 Public Const CRC8_FOR_DEFAULT_PROGRAM As Byte = 6

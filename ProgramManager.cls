@@ -119,7 +119,7 @@ Private Sub Class_Initialize()
 
     JSONStepsTemplates(WPC_OPERATION_IDLE) = ""
 
-    JSONStepsTemplates(WPC_OPERATION_FILL) = "{" _
+    JSONStepsTemplates(WPC_OPERATION_FILL) = "" _
        & """Type"": 1," _
        & """Pause"": false," _
        & """ColdWaterGate"": false," _
@@ -129,9 +129,9 @@ Private Sub Class_Initialize()
        & """Level"": 15," _
        & """RotationTime"": 6," _
        & """PauseTime"": 12," _
-       & """DrumSpeed"": 50}"
+       & """DrumSpeed"": 50"
 
-    JSONStepsTemplates(WPC_OPERATION_DTRG) = "{" _
+    JSONStepsTemplates(WPC_OPERATION_DTRG) = "" _
        & """Type"": 2," _
        & """Pause"": false," _
        & """Rotation"": true," _
@@ -146,31 +146,31 @@ Private Sub Class_Initialize()
        & """Detergent_9_Time"": 0," _
        & """RotationTime"": 6," _
        & """PauseTime"": 12," _
-       & """DrumSpeed"": 50}"
+       & """DrumSpeed"": 50"
 
-    JSONStepsTemplates(WPC_OPERATION_HEAT) = "{" _
+    JSONStepsTemplates(WPC_OPERATION_HEAT) = "" _
        & """Type"": 3," _
        & """Pause"": false," _
        & """Rotation"": true," _
        & """Temperature"": 40," _
        & """RotationTime"": 6," _
        & """PauseTime"": 12," _
-       & """DrumSpeed"": 50}"
+       & """DrumSpeed"": 50"
 
-    JSONStepsTemplates(WPC_OPERATION_WASH) = "{" _
+    JSONStepsTemplates(WPC_OPERATION_WASH) = "" _
        & """Type"": 4," _
        & """Pause"": false," _
        & """Rotation"": true," _
        & """Time"": 30," _
        & """RotationTime"": 6," _
        & """PauseTime"": 12," _
-       & """DrumSpeed"": 50}"
+       & """DrumSpeed"": 50"
 
     JSONStepsTemplates(WPC_OPERATION_RINS) = JSONStepsTemplates(WPC_OPERATION_WASH)
     JSONStepsTemplates(WPC_OPERATION_JOLT) = JSONStepsTemplates(WPC_OPERATION_WASH)
     JSONStepsTemplates(WPC_OPERATION_PAUS) = JSONStepsTemplates(WPC_OPERATION_WASH)
 
-    JSONStepsTemplates(WPC_OPERATION_DRAIN) = "{" _
+    JSONStepsTemplates(WPC_OPERATION_DRAIN) = "" _
        & """Type"": 8," _
        & """Pause"": false," _
        & """DrainGate1"": true," _
@@ -179,17 +179,17 @@ Private Sub Class_Initialize()
        & """Level"": 0," _
        & """RotationTime"": 6," _
        & """PauseTime"": 12," _
-       & """DrumSpeed1"": 50}"
+       & """DrumSpeed1"": 50"
 
-    JSONStepsTemplates(WPC_OPERATION_SPIN) = "{" _
+    JSONStepsTemplates(WPC_OPERATION_SPIN) = "" _
        & """Type"": 9," _
        & """Pause"": false," _
        & """DrainGate1"": true," _
        & """DrainGate2"": false," _
        & """DrumSpeed"": 800," _
-       & """Time"": 2}"
+       & """Time"": 2"
 
-    JSONStepsTemplates(WPC_OPERATION_COOL) = "{" _
+    JSONStepsTemplates(WPC_OPERATION_COOL) = "" _
        & """Type"": 10," _
        & """Pause"": false," _
        & """Fast"": false," _
@@ -198,7 +198,8 @@ Private Sub Class_Initialize()
        & """ColdWaterTime"": 10," _
        & """RotationTime"": 6," _
        & """PauseTime"": 12," _
-       & """DrumSpeed"": 50}"
+       & """DrumSpeed"": 50"
+       
 End Sub
 
 Public Sub CopyProgram(ByVal FromIndex As Integer, ByVal ToIndex As Integer)
@@ -550,6 +551,7 @@ Private Function func_ExportToJSON(FileName As String, _
     I = ProgramsCount
 
     Do While I > 0
+    
         ' Формируем шаблон для программы с пустым массивом шагов
         sInputJson = "{""Title"":"""", ""EndSound"": true, ""DoorUnlock"": true, ""Steps"":[]}"
 
@@ -570,12 +572,14 @@ Private Function func_ExportToJSON(FileName As String, _
             If ProgsArray.Count > 1 Then
                 ProgsArray.Add ProgElem, before:=2
             End If
+            
         Else
             s = ""
 
             For J = 1 To PROG_NAME_LENGTH - 1
 
                 If RecordTitle.ProgName(J) <> 0 Then s = s & Chr$(RecordTitle.ProgName(J))
+                
             Next
 
             ProgElem.Item("Title") = CStr(s)
@@ -586,15 +590,17 @@ Private Function func_ExportToJSON(FileName As String, _
             J = MAX_NUMBER_OF_STEPS
 
             Do While J > 0
+            
                 PutMem4 VarPtr(begin_of_pointers) + 8, _
                    ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
 
                 FNum = (RecordStep.Bits And &HF)
 
                 ' Формируем объект для шага в зависимости от типа функции шага
-                Set StepElem = JSON.parse(JSONStepsTemplates(FNum))
+                Set StepElem = JSON.parse("{" & JSONStepsTemplates(FNum) & "}")
 
                 Select Case FNum
+                
                     Case WPC_OPERATION_IDLE
                         PutMem4 VarPtr(begin_of_pointers) + 8, _
                            ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
@@ -706,18 +712,25 @@ Private Function func_ExportToJSON(FileName As String, _
                 If ProgElem.Item("Steps").Count > 0 Then
 
                     If StepElem Is Nothing Then
+                    
                         ProgElem.Item("Steps").Add JSON.parse("{}"), before:=1
+                        
                     Else
+                    
                         ProgElem.Item("Steps").Add StepElem, before:=1
+                        
                     End If
+                    
                 Else
 
                     If Not StepElem Is Nothing Then ProgElem.Item("Steps").Add StepElem
+                    
                 End If
 
                 Set StepElem = Nothing
 
                 J = J - 1
+                
             Loop
 
             ' Выводим информацию
@@ -727,6 +740,7 @@ Private Function func_ExportToJSON(FileName As String, _
             Else
                 ProgsArray.Add ProgElem, before:=2
             End If
+            
         End If
 
         Set ProgElem = Nothing
@@ -825,6 +839,7 @@ Private Function func_ImportFromJSON(FileName As String, _
 
     ' Создаём новый образ проекта в памяти и инициализируем его
     CreateNewFile Left$(FileName, InStrRev(FileName, ".")) + "bin"
+    
     ' Обнуляем образ в памяти
     ClearAll
 
@@ -881,12 +896,15 @@ Private Function func_ImportFromJSON(FileName As String, _
         ' В зависимости от типа шага заполняем структуры шагов
 
         For J = 1 To p.Item(I + 1).Item("Steps").Count
+        
             Set Step = p.Item(I + 1).Item("Steps").Item(J)
 
             If Not Step Is Nothing Then
+            
                 FType = CByte(Step.Item("Type"))
 
                 Select Case FType
+                
                     Case WPC_OPERATION_IDLE
                         PutMem4 VarPtr(begin_of_pointers) + 8, _
                            ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
@@ -1115,9 +1133,11 @@ errHandler:
     ' Признак загрузки файла
     FileLoaded = False
     func_ImportFromJSON = False
+    
 End Function
 
 Public Function ImportFromJSON(FileName As String) As Boolean
+    
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordStep As TYPE_WPC_STEP
     Dim RecordFill As TYPE_WPC_FILL
@@ -1132,6 +1152,329 @@ Public Function ImportFromJSON(FileName As String) As Boolean
     ' с указателями напрямую
     ImportFromJSON = func_ImportFromJSON(FileName, 0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
        RecordHeat, RecordWash, RecordDrain, RecordSpin, RecordCool)
+       
+End Function
+
+Private Function func_ImportFromClipboard(frm As FormMain, _
+       Value As String, _
+       ByVal begin_of_pointers As Long, _
+       ByRef RecordTitle As TYPE_WPC_TITLE, _
+       ByRef RecordStep As TYPE_WPC_STEP, _
+       ByRef RecordFill As TYPE_WPC_FILL, _
+       ByRef RecordDetergent As TYPE_WPC_DETERGENT, _
+       ByRef RecordHeat As TYPE_WPC_HEAT, _
+       ByRef RecordWash As TYPE_WPC_WASH, _
+       ByRef RecordDrain As TYPE_WPC_DRAIN, _
+       ByRef RecordSpin As TYPE_WPC_SPIN, _
+       ByRef RecordCool As TYPE_WPC_COOL) As Boolean
+
+    On Local Error GoTo errHandler
+
+    Dim b As Byte
+    Dim ProgsCount As Integer
+    Dim J As Integer
+    Dim StepPointer As Long
+    Dim FType As Integer
+    Dim Step As Object
+    Dim p As Object
+    
+    ' Производим разбор данных из файла
+    Set p = JSON.parse(Value)
+    
+    ' Если объект пустой или не содержит элементов, то выходим
+    If p Is Nothing Or p.Count = 0 Then
+        
+        Set p = Nothing
+
+        func_ImportFromClipboard = False
+        
+        Exit Function
+        
+    End If
+    
+    StepPointer = DataPointer + ProgramIndex * PROGRAM_SIZE_IN_BYTES
+    PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+    
+    For J = 1 To p.Count
+    
+        ' Если уникальный идентификатор формата элемента не совпадает
+        ' с поддерживаемыми программой, переходим к следующему
+        If ElementGUID <> p.Item(J).Item("ElementGUID") Then
+                    
+        Else
+        
+            ' Если элемент является шагом, то производим разбор
+            If p.Item(J).Item("ElementType") = 1 Then
+            
+                Set Step = p.Item(J)
+                               
+                FType = CByte(Step.Item("Type"))
+            
+                InsertStep frm, FType
+            
+                Select Case FType
+                
+                    Case WPC_OPERATION_IDLE
+                    
+                        PutMem4 VarPtr(begin_of_pointers) + 8, _
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + StepIndex * STEP_SIZE_IN_BYTES
+
+                    Case WPC_OPERATION_FILL
+                    
+                        PutMem4 VarPtr(begin_of_pointers) + 12, _
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + StepIndex * STEP_SIZE_IN_BYTES
+
+                        RecordFill.Bits = FType
+
+                        ' Специальные параметры шага
+
+                        Select Case CBool(Step.Item("Pause"))
+                            Case False: RecordFill.Bits = RecordFill.Bits And &HFFEF
+                            Case True: RecordFill.Bits = RecordFill.Bits Or &H10
+                        End Select
+
+                        Select Case CBool(Step.Item("ColdWaterGate"))
+                            Case False: RecordFill.Bits = RecordFill.Bits And &HFFDF
+                            Case True: RecordFill.Bits = RecordFill.Bits Or &H20
+                        End Select
+
+                        Select Case CBool(Step.Item("HotWaterGate"))
+                            Case False: RecordFill.Bits = RecordFill.Bits And &HFFBF
+                            Case True: RecordFill.Bits = RecordFill.Bits Or &H40
+                        End Select
+
+                        Select Case CBool(Step.Item("RecycledWaterGate"))
+                            Case False: RecordFill.Bits = RecordFill.Bits And &HFF7F
+                            Case True: RecordFill.Bits = RecordFill.Bits Or &H80
+                        End Select
+
+                        Select Case CBool(Step.Item("Rotation"))
+                            Case False: RecordFill.Bits = RecordFill.Bits And &HFEFF
+                            Case True: RecordFill.Bits = RecordFill.Bits Or &H100
+                        End Select
+
+                        RecordFill.Level = CByte(Step.Item("Level"))
+                        RecordFill.RotationTime = CByte(Step.Item("RotationTime"))
+                        RecordFill.PauseTime = CByte(Step.Item("PauseTime"))
+                        RecordFill.DrumSpeed = CByte(Step.Item("DrumSpeed"))
+
+                    Case WPC_OPERATION_DTRG
+                    
+                        PutMem4 VarPtr(begin_of_pointers) + 16, _
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + StepIndex * STEP_SIZE_IN_BYTES
+
+                        RecordDetergent.Bits = FType
+
+                        ' Специальные параметры шага
+
+                        Select Case CBool(Step.Item("Pause"))
+                            Case False: RecordDetergent.Bits = RecordDetergent.Bits And &HFFEF
+                            Case True: RecordDetergent.Bits = RecordDetergent.Bits Or &H10
+                        End Select
+
+                        Select Case CBool(Step.Item("Rotation"))
+                            Case False: RecordDetergent.Bits = RecordDetergent.Bits And &HFFDF
+                            Case True: RecordDetergent.Bits = RecordDetergent.Bits Or &H20
+                        End Select
+
+                        RecordDetergent.Detergent_1_Time = CByte(Step.Item("Detergent_1_Time"))
+                        RecordDetergent.Detergent_2_Time = CByte(Step.Item("Detergent_2_Time"))
+                        RecordDetergent.Detergent_3_Time = CByte(Step.Item("Detergent_3_Time"))
+                        RecordDetergent.Detergent_4_Time = CByte(Step.Item("Detergent_4_Time"))
+                        RecordDetergent.Detergent_5_Time = CByte(Step.Item("Detergent_5_Time"))
+                        RecordDetergent.Detergent_6_Time = CByte(Step.Item("Detergent_6_Time"))
+                        RecordDetergent.Detergent_7_Time = CByte(Step.Item("Detergent_7_Time"))
+                        RecordDetergent.Detergent_8_Time = CByte(Step.Item("Detergent_8_Time"))
+                        RecordDetergent.Detergent_9_Time = CByte(Step.Item("Detergent_9_Time"))
+
+                        RecordDetergent.RotationTime = CByte(Step.Item("RotationTime"))
+                        RecordDetergent.PauseTime = CByte(Step.Item("PauseTime"))
+                        RecordDetergent.DrumSpeed = CByte(Step.Item("DrumSpeed"))
+
+                    Case WPC_OPERATION_HEAT
+                    
+                        PutMem4 VarPtr(begin_of_pointers) + 20, _
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + StepIndex * STEP_SIZE_IN_BYTES
+
+                        RecordHeat.Bits = FType
+
+                        ' Специальные параметры шага
+
+                        Select Case CBool(Step.Item("Pause"))
+                            Case False: RecordHeat.Bits = RecordHeat.Bits And &HFFEF
+                            Case True: RecordHeat.Bits = RecordHeat.Bits Or &H10
+                        End Select
+
+                        Select Case CBool(Step.Item("Rotation"))
+                            Case False: RecordHeat.Bits = RecordHeat.Bits And &HFFDF
+                            Case True: RecordHeat.Bits = RecordHeat.Bits Or &H20
+                        End Select
+
+                        RecordHeat.Temperature = CByte(Step.Item("Temperature"))
+                        RecordHeat.RotationTime = CByte(Step.Item("RotationTime"))
+                        RecordHeat.PauseTime = CByte(Step.Item("PauseTime"))
+                        RecordHeat.DrumSpeed = CByte(Step.Item("DrumSpeed"))
+
+                    Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+                    
+                        PutMem4 VarPtr(begin_of_pointers) + 24, _
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + StepIndex * STEP_SIZE_IN_BYTES
+
+                        RecordWash.Bits = FType
+
+                        ' Специальные параметры шага
+
+                        Select Case CBool(Step.Item("Pause"))
+                            Case False: RecordWash.Bits = RecordWash.Bits And &HFFEF
+                            Case True: RecordWash.Bits = RecordWash.Bits Or &H10
+                        End Select
+
+                        Select Case CBool(Step.Item("Rotation"))
+                            Case False: RecordWash.Bits = RecordWash.Bits And &HFFDF
+                            Case True: RecordWash.Bits = RecordWash.Bits Or &H20
+                        End Select
+
+                        RecordWash.Time = CByte(Step.Item("Time"))
+                        RecordWash.RotationTime = CByte(Step.Item("RotationTime"))
+                        RecordWash.PauseTime = CByte(Step.Item("PauseTime"))
+                        RecordWash.DrumSpeed = CByte(Step.Item("DrumSpeed"))
+
+                    Case WPC_OPERATION_DRAIN
+                    
+                        PutMem4 VarPtr(begin_of_pointers) + 28, _
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + StepIndex * STEP_SIZE_IN_BYTES
+
+                        RecordDrain.Bits = FType
+
+                        ' Специальные параметры шага
+
+                        Select Case CBool(Step.Item("Pause"))
+                            Case False: RecordDrain.Bits = RecordDrain.Bits And &HFFEF
+                            Case True: RecordDrain.Bits = RecordDrain.Bits Or &H10
+                        End Select
+
+                        Select Case CBool(Step.Item("DrainGate1"))
+                            Case False: RecordDrain.Bits = RecordDrain.Bits And &HFFDF
+                            Case True: RecordDrain.Bits = RecordDrain.Bits Or &H20
+                        End Select
+
+                        Select Case CBool(Step.Item("DrainGate2"))
+                            Case False: RecordDrain.Bits = RecordDrain.Bits And &HFFBF
+                            Case True: RecordDrain.Bits = RecordDrain.Bits Or &H40
+                        End Select
+
+                        Select Case CBool(Step.Item("Rotation"))
+                            Case False: RecordDrain.Bits = RecordDrain.Bits And &HFF7F
+                            Case True: RecordDrain.Bits = RecordDrain.Bits Or &H80
+                        End Select
+
+                        RecordDrain.Level = CByte(Step.Item("Level"))
+                        RecordDrain.RotationTime = CByte(Step.Item("RotationTime"))
+                        RecordDrain.PauseTime = CByte(Step.Item("PauseTime"))
+                        RecordDrain.DrumSpeed1 = CByte(Step.Item("DrumSpeed1"))
+
+                    Case WPC_OPERATION_SPIN
+                    
+                        PutMem4 VarPtr(begin_of_pointers) + 32, _
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + StepIndex * STEP_SIZE_IN_BYTES
+
+                        RecordSpin.Bits = FType
+
+                        ' Специальные параметры шага
+
+                        Select Case CBool(Step.Item("Pause"))
+                            Case False: RecordSpin.Bits = RecordSpin.Bits And &HFFEF
+                            Case True: RecordSpin.Bits = RecordSpin.Bits Or &H10
+                        End Select
+
+                        Select Case CBool(Step.Item("DrainGate1"))
+                            Case False: RecordSpin.Bits = RecordSpin.Bits And &HFFDF
+                            Case True: RecordSpin.Bits = RecordSpin.Bits Or &H20
+                        End Select
+
+                        Select Case CBool(Step.Item("DrainGate2"))
+                            Case False: RecordSpin.Bits = RecordSpin.Bits And &HFFBF
+                            Case True: RecordSpin.Bits = RecordSpin.Bits Or &H40
+                        End Select
+
+                        RecordSpin.DrumSpeed = CInt(Step.Item("DrumSpeed"))
+                        RecordSpin.Time = CByte(Step.Item("Time"))
+
+                    Case WPC_OPERATION_COOL
+                    
+                        PutMem4 VarPtr(begin_of_pointers) + 36, _
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + StepIndex * STEP_SIZE_IN_BYTES
+
+                        RecordCool.Bits = FType
+
+                        ' Специальные параметры шага
+
+                        Select Case CBool(Step.Item("Pause"))
+                            Case False: RecordCool.Bits = RecordCool.Bits And &HFFEF
+                            Case True: RecordCool.Bits = RecordCool.Bits Or &H10
+                        End Select
+
+                        Select Case CBool(Step.Item("Fast"))
+                            Case False: RecordCool.Bits = RecordCool.Bits And &HFFDF
+                            Case True: RecordCool.Bits = RecordCool.Bits Or &H20
+                        End Select
+
+                        Select Case CBool(Step.Item("Rotation"))
+                            Case False: RecordCool.Bits = RecordCool.Bits And &HFFBF
+                            Case True: RecordCool.Bits = RecordCool.Bits Or &H40
+                        End Select
+
+                        RecordCool.Temperature = CByte(Step.Item("Temperature"))
+                        RecordCool.ColdWaterTime = CByte(Step.Item("ColdWaterTime"))
+                        RecordCool.RotationTime = CByte(Step.Item("RotationTime"))
+                        RecordCool.PauseTime = CByte(Step.Item("PauseTime"))
+                        RecordCool.DrumSpeed = CByte(Step.Item("DrumSpeed"))
+
+                End Select
+
+                Set Step = Nothing
+                
+            End If
+            
+        End If
+        
+    Next
+    
+    ' Пересчитываем CRC поле записи программы
+    b = CalculateCRC8(ProgramIndex * PROGRAM_SIZE_IN_BYTES + 1, PROGRAM_SIZE_IN_BYTES - 1)
+    SetByte ProgramIndex * PROGRAM_SIZE_IN_BYTES, b
+    
+    Set p = Nothing
+    
+    func_ImportFromClipboard = True
+    
+    Exit Function
+    
+errHandler:
+    
+    Set p = Nothing
+
+    func_ImportFromClipboard = False
+    
+End Function
+    
+Public Function ImportFromClipboard(frm As FormMain, Value As String) As Boolean
+    
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordStep As TYPE_WPC_STEP
+    Dim RecordFill As TYPE_WPC_FILL
+    Dim RecordDetergent As TYPE_WPC_DETERGENT
+    Dim RecordHeat As TYPE_WPC_HEAT
+    Dim RecordWash As TYPE_WPC_WASH
+    Dim RecordDrain As TYPE_WPC_DRAIN
+    Dim RecordSpin As TYPE_WPC_SPIN
+    Dim RecordCool As TYPE_WPC_COOL
+
+    ' Вызываем вспомогательную функцию, которая позволяет работать
+    ' с указателями напрямую
+    ImportFromClipboard = func_ImportFromClipboard(frm, Value, 0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
+       RecordHeat, RecordWash, RecordDrain, RecordSpin, RecordCool)
+       
 End Function
 
 Public Sub SaveToFile(FileName As String)

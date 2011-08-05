@@ -215,6 +215,26 @@ getGUID_Err:
     '</EhFooter>
 End Function
 
+Public Function VerifyFile(FileName$) As Boolean
+
+  ' Проверка - существует ли указанный файл
+  On Error Resume Next
+  
+  ' Файл открывается как выходной, последовательный
+  Open FileName$ For Output As #1
+  
+  If Err Then ' Ошибка при открытии - нет файла
+  
+    VerifyFile = False
+    
+  Else
+  
+    VerifyFile = True: Close #1
+    
+  End If
+  
+End Function
+
 Public Function DoesFileExist(ByVal strPath As String) As Boolean
     '<EhHeader>
     On Error GoTo DoesFileExist_Err
@@ -467,18 +487,14 @@ Public Function KeyboardProc(ByVal ncode As Long, _
 
         KeyCode = wParam And &HFF&
         
-        If (KeyCode = VBRUN.KeyCodeConstants.vbKeyLeft Or KeyCode = _
-                VBRUN.KeyCodeConstants.vbKeyRight Or KeyCode = _
-                VBRUN.KeyCodeConstants.vbKeyUp Or KeyCode = _
-                VBRUN.KeyCodeConstants.vbKeyDown) And (lParam And &H80000000) = 0 Then
+        If (KeyCode = vbKeyLeft Or KeyCode = vbKeyRight Or KeyCode = _
+                vbKeyUp Or KeyCode = vbKeyDown) And (lParam And &H80000000) = 0 Then
             
             ' at this point we have detected a PgUp or PgDown "key down"
             ' event, so now we need to check the state of the Ctrl key
             
-            'CtrlDown = (GetAsyncKeyState(vbKeyControl) And &H8000&) <> 0
+            'ShiftDown = (GetAsyncKeyState(vbKeyShift) And &H8000&) <> 0
             
-            'If CtrlDown Then
-            ' fire our Timer to indicate a Ctrl/PgDown or Ctrl/PgUp
             tMessage.Tag = CInt(KeyCode)
             tMessage.Interval = 10 ' ) one shot
             tMessage.Interval = 0  ' ) timer
