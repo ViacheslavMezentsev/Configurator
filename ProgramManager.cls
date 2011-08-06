@@ -408,7 +408,9 @@ Public Sub ClearAll()
     Dim Cnt As Long
 
     For Cnt = 1 To ProgramsCount
+    
         ClearProgramN (Cnt)
+        
     Next
     
 End Sub
@@ -503,7 +505,6 @@ Public Sub LoadFromFile(FileName As String)
 End Sub
 
 '**
-'@param        FileName Required. String.
 '@param        begin_of_pointers Required. Long.
 '@param        RecordTitle Required. TYPE_WPC_TITLE object.
 '@param        RecordStep Required. TYPE_WPC_STEP object.
@@ -516,8 +517,7 @@ End Sub
 '@param        RecordCool Required. TYPE_WPC_COOL object.
 '@return       Boolean.
 '@rem Вспомогательная функция экспорта в JSON формат.
-Private Function func_ExportToJSON(FileName As String, _
-       ByVal begin_of_pointers As Long, _
+Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
        ByRef RecordTitle As TYPE_WPC_TITLE, _
        ByRef RecordStep As TYPE_WPC_STEP, _
        ByRef RecordFill As TYPE_WPC_FILL, _
@@ -526,16 +526,16 @@ Private Function func_ExportToJSON(FileName As String, _
        ByRef RecordWash As TYPE_WPC_WASH, _
        ByRef RecordDrain As TYPE_WPC_DRAIN, _
        ByRef RecordSpin As TYPE_WPC_SPIN, _
-       ByRef RecordCool As TYPE_WPC_COOL) As Boolean
+       ByRef RecordCool As TYPE_WPC_COOL) As String
 
     On Local Error GoTo errHandler
 
     Dim b As Byte
     Dim I As Integer
-    Dim J As Integer
+    Dim j As Integer
     Dim FNum As Integer
     Dim StepPointer As Long
-    Dim s As String
+    Dim S As String
     Dim sInputJson As String
     Dim ProgsArray As Object
     Dim ProgElem As Object
@@ -565,34 +565,54 @@ Private Function func_ExportToJSON(FileName As String, _
         ' Вычисляем признак пустой программы
         b = CalculateCRC8((I - 1) * PROGRAM_SIZE_IN_BYTES, PROGRAM_SIZE_IN_BYTES)
 
+        ' Дополнительная проверка для пустой программы
+        If b = CRC8_FOR_DEFAULT_PROGRAM Then
+        
+            Dim k As Long, Sum As Long
+            
+            Sum = 0
+            
+            For k = 2 To 31
+            
+                Sum = Sum + GetByte((I - 1) * PROGRAM_SIZE_IN_BYTES + k)
+            
+            Next
+            
+            If Sum > 0 Then b = 0
+            
+        End If
+
         If b = CRC8_FOR_DEFAULT_PROGRAM Then
             ' Пропускаем пустые программы начиная с конца списка
             ' Проверка осуществляется по CRC от всей программы
 
             If ProgsArray.Count > 1 Then
+            
                 ProgsArray.Add ProgElem, before:=2
+                
             End If
             
         Else
-            s = ""
+        
+            S = ""
 
-            For J = 1 To PROG_NAME_LENGTH - 1
+            For j = 1 To PROG_NAME_LENGTH - 1
 
-                If RecordTitle.ProgName(J) <> 0 Then s = s & Chr$(RecordTitle.ProgName(J))
+                If RecordTitle.ProgName(j) <> 0 Then S = S & Chr$(RecordTitle.ProgName(j))
                 
             Next
 
-            ProgElem.Item("Title") = CStr(s)
+            ProgElem.Item("Title") = CStr(S)
             ProgElem.Item("EndSound") = CBool(RecordTitle.LowBits And &H1)
             ProgElem.Item("DoorUnlock") = CBool((RecordTitle.LowBits And &H2) / 2 ^ 1)
 
             ' Добавляем шаги к программе
-            J = MAX_NUMBER_OF_STEPS
+            j = MAX_NUMBER_OF_STEPS
 
-            Do While J > 0
+            Do While j > 0
             
                 PutMem4 VarPtr(begin_of_pointers) + 8, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                 FNum = (RecordStep.Bits And &HF)
 
@@ -603,11 +623,11 @@ Private Function func_ExportToJSON(FileName As String, _
                 
                     Case WPC_OPERATION_IDLE
                         PutMem4 VarPtr(begin_of_pointers) + 8, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                     Case WPC_OPERATION_FILL
                         PutMem4 VarPtr(begin_of_pointers) + 12, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordFill.Bits And &H10) / &H10)
                         StepElem.Item("ColdWaterGate") = CBool((RecordFill.Bits And &H20) / &H20)
@@ -622,7 +642,7 @@ Private Function func_ExportToJSON(FileName As String, _
 
                     Case WPC_OPERATION_DTRG
                         PutMem4 VarPtr(begin_of_pointers) + 16, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordDetergent.Bits And &H10) / &H10)
                         StepElem.Item("Rotation") = CBool((RecordDetergent.Bits And &H20) / &H20)
@@ -643,7 +663,7 @@ Private Function func_ExportToJSON(FileName As String, _
 
                     Case WPC_OPERATION_HEAT
                         PutMem4 VarPtr(begin_of_pointers) + 20, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordHeat.Bits And &H10) / &H10)
                         StepElem.Item("Rotation") = CBool((RecordHeat.Bits And &H20) / &H20)
@@ -655,7 +675,7 @@ Private Function func_ExportToJSON(FileName As String, _
 
                     Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
                         PutMem4 VarPtr(begin_of_pointers) + 24, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Type") = CByte(RecordWash.Bits And &HF)
                         StepElem.Item("Pause") = CBool((RecordWash.Bits And &H10) / &H10)
@@ -668,7 +688,7 @@ Private Function func_ExportToJSON(FileName As String, _
 
                     Case WPC_OPERATION_DRAIN
                         PutMem4 VarPtr(begin_of_pointers) + 28, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordDrain.Bits And &H10) / &H10)
                         StepElem.Item("DrainGate1") = CBool((RecordDrain.Bits And &H20) / &H20)
@@ -682,7 +702,7 @@ Private Function func_ExportToJSON(FileName As String, _
 
                     Case WPC_OPERATION_SPIN
                         PutMem4 VarPtr(begin_of_pointers) + 32, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordSpin.Bits And &H10) / &H10)
                         StepElem.Item("DrainGate1") = CBool((RecordSpin.Bits And &H20) / &H20)
@@ -693,7 +713,7 @@ Private Function func_ExportToJSON(FileName As String, _
 
                     Case WPC_OPERATION_COOL
                         PutMem4 VarPtr(begin_of_pointers) + 36, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordCool.Bits And &H10) / &H10)
                         StepElem.Item("Fast") = CBool((RecordCool.Bits And &H20) / &H20)
@@ -729,7 +749,7 @@ Private Function func_ExportToJSON(FileName As String, _
 
                 Set StepElem = Nothing
 
-                J = J - 1
+                j = j - 1
                 
             Loop
 
@@ -739,6 +759,7 @@ Private Function func_ExportToJSON(FileName As String, _
                 ProgsArray.Add ProgElem
             Else
                 ProgsArray.Add ProgElem, before:=2
+                
             End If
             
         End If
@@ -746,21 +767,25 @@ Private Function func_ExportToJSON(FileName As String, _
         Set ProgElem = Nothing
 
         I = I - 1
+        
     Loop
 
-    ' Сохраняем данные в формате JSON
-    SaveToJSONFile FileName, JSON.toString(ProgsArray)
-
+    func_ConvertToJSON = JSON.ToString(ProgsArray)
+    
     Set ProgsArray = Nothing
-    func_ExportToJSON = True
+    
     Exit Function
 
 errHandler:
+
     Set ProgsArray = Nothing
-    func_ExportToJSON = False
+    
+    func_ConvertToJSON = ""
+    
 End Function
 
-Public Function ExportToJSON(FileName As String) As Boolean
+Public Function ToJSON() As String
+
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordStep As TYPE_WPC_STEP
     Dim RecordFill As TYPE_WPC_FILL
@@ -770,11 +795,67 @@ Public Function ExportToJSON(FileName As String) As Boolean
     Dim RecordDrain As TYPE_WPC_DRAIN
     Dim RecordSpin As TYPE_WPC_SPIN
     Dim RecordCool As TYPE_WPC_COOL
+    
+    Dim Result As String
+    
+    ToJSON = func_ConvertToJSON(0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
+       RecordHeat, RecordWash, RecordDrain, RecordSpin, RecordCool)
+       
+End Function
+
+Public Function ToString() As String
+
+    Dim sAns As String
+    Dim iPos As String
+    
+    sAns = StrConv(mvarData, vbUnicode)
+    
+    ToString = sAns
+
+End Function
+
+Public Sub FromString(Value As String)
+
+    Dim I As Long
+    
+    ReDim mvarData(Len(Value) - 1) As Byte
+    
+    mvarData = StrConv(Value, vbFromUnicode)
+    
+End Sub
+
+'**
+'@param        FileName Required. String.
+Private Function func_ExportToJSON(FileName As String) As Boolean
+
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordStep As TYPE_WPC_STEP
+    Dim RecordFill As TYPE_WPC_FILL
+    Dim RecordDetergent As TYPE_WPC_DETERGENT
+    Dim RecordHeat As TYPE_WPC_HEAT
+    Dim RecordWash As TYPE_WPC_WASH
+    Dim RecordDrain As TYPE_WPC_DRAIN
+    Dim RecordSpin As TYPE_WPC_SPIN
+    Dim RecordCool As TYPE_WPC_COOL
+    
+    Dim Result As String
+    
+    Result = func_ConvertToJSON(0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
+       RecordHeat, RecordWash, RecordDrain, RecordSpin, RecordCool)
+    
+    ' Сохраняем данные в формате JSON
+    SaveToJSONFile FileName, Result
+    
+    func_ExportToJSON = True
+
+End Function
+
+Public Function ExportToJSON(FileName As String) As Boolean
 
     ' Вызываем вспомогательную функцию, которая позволяет работать
     ' с указателями напрямую
-    ExportToJSON = func_ExportToJSON(FileName, 0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
-       RecordHeat, RecordWash, RecordDrain, RecordSpin, RecordCool)
+    ExportToJSON = func_ExportToJSON(FileName)
+    
 End Function
 
 '**
@@ -791,7 +872,7 @@ End Function
 '@param        RecordCool Required. TYPE_WPC_COOL object.
 '@return       Boolean.
 '@rem Вспомогательная функция для импорта из JSON формата.
-Private Function func_ImportFromJSON(FileName As String, _
+Private Function func_ImportFromJSON(sInputJson As String, _
        ByVal begin_of_pointers As Long, _
        ByRef RecordTitle As TYPE_WPC_TITLE, _
        ByRef RecordStep As TYPE_WPC_STEP, _
@@ -808,18 +889,11 @@ Private Function func_ImportFromJSON(FileName As String, _
     Dim b As Byte
     Dim ProgsCount As Integer
     Dim I As Integer
-    Dim J As Integer
+    Dim j As Integer
     Dim StepPointer As Long
-    Dim sInputJson As String
     Dim Title As String
 
     Dim p As Object
-
-    ' Проверяем существование файла
-    ' ...
-
-    ' Считываем файл и декодируем его
-    sInputJson = FromUTF8(LoadFromJSONFile(FileName))
 
     ' Производим разбор данных из файла
     Set p = JSON.parse(sInputJson)
@@ -877,12 +951,12 @@ Private Function func_ImportFromJSON(FileName As String, _
 
         Title = p.Item(I + 1).Item("Title")
 
-        For J = 1 To PROG_NAME_LENGTH - 1
+        For j = 1 To PROG_NAME_LENGTH - 1
 
-            If J <= Len(Title) Then
-                RecordTitle.ProgName(J) = Asc(Mid$(Title, J, 1))
+            If j <= Len(Title) Then
+                RecordTitle.ProgName(j) = Asc(Mid$(Title, j, 1))
             Else
-                RecordTitle.ProgName(J) = 0
+                RecordTitle.ProgName(j) = 0
             End If
         Next
 
@@ -895,9 +969,9 @@ Private Function func_ImportFromJSON(FileName As String, _
 
         ' В зависимости от типа шага заполняем структуры шагов
 
-        For J = 1 To p.Item(I + 1).Item("Steps").Count
+        For j = 1 To p.Item(I + 1).Item("Steps").Count
         
-            Set Step = p.Item(I + 1).Item("Steps").Item(J)
+            Set Step = p.Item(I + 1).Item("Steps").Item(j)
 
             If Not Step Is Nothing Then
             
@@ -907,11 +981,11 @@ Private Function func_ImportFromJSON(FileName As String, _
                 
                     Case WPC_OPERATION_IDLE
                         PutMem4 VarPtr(begin_of_pointers) + 8, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                     Case WPC_OPERATION_FILL
                         PutMem4 VarPtr(begin_of_pointers) + 12, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordFill.Bits = FType
 
@@ -949,7 +1023,7 @@ Private Function func_ImportFromJSON(FileName As String, _
 
                     Case WPC_OPERATION_DTRG
                         PutMem4 VarPtr(begin_of_pointers) + 16, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordDetergent.Bits = FType
 
@@ -981,7 +1055,7 @@ Private Function func_ImportFromJSON(FileName As String, _
 
                     Case WPC_OPERATION_HEAT
                         PutMem4 VarPtr(begin_of_pointers) + 20, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordHeat.Bits = FType
 
@@ -1004,7 +1078,7 @@ Private Function func_ImportFromJSON(FileName As String, _
 
                     Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
                         PutMem4 VarPtr(begin_of_pointers) + 24, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordWash.Bits = FType
 
@@ -1027,7 +1101,7 @@ Private Function func_ImportFromJSON(FileName As String, _
 
                     Case WPC_OPERATION_DRAIN
                         PutMem4 VarPtr(begin_of_pointers) + 28, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordDrain.Bits = FType
 
@@ -1060,7 +1134,7 @@ Private Function func_ImportFromJSON(FileName As String, _
 
                     Case WPC_OPERATION_SPIN
                         PutMem4 VarPtr(begin_of_pointers) + 32, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordSpin.Bits = FType
 
@@ -1086,7 +1160,7 @@ Private Function func_ImportFromJSON(FileName As String, _
 
                     Case WPC_OPERATION_COOL
                         PutMem4 VarPtr(begin_of_pointers) + 36, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordCool.Bits = FType
 
@@ -1136,8 +1210,8 @@ errHandler:
     
 End Function
 
-Public Function ImportFromJSON(FileName As String) As Boolean
-    
+Public Function FromJSON(Value As String)
+
     Dim RecordTitle As TYPE_WPC_TITLE
     Dim RecordStep As TYPE_WPC_STEP
     Dim RecordFill As TYPE_WPC_FILL
@@ -1150,7 +1224,34 @@ Public Function ImportFromJSON(FileName As String) As Boolean
 
     ' Вызываем вспомогательную функцию, которая позволяет работать
     ' с указателями напрямую
-    ImportFromJSON = func_ImportFromJSON(FileName, 0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
+    FromJSON = func_ImportFromJSON(Value, 0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
+       RecordHeat, RecordWash, RecordDrain, RecordSpin, RecordCool)
+
+End Function
+
+Public Function ImportFromJSON(FileName As String) As Boolean
+    
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordStep As TYPE_WPC_STEP
+    Dim RecordFill As TYPE_WPC_FILL
+    Dim RecordDetergent As TYPE_WPC_DETERGENT
+    Dim RecordHeat As TYPE_WPC_HEAT
+    Dim RecordWash As TYPE_WPC_WASH
+    Dim RecordDrain As TYPE_WPC_DRAIN
+    Dim RecordSpin As TYPE_WPC_SPIN
+    Dim RecordCool As TYPE_WPC_COOL
+
+    Dim sInputJson As String
+    
+    ' Проверяем существование файла
+    ' ...
+
+    ' Считываем файл и декодируем его
+    sInputJson = FromUTF8(LoadFromJSONFile(FileName))
+    
+    ' Вызываем вспомогательную функцию, которая позволяет работать
+    ' с указателями напрямую
+    ImportFromJSON = func_ImportFromJSON(sInputJson, 0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
        RecordHeat, RecordWash, RecordDrain, RecordSpin, RecordCool)
        
 End Function
@@ -1172,7 +1273,7 @@ Private Function func_ImportFromClipboard(frm As FormMain, _
 
     Dim b As Byte
     Dim ProgsCount As Integer
-    Dim J As Integer
+    Dim j As Integer
     Dim StepPointer As Long
     Dim FType As Integer
     Dim Step As Object
@@ -1195,18 +1296,18 @@ Private Function func_ImportFromClipboard(frm As FormMain, _
     StepPointer = DataPointer + ProgramIndex * PROGRAM_SIZE_IN_BYTES
     PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
     
-    For J = 1 To p.Count
+    For j = 1 To p.Count
     
         ' Если уникальный идентификатор формата элемента не совпадает
         ' с поддерживаемыми программой, переходим к следующему
-        If ElementGUID <> p.Item(J).Item("ElementGUID") Then
+        If ElementGUID <> p.Item(j).Item("ElementGUID") Then
                     
         Else
         
             ' Если элемент является шагом, то производим разбор
-            If p.Item(J).Item("ElementType") = 1 Then
+            If p.Item(j).Item("ElementType") = 1 Then
             
-                Set Step = p.Item(J)
+                Set Step = p.Item(j)
                                
                 FType = CByte(Step.Item("Type"))
             
@@ -1478,6 +1579,7 @@ Public Function ImportFromClipboard(frm As FormMain, Value As String) As Boolean
 End Function
 
 Public Sub SaveToFile(FileName As String)
+
     Dim handle As Integer ' Идентификатор файла
 
     ' Внутреннее имя
@@ -1494,6 +1596,7 @@ Public Sub SaveToFile(FileName As String)
 
     ' Завершаем работу с файлом
     Close #handle
+    
 End Sub
 
 Public Sub SetStepFunctionType(ByVal FunctionType As Integer)
@@ -1515,6 +1618,7 @@ Public Sub SetStepFunctionType(ByVal FunctionType As Integer)
 
     ' Сохраняем изменения
     SetByte Offset, ByteValue
+    
 End Sub
 
 ' Для памяти: как сделать на бейсике циклический сдвиг влево на 1 разряд
@@ -1522,6 +1626,7 @@ End Sub
 ' crc = 2 * crc
 ' crc = ((crc And &H100) / &H100) Or (crc And &HFE)
 Public Function CalculateCRC8(ByVal Offset As Long, ByVal Size As Long) As Byte
+    
     Dim b As Byte
     Dim CRC As Integer
     Dim I As Long
@@ -1529,9 +1634,11 @@ Public Function CalculateCRC8(ByVal Offset As Long, ByVal Size As Long) As Byte
     CRC = &HFF
 
     Do While Size > 0
+    
         Size = Size - 1
 
         CopyMemory b, ByVal DataPointer + Offset, 1
+        
         Offset = Offset + 1
 
         CRC = CRC Xor b
@@ -1539,15 +1646,22 @@ Public Function CalculateCRC8(ByVal Offset As Long, ByVal Size As Long) As Byte
         For I = 0 To 7
 
             If CRC And &H80 Then
+            
                 CRC = (2 * CRC) And &HFF
                 CRC = CRC Xor &H31
+                
             Else
+            
                 CRC = (2 * CRC) And &HFF
+                
             End If
+            
         Next
+        
     Loop
 
     CalculateCRC8 = CByte(CRC)
+    
 End Function
 
 Private Sub func_SetDefaultProgramHeader(N As Integer, ByVal begin_of_pointers As Long, _

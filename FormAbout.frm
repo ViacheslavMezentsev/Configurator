@@ -488,6 +488,27 @@ LabelCompany_Click_Err:
     '</EhFooter>
 End Sub
 
+Private Sub lblVersion_Click()
+    '<EhHeader>
+    On Error GoTo lblVersion_Click_Err
+    '</EhHeader>
+
+    Clipboard.SetText lblVersion.Caption
+
+    '<EhFooter>
+    Exit Sub
+
+lblVersion_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormAbout.lblVersion_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub picIcon_Click()
     '<EhHeader>
     On Error GoTo picIcon_Click_Err

@@ -372,21 +372,21 @@ Public Declare Sub ZeroMemory _
 ' ***********************************
 
 Public Declare Function SetWindowsHookEx _
-               Lib "user32" _
+               Lib "User32" _
                Alias "SetWindowsHookExA" (ByVal idHook As Long, _
                                           ByVal lpfn As Long, _
                                           ByVal hmod As Long, _
                                           ByVal dwThreadId As Long) As Long
 
 Public Declare Function CallNextHookEx _
-               Lib "user32" (ByVal hHook As Long, _
+               Lib "User32" (ByVal hHook As Long, _
                              ByVal ncode As Long, _
                              ByVal wParam As Long, _
                              lParam As Any) As Long
 
-Public Declare Function UnhookWindowsHookEx Lib "user32" (ByVal hHook As Long) As Long
+Public Declare Function UnhookWindowsHookEx Lib "User32" (ByVal hHook As Long) As Long
 
-Public Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
+Public Declare Function GetAsyncKeyState Lib "User32" (ByVal vKey As Long) As Integer
 
 ' ***********************************
 ' *  ‘”Õ ÷»» ƒÀﬂ –¿¡Œ“€ — UNICODE
@@ -455,16 +455,30 @@ Public Declare Function GetVersionEx _
                Lib "Kernel32" _
                Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
 
-Public Declare Function GetCurrentDirectory Lib "kernel32.dll" Alias "GetCurrentDirectoryA" ( _
-     ByVal nBufferLength As Long, _
-     ByVal lpBuffer As String) As Long
+Public Declare Function GetCurrentDirectory _
+               Lib "kernel32.dll" _
+               Alias "GetCurrentDirectoryA" (ByVal nBufferLength As Long, _
+                                             ByVal lpBuffer As String) As Long
      
-Public Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" ( _
-     ByVal lpBuffer As String, _
-     ByRef nSize As Long) As Long
+Public Declare Function GetUserName _
+               Lib "advapi32.dll" _
+               Alias "GetUserNameA" (ByVal lpBuffer As String, _
+                                     ByRef nSize As Long) As Long
 
+Public Declare Function GetSystemMetrics Lib "user32.dll" (ByVal nIndex As Long) As Long
 
+Public Declare Sub keybd_event _
+               Lib "User32" (ByVal bVk As Byte, _
+                             ByVal bScan As Byte, _
+                             ByVal dwFlags As Long, _
+                             ByVal dwExtraInfo As Long)
 
-Public Declare Function GetSystemMetrics Lib "user32.dll" ( _
-     ByVal nIndex As Long) As Long
+Public Declare Function VkKeyScan _
+               Lib "User32" _
+               Alias "VkKeyScanA" (ByVal cChar As Byte) As Integer
+ 
+Public Declare Function MapVirtualKey _
+               Lib "User32" _
+               Alias "MapVirtualKeyA" (ByVal wCode As Long, _
+                                       ByVal wMapType As Long) As Long
 
