@@ -12,9 +12,9 @@ Begin VB.Form FormMain
    LinkTopic       =   "Form1"
    ScaleHeight     =   7128
    ScaleWidth      =   8916
-   Begin MSComctlLib.ImageList ImageListMainToolbar_32x32BW 
-      Left            =   948
-      Top             =   6156
+   Begin MSComctlLib.ImageList ImageListTBbw 
+      Left            =   960
+      Top             =   6180
       _ExtentX        =   804
       _ExtentY        =   804
       BackColor       =   -2147483643
@@ -23,7 +23,7 @@ Begin VB.Form FormMain
       MaskColor       =   16711935
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   4
+         NumListImages   =   11
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "FormMain.frx":6432
             Key             =   ""
@@ -37,16 +37,121 @@ Begin VB.Form FormMain
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":7152
+            Picture         =   "FormMain.frx":71ED
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":758F
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":7A91
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":7DF3
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage8 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":8318
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage9 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":8945
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage10 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":8FD3
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage11 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":94E6
             Key             =   ""
          EndProperty
       EndProperty
+   End
+   Begin MSComctlLib.Toolbar Toolbar 
+      Align           =   1  'Align Top
+      Height          =   480
+      Left            =   0
+      TabIndex        =   29
+      Top             =   0
+      Width           =   8916
+      _ExtentX        =   15727
+      _ExtentY        =   847
+      ButtonWidth     =   826
+      ButtonHeight    =   804
+      Appearance      =   1
+      Style           =   1
+      ImageList       =   "ImageListMainToolbar_32x32"
+      DisabledImageList=   "ImageListTBbw"
+      _Version        =   393216
+      BeginProperty Buttons {66833FE8-8583-11D1-B16A-00C0F0283628} 
+         NumButtons      =   15
+         BeginProperty Button1 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Новый (Ctrl+N)"
+            ImageIndex      =   1
+         EndProperty
+         BeginProperty Button2 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Открыть (Ctrl+O)"
+            ImageIndex      =   2
+         EndProperty
+         BeginProperty Button3 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Сохранить (Ctrl+S)"
+            ImageIndex      =   3
+         EndProperty
+         BeginProperty Button4 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button5 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Настройки"
+            ImageIndex      =   4
+         EndProperty
+         BeginProperty Button6 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button7 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Отменить (Ctrl+Z)"
+            ImageIndex      =   5
+         EndProperty
+         BeginProperty Button8 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Вернуть"
+            ImageIndex      =   6
+         EndProperty
+         BeginProperty Button9 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button10 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Вырезать (Ctrl+X)"
+            ImageIndex      =   7
+         EndProperty
+         BeginProperty Button11 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Копировать (Ctrl+C)"
+            ImageIndex      =   8
+         EndProperty
+         BeginProperty Button12 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Вставить (Ctrl+V)"
+            ImageIndex      =   9
+         EndProperty
+         BeginProperty Button13 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Удалить (Del)"
+            ImageIndex      =   10
+         EndProperty
+         BeginProperty Button14 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button15 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "О программе"
+            ImageIndex      =   11
+         EndProperty
+      EndProperty
+      BorderStyle     =   1
    End
    Begin VB.Frame FrameLog 
       BorderStyle     =   0  'None
       Height          =   1092
       Left            =   5640
-      TabIndex        =   20
+      TabIndex        =   19
       Top             =   5640
       Visible         =   0   'False
       Width           =   3252
@@ -86,7 +191,7 @@ Begin VB.Form FormMain
          Height          =   252
          Left            =   120
          MousePointer    =   7  'Size N S
-         TabIndex        =   21
+         TabIndex        =   20
          Top             =   120
          Width           =   3000
       End
@@ -106,7 +211,7 @@ Begin VB.Form FormMain
       Height          =   60
       Left            =   4320
       MousePointer    =   7  'Size N S
-      TabIndex        =   19
+      TabIndex        =   18
       Top             =   5640
       Visible         =   0   'False
       Width           =   4572
@@ -122,21 +227,49 @@ Begin VB.Form FormMain
       MaskColor       =   16711935
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   4
+         NumListImages   =   11
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":74F4
+            Picture         =   "FormMain.frx":9933
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":7987
+            Picture         =   "FormMain.frx":9DC6
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":7F27
+            Picture         =   "FormMain.frx":A366
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":846D
+            Picture         =   "FormMain.frx":A962
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":AE68
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":B36A
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":B865
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage8 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":BD8A
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage9 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":C3A4
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage10 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":CA0E
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage11 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "FormMain.frx":CF15
             Key             =   ""
          EndProperty
       EndProperty
@@ -293,7 +426,7 @@ Begin VB.Form FormMain
             Left            =   2640
             ScaleHeight     =   252
             ScaleWidth      =   24
-            TabIndex        =   29
+            TabIndex        =   28
             TabStop         =   0   'False
             Top             =   480
             Visible         =   0   'False
@@ -307,7 +440,7 @@ Begin VB.Form FormMain
             Left            =   120
             ScaleHeight     =   24
             ScaleWidth      =   2556
-            TabIndex        =   28
+            TabIndex        =   27
             TabStop         =   0   'False
             Top             =   720
             Visible         =   0   'False
@@ -321,7 +454,7 @@ Begin VB.Form FormMain
             Left            =   120
             ScaleHeight     =   24
             ScaleWidth      =   2556
-            TabIndex        =   27
+            TabIndex        =   26
             TabStop         =   0   'False
             Top             =   480
             Visible         =   0   'False
@@ -335,7 +468,7 @@ Begin VB.Form FormMain
             Left            =   120
             ScaleHeight     =   252
             ScaleWidth      =   24
-            TabIndex        =   26
+            TabIndex        =   25
             TabStop         =   0   'False
             Top             =   480
             Visible         =   0   'False
@@ -349,7 +482,7 @@ Begin VB.Form FormMain
             Left            =   1200
             ScaleHeight     =   24
             ScaleWidth      =   396
-            TabIndex        =   25
+            TabIndex        =   24
             TabStop         =   0   'False
             Top             =   1680
             Visible         =   0   'False
@@ -363,7 +496,7 @@ Begin VB.Form FormMain
             Left            =   1560
             ScaleHeight     =   1692
             ScaleWidth      =   24
-            TabIndex        =   24
+            TabIndex        =   23
             TabStop         =   0   'False
             Top             =   0
             Visible         =   0   'False
@@ -377,7 +510,7 @@ Begin VB.Form FormMain
             Left            =   1200
             ScaleHeight     =   1692
             ScaleWidth      =   24
-            TabIndex        =   23
+            TabIndex        =   22
             TabStop         =   0   'False
             Top             =   0
             Visible         =   0   'False
@@ -391,7 +524,7 @@ Begin VB.Form FormMain
             Left            =   1200
             ScaleHeight     =   24
             ScaleWidth      =   396
-            TabIndex        =   22
+            TabIndex        =   21
             TabStop         =   0   'False
             Top             =   0
             Visible         =   0   'False
@@ -480,9 +613,9 @@ Begin VB.Form FormMain
       Begin VB.ComboBox ComboCell 
          Appearance      =   0  'Flat
          Height          =   288
-         ItemData        =   "FormMain.frx":8973
+         ItemData        =   "FormMain.frx":D50A
          Left            =   120
-         List            =   "FormMain.frx":8975
+         List            =   "FormMain.frx":D50C
          Style           =   2  'Dropdown List
          TabIndex        =   5
          TabStop         =   0   'False
@@ -570,19 +703,19 @@ Begin VB.Form FormMain
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   4
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":8977
+            Picture         =   "FormMain.frx":D50E
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":8CCB
+            Picture         =   "FormMain.frx":D862
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":901F
+            Picture         =   "FormMain.frx":DBB6
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":9373
+            Picture         =   "FormMain.frx":DF0A
             Key             =   ""
          EndProperty
       EndProperty
@@ -601,55 +734,15 @@ Begin VB.Form FormMain
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   1
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormMain.frx":96C7
+            Picture         =   "FormMain.frx":E25E
             Key             =   ""
          EndProperty
       EndProperty
    End
-   Begin MSComctlLib.Toolbar Toolbar 
-      Align           =   1  'Align Top
-      Height          =   480
-      Left            =   0
-      TabIndex        =   18
-      Top             =   0
-      Width           =   8916
-      _ExtentX        =   15727
-      _ExtentY        =   847
-      ButtonWidth     =   826
-      ButtonHeight    =   804
-      Appearance      =   1
-      Style           =   1
-      ImageList       =   "ImageListMainToolbar_32x32"
-      DisabledImageList=   "ImageListMainToolbar_32x32BW"
-      _Version        =   393216
-      BeginProperty Buttons {66833FE8-8583-11D1-B16A-00C0F0283628} 
-         NumButtons      =   5
-         BeginProperty Button1 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Object.ToolTipText     =   "Новый"
-            ImageIndex      =   1
-         EndProperty
-         BeginProperty Button2 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Object.ToolTipText     =   "Открыть"
-            ImageIndex      =   2
-         EndProperty
-         BeginProperty Button3 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Object.ToolTipText     =   "Сохранить"
-            ImageIndex      =   3
-         EndProperty
-         BeginProperty Button4 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Style           =   3
-         EndProperty
-         BeginProperty Button5 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Object.ToolTipText     =   "Настройки"
-            ImageIndex      =   4
-         EndProperty
-      EndProperty
-      BorderStyle     =   1
-   End
    Begin VB.Image ImageGrayed 
       Height          =   192
       Left            =   3480
-      Picture         =   "FormMain.frx":9A1B
+      Picture         =   "FormMain.frx":E5B2
       Stretch         =   -1  'True
       Top             =   5640
       Visible         =   0   'False
@@ -658,7 +751,7 @@ Begin VB.Form FormMain
    Begin VB.Image ImageChecked 
       Height          =   192
       Left            =   3240
-      Picture         =   "FormMain.frx":9D7B
+      Picture         =   "FormMain.frx":E912
       Stretch         =   -1  'True
       Top             =   5640
       Visible         =   0   'False
@@ -668,7 +761,7 @@ Begin VB.Form FormMain
       Appearance      =   0  'Flat
       Height          =   192
       Left            =   3000
-      Picture         =   "FormMain.frx":A0ED
+      Picture         =   "FormMain.frx":EC84
       Stretch         =   -1  'True
       Top             =   5640
       Visible         =   0   'False
@@ -807,8 +900,37 @@ Begin VB.Form FormMain
    End
    Begin VB.Menu StepMainMenuItem 
       Caption         =   "&Шаг"
-      Begin VB.Menu InsertStepMenuItem 
-         Caption         =   "&Вставить"
+      Begin VB.Menu UndoMenuItem 
+         Caption         =   "Отменить"
+         Shortcut        =   ^Z
+      End
+      Begin VB.Menu RedoMenuItem 
+         Caption         =   "Вернуть"
+      End
+      Begin VB.Menu Separator7 
+         Caption         =   "-"
+      End
+      Begin VB.Menu CutStepsMenuItem 
+         Caption         =   "В&ырезать"
+         Shortcut        =   ^X
+      End
+      Begin VB.Menu CopyStepsMenuItem 
+         Caption         =   "&Копировать"
+         Shortcut        =   ^C
+      End
+      Begin VB.Menu PasteStepsMenuItem 
+         Caption         =   "Вставить"
+         Shortcut        =   ^V
+      End
+      Begin VB.Menu DeleteStepMenuItem 
+         Caption         =   "&Удалить"
+         Shortcut        =   {DEL}
+      End
+      Begin VB.Menu Separator8 
+         Caption         =   "-"
+      End
+      Begin VB.Menu InsertStepByFuncMenuItem 
+         Caption         =   "&Вставить шаг"
          Begin VB.Menu InsertStepByNum 
             Caption         =   "Пропуск"
             Index           =   0
@@ -853,9 +975,6 @@ Begin VB.Form FormMain
             Caption         =   "Охлаждение"
             Index           =   10
          End
-      End
-      Begin VB.Menu DeleteStepMenuItem 
-         Caption         =   "&Удалить"
       End
    End
    Begin VB.Menu CodeMainMenuItem 
@@ -937,6 +1056,10 @@ Dim SplitterLeftMoving As Boolean
 Dim LogFrameResizing As Boolean
 Dim BegX As Integer, BegY As Integer
 Dim SelStepsCount As Long
+
+Dim LastUndoRedoForward As Boolean
+Dim LastUndoRedoItem As Long
+Dim UndoRedoVector As Vector
 
 '**
 '@see
@@ -1048,6 +1171,122 @@ LoadPlacement_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.LoadPlacement]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub AddUndoRedoItem(Value As String)
+    '<EhHeader>
+    On Error GoTo AddUndoRedoItem_Err
+    '</EhHeader>
+
+    ' Remove any undone commands.
+    Do While UndoRedoVector.Size > LastUndoRedoItem
+    
+        UndoRedoVector.removeElementAt UndoRedoVector.Size
+        
+    Loop
+    
+    UndoRedoVector.addElement HuffmanEncode(Value)
+    
+    LastUndoRedoItem = UndoRedoVector.Size
+
+    '<EhFooter>
+    Exit Sub
+
+AddUndoRedoItem_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.AddUndoRedoItem]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub Undo()
+    '<EhHeader>
+    On Error GoTo Undo_Err
+    '</EhHeader>
+
+    If LastUndoRedoItem < 1 Then Exit Sub
+     
+    If LastUndoRedoItem = UndoRedoVector.Size Then
+        
+        AddUndoRedoItem Manager.ToString()
+        
+        Dec LastUndoRedoItem
+        
+        LastUndoRedoForward = False
+        
+    End If
+    
+    If LastUndoRedoForward = True Then Dec LastUndoRedoItem
+    
+    Manager.FromString HuffmanDecode(UndoRedoVector.elementAt(LastUndoRedoItem))
+    
+    Dec LastUndoRedoItem
+    
+    LastUndoRedoForward = False
+    
+    '<EhFooter>
+    Exit Sub
+
+Undo_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.Undo]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub Redo()
+    '<EhHeader>
+    On Error GoTo Redo_Err
+    '</EhHeader>
+
+    If LastUndoRedoItem >= UndoRedoVector.Size Then Exit Sub
+    
+    If LastUndoRedoItem <= 0 Then
+        
+        LastUndoRedoItem = 1
+        
+        LastUndoRedoForward = True
+        
+    End If
+    
+    If LastUndoRedoForward = False Then Inc LastUndoRedoItem
+    
+    Inc LastUndoRedoItem
+    
+    LastUndoRedoForward = True
+    
+    Manager.FromString HuffmanDecode(UndoRedoVector.elementAt(LastUndoRedoItem))
+    
+    If LastUndoRedoItem = UndoRedoVector.Size Then
+    
+        UndoRedoVector.removeElementAt UndoRedoVector.Size
+        
+        Dec LastUndoRedoItem
+        
+        LastUndoRedoForward = False
+    
+    End If
+    
+    '<EhFooter>
+    Exit Sub
+
+Redo_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.Redo]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -1215,7 +1454,7 @@ Private Function func_StepsSelectionToString(ByVal begin_of_pointers As Long, _
     Loop
     
     ' Сохраняем данные в формате JSON
-    Result = JSON.toString(StepsArray)
+    Result = JSON.ToString(StepsArray)
     
     Set StepsArray = Nothing
     
@@ -1281,6 +1520,8 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
 
     If Not FramesOnly Then RefreshDataComponents
     
+    Dim ActiveObject As Object
+        
     FrameLeft.Top = Me.ScaleTop + Toolbar.Top + Toolbar.Height
     FrameLeft.Height = Me.ScaleHeight - (StatusBar.Height + Toolbar.Top + Toolbar.Height)
         
@@ -1594,6 +1835,14 @@ Private Sub RefreshToolbar()
 
     Toolbar.Buttons(3).Enabled = Modified
     
+    Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+    Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+    
+    Toolbar.Buttons(10).Enabled = Manager.FileLoaded
+    Toolbar.Buttons(11).Enabled = Manager.FileLoaded
+    Toolbar.Buttons(12).Enabled = Manager.FileLoaded
+    Toolbar.Buttons(13).Enabled = Manager.FileLoaded
+    
     '<EhFooter>
     Exit Sub
 
@@ -1682,14 +1931,25 @@ Private Sub CloseMainMenuItem_Click()
             Case vbYes
             
                 SaveMainMenuItem_Click
+                
                 Manager.CloseFile
+                
+                LastUndoRedoItem = 0
+                UndoRedoVector.removeAllElements
+                
                 SetModified False
+                
                 RefreshComponents False
                 
             Case vbNo
             
                 Manager.CloseFile
+                
+                LastUndoRedoItem = 0
+                UndoRedoVector.removeAllElements
+                
                 SetModified False
+                
                 RefreshComponents False
                 
             Case vbCancel
@@ -1699,6 +1959,10 @@ Private Sub CloseMainMenuItem_Click()
     Else
     
         Manager.CloseFile
+        
+        LastUndoRedoItem = 0
+        UndoRedoVector.removeAllElements
+        
         RefreshComponents False
         
     End If
@@ -1722,15 +1986,15 @@ Private Sub CodeView_Click()
     '</EhHeader>
     
     Dim x As Integer, y As Integer
-    Dim col As Integer, row As Integer
+    Dim Col As Integer, row As Integer
     
     CodeView.Visible = False
     
-    x = CodeView.col
+    x = CodeView.Col
     y = CodeView.row
 
-    For col = 1 To CodeView.Cols - 2
-        CodeView.col = col
+    For Col = 1 To CodeView.Cols - 2
+        CodeView.Col = Col
         CodeView.row = 0
         CodeView.CellFontBold = False
     Next
@@ -1738,7 +2002,7 @@ Private Sub CodeView_Click()
     row = CodeView.TopRow
     
     Do While CodeView.RowIsVisible(row)
-        CodeView.col = 0
+        CodeView.Col = 0
         CodeView.row = row
     
         CodeView.CellFontBold = False
@@ -1748,14 +2012,14 @@ Private Sub CodeView_Click()
     Loop
     
     CodeView.row = 0
-    CodeView.col = x
+    CodeView.Col = x
     CodeView.CellFontBold = True
     
     CodeView.row = y
-    CodeView.col = 0
+    CodeView.Col = 0
     CodeView.CellFontBold = True
     
-    CodeView.col = x
+    CodeView.Col = x
     CodeView.row = y
     
     CodeView.Visible = True
@@ -1825,14 +2089,14 @@ Private Sub CodeView_KeyDown(KeyCode As Integer, Shift As Integer)
             
     End Select
     
-    Dim col As Integer, row As Integer
+    Dim Col As Integer, row As Integer
     
-    col = CodeView.col
+    Col = CodeView.Col
     row = CodeView.row
     
     ' На всякий случай пропускаем фиксированные ячейки
 
-    If col = 0 Or row = 0 Then Exit Sub
+    If Col = 0 Or row = 0 Then Exit Sub
     
     TextByte.Font = CodeView.Font
     TextByte.Left = CodeView.Left + CodeView.CellLeft
@@ -1889,6 +2153,9 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
     
+        ' Сохраняем состояние
+        AddUndoRedoItem Manager.ToString()
+        
         Dim FuncN As Integer
         
         FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Manager.StepIndex + 1)
@@ -2003,16 +2270,24 @@ Private Sub CopyMainMenuItem_Click()
     FormCopy.List2.Clear
     
     For I = 1 To Manager.ProgramsCount
+    
         FormCopy.List1.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
         FormCopy.List2.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
+        
     Next
     
     FormCopy.List1.ListIndex = 0
     FormCopy.List2.ListIndex = 0
     
+    ' Сохраняем состояние
+    AddUndoRedoItem Manager.ToString()
+    
     FormCopy.Show (vbModal)
     
     RefreshComponents False
+    
+    ' Перерисовываем форму
+    FormMain.Refresh
     
     '<EhFooter>
     Exit Sub
@@ -2024,12 +2299,62 @@ CopyMainMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
+Private Sub CopyStepsMenuItem_Click()
+    '<EhHeader>
+    On Error GoTo CopyStepsMenuItem_Click_Err
+    '</EhHeader>
+
+    Clipboard.SetText StepsSelectionToString
+
+    '<EhFooter>
+    Exit Sub
+
+CopyStepsMenuItem_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.CopyStepsMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub CutStepsMenuItem_Click()
+    '<EhHeader>
+    On Error GoTo CutStepsMenuItem_Click_Err
+    '</EhHeader>
+        
+    Clipboard.SetText StepsSelectionToString
+      
+    DeleteStepMenuItem_Click
+    
+    ' Перерисовываем форму
+    FormMain.Refresh
+        
+    '<EhFooter>
+    Exit Sub
+
+CutStepsMenuItem_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.CutStepsMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub DeleteStepMenuItem_Click()
     '<EhHeader>
     On Error GoTo DeleteStepMenuItem_Click_Err
     '</EhHeader>
     
     Dim I As Integer
+    
+    ' Сохраняем состояние
+    AddUndoRedoItem Manager.ToString()
     
     ' Удаляем текущий шаг
     For I = 1 To SelStepsCount
@@ -2057,6 +2382,9 @@ Private Sub DeleteStepMenuItem_Click()
 
     StepsView.SetFocus
     
+    ' Перерисовываем форму
+    FormMain.Refresh
+        
     '<EhFooter>
     Exit Sub
 
@@ -2173,7 +2501,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo Form_KeyDown_Err
     '</EhHeader>
 
-    Dim col As Integer, row As Integer
+    Dim Col As Integer, row As Integer
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyF3 And Shift = 0 Then
 
@@ -2213,13 +2541,13 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
         End Select
             
         row = StepsView.row
-        col = StepsView.col
+        Col = StepsView.Col
         
         RefreshStepsView
         RefreshMainMenu
         
         StepsView.row = row
-        StepsView.col = col
+        StepsView.Col = Col
         
         StepsView.SetFocus
         
@@ -2292,6 +2620,9 @@ Private Sub Form_Load()
     KeyPreview = True
     LogFrameResizing = False
         
+    Set UndoRedoVector = New Vector
+    LastUndoRedoItem = UndoRedoVector.Size
+    
     ' Среда разработки часто "вылетает" из-за кода внутри
     ' Поэтому его тестирование нужно проводить только на
     ' откомпилированном приложении
@@ -2476,8 +2807,8 @@ Private Sub Form_Load()
     MRUFileList.Load IniFile
     DisplayMRU
     
-    Dim s As String
-    Dim col As Integer, row
+    Dim S As String
+    Dim Col As Integer, row
     
     StepsView.Redraw = False
     
@@ -2488,33 +2819,33 @@ Private Sub Form_Load()
         
     StepsView.Cols = MAX_NUMBER_OF_STEPS + 1
     
-    s = "<   |"
+    S = "<   |"
 
-    For col = 1 To StepsView.Cols - 1
+    For Col = 1 To StepsView.Cols - 1
             
         ' Изменяем размер каждого столбца
-        StepsView.ColWidth(col) = Settings.StepsColWidth
+        StepsView.ColWidth(Col) = Settings.StepsColWidth
         
 
-        If col < StepsView.Cols - 1 Then
+        If Col < StepsView.Cols - 1 Then
         
-            s = s & col & "|"
+            S = S & Col & "|"
             
         Else
         
-            s = s & col
+            S = S & Col
             
         End If
         
-        StepsView.col = col
+        StepsView.Col = Col
         StepsView.row = 0
         StepsView.CellAlignment = flexAlignCenterCenter
         
     Next
     
-    StepsView.FormatString = s
+    StepsView.FormatString = S
        
-    s = ";|" _
+    S = ";|" _
        & "Клапан горячей воды" & "|" _
        & "Клапан холодной воды 1" & "|" _
        & "Клапан холодной воды 2" & "|" _
@@ -2534,19 +2865,19 @@ Private Sub Form_Load()
        & "Нагрев" & "|" _
        & "Мотор"
     
-    StepsView.FormatString = s
+    StepsView.FormatString = S
     
     ' "Тушим" все ячейки таблицы
     For row = 1 To StepsView.rows - 1
     
         StepsView.RowHeight(row) = Settings.StepsRowHeight
         
-        For col = 1 To MAX_NUMBER_OF_STEPS
+        For Col = 1 To MAX_NUMBER_OF_STEPS
         
             ' Изменяем размер каждого столбца
-            StepsView.ColWidth(col) = Settings.StepsColWidth
+            StepsView.ColWidth(Col) = Settings.StepsColWidth
             
-            StepsView.col = col
+            StepsView.Col = Col
             StepsView.row = row
             StepsView.CellBackColor = &HC8D0D4
             
@@ -2554,44 +2885,44 @@ Private Sub Form_Load()
         
     Next
     
-    StepsView.col = 1
+    StepsView.Col = 1
     StepsView.row = 1
     
     StepsView.Redraw = True
     
     ' Инициализируем окно кода
-    s = "<   |"
+    S = "<   |"
 
-    For col = 1 To CodeView.Cols - 1
+    For Col = 1 To CodeView.Cols - 1
     
         ' Изменяем размер каждого столбца
-        CodeView.ColWidth(col) = Settings.StepsColWidth
+        CodeView.ColWidth(Col) = Settings.StepsColWidth
 
-        If col < CodeView.Cols - 1 Then
+        If Col < CodeView.Cols - 1 Then
 
-            If col < 11 Then
-                s = s & "0" & col - 1 & "|"
+            If Col < 11 Then
+                S = S & "0" & Col - 1 & "|"
             Else
-                s = s & "0" & Chr$(col - 11 + 65) & "|"
+                S = S & "0" & Chr$(Col - 11 + 65) & "|"
             End If
             
         Else
 
-            If col < 11 Then
-                s = s & "0" & col - 1 & "|"
+            If Col < 11 Then
+                S = S & "0" & Col - 1 & "|"
             Else
-                s = s & "0" & Chr$(col - 11 + 65) & "|"
+                S = S & "0" & Chr$(Col - 11 + 65) & "|"
             End If
             
         End If
         
-        CodeView.col = col
+        CodeView.Col = Col
         CodeView.row = 0
         CodeView.CellAlignment = flexAlignCenterCenter
         
     Next
     
-    CodeView.FormatString = s
+    CodeView.FormatString = S
     
     FunctionsStrings(0) = "Пропуск"
     FunctionsStrings(1) = "Налив"
@@ -2676,6 +3007,11 @@ Private Sub Form_Unload(Cancel As Integer)
     
     ' Сохраняем список используемых файлов
     MRUFileList.Save IniFile
+    
+    LastUndoRedoItem = 0
+    UndoRedoVector.removeAllElements
+    
+    Set UndoRedoVector = Nothing
     
     Unload FormOptions
     Unload FormDownload
@@ -2784,7 +3120,12 @@ Private Sub ImportMainMenuItem_Click()
         Succes = Manager.ImportFromJSON(FileName)
         
         If Succes = True Then
+        
             SetCaption (Manager.FileName)
+            
+            LastUndoRedoItem = 0
+            UndoRedoVector.removeAllElements
+            
             SetModified True
         
             ViewMode = STEPS_VIEW
@@ -2814,17 +3155,24 @@ ImportMainMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub InsertStepByNum_Click(Index As Integer)
+Private Sub InsertStepByNum_Click(index As Integer)
     '<EhHeader>
     On Error GoTo InsertStepByNum_Click_Err
     '</EhHeader>
 
-    Manager.InsertStep Me, Index
+    ' Сохраняем состояние
+    AddUndoRedoItem Manager.ToString()
+    
+    Manager.InsertStep Me, index
                       
     SetModified True
+    
     RefreshDataComponents
 
     StepsView.SetFocus
+    
+    ' Перерисовываем форму
+    FormMain.Refresh
     
     '<EhFooter>
     Exit Sub
@@ -3060,6 +3408,23 @@ Public Sub ListPrograms_Click()
     ' Вычисляем признак пустой программы
     CRC8Value = Manager.CalculateCRC8(Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, PROGRAM_SIZE_IN_BYTES)
 
+    ' Дополнительная проверка для пустой программы
+    If CRC8Value = CRC8_FOR_DEFAULT_PROGRAM Then
+    
+        Dim k As Long, Sum As Long
+        
+        Sum = 0
+        
+        For k = 2 To 31
+        
+            Sum = Sum + Manager.GetByte(Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + k)
+        
+        Next
+        
+        If Sum > 0 Then CRC8Value = 0
+        
+    End If
+        
     If CRC8Value = CRC8_FOR_DEFAULT_PROGRAM Then
         
         ' Указание конкретного цвета
@@ -3069,7 +3434,7 @@ Public Sub ListPrograms_Click()
 
         Dim N As Integer
         Dim StepPointer As Long, Value As Long
-        Dim s As String
+        Dim S As String
         Dim RecordTitle As TYPE_WPC_TITLE
 
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
@@ -3297,7 +3662,7 @@ MenuItemShowHideLog_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub MRUItems_Click(Index As Integer)
+Private Sub MRUItems_Click(index As Integer)
     '<EhHeader>
     On Error GoTo MRUItems_Click_Err
     '</EhHeader>
@@ -3306,9 +3671,9 @@ Private Sub MRUItems_Click(Index As Integer)
     Dim FName As String
         
     ' Если файл существует, то пытаемся его открыть
-    If MRUFileList.FileExists(Index) Then
+    If MRUFileList.FileExists(index) Then
     
-        FName = MRUFileList.file(Index)
+        FName = MRUFileList.file(index)
         
         If Manager.FileLoaded Then
         
@@ -3317,14 +3682,21 @@ Private Sub MRUItems_Click(Index As Integer)
         End If
         
         FileName = MiscExtractPathName(FName, False)
+        
         Manager.LoadFromFile (FName)
+        
         SetCaption (Manager.FileName)
         
         ViewMode = STEPS_VIEW
+        
         RefreshComponents False
         'RefreshFrameRight
         
+        LastUndoRedoItem = 0
+        UndoRedoVector.removeAllElements
+        
         SetModified False
+        
         CurrentDir = MiscExtractPathName(FName, True)
         
         MRUFileList.AddFile FName
@@ -3367,6 +3739,11 @@ Private Sub NewMainMenuItem_Click()
     ' Очистить все программы из образа
     PopupMenuListClearAll_Click
     
+    LastUndoRedoItem = 0
+    UndoRedoVector.removeAllElements
+    
+    SetModified True
+    
     ' Перерисовываем форму
     FormMain.Refresh
     
@@ -3397,12 +3774,48 @@ OptionsMainMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
+Private Sub PasteStepsMenuItem_Click()
+    '<EhHeader>
+    On Error GoTo PasteStepsMenuItem_Click_Err
+    '</EhHeader>
+    
+    ' Если буфер обмена пустой, то выходим
+    If Len(Clipboard.GetText) = 0 Then Exit Sub
+    
+    ' Сохраняем состояние
+    AddUndoRedoItem Manager.ToString()
+    
+    ' Вставляем содержимое буфера обмена в текущую позицию
+    SetModified Manager.ImportFromClipboard(Me, Clipboard.GetText)
+    
+    RefreshDataComponents
+    
+    ' Перерисовываем форму
+    FormMain.Refresh
+    
+    '<EhFooter>
+    Exit Sub
+
+PasteStepsMenuItem_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.PasteStepsMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub PopupMenuListClear_Click()
     '<EhHeader>
     On Error GoTo PopupMenuListClear_Click_Err
     '</EhHeader>
     
     Dim StepPointer As Long
+    
+    ' Сохраняем состояние
+    AddUndoRedoItem Manager.ToString()
     
     ' Очищаем текущую программу
     Manager.ClearProgramN (ListPrograms.row)
@@ -3425,6 +3838,9 @@ Private Sub PopupMenuListClear_Click()
     
     RefreshDataComponents
     
+    ' Перерисовываем форму
+    FormMain.Refresh
+    
     '<EhFooter>
     Exit Sub
 
@@ -3440,15 +3856,20 @@ Private Sub PopupMenuListClearAll_Click()
     On Error GoTo PopupMenuListClearAll_Click_Err
     '</EhHeader>
     
+    ' Сохраняем состояние
+    AddUndoRedoItem Manager.ToString()
+    
     Manager.ClearAll
     
     If LimitsLoaded Then
+    
         Dim CRC8Value As Byte
         Dim I As Integer
         Dim Address As Long
         Dim Size As Long
             
         For I = 1 To Manager.ProgramsCount
+        
             ' Установка заголовка программы по умолчанию
             Manager.SetDefaultProgramHeader I
         
@@ -3458,12 +3879,19 @@ Private Sub PopupMenuListClearAll_Click()
             
             CRC8Value = Manager.CalculateCRC8(Address + 1, Size)
             Manager.SetByte Address, CRC8Value
+            
         Next
+        
     End If
     
     SetModified True
     
     RefreshComponents False
+    
+    ListPrograms.SetFocus
+    
+    ' Перерисовываем форму
+    FormMain.Refresh
     
     '<EhFooter>
     Exit Sub
@@ -3481,6 +3909,9 @@ Private Sub PopupMenuPrograms_Click()
     '</EhHeader>
     
     ' Настраиваем доступность пунктов меню "Программа":
+    PopupMenuListClear.Enabled = ActiveControl Is ListPrograms
+    CopyMainMenuItem.Enabled = ActiveControl Is ListPrograms
+    PopupMenuListClearAll.Enabled = ActiveControl Is ListPrograms
     
     ' "Программа\Перейти"
     Select Case ViewMode
@@ -3526,13 +3957,13 @@ Private Sub PropertyTable_KeyDown(KeyCode As Integer, Shift As Integer)
     ' При нажатии Enter в ячейке даём возможность редактировать её содержимое
     If Not (KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn) Then Exit Sub
     
-    Dim col As Integer, row As Integer, FuncN As Integer
+    Dim Col As Integer, row As Integer, FuncN As Integer
     
-    col = PropertyTable.col
+    Col = PropertyTable.Col
     row = PropertyTable.row
     
     ' На всякий случай пропускаем фиксированные ячейки
-    If col = 0 Or row = 0 Then Exit Sub
+    If Col = 0 Or row = 0 Then Exit Sub
        
     ' Действуем в зависимости от типа функции шага
     FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Manager.StepIndex + 1)
@@ -3592,13 +4023,46 @@ PropertyTable_KeyDown_Err:
     '</EhFooter>
 End Sub
 
+Private Sub RedoMenuItem_Click()
+    '<EhHeader>
+    On Error GoTo RedoMenuItem_Click_Err
+    '</EhHeader>
+
+    Redo
+
+    RefreshComponents False
+    
+    ' Перерисовываем форму
+    FormMain.Refresh
+    
+    '<EhFooter>
+    Exit Sub
+
+RedoMenuItem_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.RedoMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub StepMainMenuItem_Click()
     '<EhHeader>
     On Error GoTo StepMainMenuItem_Click_Err
     '</EhHeader>
     
-    InsertStepMenuItem = ActiveControl Is StepsView
+    UndoMenuItem.Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+    RedoMenuItem.Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+    
+    CutStepsMenuItem.Enabled = ActiveControl Is StepsView
+    CopyStepsMenuItem.Enabled = ActiveControl Is StepsView
+    PasteStepsMenuItem.Enabled = ActiveControl Is StepsView
     DeleteStepMenuItem.Enabled = ActiveControl Is StepsView
+    
+    InsertStepByFuncMenuItem = ActiveControl Is StepsView
     
     '<EhFooter>
     Exit Sub
@@ -3616,12 +4080,12 @@ Private Sub StepsView_Click()
     '</EhHeader>
 
     Dim x As Integer, y As Integer
-    Dim col As Integer, row As Integer
+    Dim Col As Integer, row As Integer
        
     ' При клике область выделения сужается до одного шага
     SelStepsCount = 1
     
-    Manager.StepIndex = StepsView.col - 1
+    Manager.StepIndex = StepsView.Col - 1
     
     ' Отображаем горизонтальный и вертикальный селекторы
     ShowHorizontalSelector
@@ -3633,12 +4097,12 @@ Private Sub StepsView_Click()
     ' Долгая операция по перерисовке
     StepsView.Redraw = False
     
-    x = StepsView.col
+    x = StepsView.Col
     y = StepsView.row
     
-    For col = 1 To StepsView.Cols - 2
+    For Col = 1 To StepsView.Cols - 2
     
-        StepsView.col = col
+        StepsView.Col = Col
         StepsView.row = 0
         StepsView.CellFontBold = False
         
@@ -3648,7 +4112,7 @@ Private Sub StepsView_Click()
     
     Do While StepsView.RowIsVisible(row)
     
-        StepsView.col = 0
+        StepsView.Col = 0
         StepsView.row = row
     
         StepsView.CellFontBold = False
@@ -3659,14 +4123,14 @@ Private Sub StepsView_Click()
     Loop
        
     StepsView.row = 0
-    StepsView.col = x
+    StepsView.Col = x
     StepsView.CellFontBold = True
     
     StepsView.row = y
-    StepsView.col = 0
+    StepsView.Col = 0
     StepsView.CellFontBold = True
     
-    StepsView.col = x
+    StepsView.Col = x
     StepsView.row = y
     
     CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
@@ -3731,13 +4195,18 @@ Private Sub OpenMainMenuItem_Click()
               
         FileName = MiscExtractPathName(OpenFileDialog.FileName, False)
         Manager.LoadFromFile (OpenFileDialog.FileName)
+        
         SetCaption (Manager.FileName)
         
         ViewMode = STEPS_VIEW
         RefreshComponents False
         'RefreshFrameRight
         
+        LastUndoRedoItem = 0
+        UndoRedoVector.removeAllElements
+        
         SetModified False
+        
         CurrentDir = MiscExtractPathName(OpenFileDialog.FileName, True)
         
         MRUFileList.AddFile OpenFileDialog.FileName
@@ -4024,10 +4493,12 @@ Private Sub StepsView_DblClick()
 
     Dim FuncN As Integer
     
+    ' Сохраняем состояние
+    AddUndoRedoItem Manager.ToString()
+    
     FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Manager.StepIndex + 1)
     
     ' Сохраняем изменённое значение
-
     If FuncN < 12 Then
 
         Select Case FuncN
@@ -4093,47 +4564,7 @@ Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
     ShiftDown = (GetAsyncKeyState(vbKeyShift) And &H8000&) <> 0
     CtrlDown = (GetAsyncKeyState(vbKeyControl) And &H8000&) <> 0
 
-    ' Копирование в буфер обмена
-    If CtrlDown And KeyCode = VBRUN.KeyCodeConstants.vbKeyC Then
-               
-        Clipboard.SetText StepsSelectionToString
-        
-        Exit Sub
-        
-    End If
-
-    ' Вырезаем в буфер обмена
-    If CtrlDown And KeyCode = VBRUN.KeyCodeConstants.vbKeyX Then
-               
-        Clipboard.SetText StepsSelectionToString
-        
-        DeleteStepMenuItem_Click
-        
-        ' Перерисовываем форму
-        FormMain.Refresh
-        
-        Exit Sub
-        
-    End If
-    
-    ' Вставка из буфера обмена
-    If CtrlDown And KeyCode = VBRUN.KeyCodeConstants.vbKeyV Then
-               
-        ' Если буфер обмена пустой, то выходим
-        If Len(Clipboard.GetText) = 0 Then Exit Sub
-        
-        ' Вставляем содержимое буфера обмена в текущую позицию
-        SetModified Manager.ImportFromClipboard(Me, Clipboard.GetText)
-        
-        RefreshDataComponents
-        
-        ' Перерисовываем форму
-        FormMain.Refresh
-    
-        Exit Sub
-        
-    End If
-
+    ' Вставить пустой шаг
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyInsert Then
     
         InsertStepByNum_Click WPC_OPERATION_IDLE
@@ -4144,18 +4575,7 @@ Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
         Exit Sub
         
     End If
-        
-    If KeyCode = VBRUN.KeyCodeConstants.vbKeyDelete Then
-    
-        DeleteStepMenuItem_Click
-        
-        ' Перерисовываем форму
-        FormMain.Refresh
-
-        Exit Sub
-        
-    End If
-        
+                
     ' Изменение размеров выделения селектором
     If ShiftDown And KeyCode = vbKeyRight Then
                
@@ -4407,7 +4827,10 @@ Private Sub TextByte_KeyDown(KeyCode As Integer, Shift As Integer)
         Dim ProgNum As Integer
         Dim Offset, TopRow As Long
         
-        Offset = (CodeView.row - 1) * 16 + CodeView.col - 1
+        ' Сохраняем состояние
+        AddUndoRedoItem Manager.ToString()
+        
+        Offset = (CodeView.row - 1) * 16 + CodeView.Col - 1
         
         ' Номер программы
         ProgNum = Offset / PROGRAM_SIZE_IN_BYTES
@@ -4423,10 +4846,10 @@ Private Sub TextByte_KeyDown(KeyCode As Integer, Shift As Integer)
             Exit Sub
         End If
         
-        Dim row, col As Long
+        Dim row, Col As Long
         
         row = CodeView.row
-        col = CodeView.col
+        Col = CodeView.Col
         
         Manager.SetByte Offset, NewByte
         
@@ -4449,7 +4872,7 @@ Private Sub TextByte_KeyDown(KeyCode As Integer, Shift As Integer)
         CodeView.TopRow = TopRow
         
         CodeView.row = row
-        CodeView.col = col
+        CodeView.Col = Col
         CodeView.SetFocus
     End If
     
@@ -4528,6 +4951,9 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
     
+        ' Сохраняем состояние
+        AddUndoRedoItem Manager.ToString()
+        
         Dim FuncN As Integer
         
         FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Manager.StepIndex + 1)
@@ -4657,24 +5083,36 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
     Dim RecordTitle As TYPE_WPC_TITLE
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
+    
         TextName.Visible = False
         ListPrograms.SetFocus
+        
     End If
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
+    
+        ' Сохраняем состояние
+        AddUndoRedoItem Manager.ToString()
+    
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
         CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
         
         For I = 1 To PROG_NAME_LENGTH - 1
 
             If I <= Len(TextName.Text) Then
+            
                 RecordTitle.ProgName(I) = Asc(Mid$(TextName.Text, I, 1))
+                
             Else
+            
                 RecordTitle.ProgName(I) = 0
+                
             End If
+            
         Next
         
         RecordTitle.ProgName(PROG_NAME_LENGTH) = 0
+        
         ' Сохраняем изменения
         CopyMemory ByVal StepPointer, RecordTitle, HEADER_SIZE_IN_BYTES
         SetModified True
@@ -4691,12 +5129,16 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
         Manager.SetByte Address, CRC8Value
         
         TextName.Visible = False
+        
         Dim row As Integer
+        
         row = ListPrograms.row
         RefreshComponents False
         
         If row < ListPrograms.rows - 1 Then ListPrograms.row = row
+        
         ListPrograms.SetFocus
+        
     End If
     
     '<EhFooter>
@@ -5140,14 +5582,36 @@ Private Sub Toolbar_ButtonClick(ByVal Button As MSComctlLib.Button)
     '<EhHeader>
     On Error GoTo Toolbar_ButtonClick_Err
     '</EhHeader>
+ 
+    If (Button.index = 1) Then NewMainMenuItem_Click
 
-    If (Button.Index = 1) Then NewMainMenuItem_Click
+    If (Button.index = 2) Then OpenMainMenuItem_Click
 
-    If (Button.Index = 2) Then OpenMainMenuItem_Click
+    If (Button.index = 3) Then SaveMainMenuItem_Click
 
-    If (Button.Index = 3) Then SaveMainMenuItem_Click
+    ' ---
 
-    If (Button.Index = 5) Then OptionsMainMenuItem_Click
+    If (Button.index = 5) Then OptionsMainMenuItem_Click
+    
+    ' ---
+    
+    If (Button.index = 7) Then UndoMenuItem_Click
+    
+    If (Button.index = 8) Then RedoMenuItem_Click
+    
+    ' ---
+    
+    If (Button.index = 10) And ActiveControl Is StepsView Then CutStepsMenuItem_Click
+    
+    If (Button.index = 11) And ActiveControl Is StepsView Then CopyStepsMenuItem_Click
+    
+    If (Button.index = 12) And ActiveControl Is StepsView Then PasteStepsMenuItem_Click
+    
+    If (Button.index = 13) And ActiveControl Is StepsView Then DeleteStepMenuItem_Click
+    
+    ' ---
+    
+    If (Button.index = 15) Then AboutMainMenuItem_Click
     
     '<EhFooter>
     Exit Sub
@@ -5199,6 +5663,23 @@ Private Sub RefreshListSelection()
         
         ' Вычисляем признак пустой программы
         CRC8Value = Manager.CalculateCRC8(Cnt * PROGRAM_SIZE_IN_BYTES, PROGRAM_SIZE_IN_BYTES)
+        
+        ' Дополнительная проверка для пустой программы
+        If CRC8Value = CRC8_FOR_DEFAULT_PROGRAM Then
+        
+            Dim k As Long, Sum As Long
+            
+            Sum = 0
+            
+            For k = 2 To 31
+            
+                Sum = Sum + Manager.GetByte((Cnt - 1) * PROGRAM_SIZE_IN_BYTES + k)
+            
+            Next
+            
+            If Sum > 0 Then CRC8Value = 0
+            
+        End If
         
         If CRC8Value = CRC8_FOR_DEFAULT_PROGRAM Then
         
@@ -5274,7 +5755,7 @@ Private Sub RefreshList()
         Dim b As Byte, N As Byte
         Dim Cnt As Integer
         Dim StepPointer As Long, Value As Long
-        Dim s As String
+        Dim S As String
         Dim RecordTitle As TYPE_WPC_TITLE
         
         For Cnt = 1 To Manager.ProgramsCount
@@ -5298,15 +5779,15 @@ Private Sub RefreshList()
                 
             Else
             
-                s = ""
+                S = ""
 
                 For N = 1 To PROG_NAME_LENGTH - 1
                 
-                    s = s & Chr$(RecordTitle.ProgName(N))
+                    S = S & Chr$(RecordTitle.ProgName(N))
                     
                 Next
                 
-                ListPrograms.AddItem s
+                ListPrograms.AddItem S
                 
             End If
             
@@ -5337,8 +5818,8 @@ Private Sub RefreshCodeView()
     On Error GoTo RefreshCodeView_Err
     '</EhHeader>
     
-    Dim col As Integer, row As Integer
-    Dim s As String
+    Dim Col As Integer, row As Integer
+    Dim S As String
     
     ' Если файл не загружен, то выводить нечего,
     ' поэтому отображаем вид без данных
@@ -5355,32 +5836,32 @@ Private Sub RefreshCodeView()
         
         CodeView.rows = 2
         ' Инициализируем окно кода
-        s = "<   |"
+        S = "<   |"
 
-        For col = 1 To CodeView.Cols - 2
-            CodeView.ColWidth(col) = Settings.StepsColWidth
+        For Col = 1 To CodeView.Cols - 2
+            CodeView.ColWidth(Col) = Settings.StepsColWidth
 
-            If col < CodeView.Cols - 1 Then
+            If Col < CodeView.Cols - 1 Then
 
-                If col < 11 Then
-                    s = s & "0" & col - 1 & "|"
+                If Col < 11 Then
+                    S = S & "0" & Col - 1 & "|"
                 Else
-                    s = s & "0" & Chr$(col - 11 + 65) & "|"
+                    S = S & "0" & Chr$(Col - 11 + 65) & "|"
                 End If
             Else
 
-                If col < 11 Then
-                    s = s & "0" & col - 1 & "|"
+                If Col < 11 Then
+                    S = S & "0" & Col - 1 & "|"
                 Else
-                    s = s & "0" & Chr$(col - 11 + 65) & "|"
+                    S = S & "0" & Chr$(Col - 11 + 65) & "|"
                 End If
             End If
-            CodeView.col = col
+            CodeView.Col = Col
             CodeView.row = 0
             CodeView.CellAlignment = flexAlignCenterCenter
         Next
         
-        CodeView.FormatString = s
+        CodeView.FormatString = S
         CodeView.Visible = True
         
         FrameMain.Enabled = False
@@ -5396,32 +5877,32 @@ Private Sub RefreshCodeView()
     CodeView.Font.Size = Settings.StepsViewFontSize
         
     ' Формируем заголовки столбцов
-    s = "<   |"
+    S = "<   |"
 
-    For col = 1 To CodeView.Cols - 2
-        CodeView.ColWidth(col) = Settings.StepsColWidth
+    For Col = 1 To CodeView.Cols - 2
+        CodeView.ColWidth(Col) = Settings.StepsColWidth
 
-        If col < CodeView.Cols - 1 Then
+        If Col < CodeView.Cols - 1 Then
 
-            If col < 11 Then
-                s = s & "0" & col - 1 & "|"
+            If Col < 11 Then
+                S = S & "0" & Col - 1 & "|"
             Else
-                s = s & "0" & Chr$(col - 11 + 65) & "|"
+                S = S & "0" & Chr$(Col - 11 + 65) & "|"
             End If
         Else
 
-            If col < 11 Then
-                s = s & "0" & col - 1 & "|"
+            If Col < 11 Then
+                S = S & "0" & Col - 1 & "|"
             Else
-                s = s & "0" & Chr$(col - 11 + 65) & "|"
+                S = S & "0" & Chr$(Col - 11 + 65) & "|"
             End If
         End If
-        CodeView.col = col
+        CodeView.Col = Col
         CodeView.row = 0
         CodeView.CellAlignment = flexAlignCenterCenter
     Next
     
-    CodeView.FormatString = s
+    CodeView.FormatString = S
     
     ' Формируем заголовки строк
     Dim HexValue As Long
@@ -5430,7 +5911,7 @@ Private Sub RefreshCodeView()
     CodeView.rows = Manager.ImageSize / 16
     
     For row = 1 To CodeView.rows - 1
-        CodeView.col = 0
+        CodeView.Col = 0
         CodeView.row = row
         
         HexValue = (row - 1) * 16
@@ -5464,13 +5945,13 @@ Private Sub RefreshCodeView()
 
         CodeView.RowHeight(row) = Settings.StepsRowHeight
         
-        For col = 1 To CodeView.Cols - 2
-            CodeView.col = col
+        For Col = 1 To CodeView.Cols - 2
+            CodeView.Col = Col
             CodeView.row = row
             CodeView.CellAlignment = flexAlignCenterCenter
             
-            If ((16 * (row - 1) + col - 1) < Manager.ImageSize) Then
-                HexValue = Manager.GetByte(16 * (row - 1) + col - 1)
+            If ((16 * (row - 1) + Col - 1) < Manager.ImageSize) Then
+                HexValue = Manager.GetByte(16 * (row - 1) + Col - 1)
             
                 If (HexValue < &H10) Then
                     CodeView.Text = "0" & Hex$(HexValue)
@@ -5500,14 +5981,14 @@ RefreshCodeView_Err:
     '</EhFooter>
 End Sub
 
-Private Function ValveEnabled(col As Integer, row As Integer) As Boolean
+Private Function ValveEnabled(Col As Integer, row As Integer) As Boolean
     '<EhHeader>
     On Error GoTo ValveEnabled_Err
     '</EhHeader>
     
     Dim FuncN As Integer
     
-    FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, col)
+    FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Col)
     
     ' Сохраняем изменённое значение
 
@@ -5515,24 +5996,24 @@ Private Function ValveEnabled(col As Integer, row As Integer) As Boolean
 
         Select Case FuncN
             Case WPC_OPERATION_IDLE ' пропуск
-                ValveEnabled = ModuleIdle.ValveEnabled(Me, col - 1, row)
+                ValveEnabled = ModuleIdle.ValveEnabled(Me, Col - 1, row)
                 Exit Function
         
             Case WPC_OPERATION_FILL ' Налив
-                ValveEnabled = ModuleFill.ValveEnabled(Me, col - 1, row)
+                ValveEnabled = ModuleFill.ValveEnabled(Me, Col - 1, row)
                 Exit Function
             
             Case WPC_OPERATION_DTRG ' моющие
-                ValveEnabled = ModuleDTRG.ValveEnabled(Me, col - 1, row)
+                ValveEnabled = ModuleDTRG.ValveEnabled(Me, Col - 1, row)
                 Exit Function
             
             Case WPC_OPERATION_HEAT ' нагрев
-                ValveEnabled = ModuleHeat.ValveEnabled(Me, col - 1, row)
+                ValveEnabled = ModuleHeat.ValveEnabled(Me, Col - 1, row)
                 Exit Function
                 
                 ' стирка, полоскание, расстряска, пауза
             Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
-                ValveEnabled = ModuleWashOrRinsOrJolt.ValveEnabled(Me, col - 1, row)
+                ValveEnabled = ModuleWashOrRinsOrJolt.ValveEnabled(Me, Col - 1, row)
                 Exit Function
                 
 '<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:26
@@ -5543,19 +6024,19 @@ Private Function ValveEnabled(col As Integer, row As Integer) As Boolean
 '</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:26>
 
             Case WPC_OPERATION_DRAIN ' слив
-                ValveEnabled = ModuleDrain.ValveEnabled(Me, col - 1, row)
+                ValveEnabled = ModuleDrain.ValveEnabled(Me, Col - 1, row)
                 Exit Function
                 
             Case WPC_OPERATION_SPIN ' отжим
-                ValveEnabled = ModuleSpin.ValveEnabled(Me, col - 1, row)
+                ValveEnabled = ModuleSpin.ValveEnabled(Me, Col - 1, row)
                 Exit Function
             
             Case WPC_OPERATION_COOL ' охлаждение
-                ValveEnabled = ModuleCool.ValveEnabled(Me, col - 1, row)
+                ValveEnabled = ModuleCool.ValveEnabled(Me, Col - 1, row)
                 Exit Function
                 
             Case WPC_OPERATION_TRIN ' тех.полоскание
-                ValveEnabled = ModuleTrin.ValveEnabled(Me, col - 1, row)
+                ValveEnabled = ModuleTrin.ValveEnabled(Me, Col - 1, row)
                 Exit Function
         
             Case Else
@@ -5580,8 +6061,8 @@ Private Sub RefreshStepsView()
     On Error GoTo RefreshStepsView_Err
     '</EhHeader>
     
-    Dim col As Integer, row As Integer, x As Integer, y As Integer, FuncN As Integer
-    Dim s As String
+    Dim Col As Integer, row As Integer, x As Integer, y As Integer, FuncN As Integer
+    Dim S As String
     
     ' Выходим из процедуры, если программы не загружены или отсутствуют
     If Not Manager.FileLoaded Then
@@ -5599,40 +6080,40 @@ Private Sub RefreshStepsView()
         ' Устанавливаем количество столбцов таблицы
         StepsView.Cols = MAX_NUMBER_OF_STEPS + 1
         
-        s = "<   |"
+        S = "<   |"
 
-        For col = 1 To StepsView.Cols - 1
+        For Col = 1 To StepsView.Cols - 1
         
             ' Изменяем размер каждого столбца
-            StepsView.ColWidth(col) = Settings.StepsColWidth
+            StepsView.ColWidth(Col) = Settings.StepsColWidth
             
-            If col < StepsView.Cols - 1 Then
+            If Col < StepsView.Cols - 1 Then
 
-                If col < 10 Then
+                If Col < 10 Then
                 
-                    s = s & "0" & col & "|"
+                    S = S & "0" & Col & "|"
                     
                 Else
                 
-                    s = s & col & "|"
+                    S = S & Col & "|"
                     
                 End If
                 
             Else
             
-                s = s & col
+                S = S & Col
                 
             End If
             
-            StepsView.col = col
+            StepsView.Col = Col
             StepsView.row = 0
             StepsView.CellAlignment = flexAlignCenterCenter
             
         Next
         
-        StepsView.FormatString = s
+        StepsView.FormatString = S
         
-        s = ";|" _
+        S = ";|" _
            & "Клапан горячей воды" & "|" _
            & "Клапан холодной воды 1" & "|" _
            & "Клапан холодной воды 2" & "|" _
@@ -5652,7 +6133,7 @@ Private Sub RefreshStepsView()
            & "Нагрев" & "|" _
            & "Мотор"
         
-        StepsView.FormatString = s
+        StepsView.FormatString = S
         
         ' "Тушим" все ячейки таблицы
 
@@ -5660,12 +6141,12 @@ Private Sub RefreshStepsView()
         
             StepsView.RowHeight(row) = Settings.StepsRowHeight
             
-            For col = 1 To StepsView.Cols - 1
+            For Col = 1 To StepsView.Cols - 1
             
                 ' Изменяем размер каждого столбца
-                StepsView.ColWidth(col) = Settings.StepsColWidth
+                StepsView.ColWidth(Col) = Settings.StepsColWidth
                 
-                StepsView.col = col
+                StepsView.Col = Col
                 StepsView.row = row
                 StepsView.CellBackColor = &HC8D0D4
                 
@@ -5673,7 +6154,7 @@ Private Sub RefreshStepsView()
             
         Next
         
-        StepsView.col = 1
+        StepsView.Col = 1
         StepsView.row = 1
         StepsView.Redraw = True
         FrameMain.Enabled = False
@@ -5686,7 +6167,7 @@ Private Sub RefreshStepsView()
     StepsView.Redraw = False
     
     ' Сохраняем координаты
-    x = StepsView.col
+    x = StepsView.Col
     y = StepsView.row
     
     ' Очищаем настройки и данные компонента
@@ -5701,40 +6182,40 @@ Private Sub RefreshStepsView()
     ' Устанавливаем количество столбцов таблицы
     StepsView.Cols = MAX_NUMBER_OF_STEPS + 1
     
-    s = "<   |"
+    S = "<   |"
 
-    For col = 1 To StepsView.Cols - 1
+    For Col = 1 To StepsView.Cols - 1
     
         ' Изменяем размер каждого столбца
-        StepsView.ColWidth(col) = Settings.StepsColWidth
+        StepsView.ColWidth(Col) = Settings.StepsColWidth
         
-        If col < StepsView.Cols - 1 Then
+        If Col < StepsView.Cols - 1 Then
 
-            If col < 10 Then
+            If Col < 10 Then
             
-                s = s & "0" & col & "|"
+                S = S & "0" & Col & "|"
                 
             Else
             
-                s = s & col & "|"
+                S = S & Col & "|"
                 
             End If
             
         Else
         
-            s = s & col
+            S = S & Col
             
         End If
         
-        StepsView.col = col
+        StepsView.Col = Col
         StepsView.row = 0
         StepsView.CellAlignment = flexAlignCenterCenter
         
     Next
     
-    StepsView.FormatString = s
+    StepsView.FormatString = S
            
-    s = ";|" _
+    S = ";|" _
        & "Клапан горячей воды" & "|" _
        & "Клапан холодной воды 1" & "|" _
        & "Клапан холодной воды 2" & "|" _
@@ -5754,7 +6235,7 @@ Private Sub RefreshStepsView()
        & "Нагрев" & "|" _
        & "Мотор"
     
-    StepsView.FormatString = s
+    StepsView.FormatString = S
     
     ' "Тушим" все ячейки таблицы
 
@@ -5762,12 +6243,12 @@ Private Sub RefreshStepsView()
     
         StepsView.RowHeight(row) = Settings.StepsRowHeight
         
-        For col = 1 To StepsView.Cols - 1
+        For Col = 1 To StepsView.Cols - 1
         
             ' Изменяем размер каждого столбца
-            StepsView.ColWidth(col) = Settings.StepsColWidth
+            StepsView.ColWidth(Col) = Settings.StepsColWidth
         
-            StepsView.col = col
+            StepsView.Col = Col
             StepsView.row = row
             StepsView.CellBackColor = &HC8D0D4
             
@@ -5778,7 +6259,7 @@ Private Sub RefreshStepsView()
     'col = StepsView.LeftCol
     
     ' Настраиваем таблицу
-    StepsView.col = 1
+    StepsView.Col = 1
     StepsView.row = 1
     
     ' Настраиваем картинки
@@ -5791,18 +6272,18 @@ Private Sub RefreshStepsView()
     ImageGrayed.Width = StepsView.CellWidth
     ImageGrayed.Height = StepsView.CellHeight
     
-    For col = 1 To MAX_NUMBER_OF_STEPS
+    For Col = 1 To MAX_NUMBER_OF_STEPS
     
         ' Изменяем размер каждого столбца
-        StepsView.ColWidth(col) = Settings.StepsColWidth
+        StepsView.ColWidth(Col) = Settings.StepsColWidth
     
-        FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, col)
+        FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Col)
         
         If FuncN > 0 And FuncN < 11 Then
 
             For row = 1 To StepsView.rows - 1
             
-                StepsView.col = col
+                StepsView.Col = Col
                 StepsView.row = row
                 StepsView.CellAlignment = flexAlignCenterCenter
                 
@@ -5815,13 +6296,13 @@ Private Sub RefreshStepsView()
                     
                         Case TEXT_VIEW:
 
-                            If ValveEnabled(col, row) Then
+                            If ValveEnabled(Col, row) Then
                             
                                 Select Case (row - 1)
                                 
                                     Case LOADING_HEAT:
                                     
-                                        StepsView.Text = CStr(ModuleHeat.GetTemperature(Me, col - 1))
+                                        StepsView.Text = CStr(ModuleHeat.GetTemperature(Me, Col - 1))
                                 
                                 End Select
                             
@@ -5840,7 +6321,7 @@ Private Sub RefreshStepsView()
                         
                             StepsView.CellBackColor = &HFFFFFF
 
-                            If ValveEnabled(col, row) Then
+                            If ValveEnabled(Col, row) Then
                             
                                 Set StepsView.CellPicture = ImageChecked.Picture
                                 
@@ -5876,7 +6357,7 @@ Private Sub RefreshStepsView()
 
             For row = 1 To StepsView.rows - 1
             
-                StepsView.col = col
+                StepsView.Col = Col
                 StepsView.row = row
                 StepsView.Text = ""
                 StepsView.CellBackColor = &HC8D0D4
@@ -5887,7 +6368,7 @@ Private Sub RefreshStepsView()
         
     Next
     
-    StepsView.col = x
+    StepsView.Col = x
     StepsView.row = y
     
     ' После сделанных изменений можно визуализировать компонент
@@ -6031,6 +6512,32 @@ LoadLimits_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.LoadLimits]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub UndoMenuItem_Click()
+    '<EhHeader>
+    On Error GoTo UndoMenuItem_Click_Err
+    '</EhHeader>
+
+    Undo
+    
+    RefreshComponents False
+    
+    ' Перерисовываем форму
+    FormMain.Refresh
+
+    '<EhFooter>
+    Exit Sub
+
+UndoMenuItem_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.UndoMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 

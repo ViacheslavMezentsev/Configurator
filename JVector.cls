@@ -37,42 +37,60 @@ Option Explicit
 Private mCol As Collection
 
 Public Sub addElement(elem As Variant)
+
     mCol.Add elem
+
 End Sub
 
 Public Function Size() As Long
+
     Size = mCol.Count
+    
 End Function
 
 Public Sub removeElementAt(Index As Integer)
 Attribute removeElementAt.VB_UserMemId = -4
 Attribute removeElementAt.VB_MemberFlags = "40"
+
     mCol.Remove (Index)
+    
 End Sub
 
 Public Function elementAt(Index As Integer) As Variant
+
     Dim obj As Object
     
     Set elementAt = mCol.Item(Index)
+    
 End Function
 
 Private Sub Class_Initialize()
+
     Set mCol = New Collection
+    
 End Sub
 
 Public Function elements() As Collection
+
     Set elements = mCol
+    
 End Function
 
 Public Sub removeAllElements()
-    Dim I As Long
+
+    Dim i As Long
     
-    For I = 1 To mCol.Count
+    For i = 1 To mCol.Count
+    
         removeElementAt (1)
+        
     Next
+    
 End Sub
 
 Private Sub Class_Terminate()
+
     Set mCol = Nothing
+    
 End Sub
 
