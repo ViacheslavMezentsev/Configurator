@@ -40,20 +40,22 @@ Begin VB.Form FormOptions
       TabCaption(0)   =   "Приложение "
       TabPicture(0)   =   "FormOptions.frx":23D2
       Tab(0).ControlEnabled=   -1  'True
-      Tab(0).Control(0)=   "FrameSettings"
+      Tab(0).Control(0)=   "ShapeSSTabFrame"
       Tab(0).Control(0).Enabled=   0   'False
-      Tab(0).Control(1)=   "FrameSplitterUpDown"
+      Tab(0).Control(1)=   "FrameSettings"
       Tab(0).Control(1).Enabled=   0   'False
-      Tab(0).Control(2)=   "FrameDescription"
+      Tab(0).Control(2)=   "FrameSplitterUpDown"
       Tab(0).Control(2).Enabled=   0   'False
-      Tab(0).ControlCount=   3
+      Tab(0).Control(3)=   "FrameDescription"
+      Tab(0).Control(3).Enabled=   0   'False
+      Tab(0).ControlCount=   4
       TabCaption(1)   =   "Образец "
       TabPicture(1)   =   "FormOptions.frx":23EE
       Tab(1).ControlEnabled=   0   'False
       Tab(1).Control(0)=   "FrameExample"
       Tab(1).ControlCount=   1
       Begin VB.Frame FrameExample 
-         Caption         =   "Шаги"
+         BorderStyle     =   0  'None
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   7.8
@@ -67,7 +69,7 @@ Begin VB.Form FormOptions
          Left            =   -74880
          TabIndex        =   6
          Top             =   360
-         Width           =   6612
+         Width           =   6732
          Begin VB.PictureBox PictureHSelRight 
             AutoRedraw      =   -1  'True
             BackColor       =   &H8000000D&
@@ -134,7 +136,7 @@ Begin VB.Form FormOptions
             ScaleWidth      =   396
             TabIndex        =   10
             TabStop         =   0   'False
-            Top             =   1560
+            Top             =   1800
             Visible         =   0   'False
             Width           =   400
          End
@@ -148,7 +150,7 @@ Begin VB.Form FormOptions
             ScaleWidth      =   396
             TabIndex        =   9
             TabStop         =   0   'False
-            Top             =   240
+            Top             =   480
             Visible         =   0   'False
             Width           =   400
          End
@@ -162,7 +164,7 @@ Begin VB.Form FormOptions
             ScaleWidth      =   24
             TabIndex        =   8
             TabStop         =   0   'False
-            Top             =   240
+            Top             =   480
             Visible         =   0   'False
             Width           =   20
          End
@@ -176,27 +178,56 @@ Begin VB.Form FormOptions
             ScaleWidth      =   24
             TabIndex        =   7
             TabStop         =   0   'False
-            Top             =   240
+            Top             =   480
             Visible         =   0   'False
             Width           =   20
          End
          Begin MSFlexGridLib.MSFlexGrid StepsView 
-            Height          =   5292
+            Height          =   4212
             Left            =   120
             TabIndex        =   15
             TabStop         =   0   'False
-            Top             =   240
-            Width           =   6372
-            _ExtentX        =   11240
-            _ExtentY        =   9335
+            Top             =   480
+            Width           =   6252
+            _ExtentX        =   11028
+            _ExtentY        =   7430
             _Version        =   393216
             Rows            =   16
             Cols            =   81
             AllowBigSelection=   0   'False
-            ScrollBars      =   0
             AllowUserResizing=   1
             BorderStyle     =   0
             Appearance      =   0
+         End
+         Begin VB.Label LabelFrameMain 
+            AutoSize        =   -1  'True
+            BackColor       =   &H00F4C0C0&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Шаги"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   204
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00FFFFFF&
+            Height          =   192
+            Left            =   0
+            TabIndex        =   21
+            Top             =   0
+            Width           =   1020
+         End
+         Begin VB.Shape ShapeFrameMainCaption 
+            BackColor       =   &H00F4C0C0&
+            BackStyle       =   1  'Opaque
+            BorderColor     =   &H00FF8080&
+            Height          =   252
+            Left            =   0
+            Top             =   0
+            Width           =   6612
          End
          Begin VB.Label LabelFont 
             AutoSize        =   -1  'True
@@ -209,13 +240,23 @@ Begin VB.Form FormOptions
             Visible         =   0   'False
             Width           =   720
          End
+         Begin VB.Shape ShapeFrameMain 
+            BackColor       =   &H00F4E0E0&
+            BackStyle       =   1  'Opaque
+            BorderColor     =   &H00FF8080&
+            Height          =   5916
+            Left            =   0
+            Top             =   0
+            Width           =   6648
+         End
       End
       Begin VB.Frame FrameDescription 
+         BackColor       =   &H00F4E0E0&
          BorderStyle     =   0  'None
          Height          =   816
-         Left            =   120
+         Left            =   240
          TabIndex        =   5
-         Top             =   5760
+         Top             =   5640
          Width           =   6672
          Begin VB.Label LabelDescription 
             BackStyle       =   0  'Transparent
@@ -229,7 +270,7 @@ Begin VB.Form FormOptions
                Italic          =   0   'False
                Strikethrough   =   0   'False
             EndProperty
-            Height          =   612
+            Height          =   492
             Left            =   120
             TabIndex        =   20
             Top             =   120
@@ -259,61 +300,61 @@ Begin VB.Form FormOptions
          BackColor       =   &H00F4C0C0&
          BorderStyle     =   0  'None
          Height          =   40
-         Left            =   0
+         Left            =   120
          MousePointer    =   7  'Size N S
          TabIndex        =   4
-         Top             =   5640
-         Width           =   6888
+         Top             =   5520
+         Width           =   6768
       End
       Begin VB.Frame FrameSettings 
          BorderStyle     =   0  'None
-         Height          =   5172
-         Left            =   120
+         Height          =   5052
+         Left            =   360
          TabIndex        =   2
-         Top             =   360
-         Width           =   6660
+         Top             =   480
+         Width           =   6060
          Begin VB.CommandButton CommandBrowse 
             Caption         =   "..."
             Height          =   240
-            Left            =   1560
+            Left            =   1800
             TabIndex        =   19
-            Top             =   4920
+            Top             =   4440
             Visible         =   0   'False
             Width           =   252
          End
          Begin VB.ComboBox ComboCell 
             Height          =   288
-            Left            =   840
+            Left            =   960
             Style           =   2  'Dropdown List
             TabIndex        =   18
-            Top             =   4920
+            Top             =   4440
             Visible         =   0   'False
             Width           =   732
          End
          Begin VB.TextBox TextCell 
             BorderStyle     =   0  'None
             Height          =   288
-            Left            =   0
+            Left            =   120
             TabIndex        =   16
-            Top             =   4920
+            Top             =   4440
             Visible         =   0   'False
             Width           =   732
          End
          Begin MSFlexGridLib.MSFlexGrid MSFGSettings 
-            Height          =   4932
+            Height          =   972
             Left            =   0
             TabIndex        =   3
             Top             =   0
-            Width           =   6660
-            _ExtentX        =   11748
-            _ExtentY        =   8700
+            Width           =   3540
+            _ExtentX        =   6244
+            _ExtentY        =   1715
             _Version        =   393216
             FixedCols       =   0
             BackColor       =   16048352
             BackColorFixed  =   16040128
             BackColorBkg    =   16048352
-            GridColor       =   13160660
-            GridColorFixed  =   13160660
+            GridColor       =   16048352
+            GridColorFixed  =   16040128
             AllowBigSelection=   0   'False
             HighLight       =   0
             GridLinesFixed  =   1
@@ -330,6 +371,15 @@ Begin VB.Form FormOptions
                Strikethrough   =   0   'False
             EndProperty
          End
+      End
+      Begin VB.Shape ShapeSSTabFrame 
+         BackColor       =   &H00F4E0E0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FF8080&
+         Height          =   6156
+         Left            =   120
+         Top             =   360
+         Width           =   6768
       End
    End
    Begin MSComDlg.CommonDialog SaveFileDialog 
@@ -671,7 +721,7 @@ Private Sub RefreshSettingsView()
         ' Обновляем значения параметров
         .Redraw = False
         
-        .col = 1
+        .Col = 1
         
         For I = 1 To .rows - 1
         
@@ -797,6 +847,12 @@ Private Sub RefreshSettingsView()
 
                     .CellBackColor = &HFFFFFF
 
+                Case SETTINGS_AUTOUPDATE_LAST_DATE:
+                    
+                    .row = I
+                    .Text = CStr(Settings.AutoUpdateLastDate)
+                    .CellBackColor = &HFFFFFF
+                    
                 Case SETTINGS_IMPORT_JSON_CODEPAGE:
 
                     .row = I
@@ -826,8 +882,8 @@ Private Sub RefreshStepsView()
     On Error GoTo RefreshStepsView_Err
     '</EhHeader>
 
-    Dim s As String
-    Dim col As Integer, row As Integer
+    Dim S As String
+    Dim Col As Integer, row As Integer
 
     StepsView.Redraw = False
 
@@ -838,37 +894,37 @@ Private Sub RefreshStepsView()
 
     StepsView.Cols = 10 + 1
 
-    s = "<   |"
+    S = "<   |"
 
-    For col = 1 To StepsView.Cols - 1
+    For Col = 1 To StepsView.Cols - 1
 
-        If col < StepsView.Cols - 1 Then
+        If Col < StepsView.Cols - 1 Then
 
-            If col < 10 Then
+            If Col < 10 Then
             
-                s = s & "0" & col & "|"
+                S = S & "0" & Col & "|"
                 
             Else
             
-                s = s & col & "|"
+                S = S & Col & "|"
                 
             End If
             
         Else
         
-            s = s & col
+            S = S & Col
             
         End If
         
-        StepsView.col = col
+        StepsView.Col = Col
         StepsView.row = 0
         StepsView.CellAlignment = flexAlignCenterCenter
         
     Next
 
-    StepsView.FormatString = s
+    StepsView.FormatString = S
 
-    s = ";|" _
+    S = ";|" _
        & "Клапан горячей воды" & "|" _
        & "Клапан холодной воды 1" & "|" _
        & "Клапан холодной воды 2" & "|" _
@@ -888,7 +944,7 @@ Private Sub RefreshStepsView()
        & "Нагрев" & "|" _
        & "Мотор"
 
-    StepsView.FormatString = s
+    StepsView.FormatString = S
 
     ' "Тушим" все ячейки таблицы
 
@@ -896,10 +952,10 @@ Private Sub RefreshStepsView()
     
         StepsView.RowHeight(row) = Settings.StepsRowHeight
 
-        For col = 1 To 10
+        For Col = 1 To 10
         
-            StepsView.ColWidth(col) = Settings.StepsColWidth
-            StepsView.col = col
+            StepsView.ColWidth(Col) = Settings.StepsColWidth
+            StepsView.Col = Col
             StepsView.row = row
             StepsView.CellBackColor = &HC8D0D4
             
@@ -907,7 +963,7 @@ Private Sub RefreshStepsView()
         
     Next
 
-    StepsView.col = 1
+    StepsView.Col = 1
     StepsView.row = 1
 
     StepsView.Redraw = True
@@ -943,7 +999,7 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
         With MSFGSettings
         
             ' Если первая колонка (имена параметров), то ничего не делаем
-            If .col = 0 Then Exit Sub
+            If .Col = 0 Then Exit Sub
         
             Select Case .RowData(.row)
             
@@ -1079,35 +1135,42 @@ Private Sub RefreshTabControl()
     
         Case 0:
         
+            
             FrameExample.Visible = False
-        
+            
+            ShapeSSTabFrame.Visible = True
             FrameDescription.Visible = True
             FrameSplitterUpDown.Visible = True
             FrameSettings.Visible = True
             
-            FrameDescription.Top = SSTab.Height - FrameDescription.Height - 40
-            FrameDescription.Left = SSTab.Left + 40
-            FrameDescription.Width = SSTab.Width - 80
+            ShapeSSTabFrame.Top = SSTab.Top + SSTab.TabHeight
+            ShapeSSTabFrame.Left = SSTab.Left
+            ShapeSSTabFrame.Width = SSTab.Width
+            ShapeSSTabFrame.Height = SSTab.Height - SSTab.TabHeight
+            
+            FrameDescription.Top = ShapeSSTabFrame.Top + ShapeSSTabFrame.Height - FrameDescription.Height - 40
+            FrameDescription.Left = ShapeSSTabFrame.Left + 40
+            FrameDescription.Width = ShapeSSTabFrame.Width - 80
             
             FrameSplitterUpDown.Height = Settings.SplittersThickness
             FrameSplitterUpDown.Top = FrameDescription.Top - FrameSplitterUpDown.Height
             FrameSplitterUpDown.Left = FrameDescription.Left
             FrameSplitterUpDown.Width = FrameDescription.Width
             
-            FrameSettings.Top = SSTab.Top + SSTab.TabHeight + 40
-            FrameSettings.Left = SSTab.Left + 40
-            FrameSettings.Width = SSTab.Width - 80
+            FrameSettings.Top = ShapeSSTabFrame.Top + 40
+            FrameSettings.Left = ShapeSSTabFrame.Left + 40
+            FrameSettings.Width = ShapeSSTabFrame.Width - 80
             FrameSettings.Height = FrameSplitterUpDown.Top - FrameSettings.Top
         
-            ShapeMessageBorderLight.Top = 12
-            ShapeMessageBorderLight.Left = 12
-            ShapeMessageBorderLight.Width = FrameDescription.Width - ShapeMessageBorderLight.Left - 12
-            ShapeMessageBorderLight.Height = FrameDescription.Height - ShapeMessageBorderLight.Top - 12
-            
-            ShapeMessageBorderDark.Top = 0
+            ShapeMessageBorderDark.Top = 40
             ShapeMessageBorderDark.Left = 0
             ShapeMessageBorderDark.Width = FrameDescription.Width
-            ShapeMessageBorderDark.Height = FrameDescription.Height
+            ShapeMessageBorderDark.Height = FrameDescription.Height - 40
+            
+            ShapeMessageBorderLight.Top = ShapeMessageBorderDark.Top + 12
+            ShapeMessageBorderLight.Left = ShapeMessageBorderDark.Left + 12
+            ShapeMessageBorderLight.Width = ShapeMessageBorderDark.Width - 24
+            ShapeMessageBorderLight.Height = ShapeMessageBorderDark.Height - 24
         
             MSFGSettings.Top = 0
             MSFGSettings.Left = 0
@@ -1143,25 +1206,39 @@ Private Sub RefreshTabControl()
             FrameDescription.Visible = False
             FrameSplitterUpDown.Visible = False
             FrameSettings.Visible = False
+            ShapeSSTabFrame.Visible = False
             
-            FrameExample.Visible = True
-            
-            FrameExample.Top = SSTab.TabHeight
-            FrameExample.Left = 0
+            FrameExample.Top = SSTab.Top + SSTab.TabHeight
+            FrameExample.Left = SSTab.Left
             FrameExample.Width = SSTab.Width
             FrameExample.Height = SSTab.Height - SSTab.TabHeight
+            
+            ShapeFrameMain.Top = 0
+            ShapeFrameMain.Left = 0
+            ShapeFrameMain.Width = FrameExample.Width
+            ShapeFrameMain.Height = FrameExample.Height
+            
+            ShapeFrameMainCaption.Top = 0
+            ShapeFrameMainCaption.Left = 0
+            ShapeFrameMainCaption.Width = ShapeFrameMain.Width
+    
+            LabelFrameMain.Top = ShapeFrameMainCaption.Top
+            LabelFrameMain.Left = ShapeFrameMainCaption.Left + 120
+            LabelFrameMain.Width = ShapeFrameMainCaption.Width - 240
+            
+            LabelFrameMain.FontSize = Settings.StepsViewFontSize
             
             LabelFont.FontBold = Settings.StepsViewFontBold
             LabelFont.FontItalic = Settings.StepsViewFontItalic
             LabelFont.FontName = Settings.StepsViewFontName
             LabelFont.FontSize = Settings.StepsViewFontSize
-    
-            FrameExample.FontSize = Settings.StepsViewFontSize
             
-            StepsView.Top = 240
+            StepsView.Top = ShapeFrameMainCaption.Top + ShapeFrameMainCaption.Height + 120
             StepsView.Left = 120
             StepsView.Width = FrameExample.Width - StepsView.Left - 120
             StepsView.Height = FrameExample.Height - StepsView.Top - 120
+            
+            FrameExample.Visible = True
             
             RefreshStepsView
     
@@ -1200,130 +1277,146 @@ Private Sub Form_Load()
     
         .Redraw = False
     
-        .rows = 20
+        .rows = 21
     
         ' Очищаем таблицу установок
         .Clear
     
+        Dim row As Long
+    
         .FormatString = "<Параметр|Значение"
-        .col = 1
         .row = 0
+        .CellFontBold = True
+        .CellForeColor = &HFFFFFF
+        .Col = 1
         .CellAlignment = flexAlignRightCenter
+        .CellFontBold = True
+        .CellForeColor = &HFFFFFF
+    
+        row = .row
     
         ' -----------------------------------------------
-        .col = 0
-        .row = 1
+        .Col = 0
+        .row = Inc(row)
         .Text = "Вид"
         .CellFontBold = True
-    
-        .row = 2
+        
+        
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_STEPS_COL_WIDTH
         .Text = "Ширина столбца шага"
         .CellBackColor = &HFFFFFF
     
         ' -----------------------------------------------
-        .col = 0
-        .row = 3
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_STEPS_ROW_HEIGHT
         .Text = "Высота строк таблиц"
         .CellBackColor = &HFFFFFF
     
         ' -----------------------------------------------
-        .col = 0
-        .row = 4
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_STEPSVIEW_FONT
         .Text = "Шрифт"
         .CellBackColor = &HFFFFFF
        
         ' -----------------------------------------------
-        .col = 0
-        .row = 5
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_STEPS_SELECTOR_WIDTH
         .Text = "Толщина селектора"
         .CellBackColor = &HFFFFFF
     
         ' -----------------------------------------------
-        .col = 0
-        .row = 6
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_STEPS_VSELECTOR_ENABLED
         .Text = "Вертикальный селектор"
         .CellBackColor = &HFFFFFF
     
         ' -----------------------------------------------
-        .col = 0
-        .row = 7
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_STEPS_HSELECTOR_ENABLED
         .Text = "Горизонтальный селектор"
         .CellBackColor = &HFFFFFF
     
         ' -----------------------------------------------
-        .col = 0
-        .row = 8
+        .Col = 0
+        .row = Inc(row)
         .Text = "Лог"
         .CellFontBold = True
     
-        .row = 9
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_REWRITE_LOGFILE
         .Text = "Перезаписывать файл лога при запуске"
         .CellBackColor = &HFFFFFF
     
         ' -----------------------------------------------
-        .col = 0
-        .row = 10
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_LOG_FILEPATH
         .Text = "Путь к файлу"
         .CellBackColor = &HFFFFFF
     
         ' -----------------------------------------------
-        .col = 0
-        .row = 11
+        .Col = 0
+        .row = Inc(row)
         .Text = "История файлов"
         .CellFontBold = True
     
-        .row = 12
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_FILES_HISTORY_SIZE
         .Text = "Помнить не более (файлов)"
         .CellBackColor = &HFFFFFF
     
         ' -----------------------------------------------
-        .col = 0
-        .row = 13
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_FILES_HISTORY_LIMIT_PATHS
         .Text = "Ограничивать длину пути"
         .CellBackColor = &HFFFFFF
 
         ' -----------------------------------------------
-        .col = 0
-        .row = 14
+        .Col = 0
+        .row = Inc(row)
         .Text = "Обновление"
         .CellFontBold = True
     
-        .row = 15
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_AUTOUPDATE_ENABLED
         .Text = "Автоматическое обновление"
         .CellBackColor = &HFFFFFF
 
         ' -----------------------------------------------
-        .col = 0
-        .row = 16
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_AUTOUPDATE_PERIOD
         .Text = "Период автообновления"
         .CellBackColor = &HFFFFFF
 
         ' -----------------------------------------------
-        .col = 0
-        .row = 17
+        .Col = 0
+        .row = Inc(row)
+        .RowData(.row) = SETTINGS_AUTOUPDATE_LAST_DATE
+        .Text = "Последнее обновление"
+        .CellBackColor = &HFFFFFF
+        
+        ' -----------------------------------------------
+        .Col = 0
+        .row = Inc(row)
         .Text = "Импорт/экспорт (JSON)"
         .CellFontBold = True
     
-        .row = 18
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_IMPORT_JSON_CODEPAGE
         .Text = "Кодировка импорта"
         .CellBackColor = &HFFFFFF
 
         ' -----------------------------------------------
-        .col = 0
-        .row = 19
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_EXPORT_JSON_CODEPAGE
         .Text = "Кодировка экспорта"
         .CellBackColor = &HFFFFFF
@@ -1335,7 +1428,7 @@ Private Sub Form_Load()
     RefreshStepsView
 
     StepsView.row = 1
-    StepsView.col = 1
+    StepsView.Col = 1
 
     ShowHorizontalSelector
     ShowVerticalSelector
@@ -1480,6 +1573,11 @@ Private Sub MSFGSettings_Click()
                     LabelDescription.Caption = "Настройка интервала обновления в автомате"
                     Exit Sub
                     
+                Case SETTINGS_AUTOUPDATE_LAST_DATE:
+                    
+                    LabelDescription.Caption = "Дата последнего обновления"
+                    Exit Sub
+                    
                 Case SETTINGS_IMPORT_JSON_CODEPAGE:
 
                     LabelDescription.Caption = "Тип кодировки при импорте из JSON-формата"
@@ -1541,7 +1639,7 @@ Private Sub MSFGSettings_KeyDown(KeyCode As Integer, Shift As Integer)
         With MSFGSettings
         
             ' Если первая колонка (имена параметров), то ничего не делаем
-            If .col = 0 Or .RowData(.row) = 0 Then
+            If .Col = 0 Or .RowData(.row) = 0 Then
             
                 Exit Sub
                 
@@ -1764,7 +1862,7 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
         With MSFGSettings
         
             ' Если первая колонка (имена параметров), то ничего не делаем
-            If .col = 0 Then Exit Sub
+            If .Col = 0 Then Exit Sub
         
             Select Case .RowData(.row)
             

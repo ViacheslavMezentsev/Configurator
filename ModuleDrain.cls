@@ -256,7 +256,7 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
        ByRef RecordDrain As TYPE_WPC_DRAIN)
 
     Dim I As Integer, J As Integer
-    Dim ParamStr As String, s As String
+    Dim ParamStr As String, S As String
     Dim StepPointer As Long
 
     With frm
@@ -344,8 +344,10 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
 '</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 16:15:01>
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
 
-        .PropertyTable.col = 1
-
+        .PropertyTable.Col = 1
+        .PropertyTable.row = 0
+        .PropertyTable.CellAlignment = flexAlignRightCenter
+        
         For I = 1 To DRAIN_PARAMETERS_COUNT
             .PropertyTable.row = I
             .PropertyTable.CellAlignment = flexAlignRightCenter
@@ -373,13 +375,13 @@ Private Sub func_ShowPropertyTableForDrain(frm As FormMain, _
                     .PropertyTable.CellBackColor = &HE0E0E0
 
                 Case IDLE_PROGNAME_FIELD:
-                    s = ""
+                    S = ""
 
                     For J = 1 To PROG_NAME_LENGTH - 1
-                        s = s & Chr$(CLng(RecordTitle.ProgName(J)))
+                        S = S & Chr$(CLng(RecordTitle.ProgName(J)))
                     Next
 
-                    .PropertyTable.Text = s
+                    .PropertyTable.Text = S
                     .PropertyTable.CellBackColor = &HE0E0E0
 
                 Case IDLE_STEP_FIELD:
@@ -517,7 +519,7 @@ Private Sub func_EditPropertyForDrain(frm As FormMain, _
 
     Dim I As Integer
     Dim StepPointer As Long
-    Dim s As String
+    Dim S As String
 
     With frm
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
@@ -575,12 +577,12 @@ Private Sub func_EditPropertyForDrain(frm As FormMain, _
                 .ComboCell.SetFocus
 
             Case IDLE_PROGNAME_FIELD:
-                s = ""
+                S = ""
 
                 For I = 1 To PROG_NAME_LENGTH - 1
-                    s = s & Chr$(CLng(RecordTitle.ProgName(I)))
+                    S = S & Chr$(CLng(RecordTitle.ProgName(I)))
                 Next
-                .TextCell.Text = s
+                .TextCell.Text = S
                 .TextCell.Visible = True
                 .TextCell.SetFocus
 
@@ -1044,4 +1046,316 @@ Public Function ValveEnabled(frm As FormMain, StepIndex As Integer, Num As Integ
     Dim RecordDrain As TYPE_WPC_DRAIN
 
     ValveEnabled = func_ValveEnabled(frm, 0&, RecordTitle, RecordDrain, StepIndex, Num)
+End Function
+
+' Функция-посредник
+Private Function func_ShowStepTableForDrain(frm As FormMain, _
+       ByVal begin_of_pointers As Long, _
+       ByRef RecordTitle As TYPE_WPC_TITLE, _
+       ByRef RecordDrain As TYPE_WPC_DRAIN, _
+       ByRef StepGrid As MSFlexGrid) As Boolean
+
+    Dim I As Integer, J As Integer
+    Dim StepPointer As Long
+    Dim S As String
+    
+    ' ------
+    ' Загружаем установки в таблицу
+    With StepGrid
+    
+        ' Отключаем перерисовку
+        .Redraw = False
+    
+        .rows = 15
+    
+        ' Очищаем таблицу установок
+        .Clear
+    
+        Dim row As Long
+    
+        .FormatString = "<Параметр|Значение"
+        .ColWidth(0) = 2 * .Width / 3
+        .ColWidth(1) = .Width / 3
+        
+        .row = 0
+        .Col = 0
+        '.CellFontBold = True
+        .CellForeColor = &HFFFFFF
+        
+        .Col = 1
+        .CellAlignment = flexAlignRightCenter
+        '.CellFontBold = True
+        .CellForeColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+    
+        row = .row
+    
+        ' Общие параметры [Программа]
+        ' -----------------------------------------------
+        .Col = 0
+        .row = Inc(row)
+        .Text = "Программа"
+        .CellFontBold = True
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        .Col = 1
+        .Text = Manager.ProgramIndex + 1
+        .CellFontBold = True
+        
+        ' -----------------------------------------------
+        .Col = 0
+        .row = Inc(row)
+        .RowData(.row) = IDLE_ENDSOUND_FIELD
+        .Text = IDLE_PARAMETER_DESCR_ENDSOUND
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_DOORUNLOCK_FIELD
+        .Text = IDLE_PARAMETER_DESCR_DOORUNLOCK
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_PROGNAME_FIELD
+        .Text = IDLE_PARAMETER_DESCR_PROGNAME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' [Шаг]
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_STEP_FIELD
+        .Text = "Шаг"
+        .CellFontBold = True
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_FUNCTION_FIELD
+        .Text = IDLE_PARAMETER_DESCR_FUNCTION
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' Специальные параметры
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = DRAIN_PAUSE_FIELD
+        .Text = DRAIN_PARAMETER_DESCR_PAUSE
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = DRAIN_DRAINGATE1_FIELD
+        .Text = DRAIN_PARAMETER_DESCR_DRAINGATE1
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = DRAIN_DRAINGATE2_FIELD
+        .Text = DRAIN_PARAMETER_DESCR_DRAINGATE2
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = DRAIN_ROTATION_FIELD
+        .Text = DRAIN_PARAMETER_DESCR_ROTATION
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = DRAIN_LEVEL_FIELD
+        .Text = DRAIN_PARAMETER_DESCR_LEVEL
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = DRAIN_ROTATIONTIME_FIELD
+        .Text = DRAIN_PARAMETER_DESCR_ROTATIONTIME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = DRAIN_PAUSETIME_FIELD
+        .Text = DRAIN_PARAMETER_DESCR_PAUSETIME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = DRAIN_DRUMSPEED1_FIELD
+        .Text = DRAIN_PARAMETER_DESCR_DRUMSPEED1
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        .Height = Settings.StepsRowHeight * .rows
+
+        StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+
+        StepPointer = Manager.DataPointer + _
+           Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+           HEADER_SIZE_IN_BYTES + _
+           (.Tag - 1) * STEP_SIZE_IN_BYTES
+
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
+        
+        .Col = 1
+        
+        For I = 1 To .rows - 1
+        
+            .row = I
+            .CellAlignment = flexAlignRightCenter
+            .CellBackColor = &HFFFFFF
+
+            Select Case .RowData(I)
+
+                ' Общие параметры
+                Case IDLE_ENDSOUND_FIELD:
+
+                    If (RecordTitle.LowBits And &H1) Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case IDLE_DOORUNLOCK_FIELD:
+
+                    If (RecordTitle.LowBits And &H2) / &H2 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case IDLE_PROGNAME_FIELD:
+                
+                    S = ""
+
+                    For J = 1 To PROG_NAME_LENGTH - 1
+                        S = S & Chr$(CLng(RecordTitle.ProgName(J)))
+                    Next
+
+                    .Text = S
+                    
+                Case IDLE_STEP_FIELD:
+                
+                    .CellFontBold = True
+                    .CellBackColor = &HF4E0E0
+                    .Text = "" & .Tag
+
+                Case IDLE_FUNCTION_FIELD:
+                
+                    .CellFontBold = True
+                    .Text = FunctionsStrings(RecordDrain.Bits And &HF)
+
+                    ' Специальные параметры
+                Case DRAIN_PAUSE_FIELD:
+
+                    If (RecordDrain.Bits And &H10) / &H10 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case DRAIN_DRAINGATE1_FIELD:
+
+                    If (RecordDrain.Bits And &H20) / &H20 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case DRAIN_DRAINGATE2_FIELD:
+
+                    If (RecordDrain.Bits And &H40) / &H40 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case DRAIN_ROTATION_FIELD:
+
+                    If (RecordDrain.Bits And &H80) / &H80 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case DRAIN_LEVEL_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordDrain.Level < Level.MinValue Or RecordDrain.Level > Level.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                    
+                    End If
+                    
+                    .Text = "" & RecordDrain.Level
+
+                Case DRAIN_ROTATIONTIME_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordDrain.RotationTime < RotationTime.MinValue Or RecordDrain.RotationTime > RotationTime.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                    
+                    End If
+                    
+                    .Text = "" & RecordDrain.RotationTime
+
+                Case DRAIN_PAUSETIME_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordDrain.PauseTime < PauseTime.MinValue Or RecordDrain.PauseTime > PauseTime.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                    
+                    End If
+                    
+                    .Text = "" & RecordDrain.PauseTime
+
+                Case DRAIN_DRUMSPEED1_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordDrain.DrumSpeed1 < DrumSpeed1.MinValue Or RecordDrain.DrumSpeed1 > DrumSpeed1.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                    
+                    End If
+                    
+                    .Text = "" & RecordDrain.DrumSpeed1
+
+                Case Else
+                
+                    .CellBackColor = &HF4E0E0
+
+            End Select
+            
+        Next
+
+        .Redraw = True
+
+    End With
+    
+End Function
+    
+Public Function ShowStepTableForDrain(ByRef frm As FormMain, ByRef StepGrid As MSFlexGrid) As Boolean
+    
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordDrain As TYPE_WPC_DRAIN
+
+    ShowStepTableForDrain = func_ShowStepTableForDrain(frm, 0&, RecordTitle, RecordDrain, StepGrid)
+    
 End Function

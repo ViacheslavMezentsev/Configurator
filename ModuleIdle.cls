@@ -91,18 +91,20 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
        ByRef RecordStep As TYPE_WPC_STEP)
 
     Dim I As Integer
-    Dim J As Integer
+    Dim j As Integer
     Dim StepPointer As Long
     Dim ParamStr As String
-    Dim s As String
+    Dim S As String
 
     With frm
+    
         ' Формируем столбик с названиями параметров
         ParamStr = ";Параметр|"
 
         For I = 1 To IDLE_PARAMETERS_COUNT
 
             Select Case I
+            
                 Case IDLE_ENDSOUND_FIELD:
                     ParamStr = ParamStr & IDLE_PARAMETER_DESCR_ENDSOUND
 
@@ -120,9 +122,11 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
 
                 Case Else
                     ParamStr = ParamStr & IDLE_PARAMETER_DESCR_UNKNOWN
+                    
             End Select
 
             If (I < IDLE_PARAMETERS_COUNT) Then ParamStr = ParamStr & "|"
+            
         Next
 
         .PropertyTable.FormatString = ParamStr
@@ -137,20 +141,25 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
 
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
 
-        .PropertyTable.col = 1
+        .PropertyTable.Col = 1
+        .PropertyTable.row = 0
+        .PropertyTable.CellAlignment = flexAlignRightCenter
 
         For I = 1 To IDLE_PARAMETERS_COUNT
+        
             .PropertyTable.row = I
 
             Select Case I
+            
                 Case IDLE_PROGNAME_FIELD:
-                    s = ""
+                
+                    S = ""
 
-                    For J = 1 To PROG_NAME_LENGTH - 1
-                        s = s & Chr$(CLng(RecordTitle.ProgName(J)))
+                    For j = 1 To PROG_NAME_LENGTH - 1
+                        S = S & Chr$(CLng(RecordTitle.ProgName(j)))
                     Next
 
-                    .PropertyTable.Text = s
+                    .PropertyTable.Text = S
                     .PropertyTable.CellBackColor = &HE0E0E0
 
                 Case IDLE_STEP_FIELD:
@@ -165,8 +174,11 @@ Private Sub func_ShowPropertyTableForIdle(frm As FormMain, _
                     .PropertyTable.CellBackColor = &H8000000F
 
             End Select
+            
         Next
+        
     End With
+    
 End Sub
 
 Public Sub ShowPropertyTableForIdle(frm As FormMain)
@@ -184,7 +196,7 @@ Private Sub func_EditPropertyForIdle(frm As FormMain, _
 
     Dim I As Integer
     Dim StepPointer As Long
-    Dim s As String
+    Dim S As String
 
     With frm
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
@@ -223,12 +235,12 @@ Private Sub func_EditPropertyForIdle(frm As FormMain, _
             Case IDLE_DOORUNLOCK_FIELD:
 
             Case IDLE_PROGNAME_FIELD:
-                s = ""
+                S = ""
 
                 For I = 1 To PROG_NAME_LENGTH - 1
-                    s = s & Chr$(CLng(RecordTitle.ProgName(I)))
+                    S = S & Chr$(CLng(RecordTitle.ProgName(I)))
                 Next
-                .TextCell.Text = s
+                .TextCell.Text = S
                 .TextCell.Visible = True
                 .TextCell.SetFocus
 

@@ -223,3 +223,8 @@ Public Type TYPE_INT_DESCRIPTION
     Dimension As String
 End Type
 
+Public Type POINTAPI
+    X As Long
+    Y As Long
+End Type
+

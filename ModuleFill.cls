@@ -206,7 +206,7 @@ Private Sub func_ShowPropertyTableForFill(frm As FormMain, _
 
     Dim I As Integer, J As Integer
     Dim StepPointer As Long
-    Dim ParamStr As String, s As String
+    Dim ParamStr As String, S As String
 
     With frm
         ' Формируем столбик с названиями параметров
@@ -279,8 +279,10 @@ Private Sub func_ShowPropertyTableForFill(frm As FormMain, _
 
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
 
-        .PropertyTable.col = 1
-
+        .PropertyTable.Col = 1
+        .PropertyTable.row = 0
+        .PropertyTable.CellAlignment = flexAlignRightCenter
+        
         For I = 1 To FILL_PARAMETERS_COUNT
             .PropertyTable.row = I
             .PropertyTable.CellAlignment = flexAlignRightCenter
@@ -308,13 +310,13 @@ Private Sub func_ShowPropertyTableForFill(frm As FormMain, _
                     .PropertyTable.CellBackColor = &HE0E0E0
 
                 Case IDLE_PROGNAME_FIELD:
-                    s = ""
+                    S = ""
 
                     For J = 1 To PROG_NAME_LENGTH - 1
-                        s = s & Chr$(CLng(RecordTitle.ProgName(J)))
+                        S = S & Chr$(CLng(RecordTitle.ProgName(J)))
                     Next
 
-                    .PropertyTable.Text = s
+                    .PropertyTable.Text = S
                     .PropertyTable.CellBackColor = &HE0E0E0
 
                 Case IDLE_STEP_FIELD:
@@ -437,9 +439,10 @@ Private Sub func_EditPropertyForFill(frm As FormMain, _
 
     Dim I As Integer
     Dim StepPointer As Long
-    Dim s As String
+    Dim S As String
 
     With frm
+    
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
         PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
 
@@ -487,12 +490,12 @@ Private Sub func_EditPropertyForFill(frm As FormMain, _
                 .ComboCell.SetFocus
 
             Case IDLE_PROGNAME_FIELD:
-                s = ""
+                S = ""
 
                 For I = 1 To PROG_NAME_LENGTH - 1
-                    s = s & Chr$(CLng(RecordTitle.ProgName(I)))
+                    S = S & Chr$(CLng(RecordTitle.ProgName(I)))
                 Next
-                .TextCell.Text = s
+                .TextCell.Text = S
                 .TextCell.Visible = True
                 .TextCell.SetFocus
 
@@ -908,4 +911,331 @@ Public Function ValveEnabled(frm As FormMain, StepIndex As Integer, Num As Integ
     Dim RecordFill As TYPE_WPC_FILL
 
     ValveEnabled = func_ValveEnabled(frm, 0&, RecordTitle, RecordFill, StepIndex, Num)
+End Function
+
+' Функция-посредник
+Private Function func_ShowStepTableForFill(frm As FormMain, _
+       ByVal begin_of_pointers As Long, _
+       ByRef RecordTitle As TYPE_WPC_TITLE, _
+       ByRef RecordFill As TYPE_WPC_FILL, _
+       ByRef StepGrid As MSFlexGrid) As Boolean
+
+    Dim I As Integer, J As Integer
+    Dim StepPointer As Long
+    Dim S As String
+    
+    ' ------
+    ' Загружаем установки в таблицу
+    With StepGrid
+    
+        ' Отключаем перерисовку
+        .Redraw = False
+    
+        .rows = 16
+    
+        ' Очищаем таблицу установок
+        .Clear
+    
+        Dim row As Long
+    
+        .FormatString = "<Параметр|Значение"
+        .ColWidth(0) = 2 * .Width / 3
+        .ColWidth(1) = .Width / 3
+        
+        .row = 0
+        .Col = 0
+        '.CellFontBold = True
+        .CellForeColor = &HFFFFFF
+        
+        .Col = 1
+        .CellAlignment = flexAlignRightCenter
+        '.CellFontBold = True
+        .CellForeColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+    
+        row = .row
+    
+        ' Общие параметры [Программа]
+        ' -----------------------------------------------
+        .Col = 0
+        .row = Inc(row)
+        .Text = "Программа"
+        .CellFontBold = True
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        .Col = 1
+        .Text = Manager.ProgramIndex + 1
+        .CellFontBold = True
+        
+        ' -----------------------------------------------
+        .Col = 0
+        .row = Inc(row)
+        .RowData(.row) = IDLE_ENDSOUND_FIELD
+        .Text = IDLE_PARAMETER_DESCR_ENDSOUND
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_DOORUNLOCK_FIELD
+        .Text = IDLE_PARAMETER_DESCR_DOORUNLOCK
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_PROGNAME_FIELD
+        .Text = IDLE_PARAMETER_DESCR_PROGNAME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' [Шаг]
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_STEP_FIELD
+        .Text = "Шаг"
+        .CellFontBold = True
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_FUNCTION_FIELD
+        .Text = IDLE_PARAMETER_DESCR_FUNCTION
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' Специальные параметры
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = FILL_PAUSE_FIELD
+        .Text = FILL_PARAMETER_DESCR_PAUSE
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = FILL_COLDWATERGATE_FIELD
+        .Text = FILL_PARAMETER_DESCR_COLDWATERGATE
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = FILL_HOTWATERGATE_FIELD
+        .Text = FILL_PARAMETER_DESCR_HOTWATERGATE
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = FILL_RECYCLEDWATERGATE_FIELD
+        .Text = FILL_PARAMETER_DESCR_RECYCLEDWATERGATE
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = FILL_ROTATION_FIELD
+        .Text = FILL_PARAMETER_DESCR_ROTATION
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = FILL_LEVEL_FIELD
+        .Text = FILL_PARAMETER_DESCR_LEVEL
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = FILL_ROTATIONTIME_FIELD
+        .Text = FILL_PARAMETER_DESCR_ROTATIONTIME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = FILL_PAUSETIME_FIELD
+        .Text = FILL_PARAMETER_DESCR_PAUSETIME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = FILL_DRUMSPEED_FIELD
+        .Text = FILL_PARAMETER_DESCR_DRUMSPEED
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        .Height = Settings.StepsRowHeight * .rows
+
+        StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+
+        StepPointer = Manager.DataPointer + _
+           Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+           HEADER_SIZE_IN_BYTES + _
+           (.Tag - 1) * STEP_SIZE_IN_BYTES
+
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
+        
+        .Col = 1
+        
+        For I = 1 To .rows - 1
+        
+            .row = I
+            .CellAlignment = flexAlignRightCenter
+            .CellBackColor = &HFFFFFF
+
+            Select Case .RowData(I)
+            
+                    ' Общие параметры
+                Case IDLE_ENDSOUND_FIELD:
+
+                    If (RecordTitle.LowBits And &H1) Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case IDLE_DOORUNLOCK_FIELD:
+
+                    If (RecordTitle.LowBits And &H2) / &H2 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case IDLE_PROGNAME_FIELD:
+                    
+                    S = ""
+
+                    For J = 1 To PROG_NAME_LENGTH - 1
+                        S = S & Chr$(CLng(RecordTitle.ProgName(J)))
+                    Next
+
+                    .Text = S
+                
+                Case IDLE_STEP_FIELD:
+                    
+                    .CellFontBold = True
+                    .CellBackColor = &HF4E0E0
+                    .Text = "" & .Tag
+
+                Case IDLE_FUNCTION_FIELD:
+                    
+                    .CellFontBold = True
+                    .Text = FunctionsStrings(RecordFill.Bits And &HF)
+
+                    ' Специальные параметры
+                Case FILL_PAUSE_FIELD:
+
+                    If (RecordFill.Bits And &H10) / &H10 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case FILL_COLDWATERGATE_FIELD:
+
+                    If (RecordFill.Bits And &H20) / &H20 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case FILL_HOTWATERGATE_FIELD:
+
+                    If (RecordFill.Bits And &H40) / &H40 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case FILL_RECYCLEDWATERGATE_FIELD:
+
+                    If (RecordFill.Bits And &H80) / &H80 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case FILL_ROTATION_FIELD:
+
+                    If (RecordFill.Bits And &H100) / &H100 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case FILL_LEVEL_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordFill.Level < Level.MinValue Or RecordFill.Level > Level.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                        
+                    End If
+                    
+                    .Text = "" & RecordFill.Level
+
+                Case FILL_ROTATIONTIME_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordFill.RotationTime < RotationTime.MinValue Or RecordFill.RotationTime > RotationTime.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                        
+                    End If
+                    
+                    .Text = "" & RecordFill.RotationTime
+
+                Case FILL_PAUSETIME_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordFill.PauseTime < PauseTime.MinValue Or RecordFill.PauseTime > PauseTime.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                        
+                    End If
+                    
+                    .Text = "" & RecordFill.PauseTime
+
+                Case FILL_DRUMSPEED_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordFill.DrumSpeed < DrumSpeed.MinValue Or RecordFill.DrumSpeed > DrumSpeed.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                        
+                    End If
+                    
+                    .Text = "" & RecordFill.DrumSpeed
+
+                Case Else
+                
+                    .CellBackColor = &HF4E0E0
+
+            End Select
+            
+        Next
+
+        .Redraw = True
+
+    End With
+    
+End Function
+
+Public Function ShowStepTableForFill(ByRef frm As FormMain, ByRef StepGrid As MSFlexGrid) As Boolean
+    
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordFill As TYPE_WPC_FILL
+
+    ShowStepTableForFill = func_ShowStepTableForFill(frm, 0&, RecordTitle, RecordFill, StepGrid)
+    
 End Function
