@@ -156,6 +156,25 @@ Public Const SM_PENWINDOWS = 41
 Public Const SM_DBCSENABLED = 42
 Public Const SM_CMOUSEBUTTONS = 43
 
+'/* Ternary raster operations */
+'/* dest = source                   */
+Public Const SRCCOPY = &HCC0020
+
+'Public Const SRCPAINT            (DWORD)0x00EE0086 /* dest = source OR dest           */
+'Public Const SRCAND              (DWORD)0x008800C6 /* dest = source AND dest          */
+'Public Const SRCINVERT           (DWORD)0x00660046 /* dest = source XOR dest          */
+'Public Const SRCERASE            (DWORD)0x00440328 /* dest = source AND (NOT dest )   */
+'Public Const NOTSRCCOPY          (DWORD)0x00330008 /* dest = (NOT source)             */
+'Public Const NOTSRCERASE         (DWORD)0x001100A6 /* dest = (NOT src) AND (NOT dest) */
+'Public Const MERGECOPY           (DWORD)0x00C000CA /* dest = (source AND pattern)     */
+'Public Const MERGEPAINT          (DWORD)0x00BB0226 /* dest = (NOT source) OR dest     */
+'Public Const PATCOPY             (DWORD)0x00F00021 /* dest = pattern                  */
+'Public Const PATPAINT            (DWORD)0x00FB0A09 /* dest = DPSnoo                   */
+'Public Const PATINVERT           (DWORD)0x005A0049 /* dest = pattern XOR dest         */
+'Public Const DSTINVERT           (DWORD)0x00550009 /* dest = (NOT dest)               */
+'Public Const BLACKNESS           (DWORD)0x00000042 /* dest = BLACK                    */
+'Public Const WHITENESS           (DWORD)0x00FF0062 /* dest = WHITE                    */
+
 ' Local system uses a modem to connect to the Internet
 Public Const INTERNET_CONNECTION_MODEM = 1
 
@@ -372,21 +391,21 @@ Public Declare Sub ZeroMemory _
 ' ***********************************
 
 Public Declare Function SetWindowsHookEx _
-               Lib "User32" _
+               Lib "user32" _
                Alias "SetWindowsHookExA" (ByVal idHook As Long, _
                                           ByVal lpfn As Long, _
                                           ByVal hmod As Long, _
                                           ByVal dwThreadId As Long) As Long
 
 Public Declare Function CallNextHookEx _
-               Lib "User32" (ByVal hHook As Long, _
+               Lib "user32" (ByVal hHook As Long, _
                              ByVal ncode As Long, _
                              ByVal wParam As Long, _
                              lParam As Any) As Long
 
-Public Declare Function UnhookWindowsHookEx Lib "User32" (ByVal hHook As Long) As Long
+Public Declare Function UnhookWindowsHookEx Lib "user32" (ByVal hHook As Long) As Long
 
-Public Declare Function GetAsyncKeyState Lib "User32" (ByVal vKey As Long) As Integer
+Public Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 
 ' ***********************************
 ' *  ‘”Õ ÷»» ƒÀﬂ –¿¡Œ“€ — UNICODE
@@ -468,17 +487,60 @@ Public Declare Function GetUserName _
 Public Declare Function GetSystemMetrics Lib "user32.dll" (ByVal nIndex As Long) As Long
 
 Public Declare Sub keybd_event _
-               Lib "User32" (ByVal bVk As Byte, _
+               Lib "user32" (ByVal bVk As Byte, _
                              ByVal bScan As Byte, _
                              ByVal dwFlags As Long, _
                              ByVal dwExtraInfo As Long)
 
 Public Declare Function VkKeyScan _
-               Lib "User32" _
+               Lib "user32" _
                Alias "VkKeyScanA" (ByVal cChar As Byte) As Integer
  
 Public Declare Function MapVirtualKey _
-               Lib "User32" _
+               Lib "user32" _
                Alias "MapVirtualKeyA" (ByVal wCode As Long, _
                                        ByVal wMapType As Long) As Long
 
+Public Declare Function GetDC Lib "user32.dll" (ByVal hWnd As Long) As Long
+     
+Public Declare Function BitBlt _
+               Lib "gdi32.dll" (ByVal hDestDC As Long, _
+                                ByVal x As Long, _
+                                ByVal y As Long, _
+                                ByVal nWidth As Long, _
+                                ByVal nHeight As Long, _
+                                ByVal hSrcDC As Long, _
+                                ByVal xSrc As Long, _
+                                ByVal ySrc As Long, _
+                                ByVal dwRop As Long) As Long
+     
+Public Declare Function PlgBlt _
+               Lib "gdi32.dll" (ByVal hdcDest As Long, _
+                                ByRef lpPoint As POINTAPI, _
+                                ByVal hdcSrc As Long, _
+                                ByVal nXSrc As Long, _
+                                ByVal nYSrc As Long, _
+                                ByVal nWidth As Long, _
+                                ByVal nHeight As Long, _
+                                ByVal hbmMask As Long, _
+                                ByVal xMask As Long, _
+                                ByVal yMask As Long) As Long
+
+Public Declare Function ReleaseDC _
+               Lib "user32.dll" (ByVal hWnd As Long, _
+                                 ByVal hdc As Long) As Long
+
+Public Declare Function Polyline _
+               Lib "gdi32" (ByVal hdc As Long, _
+                            lpPoint As POINTAPI, _
+                            ByVal nCount As Long) As Long
+
+Public Declare Function LineTo Lib "gdi32" (ByVal hdc As Long, _
+    ByVal x As Long, ByVal y As Long) As Long
+
+Public Declare Function MoveToEx Lib "gdi32" (ByVal hdc As Long, _
+    ByVal x As Long, ByVal y As Long, lpPoint As POINTAPI) As Long
+
+Public Declare Function CreatePen Lib "gdi32" (ByVal nPenStyle As Long, ByVal nWidth As Long, ByVal crColor As Long) As Long
+
+Public Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long

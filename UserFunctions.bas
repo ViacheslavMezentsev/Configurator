@@ -25,11 +25,13 @@ Public Sub Dec(ByRef Variable As Long, Optional Amount As Long = 1)
 
 End Sub
 
-Public Sub Inc(ByRef Variable As Long, Optional Amount As Long = 1)
+Public Function Inc(ByRef Variable As Long, Optional Amount As Long = 1) As Long
 
     Variable = Variable + Amount
+    
+    Inc = Variable
 
-End Sub
+End Function
 
 Public Sub SetModified(Value As Boolean)
 
@@ -98,9 +100,9 @@ End Function
 
 Public Function GetCellIndex(MSFlexGrid As MSFlexGrid, _
                              row As Integer, _
-                             col As Integer) As Integer
+                             Col As Integer) As Integer
     
-    GetCellIndex = row * MSFlexGrid.Cols + col
+    GetCellIndex = row * MSFlexGrid.Cols + Col
 
 End Function
 
@@ -187,19 +189,19 @@ Public Function getGUID() As String
     '</EhHeader>
 
     Dim buffer(0 To 15) As Byte
-    Dim s As String
+    Dim S As String
     Dim Ret As Long
 
-    s = String$(128, 0)
+    S = String$(128, 0)
 
     ' получает численный код
     Ret = CoCreateGuid(buffer(0))
     
     ' преобразуем его в текст,
     ' используя недокументированную функцию StrPtr
-    Ret = StringFromGUID2(buffer(0), StrPtr(s), 128)
+    Ret = StringFromGUID2(buffer(0), StrPtr(S), 128)
 
-    getGUID = Left$(s, Ret - 1) ' отсекаем "хвост"
+    getGUID = Left$(S, Ret - 1) ' отсекаем "хвост"
 
     '<EhFooter>
     Exit Function
@@ -412,9 +414,9 @@ End Function
 ' Note that we swap the low order bytes in a long so that
 ' we don't have to worry about overflow problems
 '
-Public Function SwapInteger(ByVal i As Long) As Long
+Public Function SwapInteger(ByVal I As Long) As Long
 
-    SwapInteger = ((i \ &H100) And &HFF) Or ((i And &HFF) * &H100&)
+    SwapInteger = ((I \ &H100) And &HFF) Or ((I And &HFF) * &H100&)
 
 End Function
 
@@ -550,7 +552,7 @@ Public Function GetKeyValue(KeyRoot As Long, _
                             SubKeyRef As String, _
                             ByRef KeyVal As String) As Boolean
 
-    Dim i As Long                                           ' Loop Counter
+    Dim I As Long                                           ' Loop Counter
     Dim rc As Long                                          ' Return Code
     Dim hKey As Long                                        ' Handle To An Open Registry Key
     Dim hDepth As Long                                      '
@@ -597,9 +599,9 @@ Public Function GetKeyValue(KeyRoot As Long, _
 
         Case REG_DWORD                                          ' Double Word Registry Key Data Type
 
-            For i = Len(tmpVal) To 1 Step -1                    ' Convert Each Bit
+            For I = Len(tmpVal) To 1 Step -1                    ' Convert Each Bit
 
-                KeyVal = KeyVal + Hex$(Asc(Mid$(tmpVal, i, 1)))   ' Build Value Char. By Char.
+                KeyVal = KeyVal + Hex$(Asc(Mid$(tmpVal, I, 1)))   ' Build Value Char. By Char.
             Next
             KeyVal = Format$("&h" + KeyVal)                     ' Convert Double Word To String
 
@@ -690,7 +692,7 @@ Public Function GetFileVersionInformation(ByRef pstrFieName As String, _
     Dim lRet                As Long
     Dim Lang_Charset_String As String
     Dim HexNumber           As Long
-    Dim i                   As Integer
+    Dim I                   As Integer
     Dim strTemp             As String
     
     'Clear the Buffer tFileInfo
@@ -763,11 +765,11 @@ Public Function GetFileVersionInformation(ByRef pstrFieName As String, _
     Dim buffer As String
 
     '<Modified by: Project Administrator at 7.10.2011-21:01:35 on machine: ALPHA>
-    For i = 2 To 2
+    For I = 2 To 2
     '</Modified by: Project Administrator at 7.10.2011-21:01:35 on machine: ALPHA>
     
         buffer = String(255, 0)
-        strTemp = "\StringFileInfo\" & Lang_Charset_String & "\" & strVersionInfo(i)
+        strTemp = "\StringFileInfo\" & Lang_Charset_String & "\" & strVersionInfo(I)
         lRet = VerQueryValue(sBuffer(0), strTemp, lVerPointer, lBufferLen)
 
         If lRet = 0 Then
@@ -780,7 +782,7 @@ Public Function GetFileVersionInformation(ByRef pstrFieName As String, _
         lstrcpy buffer, lVerPointer
         buffer = Mid$(buffer, 1, InStr(buffer, vbNullChar) - 1)
 
-        Select Case i
+        Select Case I
 
             Case 0
 
@@ -816,7 +818,7 @@ Public Function GetFileVersionInformation(ByRef pstrFieName As String, _
 
         End Select
 
-    Next i
+    Next I
 
     GetFileVersionInformation = eOK
     

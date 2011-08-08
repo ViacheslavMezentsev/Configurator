@@ -32,6 +32,7 @@ Begin VB.Form FormAbout
       ScaleWidth      =   768
       TabIndex        =   11
       TabStop         =   0   'False
+      ToolTipText     =   "ООО НПФ ""Авторские технологии"""
       Top             =   2352
       Width           =   768
    End
@@ -126,6 +127,7 @@ Begin VB.Form FormAbout
       MouseIcon       =   "FormAbout.frx":32AAB
       MousePointer    =   99  'Custom
       TabIndex        =   8
+      ToolTipText     =   "Щёлкните, чтобы написать письмо автору"
       Top             =   1848
       Width           =   3684
    End
@@ -148,6 +150,7 @@ Begin VB.Form FormAbout
       MouseIcon       =   "FormAbout.frx":48AC5
       MousePointer    =   99  'Custom
       TabIndex        =   7
+      ToolTipText     =   "Щёлкните, чтобы написать письмо автору"
       Top             =   1560
       Width           =   2688
    End
@@ -207,6 +210,7 @@ Begin VB.Form FormAbout
       Height          =   252
       Left            =   1320
       TabIndex        =   5
+      ToolTipText     =   "Щёлкните для копирования в буфер"
       Top             =   480
       Width           =   660
    End
@@ -268,6 +272,7 @@ Begin VB.Form FormAbout
       MouseIcon       =   "FormAbout.frx":5EADF
       MousePointer    =   99  'Custom
       TabIndex        =   9
+      ToolTipText     =   "Щёлкните, чтобы перейти на сайт"
       Top             =   2400
       Width           =   2868
    End

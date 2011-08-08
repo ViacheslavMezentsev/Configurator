@@ -179,7 +179,7 @@ Private Sub func_ShowPropertyTableForWashOrRinsOrJolt(frm As FormMain, _
     Dim J As Integer
     Dim I As Integer
     Dim ParamStr As String
-    Dim s As String
+    Dim S As String
     Dim StepPointer As Long
 
     With frm
@@ -244,7 +244,9 @@ Private Sub func_ShowPropertyTableForWashOrRinsOrJolt(frm As FormMain, _
 
         PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
 
-        .PropertyTable.col = 1
+        .PropertyTable.Col = 1
+        .PropertyTable.row = 0
+        .PropertyTable.CellAlignment = flexAlignRightCenter
 
         For I = 1 To WASH_PARAMETERS_COUNT
             .PropertyTable.row = I
@@ -273,13 +275,13 @@ Private Sub func_ShowPropertyTableForWashOrRinsOrJolt(frm As FormMain, _
                     .PropertyTable.CellBackColor = &HE0E0E0
 
                 Case IDLE_PROGNAME_FIELD:
-                    s = ""
+                    S = ""
 
                     For J = 1 To PROG_NAME_LENGTH - 1
-                        s = s & Chr$(CLng(RecordTitle.ProgName(J)))
+                        S = S & Chr$(CLng(RecordTitle.ProgName(J)))
                     Next
 
-                    .PropertyTable.Text = s
+                    .PropertyTable.Text = S
                     .PropertyTable.CellBackColor = &HE0E0E0
 
                 Case IDLE_STEP_FIELD:
@@ -378,7 +380,7 @@ Private Sub func_EditPropertyForWashOrRinsOrJolt(frm As FormMain, _
 
     Dim I As Integer
     Dim StepPointer As Long
-    Dim s As String
+    Dim S As String
 
     With frm
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
@@ -428,12 +430,12 @@ Private Sub func_EditPropertyForWashOrRinsOrJolt(frm As FormMain, _
                 .ComboCell.SetFocus
 
             Case IDLE_PROGNAME_FIELD:
-                s = ""
+                S = ""
 
                 For I = 1 To PROG_NAME_LENGTH - 1
-                    s = s & Chr$(CLng(RecordTitle.ProgName(I)))
+                    S = S & Chr$(CLng(RecordTitle.ProgName(I)))
                 Next
-                .TextCell.Text = s
+                .TextCell.Text = S
                 .TextCell.Visible = True
                 .TextCell.SetFocus
 
@@ -807,4 +809,286 @@ Public Function ValveEnabled(frm As FormMain, StepIndex As Integer, Num As Integ
     Dim RecordWash As TYPE_WPC_WASH
 
     ValveEnabled = func_ValveEnabled(frm, 0&, RecordTitle, RecordWash, StepIndex, Num)
+End Function
+
+' Функция-посредник
+Private Function func_ShowStepTableForWashOrRinsOrJolt(frm As FormMain, _
+       ByVal begin_of_pointers As Long, _
+       ByRef RecordTitle As TYPE_WPC_TITLE, _
+       ByRef RecordWash As TYPE_WPC_WASH, _
+       ByRef StepGrid As MSFlexGrid) As Boolean
+
+    Dim I As Integer, J As Integer
+    Dim StepPointer As Long
+    Dim S As String
+
+    ' ------
+    ' Загружаем установки в таблицу
+    With StepGrid
+    
+        ' Отключаем перерисовку
+        .Redraw = False
+    
+        .rows = 13
+    
+        ' Очищаем таблицу установок
+        .Clear
+    
+        Dim row As Long
+    
+        .FormatString = "<Параметр|Значение"
+        .ColWidth(0) = 2 * .Width / 3
+        .ColWidth(1) = .Width / 3
+        
+        .row = 0
+        .Col = 0
+        '.CellFontBold = True
+        .CellForeColor = &HFFFFFF
+        
+        .Col = 1
+        .CellAlignment = flexAlignRightCenter
+        '.CellFontBold = True
+        .CellForeColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+    
+        row = .row
+    
+        ' Общие параметры [Программа]
+        ' -----------------------------------------------
+        .Col = 0
+        .row = Inc(row)
+        .Text = "Программа"
+        .CellFontBold = True
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        .Col = 1
+        .Text = Manager.ProgramIndex + 1
+        .CellFontBold = True
+        
+        ' -----------------------------------------------
+        .Col = 0
+        .row = Inc(row)
+        .RowData(.row) = IDLE_ENDSOUND_FIELD
+        .Text = IDLE_PARAMETER_DESCR_ENDSOUND
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_DOORUNLOCK_FIELD
+        .Text = IDLE_PARAMETER_DESCR_DOORUNLOCK
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_PROGNAME_FIELD
+        .Text = IDLE_PARAMETER_DESCR_PROGNAME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' [Шаг]
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_STEP_FIELD
+        .Text = "Шаг"
+        .CellFontBold = True
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = IDLE_FUNCTION_FIELD
+        .Text = IDLE_PARAMETER_DESCR_FUNCTION
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' Специальные параметры
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = WASH_PAUSE_FIELD
+        .Text = WASH_PARAMETER_DESCR_PAUSE
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = WASH_ROTATION_FIELD
+        .Text = WASH_PARAMETER_DESCR_ROTATION
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = WASH_TIME_FIELD
+        .Text = WASH_PARAMETER_DESCR_TIME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = WASH_ROTATIONTIME_FIELD
+        .Text = WASH_PARAMETER_DESCR_ROTATIONTIME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = WASH_PAUSETIME_FIELD
+        .Text = WASH_PARAMETER_DESCR_PAUSETIME
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        ' -----------------------------------------------
+        .row = Inc(row)
+        .RowData(.row) = WASH_DRUMSPEED_FIELD
+        .Text = WASH_PARAMETER_DESCR_DRUMSPEED
+        .CellBackColor = &HFFFFFF
+        .RowHeight(.row) = Settings.StepsRowHeight
+        
+        .Height = Settings.StepsRowHeight * .rows
+
+        StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
+        PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
+
+        StepPointer = Manager.DataPointer + _
+           Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES + _
+           HEADER_SIZE_IN_BYTES + _
+           (.Tag - 1) * STEP_SIZE_IN_BYTES
+
+        PutMem4 VarPtr(begin_of_pointers) + 8, ByVal StepPointer
+        
+        .Col = 1
+        
+        For I = 1 To .rows - 1
+        
+            .row = I
+            .CellAlignment = flexAlignRightCenter
+            .CellBackColor = &HFFFFFF
+
+            Select Case .RowData(I)
+            
+                ' Общие параметры
+                Case IDLE_ENDSOUND_FIELD:
+
+                    If (RecordTitle.LowBits And &H1) Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case IDLE_DOORUNLOCK_FIELD:
+
+                    If (RecordTitle.LowBits And &H2) / &H2 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case IDLE_PROGNAME_FIELD:
+                
+                    S = ""
+
+                    For J = 1 To PROG_NAME_LENGTH - 1
+                        S = S & Chr$(CLng(RecordTitle.ProgName(J)))
+                    Next
+
+                    .Text = S
+
+                Case IDLE_STEP_FIELD:
+                
+                    .CellFontBold = True
+                    .CellBackColor = &HF4E0E0
+                    .Text = "" & .Tag
+
+                Case IDLE_FUNCTION_FIELD:
+                
+                    .CellFontBold = True
+                    .Text = FunctionsStrings(RecordWash.Bits And &HF)
+
+                    ' Специальные параметры
+                Case WASH_PAUSE_FIELD:
+
+                    If (RecordWash.Bits And &H10) / &H10 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case WASH_ROTATION_FIELD:
+
+                    If (RecordWash.Bits And &H20) / &H20 Then
+                        .Text = STRING_YES
+                    Else
+                        .Text = STRING_NO
+                    End If
+
+                Case WASH_TIME_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordWash.Time < Time.MinValue Or RecordWash.Time > Time.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                    
+                    End If
+                    
+                    .Text = "" & RecordWash.Time
+
+                Case WASH_ROTATIONTIME_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordWash.RotationTime < RotationTime.MinValue Or RecordWash.RotationTime > RotationTime.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                    
+                    End If
+                    
+                    .Text = "" & RecordWash.RotationTime
+
+                Case WASH_PAUSETIME_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordWash.PauseTime < PauseTime.MinValue Or RecordWash.PauseTime > PauseTime.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                    
+                    End If
+                    
+                    .Text = "" & RecordWash.PauseTime
+
+                Case WASH_DRUMSPEED_FIELD:
+
+                    If LimitsLoaded Then
+
+                        If RecordWash.DrumSpeed < DrumSpeed.MinValue Or RecordWash.DrumSpeed > DrumSpeed.MaxValue Then
+                            .CellBackColor = &H8080FF
+                        End If
+                    
+                    End If
+                    
+                    .Text = "" & RecordWash.DrumSpeed
+
+                Case Else
+                
+                    .CellBackColor = &HF4E0E0
+
+            End Select
+            
+        Next
+
+        .Redraw = True
+
+    End With
+    
+End Function
+
+Public Function ShowStepTableForWashOrRinsOrJolt(ByRef frm As FormMain, ByRef StepGrid As MSFlexGrid) As Boolean
+    
+    Dim RecordTitle As TYPE_WPC_TITLE
+    Dim RecordWash As TYPE_WPC_WASH
+
+    ShowStepTableForWashOrRinsOrJolt = func_ShowStepTableForWashOrRinsOrJolt(frm, 0&, RecordTitle, RecordWash, StepGrid)
+    
 End Function

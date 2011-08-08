@@ -2,6 +2,7 @@ VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormMain 
    Caption         =   "Конфигуратор УП"
    ClientHeight    =   7128
@@ -343,7 +344,7 @@ Begin VB.Form FormMain
       EndProperty
    End
    Begin VB.Frame FrameMain 
-      Caption         =   "Шаги"
+      BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   7.8
@@ -358,6 +359,51 @@ Begin VB.Form FormMain
       TabIndex        =   11
       Top             =   480
       Width           =   3972
+      Begin VB.Frame FramePicsView 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BorderStyle     =   0  'None
+         ForeColor       =   &H80000008&
+         Height          =   1092
+         Left            =   120
+         TabIndex        =   33
+         Top             =   2280
+         Visible         =   0   'False
+         Width           =   3492
+         Begin MSFlexGridLib.MSFlexGrid StepGrid 
+            Height          =   612
+            Index           =   0
+            Left            =   -1440
+            TabIndex        =   34
+            Top             =   120
+            Visible         =   0   'False
+            Width           =   4620
+            _ExtentX        =   8149
+            _ExtentY        =   1080
+            _Version        =   393216
+            FixedCols       =   0
+            BackColor       =   16048352
+            BackColorFixed  =   16040128
+            BackColorBkg    =   16048352
+            GridColor       =   16048352
+            GridColorFixed  =   16040128
+            AllowBigSelection=   0   'False
+            HighLight       =   0
+            GridLinesFixed  =   1
+            ScrollBars      =   0
+            AllowUserResizing=   1
+            Appearance      =   0
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "Tahoma"
+               Size            =   9
+               Charset         =   204
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+         End
+      End
       Begin VB.Frame FrameCodeView 
          BorderStyle     =   0  'None
          Height          =   1452
@@ -365,7 +411,7 @@ Begin VB.Form FormMain
          TabIndex        =   16
          Top             =   3480
          Visible         =   0   'False
-         Width           =   3732
+         Width           =   3132
          Begin VB.TextBox TextByte 
             Alignment       =   2  'Center
             BorderStyle     =   0  'None
@@ -389,9 +435,9 @@ Begin VB.Form FormMain
          End
          Begin MSFlexGridLib.MSFlexGrid CodeView 
             Height          =   1092
-            Left            =   0
+            Left            =   120
             TabIndex        =   2
-            Top             =   0
+            Top             =   120
             Width           =   2772
             _ExtentX        =   4890
             _ExtentY        =   1926
@@ -412,12 +458,13 @@ Begin VB.Form FormMain
          End
       End
       Begin VB.Frame FrameGridView 
+         BackColor       =   &H00F4E0E0&
          BorderStyle     =   0  'None
-         Height          =   2892
+         Height          =   1692
          Left            =   120
          TabIndex        =   15
-         Top             =   240
-         Width           =   3732
+         Top             =   480
+         Width           =   2892
          Begin VB.PictureBox PictureHSelRight 
             AutoRedraw      =   -1  'True
             BackColor       =   &H8000000D&
@@ -532,24 +579,78 @@ Begin VB.Form FormMain
          End
          Begin MSFlexGridLib.MSFlexGrid StepsView 
             Height          =   1452
-            Left            =   0
+            Left            =   120
             TabIndex        =   1
-            Top             =   0
+            Top             =   108
             Width           =   2292
             _ExtentX        =   4043
             _ExtentY        =   2561
             _Version        =   393216
             Rows            =   16
             Cols            =   81
+            GridColorFixed  =   16744576
             AllowBigSelection=   0   'False
             HighLight       =   0
             BorderStyle     =   0
             Appearance      =   0
          End
       End
+      Begin MSComCtl2.FlatScrollBar VScrollPicsView 
+         Height          =   1092
+         Left            =   3600
+         TabIndex        =   35
+         Top             =   2280
+         Visible         =   0   'False
+         Width           =   252
+         _ExtentX        =   445
+         _ExtentY        =   1926
+         _Version        =   393216
+         LargeChange     =   10
+         Max             =   100
+         Orientation     =   1245184
+      End
+      Begin VB.Label LabelFrameMain 
+         AutoSize        =   -1  'True
+         BackColor       =   &H00F4C0C0&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Шаги"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   204
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   192
+         Left            =   120
+         TabIndex        =   32
+         Top             =   120
+         Width           =   1020
+      End
+      Begin VB.Shape ShapeFrameMainCaption 
+         BackColor       =   &H00F4C0C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FF8080&
+         Height          =   252
+         Left            =   0
+         Top             =   120
+         Width           =   3852
+      End
+      Begin VB.Shape ShapeFrameMain 
+         BackColor       =   &H00F4E0E0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FF8080&
+         Height          =   4932
+         Left            =   0
+         Top             =   120
+         Width           =   3888
+      End
    End
    Begin VB.Frame FrameLeft 
-      Caption         =   "Программы"
+      BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   7.8
@@ -576,16 +677,20 @@ Begin VB.Form FormMain
          Width           =   732
       End
       Begin MSFlexGridLib.MSFlexGrid ListPrograms 
-         Height          =   4332
-         Left            =   120
+         Height          =   4008
+         Left            =   240
          TabIndex        =   0
-         Top             =   240
-         Width           =   1932
-         _ExtentX        =   3408
-         _ExtentY        =   7641
+         Top             =   516
+         Width           =   1680
+         _ExtentX        =   2963
+         _ExtentY        =   7070
          _Version        =   393216
          Cols            =   1
          FixedCols       =   0
+         ForeColorFixed  =   -2147483640
+         BackColorBkg    =   16048352
+         GridColor       =   16048352
+         GridColorFixed  =   16744576
          AllowBigSelection=   0   'False
          HighLight       =   0
          ScrollBars      =   2
@@ -593,9 +698,47 @@ Begin VB.Form FormMain
          AllowUserResizing=   1
          BorderStyle     =   0
       End
+      Begin VB.Label LabelListPrograms 
+         BackColor       =   &H00F4C0C0&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Программы"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   204
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   192
+         Left            =   240
+         TabIndex        =   30
+         Top             =   120
+         Width           =   1020
+      End
+      Begin VB.Shape ShapeLabelListPrograms 
+         BackColor       =   &H00FF8080&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FF8080&
+         Height          =   252
+         Left            =   240
+         Top             =   120
+         Width           =   1692
+      End
+      Begin VB.Shape ShapeListPrograms 
+         BackColor       =   &H00F4E0E0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FF8080&
+         Height          =   4596
+         Left            =   48
+         Top             =   48
+         Width           =   2088
+      End
    End
    Begin VB.Frame FrameRight 
-      Caption         =   "Свойства"
+      BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   7.8
@@ -634,14 +777,18 @@ Begin VB.Form FormMain
          Width           =   732
       End
       Begin MSFlexGridLib.MSFlexGrid PropertyTable 
-         Height          =   3852
+         Height          =   732
          Left            =   120
          TabIndex        =   3
-         Top             =   240
-         Width           =   2052
-         _ExtentX        =   3620
-         _ExtentY        =   6795
+         Top             =   600
+         Width           =   1932
+         _ExtentX        =   3408
+         _ExtentY        =   1291
          _Version        =   393216
+         ForeColorFixed  =   -2147483640
+         BackColorBkg    =   16048352
+         GridColor       =   16048352
+         GridColorFixed  =   16744576
          AllowBigSelection=   0   'False
          HighLight       =   0
          AllowUserResizing=   1
@@ -660,7 +807,7 @@ Begin VB.Form FormMain
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   552
+         Height          =   312
          Left            =   1200
          TabIndex        =   17
          Top             =   4320
@@ -670,13 +817,52 @@ Begin VB.Form FormMain
       Begin VB.Shape ShapeDescription 
          BackColor       =   &H00F4E0E0&
          BackStyle       =   1  'Opaque
-         BorderColor     =   &H00FFFFFF&
+         BorderColor     =   &H00FF8080&
          Height          =   564
          Left            =   1200
          Shape           =   4  'Rounded Rectangle
-         Top             =   4332
+         Top             =   4200
          Visible         =   0   'False
          Width           =   960
+      End
+      Begin VB.Label LabelFrameRight 
+         AutoSize        =   -1  'True
+         BackColor       =   &H00F4C0C0&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Свойства"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   204
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   192
+         Left            =   120
+         TabIndex        =   31
+         Top             =   240
+         Width           =   1020
+      End
+      Begin VB.Shape ShapeFrameRightCaption 
+         BackColor       =   &H00F4C0C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FF8080&
+         Height          =   252
+         Left            =   120
+         Top             =   240
+         Width           =   1692
+      End
+      Begin VB.Shape ShapeFrameRight 
+         BackColor       =   &H00F4E0E0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FF8080&
+         Height          =   4236
+         Left            =   0
+         Top             =   120
+         Width           =   2208
       End
    End
    Begin MSComctlLib.ImageList ImageList1 
@@ -1004,7 +1190,7 @@ Option Explicit
 
 '**
 '@rem Режим отображения средней панели
-Private ViewMode As Integer
+Private ViewMode As Long
 '**
 '@rem Режимы отображения таблицы шагов
 Private StepsViewMode As Integer
@@ -1522,8 +1708,8 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     
     Dim ActiveObject As Object
         
-    FrameLeft.Top = Me.ScaleTop + Toolbar.Top + Toolbar.Height
-    FrameLeft.Height = Me.ScaleHeight - (StatusBar.Height + Toolbar.Top + Toolbar.Height)
+    FrameLeft.Top = Me.ScaleTop + Toolbar.Top + Toolbar.Height + 120
+    FrameLeft.Height = Me.ScaleHeight - (StatusBar.Height + Toolbar.Top + Toolbar.Height + 120)
         
     SplitterLeft.Left = FrameLeft.Left + FrameLeft.Width
     SplitterLeft.Top = FrameLeft.Top + 100
@@ -1566,6 +1752,33 @@ Private Sub RefreshFrameLeft()
     On Error GoTo RefreshFrameLeft_Err
     '</EhHeader>
     
+    ShapeListPrograms.Top = 0
+    ShapeListPrograms.Left = 0
+    ShapeListPrograms.Width = FrameLeft.Width
+    ShapeListPrograms.Height = FrameLeft.Height
+    
+    ShapeLabelListPrograms.Top = 0
+    ShapeLabelListPrograms.Left = 0
+    ShapeLabelListPrograms.Width = ShapeListPrograms.Width
+    
+    LabelListPrograms.AutoSize = True
+    LabelListPrograms.FontSize = Settings.StepsViewFontSize
+    LabelListPrograms.AutoSize = False
+    
+    LabelListPrograms.Top = ShapeLabelListPrograms.Top
+    LabelListPrograms.Left = ShapeLabelListPrograms.Left + 120
+    LabelListPrograms.Width = ShapeLabelListPrograms.Width - 240
+    
+    If Not Manager.FileLoaded Then
+    
+        ListPrograms.Visible = False
+        ShapeLabelListPrograms.BackColor = &HF4C0C0
+        
+        Exit Sub
+            
+    End If
+    
+    ListPrograms.Top = ShapeLabelListPrograms.Top + ShapeLabelListPrograms.Height + 120
     ListPrograms.Left = 120
     ListPrograms.Width = FrameLeft.Width - ListPrograms.Left - 120
     ListPrograms.Height = FrameLeft.Height - ListPrograms.Top - 120
@@ -1586,7 +1799,7 @@ Private Sub RefreshFrameLeft()
 
     End If
     
-    FrameLeft.FontSize = Settings.StepsViewFontSize
+    ListPrograms.Visible = True
     
     '<EhFooter>
     Exit Sub
@@ -1603,29 +1816,78 @@ Private Sub RefreshFrameMain()
     On Error GoTo RefreshFrameMain_Err
     '</EhHeader>
 
+    ShapeFrameMain.Top = 0
+    ShapeFrameMain.Left = 0
+    ShapeFrameMain.Width = FrameMain.Width
+    ShapeFrameMain.Height = FrameMain.Height
+    
+    ShapeFrameMainCaption.Top = 0
+    ShapeFrameMainCaption.Left = 0
+    ShapeFrameMainCaption.Width = ShapeFrameMain.Width
+    
+    LabelFrameMain.AutoSize = True
+    LabelFrameMain.FontSize = Settings.StepsViewFontSize
+    LabelFrameMain.AutoSize = False
+    
+    LabelFrameMain.Top = ShapeFrameMainCaption.Top
+    LabelFrameMain.Left = ShapeFrameMainCaption.Left + 120
+    LabelFrameMain.Width = ShapeFrameMainCaption.Width - 240
+    
+    FrameMain.Enabled = Manager.FileLoaded
+    
+    If Not Manager.FileLoaded Then
+    
+        FrameCodeView.Visible = False
+        FramePicsView.Visible = False
+        FrameGridView.Visible = False
+        
+        VScrollPicsView.Visible = False
+        
+        ShapeFrameMainCaption.BackColor = &HF4C0C0
+        
+        Exit Sub
+            
+    End If
+    
     Select Case ViewMode
     
         Case STEPS_VIEW
         
             FrameCodeView.Visible = False
+            FramePicsView.Visible = False
+            VScrollPicsView.Visible = False
+            
+            FrameGridView.Top = ShapeFrameMainCaption.Top + ShapeFrameMainCaption.Height + 120
             FrameGridView.Left = 120
-            FrameGridView.Top = 240
             FrameGridView.Width = FrameMain.Width - FrameGridView.Left - 120
             FrameGridView.Height = FrameMain.Height - FrameGridView.Top - 120
     
             StepsView.Left = 0
             StepsView.Top = 0
             StepsView.Width = FrameGridView.Width
-            StepsView.Height = FrameGridView.Height
+            
+            Dim ScrollHeight As Long
+            
+            ScrollHeight = Screen.TwipsPerPixelY * GetSystemMetrics(SM_CYHSCROLL)
+            
+            If FrameGridView.Height < (StepsView.rows * StepsView.RowHeight(1) + ScrollHeight) Then
+            
+                StepsView.Height = FrameGridView.Height
+            
+            Else
+            
+                StepsView.Height = StepsView.rows * StepsView.RowHeight(1) + ScrollHeight
+            
+            End If
 
             If Manager.FileLoaded Then
             
-                FrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
+                LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
                    ".Шаг" & Manager.StepIndex + 1 & "]"
                                
             Else
             
-                FrameMain.Caption = "Шаги"
+                LabelFrameMain.Caption = "Шаги"
                 
             End If
                 
@@ -1635,11 +1897,35 @@ Private Sub RefreshFrameMain()
             
             FrameGridView.Visible = True
     
+        Case PICS_VIEW
+            
+            FrameGridView.Visible = False
+            FrameCodeView.Visible = False
+            
+            FramePicsView.Top = ShapeFrameMainCaption.Top + ShapeFrameMainCaption.Height + 120
+            FramePicsView.Left = 120
+            FramePicsView.Width = FrameMain.Width - FramePicsView.Left - VScrollPicsView.Width - 120
+            FramePicsView.Height = FrameMain.Height - FramePicsView.Top - 120
+            
+            VScrollPicsView.Top = FramePicsView.Top
+            VScrollPicsView.Left = FramePicsView.Left + FramePicsView.Width
+            VScrollPicsView.Height = FramePicsView.Height
+            
+            VScrollPicsView.Min = 0
+            VScrollPicsView.Max = 100
+            VScrollPicsView.Value = 0
+            
+            FramePicsView.Visible = True
+            VScrollPicsView.Visible = True
+            
         Case CODE_VIEW
         
             FrameGridView.Visible = False
+            FramePicsView.Visible = False
+            VScrollPicsView.Visible = False
+            
+            FrameCodeView.Top = ShapeFrameMainCaption.Top + ShapeFrameMainCaption.Height + 120
             FrameCodeView.Left = 120
-            FrameCodeView.Top = 240
             FrameCodeView.Width = FrameMain.Width - FrameCodeView.Left - 120
             FrameCodeView.Height = FrameMain.Height - FrameCodeView.Top - 120
     
@@ -1650,11 +1936,11 @@ Private Sub RefreshFrameMain()
             
             If Manager.FileLoaded Then
             
-                FrameMain.Caption = "Код - [" & ListPrograms.Text & "]"
+                LabelFrameMain.Caption = "Код - [" & ListPrograms.Text & "]"
                 
             Else
             
-                FrameMain.Caption = "Код"
+                LabelFrameMain.Caption = "Код"
                 
             End If
             
@@ -1666,8 +1952,7 @@ Private Sub RefreshFrameMain()
             
     End Select
     
-    FrameMain.Enabled = Manager.FileLoaded
-    FrameMain.FontSize = Settings.StepsViewFontSize
+
     
     '<EhFooter>
     Exit Sub
@@ -1684,9 +1969,39 @@ Private Sub RefreshFrameRight()
     On Error GoTo RefreshFrameRight_Err
     '</EhHeader>
     
+    ShapeFrameRight.Top = 0
+    ShapeFrameRight.Left = 0
+    ShapeFrameRight.Width = FrameRight.Width
+    ShapeFrameRight.Height = FrameRight.Height
+    
+    ShapeFrameRightCaption.Top = 0
+    ShapeFrameRightCaption.Left = 0
+    ShapeFrameRightCaption.Width = ShapeFrameRight.Width
+    
+    LabelFrameRight.AutoSize = True
+    LabelFrameRight.FontSize = Settings.StepsViewFontSize
+    LabelFrameRight.AutoSize = False
+    
+    LabelFrameRight.Top = ShapeFrameRightCaption.Top
+    LabelFrameRight.Left = ShapeFrameRightCaption.Left + 120
+    LabelFrameRight.Width = ShapeFrameRightCaption.Width - 240
+    
+    If Not Manager.FileLoaded Then
+    
+        PropertyTable.Visible = False
+        ShapeDescription.Visible = False
+        LabelDescription.Visible = False
+        
+        ShapeFrameRightCaption.BackColor = &HF4C0C0
+        
+        Exit Sub
+            
+    End If
+    
+    PropertyTable.Top = ShapeFrameRightCaption.Top + ShapeFrameRightCaption.Height + 120
     PropertyTable.Left = 120
-    PropertyTable.Top = 240
     PropertyTable.Width = FrameRight.Width - PropertyTable.Left - 120
+    PropertyTable.Height = FrameRight.Height - PropertyTable.Top - 120
     
     If LabelDescription.Visible Then
     
@@ -1701,8 +2016,6 @@ Private Sub RefreshFrameRight()
         PropertyTable.Height = FrameRight.Height - PropertyTable.Top - 120
         
     End If
-    
-    FrameRight.FontSize = Settings.StepsViewFontSize
     
     ' Если строки не умещаются во фрейме, то появляется вертикальная полоска прокрутки
     ' Корректируем ширину столбцов для этого случая
@@ -1730,6 +2043,8 @@ Private Sub RefreshFrameRight()
     
     TextCell.Width = PropertyTable.ColWidth(1)
     ComboCell.Width = PropertyTable.ColWidth(1)
+    
+    PropertyTable.Visible = True
     
     '<EhFooter>
     Exit Sub
@@ -1834,14 +2149,52 @@ Private Sub RefreshToolbar()
     '</EhHeader>
 
     Toolbar.Buttons(3).Enabled = Modified
+
+    Toolbar.Buttons(7).Enabled = False
+    Toolbar.Buttons(8).Enabled = False
     
-    Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-    Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+    Toolbar.Buttons(10).Enabled = False
+    Toolbar.Buttons(11).Enabled = False
+    Toolbar.Buttons(12).Enabled = False
+    Toolbar.Buttons(13).Enabled = False
+        
+    If ActiveControl Is ListPrograms Then
     
-    Toolbar.Buttons(10).Enabled = Manager.FileLoaded
-    Toolbar.Buttons(11).Enabled = Manager.FileLoaded
-    Toolbar.Buttons(12).Enabled = Manager.FileLoaded
-    Toolbar.Buttons(13).Enabled = Manager.FileLoaded
+        Exit Sub
+        
+    End If
+
+    If ActiveControl Is StepsView Then
+    
+        Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+        Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+        
+        Toolbar.Buttons(10).Enabled = Manager.FileLoaded
+        Toolbar.Buttons(11).Enabled = Manager.FileLoaded
+        Toolbar.Buttons(12).Enabled = Manager.FileLoaded
+        Toolbar.Buttons(13).Enabled = Manager.FileLoaded
+        
+        Exit Sub
+    
+    End If
+
+    If ActiveControl Is CodeView Then
+    
+        Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+        Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+        
+        Exit Sub
+        
+    End If
+    
+    If ActiveControl Is PropertyTable Then
+    
+        Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+        Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+        
+        Exit Sub
+        
+    End If
     
     '<EhFooter>
     Exit Sub
@@ -2055,6 +2408,28 @@ CodeView_DblClick_Err:
     '</EhFooter>
 End Sub
 
+Private Sub CodeView_GotFocus()
+    '<EhHeader>
+    On Error GoTo CodeView_GotFocus_Err
+    '</EhHeader>
+
+    ShapeFrameMainCaption.BackColor = &HFF8080
+    RefreshToolbar
+
+    '<EhFooter>
+    Exit Sub
+
+CodeView_GotFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.CodeView_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub CodeView_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo CodeView_KeyDown_Err
@@ -2119,6 +2494,28 @@ CodeView_KeyDown_Err:
     '</EhFooter>
 End Sub
 
+Private Sub CodeView_LostFocus()
+    '<EhHeader>
+    On Error GoTo CodeView_LostFocus_Err
+    '</EhHeader>
+
+    ShapeFrameMainCaption.BackColor = &HF4C0C0
+    RefreshToolbar
+
+    '<EhFooter>
+    Exit Sub
+
+CodeView_LostFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.CodeView_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub CodeView_Scroll()
     '<EhHeader>
     On Error GoTo CodeView_Scroll_Err
@@ -2136,6 +2533,27 @@ CodeView_Scroll_Err:
     '</EhFooter>
 End Sub
 
+Private Sub ComboCell_GotFocus()
+    '<EhHeader>
+    On Error GoTo ComboCell_GotFocus_Err
+    '</EhHeader>
+
+    ShapeFrameRightCaption.BackColor = &HFF8080
+
+    '<EhFooter>
+    Exit Sub
+
+ComboCell_GotFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.ComboCell_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo ComboCell_KeyDown_Err
@@ -2146,16 +2564,15 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
         ComboCell.Visible = False
         LabelDescription.Visible = False
         ShapeDescription.Visible = False
+        
         RefreshFrameRight
+        
         PropertyTable.SetFocus
         
     End If
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
     
-        ' Сохраняем состояние
-        AddUndoRedoItem Manager.ToString()
-        
         Dim FuncN As Integer
         
         FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Manager.StepIndex + 1)
@@ -2163,8 +2580,12 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
         ' Сохраняем изменённое значение
 
         If FuncN < 12 Then
-
+            
+            ' Сохраняем состояние
+            AddUndoRedoItem Manager.ToString()
+            
             Select Case FuncN
+            
                 Case WPC_OPERATION_IDLE ' пропуск
                     ModuleIdle.SetComboPropertyForIdle Me
             
@@ -2202,7 +2623,7 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
                 Case Else
     
             End Select
-            
+        
             ' Пересчитываем CRC поле записи программы
             Dim CRC8Value As Byte
             Dim row As Integer
@@ -2226,7 +2647,11 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
             
             PropertyTable.SetFocus
             
+            ' Перерисовываем форму
+            FormMain.Refresh
+            
         End If
+        
     End If
     
     '<EhFooter>
@@ -2247,6 +2672,9 @@ Private Sub ComboCell_LostFocus()
     ComboCell.Visible = False
     LabelDescription.Visible = False
     ShapeDescription.Visible = False
+    
+    ShapeFrameRightCaption.BackColor = &HF4C0C0
+    
     RefreshFrameRight
     
     '<EhFooter>
@@ -2503,21 +2931,31 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 
     Dim Col As Integer, row As Integer
     
-    If KeyCode = VBRUN.KeyCodeConstants.vbKeyF3 And Shift = 0 Then
+    If KeyCode = vbKeyF3 And Shift = 0 Then
 
         If Not Manager.FileLoaded Then Exit Sub
         
         Select Case ViewMode
         
             Case STEPS_VIEW
+                
                 CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
                    HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
                 
                 ViewMode = CODE_VIEW
+                
                 RefreshCodeView
-            
+                
             Case CODE_VIEW
+            
                 ViewMode = STEPS_VIEW
+                
+                RefreshStepsView
+                
+            Case PICS_VIEW
+            
+                ViewMode = STEPS_VIEW
+                
                 RefreshStepsView
                 
         End Select
@@ -2526,6 +2964,41 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
         RefreshMainMenu
         
         Exit Sub
+        
+    End If
+    
+    If KeyCode = vbKeyF2 And Shift = 0 Then
+
+        If Not Manager.FileLoaded Then Exit Sub
+        
+        Select Case ViewMode
+        
+            Case STEPS_VIEW
+                
+                CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
+                   HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
+                
+                ViewMode = PICS_VIEW
+                
+            Case CODE_VIEW
+            
+                ViewMode = PICS_VIEW
+                
+                
+            Case PICS_VIEW
+            
+                ViewMode = STEPS_VIEW
+                
+                RefreshStepsView
+                
+        End Select
+        
+        RefreshFrameMain
+        RefreshPicsView
+        RefreshMainMenu
+        
+        Exit Sub
+        
     End If
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyF4 And Shift = 0 Then
@@ -3129,8 +3602,11 @@ Private Sub ImportMainMenuItem_Click()
             SetModified True
         
             ViewMode = STEPS_VIEW
+            
             RefreshComponents False
             'RefreshFrameRight
+            
+            ListPrograms.SetFocus
             
         Else
             
@@ -3472,16 +3948,24 @@ Public Sub ListPrograms_Click()
     Select Case ViewMode
     
         Case STEPS_VIEW
+        
             RefreshFrameMain
             RefreshStepsView
 
         Case CODE_VIEW
+        
             CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex) / 16 + 1
             RefreshFrameMain
+            
+        Case PICS_VIEW
+        
+            RefreshFrameMain
+            RefreshPicsView
             
     End Select
     
     RefreshFrameLeft
+    
     RefreshProperties
     RefreshFrameRight
     
@@ -3512,6 +3996,28 @@ ListPrograms_DblClick_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ListPrograms_DblClick]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub ListPrograms_GotFocus()
+    '<EhHeader>
+    On Error GoTo ListPrograms_GotFocus_Err
+    '</EhHeader>
+
+    ShapeLabelListPrograms.BackColor = &HFF8080
+    RefreshToolbar
+
+    '<EhFooter>
+    Exit Sub
+
+ListPrograms_GotFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.ListPrograms_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -3555,6 +4061,28 @@ ListPrograms_KeyDown_Err:
     '</EhFooter>
 End Sub
 
+Private Sub ListPrograms_LostFocus()
+    '<EhHeader>
+    On Error GoTo ListPrograms_LostFocus_Err
+    '</EhHeader>
+
+    ShapeLabelListPrograms.BackColor = &HF4C0C0
+    RefreshToolbar
+
+    '<EhFooter>
+    Exit Sub
+
+ListPrograms_LostFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.ListPrograms_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
     On Error GoTo ListPrograms_MouseDown_Err
@@ -3579,7 +4107,7 @@ Private Sub MenuItemDoUpdate_Click()
     '</EhHeader>
         
     ' Если окно загрузки активно, то ничего не делаем
-    If FormDownload.Visible Then Exit Sub
+    If FormDownload.Visible Or FormOptions.Visible Then Exit Sub
     
     ' Останавливаем таймер автоматического обновления
     TimerAutoUpdate.Interval = 0
@@ -3691,6 +4219,8 @@ Private Sub MRUItems_Click(index As Integer)
         
         RefreshComponents False
         'RefreshFrameRight
+        
+        ListPrograms.SetFocus
         
         LastUndoRedoItem = 0
         UndoRedoVector.removeAllElements
@@ -3949,6 +4479,28 @@ PropertyTable_DblClick_Err:
     '</EhFooter>
 End Sub
 
+Private Sub PropertyTable_GotFocus()
+    '<EhHeader>
+    On Error GoTo PropertyTable_GotFocus_Err
+    '</EhHeader>
+
+    ShapeFrameRightCaption.BackColor = &HFF8080
+    RefreshToolbar
+
+    '<EhFooter>
+    Exit Sub
+
+PropertyTable_GotFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.PropertyTable_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub PropertyTable_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo PropertyTable_KeyDown_Err
@@ -4023,6 +4575,28 @@ PropertyTable_KeyDown_Err:
     '</EhFooter>
 End Sub
 
+Private Sub PropertyTable_LostFocus()
+    '<EhHeader>
+    On Error GoTo PropertyTable_LostFocus_Err
+    '</EhHeader>
+
+    ShapeFrameRightCaption.BackColor = &HF4C0C0
+    RefreshToolbar
+
+    '<EhFooter>
+    Exit Sub
+
+PropertyTable_LostFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.PropertyTable_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub RedoMenuItem_Click()
     '<EhHeader>
     On Error GoTo RedoMenuItem_Click_Err
@@ -4041,6 +4615,94 @@ Private Sub RedoMenuItem_Click()
 RedoMenuItem_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
             " [INFO] [cop.FormMain.RedoMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub StepGrid_Click(index As Integer)
+    '<EhHeader>
+    On Error GoTo StepGrid_Click_Err
+    '</EhHeader>
+
+    Manager.StepIndex = StepGrid(index).Tag - 1
+    
+    ' Обновляем зависимые компоненты
+    RefreshProperties
+    'RefreshFrameMain
+    RefreshFrameRight
+    RefreshCodeView
+    
+    ' Перерисовываем форму
+    FormMain.Refresh
+    
+    '<EhFooter>
+    Exit Sub
+
+StepGrid_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.StepGrid_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub StepGrid_GotFocus(index As Integer)
+    '<EhHeader>
+    On Error GoTo StepGrid_GotFocus_Err
+    '</EhHeader>
+
+    StepGrid(index).row = 0
+    StepGrid(index).Col = 0
+    StepGrid(index).CellBackColor = &HFF8080
+
+    StepGrid(index).Col = 1
+    StepGrid(index).CellBackColor = &HFF8080
+
+    ShapeFrameMainCaption.BackColor = &HFF8080
+    RefreshToolbar
+    
+    '<EhFooter>
+    Exit Sub
+
+StepGrid_GotFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.StepGrid_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub StepGrid_LostFocus(index As Integer)
+    '<EhHeader>
+    On Error GoTo StepGrid_LostFocus_Err
+    '</EhHeader>
+
+    StepGrid(index).row = 0
+    StepGrid(index).Col = 0
+    StepGrid(index).CellBackColor = &HF4C0C0
+
+    StepGrid(index).Col = 1
+    StepGrid(index).CellBackColor = &HF4C0C0
+    
+    ShapeFrameMainCaption.BackColor = &HF4C0C0
+    RefreshToolbar
+    
+    '<EhFooter>
+    Exit Sub
+
+StepGrid_LostFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.StepGrid_LostFocus]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
@@ -4081,7 +4743,7 @@ Private Sub StepsView_Click()
 
     Dim x As Integer, y As Integer
     Dim Col As Integer, row As Integer
-       
+             
     ' При клике область выделения сужается до одного шага
     SelStepsCount = 1
     
@@ -4199,10 +4861,15 @@ Private Sub OpenMainMenuItem_Click()
         SetCaption (Manager.FileName)
         
         ViewMode = STEPS_VIEW
+        
         RefreshComponents False
+        
+        ListPrograms.SetFocus
+        
         'RefreshFrameRight
         
         LastUndoRedoItem = 0
+        
         UndoRedoVector.removeAllElements
         
         SetModified False
@@ -4358,7 +5025,7 @@ Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, x As Sin
     '</EhHeader>
     
     ' Показываем разделительную линию
-    SplitterLeft.BackColor = &H80000010
+    SplitterLeft.BackColor = &HF4C0C0
     
     BegX = x
     BegY = y
@@ -4381,6 +5048,7 @@ Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, x As Sin
     '</EhHeader>
 
     If SplitterLeftMoving = True Then
+    
         SplitterLeft.Left = SplitterLeft.Left + x - BegX
         FrameLeft.Width = SplitterLeft.Left
         
@@ -4389,7 +5057,23 @@ Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, x As Sin
         
         RefreshFrameLeft
         RefreshFrameMain
+        
+        Dim I As Integer
+        Dim StepsCount As Long
+        
+        StepsCount = 0
+        
+        For I = 0 To StepGrid.Count - 1
+        
+            If StepGrid(I).Visible Then Inc StepsCount
+        
+        Next
+    
+        ' Рассредотачиваем таблицы во фрейме
+        If StepsCount > 0 Then VScrollPicsView.Tag = RearrangeStepsPics(StepsCount, 120)
+        
         Refresh
+        
     End If
     
     '<EhFooter>
@@ -4426,7 +5110,7 @@ Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, x As Si
     On Error GoTo SplitterRight_MouseDown_Err
     '</EhHeader>
     
-    SplitterRight.BackColor = &H80000010
+    SplitterRight.BackColor = &HF4C0C0
     
     BegX = x
     BegY = y
@@ -4449,6 +5133,7 @@ Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, x As Si
     '</EhHeader>
 
     If SplitterRightMoving = True Then
+    
         SplitterRight.Left = SplitterRight.Left + x - BegX
         
         FrameRight.Left = SplitterRight.Left + SplitterRight.Width
@@ -4458,7 +5143,23 @@ Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, x As Si
         
         RefreshFrameRight
         RefreshFrameMain
+        
+        Dim I As Integer
+        Dim StepsCount As Long
+        
+        StepsCount = 0
+        
+        For I = 0 To StepGrid.Count - 1
+        
+            If StepGrid(I).Visible Then Inc StepsCount
+        
+        Next
+    
+        ' Рассредотачиваем таблицы во фрейме
+        If StepsCount > 0 Then VScrollPicsView.Tag = RearrangeStepsPics(StepsCount, 120)
+        
         Refresh
+        
     End If
     
     '<EhFooter>
@@ -4493,13 +5194,13 @@ Private Sub StepsView_DblClick()
 
     Dim FuncN As Integer
     
-    ' Сохраняем состояние
-    AddUndoRedoItem Manager.ToString()
-    
     FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Manager.StepIndex + 1)
     
     ' Сохраняем изменённое значение
     If FuncN < 12 Then
+
+        ' Сохраняем состояние
+        AddUndoRedoItem Manager.ToString()
 
         Select Case FuncN
             Case WPC_OPERATION_IDLE ' пропуск
@@ -4547,11 +5248,33 @@ Private Sub StepsView_DblClick()
 
         RefreshComponents False
         
-    End If
-
-    ' Перерисовываем форму
-    FormMain.Refresh
+        ' Перерисовываем форму
+        FormMain.Refresh
     
+    End If
+    
+End Sub
+
+Private Sub StepsView_GotFocus()
+    '<EhHeader>
+    On Error GoTo StepsView_GotFocus_Err
+    '</EhHeader>
+
+    ShapeFrameMainCaption.BackColor = &HFF8080
+    RefreshToolbar
+
+    '<EhFooter>
+    Exit Sub
+
+StepsView_GotFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.StepsView_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -4617,6 +5340,28 @@ StepsView_KeyDown_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.StepsView_KeyDown]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub StepsView_LostFocus()
+    '<EhHeader>
+    On Error GoTo StepsView_LostFocus_Err
+    '</EhHeader>
+
+    ShapeFrameMainCaption.BackColor = &HF4C0C0
+    RefreshToolbar
+
+    '<EhFooter>
+    Exit Sub
+
+StepsView_LostFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.StepsView_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4801,7 +5546,7 @@ Private Sub TextByte_Change()
     '</EhHeader>
     
     TextByte.Text = Mid$(TextByte.Text, 1, 2)
-    
+        
     '<EhFooter>
     Exit Sub
 
@@ -4812,23 +5557,44 @@ TextByte_Change_Err:
     '</EhFooter>
 End Sub
 
+Private Sub TextByte_GotFocus()
+    '<EhHeader>
+    On Error GoTo TextByte_GotFocus_Err
+    '</EhHeader>
+
+    ShapeFrameMainCaption.BackColor = &HFF8080
+    
+    '<EhFooter>
+    Exit Sub
+
+TextByte_GotFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.TextByte_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub TextByte_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo TextByte_KeyDown_Err
     '</EhHeader>
 
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
+    
         TextByte.Visible = False
         CodeView.SetFocus
+        
     End If
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
+    
         Dim OldByte, NewByte As Byte
         Dim ProgNum As Integer
         Dim Offset, TopRow As Long
-        
-        ' Сохраняем состояние
-        AddUndoRedoItem Manager.ToString()
         
         Offset = (CodeView.row - 1) * 16 + CodeView.Col - 1
         
@@ -4841,10 +5607,17 @@ Private Sub TextByte_KeyDown(KeyCode As Integer, Shift As Integer)
         NewByte = Val("&H" & TextByte.Text)
         
         If NewByte = OldByte Then
+        
             TextByte.Visible = False
+            
             CodeView.SetFocus
+            
             Exit Sub
+            
         End If
+        
+        ' Сохраняем состояние
+        AddUndoRedoItem Manager.ToString()
         
         Dim row, Col As Long
         
@@ -4873,7 +5646,12 @@ Private Sub TextByte_KeyDown(KeyCode As Integer, Shift As Integer)
         
         CodeView.row = row
         CodeView.Col = Col
+        
         CodeView.SetFocus
+        
+        ' Перерисовываем форму
+        FormMain.Refresh
+    
     End If
     
     '<EhFooter>
@@ -4905,7 +5683,7 @@ Private Sub TextByte_KeyPress(KeyAscii As Integer)
             KeyAscii = 0
     End Select
     
-    If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
+    If KeyAscii = vbKeyReturn Or KeyAscii = vbKeyEscape Then KeyAscii = 0
     
     '<EhFooter>
     Exit Sub
@@ -4922,6 +5700,7 @@ Private Sub TextByte_LostFocus()
     On Error GoTo TextByte_LostFocus_Err
     '</EhHeader>
     
+    ShapeFrameMainCaption.BackColor = &HF4C0C0
     TextByte.Visible = False
     
     '<EhFooter>
@@ -4931,6 +5710,27 @@ TextByte_LostFocus_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextByte_LostFocus]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub TextCell_GotFocus()
+    '<EhHeader>
+    On Error GoTo TextCell_GotFocus_Err
+    '</EhHeader>
+
+    ShapeFrameRightCaption.BackColor = &HFF8080
+
+    '<EhFooter>
+    Exit Sub
+
+TextCell_GotFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.TextCell_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4951,15 +5751,16 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
     
-        ' Сохраняем состояние
-        AddUndoRedoItem Manager.ToString()
         
         Dim FuncN As Integer
         
         FuncN = Manager.GetFunctionType(Manager.ProgramIndex + 1, Manager.StepIndex + 1)
-        
+                   
         ' Сохраняем изменённое значение
         If FuncN < 12 Then
+
+            ' Сохраняем состояние
+            AddUndoRedoItem Manager.ToString()
 
             Select Case FuncN
                 Case WPC_OPERATION_IDLE ' пропуск
@@ -4999,7 +5800,7 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
                 Case Else
     
             End Select
-            
+        
             ' Пересчитываем CRC поле записи программы
             Dim CRC8Value As Byte
             Dim Address As Long
@@ -5014,13 +5815,19 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
             TextCell.Visible = False
             LabelDescription.Visible = False
             ShapeDescription.Visible = False
+            
             Dim row As Integer
+            
             row = PropertyTable.row
+            
             RefreshComponents False
 
             If row < PropertyTable.rows - 1 Then PropertyTable.row = row
             
             PropertyTable.SetFocus
+            
+            ' Перерисовываем форму
+            FormMain.Refresh
             
         End If
         
@@ -5041,7 +5848,7 @@ Private Sub TextCell_KeyPress(KeyAscii As Integer)
     On Error GoTo TextCell_KeyPress_Err
     '</EhHeader>
 
-    If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
+    If KeyAscii = vbKeyReturn Or KeyAscii = vbKeyEscape Then KeyAscii = 0
     
     '<EhFooter>
     Exit Sub
@@ -5061,6 +5868,9 @@ Private Sub TextCell_LostFocus()
     TextCell.Visible = False
     LabelDescription.Visible = False
     ShapeDescription.Visible = False
+    
+    ShapeFrameRightCaption.BackColor = &HF4C0C0
+    
     RefreshFrameRight
     
     '<EhFooter>
@@ -5070,6 +5880,27 @@ TextCell_LostFocus_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextCell_LostFocus]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub TextName_GotFocus()
+    '<EhHeader>
+    On Error GoTo TextName_GotFocus_Err
+    '</EhHeader>
+
+    ShapeLabelListPrograms.BackColor = &HFF8080
+
+    '<EhFooter>
+    Exit Sub
+
+TextName_GotFocus_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.TextName_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5139,6 +5970,9 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
         
         ListPrograms.SetFocus
         
+        ' Перерисовываем форму
+        FormMain.Refresh
+        
     End If
     
     '<EhFooter>
@@ -5156,7 +5990,7 @@ Private Sub TextName_KeyPress(KeyAscii As Integer)
     On Error GoTo TextName_KeyPress_Err
     '</EhHeader>
 
-    If KeyAscii = VBRUN.KeyCodeConstants.vbKeyReturn Then KeyAscii = 0
+    If KeyAscii = vbKeyReturn Or KeyAscii = vbKeyEscape Then KeyAscii = 0
     
     '<EhFooter>
     Exit Sub
@@ -5172,6 +6006,8 @@ Private Sub TextName_LostFocus()
     '<EhHeader>
     On Error GoTo TextName_LostFocus_Err
     '</EhHeader>
+    
+    ShapeLabelListPrograms.BackColor = &HF4C0C0
     
     TextName.Visible = False
     
@@ -5283,8 +6119,6 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     strFile = String(255, 0)
     GetModuleFileName 0, strFile, 255
     
-
-    
     ' Считываем файл и декодируем его
     sInputJson = FromUTF8(LoadFromJSONFile(szTempFileName))
 
@@ -5341,34 +6175,34 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
             
             NeedUpdate = False
             
-            ' Если текущая версия устарела, то выводим сообщение об этом
-            If CurrMajor >= Major Then
-                
-                If CurrMinor >= Minor Then
-                    
-                    If CurrRevision >= Revision Then
+            If CurrMajor = Major Then
+
+                If CurrMinor = Minor Then
+    
+                    If CurrRevision = Revision Then
+        
+                        If CurrBuild = Build Then
+            
                         
-                        If CurrBuild >= Build Then
-                            
-                        Else
-                            
+                        ElseIf CurrBuild < Build Then
+                        
                             NeedUpdate = True
                             
                         End If
                     
-                    Else
-                        
+                    ElseIf CurrRevision < Revision Then
+                    
                         NeedUpdate = True
                         
                     End If
-                    
-                Else
-                    
+                
+                ElseIf CurrMinor < Minor Then
+                
                     NeedUpdate = True
                     
                 End If
-            
-            Else
+
+            ElseIf CurrMajor < Major Then
             
                 NeedUpdate = True
                 
@@ -5381,7 +6215,7 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
                 
                 vbRes = MsgBox("Доступно обновление:" & _
                     vbCrLf & vbCrLf & _
-                    "Новая версия: " & CStr(Major) & "." & CStr(Minor) & "." & CStr(Revision) & "." & CStr(Build) & vbCrLf & _
+                    "Новая версия: " & CStr(Major) & "." & CStr(Minor) & "." & CStr(Revision) & "." & CStr(Build) & vbCrLf & vbCrLf & _
                     "Текущая версия: " & CStr(CurrMajor) & "." & CStr(CurrMinor) & "." & CStr(CurrRevision) & "." & CStr(CurrBuild) & _
                     vbCrLf & vbCrLf & "Загрузить обновление?", _
                     vbYesNo + vbQuestion, APP_NAME)
@@ -5424,6 +6258,9 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
                             
                             ' Запоминаем дату
                             Settings.AutoUpdateLastDate = CStr(Date)
+                            
+                            ' Останавливаем таймер
+                            TimerAutoUpdate.Interval = 0
                     
                         End If
                         
@@ -5486,6 +6323,9 @@ Private Sub TimerAutoUpdate_Timer()
     On Error GoTo TimerAutoUpdate_Timer_Err
     '</EhHeader>
 
+    ' Если окно загрузки активно, то ничего не делаем
+    If FormDownload.Visible Or FormOptions.Visible Then Exit Sub
+    
     ' Если пользователь отменил автообновление
     If Settings.AutoUpdateEnabled = False Then
 
@@ -5633,6 +6473,7 @@ Public Sub RefreshDataComponents()
     RefreshList
     RefreshCodeView
     RefreshStepsView
+    RefreshPicsView
     RefreshProperties
     RefreshFrameRight
     RefreshStatusBar
@@ -5722,7 +6563,7 @@ Private Sub RefreshList()
 
     If Not Manager.FileLoaded Then
     
-        FrameLeft.Caption = "Программы"
+        LabelListPrograms.Caption = "Программы"
         ListPrograms.Clear
         ListPrograms.Font.Bold = Settings.StepsViewFontBold
         ListPrograms.Font.Italic = Settings.StepsViewFontItalic
@@ -5737,7 +6578,7 @@ Private Sub RefreshList()
     End If
     
     FrameLeft.Enabled = True
-    FrameLeft.Caption = "Программы [" & Manager.ProgramsCount & "]"
+    LabelListPrograms.Caption = "Программы [" & Manager.ProgramsCount & "]"
     
     ListPrograms.Redraw = False
     ListPrograms.Clear
@@ -5825,8 +6666,11 @@ Private Sub RefreshCodeView()
     ' поэтому отображаем вид без данных
 
     If (Not Manager.FileLoaded) Then
-        FrameMain.Caption = "Код"
-        CodeView.Visible = False
+    
+        LabelFrameMain.Caption = "Код"
+        
+        CodeView.Redraw = False
+        
         CodeView.Clear
 
         CodeView.Font.Bold = Settings.StepsViewFontBold
@@ -5835,10 +6679,12 @@ Private Sub RefreshCodeView()
         CodeView.Font.Size = Settings.StepsViewFontSize
         
         CodeView.rows = 2
+        
         ' Инициализируем окно кода
         S = "<   |"
 
         For Col = 1 To CodeView.Cols - 2
+        
             CodeView.ColWidth(Col) = Settings.StepsColWidth
 
             If Col < CodeView.Cols - 1 Then
@@ -5848,6 +6694,7 @@ Private Sub RefreshCodeView()
                 Else
                     S = S & "0" & Chr$(Col - 11 + 65) & "|"
                 End If
+                
             Else
 
                 If Col < 11 Then
@@ -5855,20 +6702,26 @@ Private Sub RefreshCodeView()
                 Else
                     S = S & "0" & Chr$(Col - 11 + 65) & "|"
                 End If
+                
             End If
+            
             CodeView.Col = Col
             CodeView.row = 0
             CodeView.CellAlignment = flexAlignCenterCenter
+            
         Next
         
         CodeView.FormatString = S
-        CodeView.Visible = True
+        
+        CodeView.Redraw = True
         
         FrameMain.Enabled = False
+        
         Exit Sub
+        
     End If
        
-    CodeView.Visible = False
+    CodeView.Redraw = False
     CodeView.Clear
     
     CodeView.Font.Bold = Settings.StepsViewFontBold
@@ -5880,6 +6733,7 @@ Private Sub RefreshCodeView()
     S = "<   |"
 
     For Col = 1 To CodeView.Cols - 2
+    
         CodeView.ColWidth(Col) = Settings.StepsColWidth
 
         If Col < CodeView.Cols - 1 Then
@@ -5889,6 +6743,7 @@ Private Sub RefreshCodeView()
             Else
                 S = S & "0" & Chr$(Col - 11 + 65) & "|"
             End If
+            
         Else
 
             If Col < 11 Then
@@ -5896,10 +6751,13 @@ Private Sub RefreshCodeView()
             Else
                 S = S & "0" & Chr$(Col - 11 + 65) & "|"
             End If
+            
         End If
+        
         CodeView.Col = Col
         CodeView.row = 0
         CodeView.CellAlignment = flexAlignCenterCenter
+        
     Next
     
     CodeView.FormatString = S
@@ -5911,6 +6769,7 @@ Private Sub RefreshCodeView()
     CodeView.rows = Manager.ImageSize / 16
     
     For row = 1 To CodeView.rows - 1
+    
         CodeView.Col = 0
         CodeView.row = row
         
@@ -5936,6 +6795,7 @@ Private Sub RefreshCodeView()
         End If
         
         CodeView.CellAlignment = flexAlignRightCenter
+        
     Next
     
     ' Выводим данные
@@ -5946,11 +6806,13 @@ Private Sub RefreshCodeView()
         CodeView.RowHeight(row) = Settings.StepsRowHeight
         
         For Col = 1 To CodeView.Cols - 2
+        
             CodeView.Col = Col
             CodeView.row = row
             CodeView.CellAlignment = flexAlignCenterCenter
             
             If ((16 * (row - 1) + Col - 1) < Manager.ImageSize) Then
+            
                 HexValue = Manager.GetByte(16 * (row - 1) + Col - 1)
             
                 If (HexValue < &H10) Then
@@ -5958,9 +6820,13 @@ Private Sub RefreshCodeView()
                 Else
                     CodeView.Text = "" & Hex$(HexValue)
                 End If
+                
             Else
+            
                 CodeView.Text = ""
+                
             End If
+            
         Next
         
         row = row + 1
@@ -5969,7 +6835,7 @@ Private Sub RefreshCodeView()
     Loop
     
     ' После сделанных изменений можно визуализировать компонент
-    CodeView.Visible = True
+    CodeView.Redraw = True
     
     '<EhFooter>
     Exit Sub
@@ -6056,6 +6922,268 @@ ValveEnabled_Err:
     '</EhFooter>
 End Function
 
+Private Sub RefreshPicsView()
+    '<EhHeader>
+    On Error GoTo RefreshPicsView_Err
+    '</EhHeader>
+
+    Dim I As Integer
+
+    If StepGrid.Count < MAX_NUMBER_OF_STEPS Then
+    
+        For I = StepGrid.Count To MAX_NUMBER_OF_STEPS - 1
+        
+            Load StepGrid(I)
+        
+        Next
+    
+    End If
+
+    For I = 0 To MAX_NUMBER_OF_STEPS - 1
+    
+        StepGrid(I).Visible = False
+        StepGrid(I).Tag = 0
+    
+    Next
+    
+    ' Выходим из процедуры, если программы не загружены или отсутствуют
+    If Not Manager.FileLoaded Then
+
+        LabelFrameMain.Caption = "Шаги"
+    
+        Exit Sub
+        
+    End If
+    
+    LabelFrameMain.Caption = "Шаги"
+    
+    Dim StepType As Integer
+    Dim StepsCount As Long
+    
+    StepsCount = 0
+    
+    For I = 1 To MAX_NUMBER_OF_STEPS
+    
+        ' Узнаём тип шага
+        StepType = Manager.GetFunctionType(Manager.ProgramIndex + 1, I)
+    
+        ' Если тип шага не "Пропуск", то создаём таблицу параметров для него
+        If StepType > 0 And StepType < 11 Then
+                  
+            ' Запоминаем номер шага
+            StepGrid(StepsCount).Tag = I
+            
+            ' Настраиваем параметры отображения текста
+            StepGrid(StepsCount).Font.Bold = Settings.StepsViewFontBold
+            StepGrid(StepsCount).Font.Italic = Settings.StepsViewFontItalic
+            StepGrid(StepsCount).Font.Name = Settings.StepsViewFontName
+            StepGrid(StepsCount).Font.Size = Settings.StepsViewFontSize
+    
+            Select Case StepType
+            
+                Case WPC_OPERATION_FILL ' Налив
+                    ModuleFill.ShowStepTableForFill Me, StepGrid(StepsCount)
+                
+                Case WPC_OPERATION_DTRG ' моющие
+                    ModuleDTRG.ShowStepTableForDTRG Me, StepGrid(StepsCount)
+
+                Case WPC_OPERATION_HEAT ' нагрев
+                    ModuleHeat.ShowStepTableForHeat Me, StepGrid(StepsCount)
+
+                    ' стирка, полоскание, расстряска, пауза
+                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+                    ModuleWashOrRinsOrJolt.ShowStepTableForWashOrRinsOrJolt Me, StepGrid(StepsCount)
+
+                Case WPC_OPERATION_DRAIN ' слив
+                    ModuleDrain.ShowStepTableForDrain Me, StepGrid(StepsCount)
+
+                Case WPC_OPERATION_SPIN ' отжим
+                    ModuleSpin.ShowStepTableForSpin Me, StepGrid(StepsCount)
+
+                Case WPC_OPERATION_COOL ' охлаждение
+                    ModuleCool.ShowStepTableForCool Me, StepGrid(StepsCount)
+
+                Case WPC_OPERATION_TRIN ' тех.полоскание
+                    ModuleTrin.ShowStepTableForTrin Me, StepGrid(StepsCount)
+            
+                Case Else
+    
+            End Select
+
+            ' Считаем шаги
+            Inc StepsCount
+            
+        End If
+    
+    Next
+    
+    If StepsCount = 0 Then
+    
+        VScrollPicsView.Visible = False
+        
+        FramePicsView.Width = FramePicsView.Width + VScrollPicsView.Width
+        
+        Exit Sub
+    
+    End If
+    
+    Dim ScrollTop As Long
+    
+    ScrollTop = 120
+    
+    ' Узнаём смещение текущего шага
+    For I = 0 To StepsCount - 1
+    
+        If StepGrid(I).Tag = Manager.StepIndex + 1 Then
+            
+            ScrollTop = StepGrid(I).Top - 120
+            
+            Exit For
+            
+        End If
+    
+    Next
+    
+    ' Рассредотачиваем таблицы во фрейме
+    VScrollPicsView.Tag = RearrangeStepsPics(StepsCount, 120)
+   
+    VScrollPicsView.Value = (VScrollPicsView.Max * ScrollTop) / VScrollPicsView.Tag
+    
+    VScrollPicsView_Scroll
+   
+    '<EhFooter>
+    Exit Sub
+
+RefreshPicsView_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.RefreshPicsView]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Function RearrangeStepsPics(StepsCount As Long, ScrollTop As Long) As Long
+    '<EhHeader>
+    On Error GoTo RearrangeStepsPics_Err
+    '</EhHeader>
+
+    Dim I As Integer, j As Integer
+    
+    ' Шаг 1. Строим логическую сетку
+    Dim LeftMargin As Long, RightMargin As Long
+    Dim TopMargin As Long, BottomMargin As Long
+    Dim XSpaceWidth As Long, YSpaceWidth As Long
+    Dim StepTableWidth As Long, StepTableHeight As Long
+
+    Dim StepRows As Long, StepCols As Long, RowTop As Long
+    Dim Cnt As Long, StepsCnt As Long
+
+    LeftMargin = 120
+    RightMargin = 120
+    TopMargin = 120
+
+    XSpaceWidth = 120
+    YSpaceWidth = 120
+
+    StepTableWidth = StepGrid(0).Width
+
+    StepCols = (FramePicsView.Width - LeftMargin - RightMargin) / (StepTableWidth + XSpaceWidth)
+
+    StepRows = StepsCount / StepCols
+
+    If StepsCount > StepRows * StepCols Then Inc StepRows
+
+    RowTop = ScrollTop
+
+    StepsCnt = 1
+    
+    ' Шаг 2. Отображаем сетку из элементов таблиц
+    For I = 0 To StepRows - 1
+
+        For j = 0 To StepCols - 1
+            
+            If StepsCnt > StepsCount Then Exit For
+
+            StepGrid(StepCols * I + j).Top = RowTop
+            StepGrid(StepCols * I + j).Left = LeftMargin + (StepTableWidth + XSpaceWidth) * j
+
+            StepGrid(StepCols * I + j).Visible = True
+
+            LabelFrameMain.Caption = "Шаги [" & StepCols * I + j + 1 & "]"
+            
+            Inc StepsCnt
+
+        Next
+
+        ' Узнаём самую высокую таблицу в текущем ряду
+        StepTableHeight = StepGrid(StepCols * I).Height
+
+        Cnt = StepCols * I + 1
+
+        Do While Cnt < (StepCols * (I + 1)) And Cnt < StepsCount - 1
+
+            If StepGrid(Cnt).Height > StepTableHeight Then StepTableHeight = StepGrid(Cnt).Height
+
+            Inc Cnt
+
+        Loop
+
+        RowTop = RowTop + StepTableHeight + YSpaceWidth
+
+    Next
+
+    ' Рисуем сетку на Frame
+'    Dim hFrameDC As Long, hPen As Long, hObj As Long
+'    Dim K As Long
+'    Dim objDummyPoint As POINTAPI
+'
+'    K = 1
+'
+'    hFrameDC = GetDC(FramePicsView.hWnd)
+'
+'    hPen = CreatePen(0, 1, &HF4E0E0)
+'
+'    hObj = SelectObject(hFrameDC, hPen)
+'
+'    For I = 0 To FramePicsView.Width / (K * Settings.StepsColWidth)
+'
+'       MoveToEx hFrameDC, I * (K * Settings.StepsColWidth) / Screen.TwipsPerPixelX, 0, objDummyPoint
+'
+'       LineTo hFrameDC, I * (K * Settings.StepsColWidth) / Screen.TwipsPerPixelX, FramePicsView.Height
+'
+'    Next
+'
+'    For I = 0 To FramePicsView.Height / (K * Settings.StepsColWidth)
+'
+'       MoveToEx hFrameDC, 0, I * (K * Settings.StepsColWidth) / Screen.TwipsPerPixelY, objDummyPoint
+'
+'       LineTo hFrameDC, FramePicsView.Width, I * (K * Settings.StepsColWidth) / Screen.TwipsPerPixelY
+'
+'    Next
+'
+'    ReleaseDC FramePicsView.hWnd, hFrameDC
+    
+    RearrangeStepsPics = RowTop - (StepTableHeight + YSpaceWidth)
+
+    '<EhFooter>
+    Exit Function
+
+RearrangeStepsPics_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.RearrangeStepsPics]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Function
+
+
+
 Private Sub RefreshStepsView()
     '<EhHeader>
     On Error GoTo RefreshStepsView_Err
@@ -6067,8 +7195,10 @@ Private Sub RefreshStepsView()
     ' Выходим из процедуры, если программы не загружены или отсутствуют
     If Not Manager.FileLoaded Then
     
-        FrameMain.Caption = "Шаги"
+        LabelFrameMain.Caption = "Шаги"
+        
         StepsView.Redraw = False
+        
         StepsView.Clear
         
         ' Настраиваем параметры отображения текста
@@ -6394,7 +7524,9 @@ Private Sub RefreshProperties()
     ' Выходим из процедуры, если программы не загружены или отсутствуют
 
     If Not Manager.FileLoaded Then
-        FrameRight.Caption = "Свойства"
+    
+        LabelFrameRight.Caption = "Свойства"
+        
         PropertyTable.Redraw = False
         
         PropertyTable.Font.Bold = Settings.StepsViewFontBold
@@ -6403,17 +7535,26 @@ Private Sub RefreshProperties()
         PropertyTable.Font.Size = Settings.StepsViewFontSize
         
         PropertyTable.rows = 1
+        
         PropertyTable.Clear
-        ParamStr = "<Параметр|Значение"
-        PropertyTable.FormatString = ParamStr
+        
+        PropertyTable.FormatString = "<Параметр|Значение"
+        
+        PropertyTable.Col = 1
+        
+        PropertyTable.CellAlignment = flexAlignRightCenter
+        
         PropertyTable.Redraw = True
+        
         FrameRight.Enabled = False
+        
         Exit Sub
+        
     End If
     
     FrameRight.Enabled = True
 
-    FrameRight.Caption = "Свойства - [" & ListPrograms.Text & ".Шаг" & Manager.StepIndex + 1 & "]"
+    LabelFrameRight.Caption = "Свойства - [" & ListPrograms.Text & ".Шаг" & Manager.StepIndex + 1 & "]"
     
     ' Узнаём номер функции текущего шага
     Dim FuncN As Integer
@@ -6429,8 +7570,14 @@ Private Sub RefreshProperties()
         
     PropertyTable.rows = 2
     PropertyTable.Clear
+    
     ParamStr = "<Параметр|Значение"
+    
     PropertyTable.FormatString = ParamStr
+        
+    PropertyTable.Col = 1
+        
+    PropertyTable.CellAlignment = flexAlignRightCenter
         
     If FuncN < 12 Then
 
@@ -6472,6 +7619,7 @@ Private Sub RefreshProperties()
             Case Else
 
         End Select
+        
     End If
     
     PropertyTable.Redraw = True
@@ -6554,6 +7702,59 @@ Private Sub ViewMainMenuItem_Click()
 ViewMainMenuItem_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
             " [INFO] [cop.FormMain.ViewMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub VScrollPicsView_Change()
+    '<EhHeader>
+    On Error GoTo VScrollPicsView_Change_Err
+    '</EhHeader>
+
+    VScrollPicsView_Scroll
+    
+    '<EhFooter>
+    Exit Sub
+
+VScrollPicsView_Change_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.VScrollPicsView_Change]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub VScrollPicsView_Scroll()
+    '<EhHeader>
+    On Error GoTo VScrollPicsView_Scroll_Err
+    '</EhHeader>
+
+    Dim I As Integer
+    Dim StepsCount As Long
+    
+    StepsCount = 0
+    
+    For I = 0 To StepGrid.Count - 1
+    
+        If StepGrid(I).Visible Then Inc StepsCount
+    
+    Next
+    
+    If StepsCount > 0 Then RearrangeStepsPics StepsCount, 120 - VScrollPicsView.Value * (VScrollPicsView.Tag / VScrollPicsView.Max)
+    
+    '<EhFooter>
+    Exit Sub
+
+VScrollPicsView_Scroll_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.VScrollPicsView_Scroll]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
