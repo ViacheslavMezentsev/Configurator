@@ -15,6 +15,14 @@ Begin VB.Form FormOptions
    MinButton       =   0   'False
    ScaleHeight     =   7248
    ScaleWidth      =   6984
+   Begin VB.CommandButton CommandCancel 
+      Caption         =   "&Отмена"
+      Height          =   360
+      Left            =   5760
+      TabIndex        =   22
+      Top             =   6783
+      Width           =   990
+   End
    Begin TabDlg.SSTab SSTab 
       Height          =   6612
       Left            =   0
@@ -400,7 +408,7 @@ Begin VB.Form FormOptions
    Begin VB.CommandButton cmdOK 
       Caption         =   "OK"
       Height          =   375
-      Left            =   5760
+      Left            =   4560
       TabIndex        =   0
       Top             =   6768
       Width           =   1095
@@ -1248,8 +1256,11 @@ End Sub
 
 Private Sub RefreshButtons()
 
-    cmdOK.Top = ScaleHeight - 456
-    cmdOK.Left = ScaleWidth - 1224
+    cmdOk.Top = ScaleHeight - 456
+    cmdOk.Left = ScaleWidth - 2424
+    
+    CommandCancel.Top = ScaleHeight - 456
+    CommandCancel.Left = ScaleWidth - 1224
     
 End Sub
 
@@ -1260,6 +1271,27 @@ Private Sub RefreshComponents(Optional RefreshWithData As Boolean = False)
     RefreshTabControl
     RefreshButtons
     
+End Sub
+
+Private Sub CommandCancel_Click()
+    '<EhHeader>
+    On Error GoTo CommandCancel_Click_Err
+    '</EhHeader>
+
+    Unload Me
+    
+    '<EhFooter>
+    Exit Sub
+
+CommandCancel_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormOptions.CommandCancel_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub Form_Load()

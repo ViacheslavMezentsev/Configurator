@@ -48,7 +48,15 @@ Public Const TITLE_SECTION_NAME = "Title"
 '@rem GUID для программы "Конфигуратор УП 1.x (*.json)"
 Public Const ProgramGUID As String = "{43CE9E0A-3657-4258-B573-8B18F6AC3B42}"
 
-Public Const ElementGUID As String = "{E0B1357B-0FE5-460D-B85F-22F50E3289B9}"
+Public Const ObjectGUID As String = "{E0B1357B-0FE5-460D-B85F-22F50E3289B9}"
+
+Public Const CLIPBOARD_OBJECT_GUID_STRING As String = "ObjectGUID"
+
+Public Const CLIPBOARD_OBJECT_TYPE_STRING As String = "ObjectType"
+
+Public Const CLIPBOARD_OBJECT_TYPE_STEP As Integer = 1
+
+Public Const CLIPBOARD_OBJECT_TYPE_PROGRAM As Integer = 2
 
 '**
 '@rem
