@@ -27,7 +27,7 @@ Begin VB.Form FormAbout
       Left            =   204
       MouseIcon       =   "FormAbout.frx":6432
       MousePointer    =   99  'Custom
-      Picture         =   "FormAbout.frx":1C44C
+      Picture         =   "FormAbout.frx":6CFC
       ScaleHeight     =   768
       ScaleWidth      =   768
       TabIndex        =   11
@@ -45,7 +45,7 @@ Begin VB.Form FormAbout
       ForeColor       =   &H80000008&
       Height          =   768
       Left            =   4440
-      Picture         =   "FormAbout.frx":1F490
+      Picture         =   "FormAbout.frx":9D40
       ScaleHeight     =   768
       ScaleWidth      =   768
       TabIndex        =   10
@@ -66,15 +66,15 @@ Begin VB.Form FormAbout
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   3
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormAbout.frx":224D4
+            Picture         =   "FormAbout.frx":CD84
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormAbout.frx":25526
+            Picture         =   "FormAbout.frx":FDD6
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "FormAbout.frx":2857A
+            Picture         =   "FormAbout.frx":12E2A
             Key             =   ""
          EndProperty
       EndProperty
@@ -88,9 +88,9 @@ Begin VB.Form FormAbout
       ClipControls    =   0   'False
       Height          =   768
       Left            =   228
-      MouseIcon       =   "FormAbout.frx":2B5CE
+      MouseIcon       =   "FormAbout.frx":15E7E
       MousePointer    =   99  'Custom
-      Picture         =   "FormAbout.frx":31BD8
+      Picture         =   "FormAbout.frx":1C488
       ScaleHeight     =   526.236
       ScaleMode       =   0  'User
       ScaleWidth      =   526.236
@@ -124,7 +124,7 @@ Begin VB.Form FormAbout
       ForeColor       =   &H8000000D&
       Height          =   216
       Left            =   1320
-      MouseIcon       =   "FormAbout.frx":32AAB
+      MouseIcon       =   "FormAbout.frx":1D35B
       MousePointer    =   99  'Custom
       TabIndex        =   8
       ToolTipText     =   "Щёлкните, чтобы написать письмо автору"
@@ -147,7 +147,7 @@ Begin VB.Form FormAbout
       ForeColor       =   &H8000000D&
       Height          =   216
       Left            =   1320
-      MouseIcon       =   "FormAbout.frx":48AC5
+      MouseIcon       =   "FormAbout.frx":33375
       MousePointer    =   99  'Custom
       TabIndex        =   7
       ToolTipText     =   "Щёлкните, чтобы написать письмо автору"
@@ -209,6 +209,8 @@ Begin VB.Form FormAbout
       EndProperty
       Height          =   252
       Left            =   1320
+      MouseIcon       =   "FormAbout.frx":4938F
+      MousePointer    =   99  'Custom
       TabIndex        =   5
       ToolTipText     =   "Щёлкните для копирования в буфер"
       Top             =   480
@@ -269,7 +271,7 @@ Begin VB.Form FormAbout
       ForeColor       =   &H8000000D&
       Height          =   216
       Left            =   1320
-      MouseIcon       =   "FormAbout.frx":5EADF
+      MouseIcon       =   "FormAbout.frx":49C59
       MousePointer    =   99  'Custom
       TabIndex        =   9
       ToolTipText     =   "Щёлкните, чтобы перейти на сайт"

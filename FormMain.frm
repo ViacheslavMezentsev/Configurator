@@ -610,6 +610,7 @@ Begin VB.Form FormMain
          Orientation     =   1245184
       End
       Begin VB.Label LabelFrameMain 
+         Appearance      =   0  'Flat
          AutoSize        =   -1  'True
          BackColor       =   &H00F4C0C0&
          BackStyle       =   0  'Transparent
@@ -628,7 +629,7 @@ Begin VB.Form FormMain
          Left            =   120
          TabIndex        =   32
          Top             =   120
-         Width           =   1020
+         Width           =   456
       End
       Begin VB.Shape ShapeFrameMainCaption 
          BackColor       =   &H00F4C0C0&
@@ -665,6 +666,62 @@ Begin VB.Form FormMain
       TabIndex        =   10
       Top             =   480
       Width           =   2172
+      Begin VB.PictureBox PictureProgsHSelRight 
+         AutoRedraw      =   -1  'True
+         BackColor       =   &H8000000D&
+         BorderStyle     =   0  'None
+         Height          =   252
+         Left            =   1800
+         ScaleHeight     =   252
+         ScaleWidth      =   24
+         TabIndex        =   39
+         TabStop         =   0   'False
+         Top             =   720
+         Visible         =   0   'False
+         Width           =   24
+      End
+      Begin VB.PictureBox PictureProgsHSelBottom 
+         AutoRedraw      =   -1  'True
+         BackColor       =   &H8000000D&
+         BorderStyle     =   0  'None
+         Height          =   20
+         Left            =   120
+         ScaleHeight     =   24
+         ScaleWidth      =   1716
+         TabIndex        =   38
+         TabStop         =   0   'False
+         Top             =   960
+         Visible         =   0   'False
+         Width           =   1716
+      End
+      Begin VB.PictureBox PictureProgsHSelLeft 
+         AutoRedraw      =   -1  'True
+         BackColor       =   &H8000000D&
+         BorderStyle     =   0  'None
+         Height          =   252
+         Left            =   120
+         ScaleHeight     =   252
+         ScaleWidth      =   24
+         TabIndex        =   37
+         TabStop         =   0   'False
+         Top             =   720
+         Visible         =   0   'False
+         Width           =   24
+      End
+      Begin VB.PictureBox PictureProgsHSelTop 
+         AutoRedraw      =   -1  'True
+         BackColor       =   &H8000000D&
+         BorderStyle     =   0  'None
+         Height          =   20
+         Left            =   120
+         ScaleHeight     =   24
+         ScaleWidth      =   1716
+         TabIndex        =   36
+         TabStop         =   0   'False
+         Top             =   720
+         Visible         =   0   'False
+         Width           =   1716
+      End
       Begin VB.TextBox TextName 
          BorderStyle     =   0  'None
          Height          =   288
@@ -699,6 +756,7 @@ Begin VB.Form FormMain
          BorderStyle     =   0
       End
       Begin VB.Label LabelListPrograms 
+         AutoSize        =   -1  'True
          BackColor       =   &H00F4C0C0&
          BackStyle       =   0  'Transparent
          Caption         =   "Программы"
@@ -983,6 +1041,19 @@ Begin VB.Form FormMain
       Begin VB.Menu ExportMainMenuItem 
          Caption         =   "&Экспорт..."
       End
+      Begin VB.Menu Separator6 
+         Caption         =   "-"
+         Visible         =   0   'False
+      End
+      Begin VB.Menu MenuItemPrint 
+         Caption         =   "Печать..."
+         Shortcut        =   ^P
+         Visible         =   0   'False
+      End
+      Begin VB.Menu MenuItemPrintPreview 
+         Caption         =   "Предварительный просмотр..."
+         Visible         =   0   'False
+      End
       Begin VB.Menu Separator2 
          Caption         =   "-"
       End
@@ -1065,57 +1136,42 @@ Begin VB.Form FormMain
          Caption         =   "&Настройки..."
       End
    End
-   Begin VB.Menu PopupMenuPrograms 
-      Caption         =   "П&рограмма"
-      Begin VB.Menu GotoMenuItem 
-         Caption         =   "&Перейти..."
-         Shortcut        =   ^G
-      End
-      Begin VB.Menu PopupMenuListClear 
-         Caption         =   "&Очистить"
-      End
-      Begin VB.Menu CopyMainMenuItem 
-         Caption         =   "&Копировать..."
-      End
-      Begin VB.Menu Separator6 
-         Caption         =   "-"
-      End
-      Begin VB.Menu PopupMenuListClearAll 
-         Caption         =   "Очистить &все"
-      End
-   End
-   Begin VB.Menu StepMainMenuItem 
-      Caption         =   "&Шаг"
-      Begin VB.Menu UndoMenuItem 
+   Begin VB.Menu MainMenuItemEdit 
+      Caption         =   "&Правка"
+      Begin VB.Menu MenuItemUndo 
          Caption         =   "Отменить"
          Shortcut        =   ^Z
       End
-      Begin VB.Menu RedoMenuItem 
+      Begin VB.Menu MenuItemRedo 
          Caption         =   "Вернуть"
       End
       Begin VB.Menu Separator7 
          Caption         =   "-"
       End
-      Begin VB.Menu CutStepsMenuItem 
+      Begin VB.Menu MenuItemCut 
          Caption         =   "В&ырезать"
          Shortcut        =   ^X
       End
-      Begin VB.Menu CopyStepsMenuItem 
+      Begin VB.Menu MenuItemCopy 
          Caption         =   "&Копировать"
          Shortcut        =   ^C
       End
-      Begin VB.Menu PasteStepsMenuItem 
+      Begin VB.Menu MenuItemPaste 
          Caption         =   "Вставить"
          Shortcut        =   ^V
       End
-      Begin VB.Menu DeleteStepMenuItem 
+      Begin VB.Menu MenuItemDelete 
          Caption         =   "&Удалить"
          Shortcut        =   {DEL}
       End
       Begin VB.Menu Separator8 
          Caption         =   "-"
       End
-      Begin VB.Menu InsertStepByFuncMenuItem 
+      Begin VB.Menu MenuItemSelectAll 
+         Caption         =   "Выбрать все"
+         Shortcut        =   ^A
+      End
+      Begin VB.Menu MenuItemInsertStep 
          Caption         =   "&Вставить шаг"
          Begin VB.Menu InsertStepByNum 
             Caption         =   "Пропуск"
@@ -1166,6 +1222,10 @@ Begin VB.Form FormMain
    Begin VB.Menu CodeMainMenuItem 
       Caption         =   "&Код"
       Visible         =   0   'False
+      Begin VB.Menu GotoMenuItem 
+         Caption         =   "&Перейти..."
+         Shortcut        =   ^G
+      End
    End
    Begin VB.Menu HelpMainMenuItem 
       Caption         =   "&Помощь"
@@ -1188,6 +1248,23 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+'Private Sub cmdPrint_Click()
+' With Frame1
+' .Top = Me.ScaleTop
+' .Left = Me.ScaleLeft
+' .borderstyel = 0
+' .BackColor = vbWhite
+' 'for all text boxes
+' textbox1.BorderStyle = 0
+' textbox1.Appearance = 0
+' 'back style of all lable controls must be set to zero
+' .ZOrder vbBringToFront
+' End With
+' Me.Width = Me.Frame1.Width
+' Me.Height = Me.Frame1.Height
+' Me.PrintForm
+' End Sub
+ 
 '**
 '@rem Режим отображения средней панели
 Private ViewMode As Long
@@ -1241,7 +1318,7 @@ Dim SplitterRightMoving As Boolean
 Dim SplitterLeftMoving As Boolean
 Dim LogFrameResizing As Boolean
 Dim BegX As Integer, BegY As Integer
-Dim SelStepsCount As Long
+Dim SelStepsCount As Long, SelProgsCount As Long
 
 Dim LastUndoRedoForward As Boolean
 Dim LastUndoRedoItem As Long
@@ -1373,6 +1450,7 @@ Private Sub AddUndoRedoItem(Value As String)
     Loop
     
     UndoRedoVector.addElement HuffmanEncode(Value)
+    'UndoRedoVector.addElement Value
     
     LastUndoRedoItem = UndoRedoVector.Size
 
@@ -1399,7 +1477,7 @@ Private Sub Undo()
      
     If LastUndoRedoItem = UndoRedoVector.Size Then
         
-        AddUndoRedoItem Manager.ToString()
+        AddUndoRedoItem Manager.toString()
         
         Dec LastUndoRedoItem
         
@@ -1409,9 +1487,12 @@ Private Sub Undo()
     
     If LastUndoRedoForward = True Then Dec LastUndoRedoItem
     
-    Manager.FromString HuffmanDecode(UndoRedoVector.elementAt(LastUndoRedoItem))
+    Manager.FromString HuffmanDecode(CStr(UndoRedoVector.elementAt(LastUndoRedoItem)))
+    'Manager.FromString UndoRedoVector.elementAt(LastUndoRedoItem)
     
     Dec LastUndoRedoItem
+    
+    If LastUndoRedoItem = 0 Then SetModified False
     
     LastUndoRedoForward = False
     
@@ -1442,6 +1523,8 @@ Private Sub Redo()
         
         LastUndoRedoForward = True
         
+        SetModified True
+        
     End If
     
     If LastUndoRedoForward = False Then Inc LastUndoRedoItem
@@ -1450,7 +1533,8 @@ Private Sub Redo()
     
     LastUndoRedoForward = True
     
-    Manager.FromString HuffmanDecode(UndoRedoVector.elementAt(LastUndoRedoItem))
+    Manager.FromString HuffmanDecode(CStr(UndoRedoVector.elementAt(LastUndoRedoItem)))
+    'Manager.FromString CStr(UndoRedoVector.elementAt(LastUndoRedoItem))
     
     If LastUndoRedoItem = UndoRedoVector.Size Then
     
@@ -1476,225 +1560,6 @@ Redo_Err:
     '</EhFooter>
 End Sub
 
-Private Function func_StepsSelectionToString(ByVal begin_of_pointers As Long, _
-       ByRef RecordTitle As TYPE_WPC_TITLE, _
-       ByRef RecordStep As TYPE_WPC_STEP, _
-       ByRef RecordFill As TYPE_WPC_FILL, _
-       ByRef RecordDetergent As TYPE_WPC_DETERGENT, _
-       ByRef RecordHeat As TYPE_WPC_HEAT, _
-       ByRef RecordWash As TYPE_WPC_WASH, _
-       ByRef RecordDrain As TYPE_WPC_DRAIN, _
-       ByRef RecordSpin As TYPE_WPC_SPIN, _
-       ByRef RecordCool As TYPE_WPC_COOL) As String
-
-    Dim FNum As Integer
-    Dim I As Long, StepPointer As Long
-    Dim Result As String, sInputJson As String
-    Dim StepsArray As Object, StepElem As Object
-    
-    Result = ""
-    
-    sInputJson = "[]"
-    
-    Set StepsArray = JSON.parse(sInputJson)
-    
-    I = SelStepsCount
-    
-    ' Инициализируем указатель RecordTitle адресом начала текущей программы
-    StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-    PutMem4 VarPtr(begin_of_pointers) + 4, ByVal StepPointer
-        
-    Do While I > 0
-    
-        PutMem4 VarPtr(begin_of_pointers) + 8, _
-           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (Manager.StepIndex + I - 1) * STEP_SIZE_IN_BYTES
-
-        FNum = (RecordStep.Bits And &HF)
-        
-        ' Формируем объект для шага в зависимости от типа функции шага
-        Set StepElem = JSON.parse("{" & """ElementGUID"": " & """" & ElementGUID & """," _
-                                    & """ElementType"": 1, " & JSONStepsTemplates(FNum) & "}")
-
-        Select Case FNum
-        
-            Case WPC_OPERATION_IDLE
-            
-                PutMem4 VarPtr(begin_of_pointers) + 8, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (Manager.StepIndex + I - 1) * STEP_SIZE_IN_BYTES
-
-            Case WPC_OPERATION_FILL
-            
-                PutMem4 VarPtr(begin_of_pointers) + 12, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (Manager.StepIndex + I - 1) * STEP_SIZE_IN_BYTES
-
-                StepElem.Item("Pause") = CBool((RecordFill.Bits And &H10) / &H10)
-                StepElem.Item("ColdWaterGate") = CBool((RecordFill.Bits And &H20) / &H20)
-                StepElem.Item("HotWaterGate") = CBool((RecordFill.Bits And &H40) / &H40)
-                StepElem.Item("RecycledWaterGate") = CBool((RecordFill.Bits And &H80) / &H80)
-                StepElem.Item("Rotation") = CBool((RecordFill.Bits And &H100) / &H100)
-
-                StepElem.Item("Level") = CByte(RecordFill.Level)
-                StepElem.Item("RotationTime") = CByte(RecordFill.RotationTime)
-                StepElem.Item("PauseTime") = CByte(RecordFill.PauseTime)
-                StepElem.Item("DrumSpeed") = CByte(RecordFill.DrumSpeed)
-
-            Case WPC_OPERATION_DTRG
-            
-                PutMem4 VarPtr(begin_of_pointers) + 16, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (Manager.StepIndex + I - 1) * STEP_SIZE_IN_BYTES
-
-                StepElem.Item("Pause") = CBool((RecordDetergent.Bits And &H10) / &H10)
-                StepElem.Item("Rotation") = CBool((RecordDetergent.Bits And &H20) / &H20)
-
-                StepElem.Item("Detergent_1_Time") = CByte(RecordDetergent.Detergent_1_Time)
-                StepElem.Item("Detergent_2_Time") = CByte(RecordDetergent.Detergent_2_Time)
-                StepElem.Item("Detergent_3_Time") = CByte(RecordDetergent.Detergent_3_Time)
-                StepElem.Item("Detergent_4_Time") = CByte(RecordDetergent.Detergent_4_Time)
-                StepElem.Item("Detergent_5_Time") = CByte(RecordDetergent.Detergent_5_Time)
-                StepElem.Item("Detergent_6_Time") = CByte(RecordDetergent.Detergent_6_Time)
-                StepElem.Item("Detergent_7_Time") = CByte(RecordDetergent.Detergent_7_Time)
-                StepElem.Item("Detergent_8_Time") = CByte(RecordDetergent.Detergent_8_Time)
-                StepElem.Item("Detergent_9_Time") = CByte(RecordDetergent.Detergent_9_Time)
-
-                StepElem.Item("RotationTime") = CByte(RecordDetergent.RotationTime)
-                StepElem.Item("PauseTime") = CByte(RecordDetergent.PauseTime)
-                StepElem.Item("DrumSpeed") = CByte(RecordDetergent.DrumSpeed)
-
-            Case WPC_OPERATION_HEAT
-            
-                PutMem4 VarPtr(begin_of_pointers) + 20, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (Manager.StepIndex + I - 1) * STEP_SIZE_IN_BYTES
-
-                StepElem.Item("Pause") = CBool((RecordHeat.Bits And &H10) / &H10)
-                StepElem.Item("Rotation") = CBool((RecordHeat.Bits And &H20) / &H20)
-
-                StepElem.Item("Temperature") = CByte(RecordHeat.Temperature)
-                StepElem.Item("RotationTime") = CByte(RecordHeat.RotationTime)
-                StepElem.Item("PauseTime") = CByte(RecordHeat.PauseTime)
-                StepElem.Item("DrumSpeed") = CByte(RecordHeat.DrumSpeed)
-
-            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
-            
-                PutMem4 VarPtr(begin_of_pointers) + 24, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (Manager.StepIndex + I - 1) * STEP_SIZE_IN_BYTES
-
-                StepElem.Item("Type") = CByte(RecordWash.Bits And &HF)
-                StepElem.Item("Pause") = CBool((RecordWash.Bits And &H10) / &H10)
-                StepElem.Item("Rotation") = CBool((RecordWash.Bits And &H20) / &H20)
-
-                StepElem.Item("Time") = CByte(RecordWash.Time)
-                StepElem.Item("RotationTime") = CByte(RecordWash.RotationTime)
-                StepElem.Item("PauseTime") = CByte(RecordWash.PauseTime)
-                StepElem.Item("DrumSpeed") = CByte(RecordWash.DrumSpeed)
-
-            Case WPC_OPERATION_DRAIN
-            
-                PutMem4 VarPtr(begin_of_pointers) + 28, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (Manager.StepIndex + I - 1) * STEP_SIZE_IN_BYTES
-
-                StepElem.Item("Pause") = CBool((RecordDrain.Bits And &H10) / &H10)
-                StepElem.Item("DrainGate1") = CBool((RecordDrain.Bits And &H20) / &H20)
-                StepElem.Item("DrainGate2") = CBool((RecordDrain.Bits And &H40) / &H40)
-                StepElem.Item("Rotation") = CBool((RecordDrain.Bits And &H80) / &H80)
-
-                StepElem.Item("Level") = CByte(RecordDrain.Level)
-                StepElem.Item("RotationTime") = CByte(RecordDrain.RotationTime)
-                StepElem.Item("PauseTime") = CByte(RecordDrain.PauseTime)
-                StepElem.Item("DrumSpeed1") = CByte(RecordDrain.DrumSpeed1)
-
-            Case WPC_OPERATION_SPIN
-            
-                PutMem4 VarPtr(begin_of_pointers) + 32, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (Manager.StepIndex + I - 1) * STEP_SIZE_IN_BYTES
-
-                StepElem.Item("Pause") = CBool((RecordSpin.Bits And &H10) / &H10)
-                StepElem.Item("DrainGate1") = CBool((RecordSpin.Bits And &H20) / &H20)
-                StepElem.Item("DrainGate2") = CBool((RecordSpin.Bits And &H40) / &H40)
-
-                StepElem.Item("DrumSpeed") = CInt(RecordSpin.DrumSpeed)
-                StepElem.Item("Time") = CByte(RecordSpin.Time)
-
-            Case WPC_OPERATION_COOL
-            
-                PutMem4 VarPtr(begin_of_pointers) + 36, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (Manager.StepIndex + I - 1) * STEP_SIZE_IN_BYTES
-
-                StepElem.Item("Pause") = CBool((RecordCool.Bits And &H10) / &H10)
-                StepElem.Item("Fast") = CBool((RecordCool.Bits And &H20) / &H20)
-                StepElem.Item("Rotation") = CBool((RecordCool.Bits And &H40) / &H40)
-
-                StepElem.Item("Temperature") = CByte(RecordCool.Temperature)
-                StepElem.Item("ColdWaterTime") = CByte(RecordCool.ColdWaterTime)
-                StepElem.Item("RotationTime") = CByte(RecordCool.RotationTime)
-                StepElem.Item("PauseTime") = CByte(RecordCool.PauseTime)
-                StepElem.Item("DrumSpeed") = CByte(RecordCool.DrumSpeed)
-
-        End Select
-
-        StepsArray.Add StepElem
-        
-        Set StepElem = Nothing
-        
-        Dec I
-        
-    Loop
-    
-    ' Сохраняем данные в формате JSON
-    Result = JSON.ToString(StepsArray)
-    
-    Set StepsArray = Nothing
-    
-    func_StepsSelectionToString = Result
-    
-End Function
-
-Private Function StepsSelectionToString() As String
-    '<EhHeader>
-    On Error GoTo StepsSelectionToString_Err
-    '</EhHeader>
-
-    Dim Result As String
-    
-    Result = ""
-    
-    ' Если ничего не выделено, то результат - пустая строка
-    If SelStepsCount <= 0 Then
-    
-        StepsSelectionToString = ""
-        
-        Exit Function
-    
-    End If
-    
-    Dim RecordTitle As TYPE_WPC_TITLE
-    Dim RecordStep As TYPE_WPC_STEP
-    Dim RecordFill As TYPE_WPC_FILL
-    Dim RecordDetergent As TYPE_WPC_DETERGENT
-    Dim RecordHeat As TYPE_WPC_HEAT
-    Dim RecordWash As TYPE_WPC_WASH
-    Dim RecordDrain As TYPE_WPC_DRAIN
-    Dim RecordSpin As TYPE_WPC_SPIN
-    Dim RecordCool As TYPE_WPC_COOL
-    
-    ' Вызываем вспомогательную функцию, которая позволяет работать
-    ' с указателями напрямую
-    StepsSelectionToString = func_StepsSelectionToString(0&, RecordTitle, RecordStep, RecordFill, RecordDetergent, _
-       RecordHeat, RecordWash, RecordDrain, RecordSpin, RecordCool)
-
-    '<EhFooter>
-    Exit Function
-
-StepsSelectionToString_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.StepsSelectionToString]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-
-    Resume Next
-
-    '</EhFooter>
-End Function
-
 Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     '<EhHeader>
     On Error GoTo RefreshComponents_Err
@@ -1711,6 +1576,7 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     FrameLeft.Top = Me.ScaleTop + Toolbar.Top + Toolbar.Height + 120
     FrameLeft.Height = Me.ScaleHeight - (StatusBar.Height + Toolbar.Top + Toolbar.Height + 120)
         
+    SplitterLeft.Width = Settings.SplittersThickness
     SplitterLeft.Left = FrameLeft.Left + FrameLeft.Width
     SplitterLeft.Top = FrameLeft.Top + 100
     SplitterLeft.Height = FrameLeft.Height - 100
@@ -1720,6 +1586,7 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     FrameMain.Height = FrameLeft.Height
     FrameMain.Width = Me.ScaleWidth - FrameMain.Left - FrameRight.Width - SplitterRight.Width
     
+    SplitterRight.Width = Settings.SplittersThickness
     SplitterRight.Left = FrameMain.Left + FrameMain.Width
     SplitterRight.Top = FrameLeft.Top + 100
     SplitterRight.Height = FrameLeft.Height - 100
@@ -1757,27 +1624,29 @@ Private Sub RefreshFrameLeft()
     ShapeListPrograms.Width = FrameLeft.Width
     ShapeListPrograms.Height = FrameLeft.Height
     
+    LabelListPrograms.FontSize = Settings.StepsViewFontSize
+    
+    LabelListPrograms.Top = 0
+    LabelListPrograms.Left = 120
+    LabelListPrograms.Width = ShapeListPrograms.Width - 240
+    
     ShapeLabelListPrograms.Top = 0
     ShapeLabelListPrograms.Left = 0
     ShapeLabelListPrograms.Width = ShapeListPrograms.Width
-    
-    LabelListPrograms.AutoSize = True
-    LabelListPrograms.FontSize = Settings.StepsViewFontSize
-    LabelListPrograms.AutoSize = False
-    
-    LabelListPrograms.Top = ShapeLabelListPrograms.Top
-    LabelListPrograms.Left = ShapeLabelListPrograms.Left + 120
-    LabelListPrograms.Width = ShapeLabelListPrograms.Width - 240
+    ShapeLabelListPrograms.Height = LabelListPrograms.Height
+        
+    ShowProgsHorizontalSelector
     
     If Not Manager.FileLoaded Then
-    
+        
         ListPrograms.Visible = False
+        
         ShapeLabelListPrograms.BackColor = &HF4C0C0
         
         Exit Sub
             
     End If
-    
+
     ListPrograms.Top = ShapeLabelListPrograms.Top + ShapeLabelListPrograms.Height + 120
     ListPrograms.Left = 120
     ListPrograms.Width = FrameLeft.Width - ListPrograms.Left - 120
@@ -1821,17 +1690,20 @@ Private Sub RefreshFrameMain()
     ShapeFrameMain.Width = FrameMain.Width
     ShapeFrameMain.Height = FrameMain.Height
     
-    ShapeFrameMainCaption.Top = 0
-    ShapeFrameMainCaption.Left = 0
-    ShapeFrameMainCaption.Width = ShapeFrameMain.Width
-    
+    LabelFrameMain.Visible = False
     LabelFrameMain.AutoSize = True
     LabelFrameMain.FontSize = Settings.StepsViewFontSize
     LabelFrameMain.AutoSize = False
+    LabelFrameMain.Visible = True
     
-    LabelFrameMain.Top = ShapeFrameMainCaption.Top
-    LabelFrameMain.Left = ShapeFrameMainCaption.Left + 120
-    LabelFrameMain.Width = ShapeFrameMainCaption.Width - 240
+    LabelFrameMain.Top = 0
+    LabelFrameMain.Left = 120
+    LabelFrameMain.Width = ShapeFrameMain.Width - 240
+    
+    ShapeFrameMainCaption.Top = 0
+    ShapeFrameMainCaption.Left = 0
+    ShapeFrameMainCaption.Width = ShapeFrameMain.Width
+    ShapeFrameMainCaption.Height = LabelFrameMain.Height
     
     FrameMain.Enabled = Manager.FileLoaded
     
@@ -1882,6 +1754,8 @@ Private Sub RefreshFrameMain()
 
             If Manager.FileLoaded Then
             
+                Manager.StepIndex = (CInt(ListPrograms.RowData(ListPrograms.RowSel)) And &HFF00) / &H100
+            
                 LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
                    ".Шаг" & Manager.StepIndex + 1 & "]"
                                
@@ -1892,8 +1766,10 @@ Private Sub RefreshFrameMain()
             End If
                 
             ' Отображаем горизонтальный и вертикальный селекторы
-            ShowHorizontalSelector
-            ShowVerticalSelector
+            ShowStepsHorizontalSelector
+            ShowStepsVerticalSelector
+            
+            StepsView.Refresh
             
             FrameGridView.Visible = True
     
@@ -1901,6 +1777,11 @@ Private Sub RefreshFrameMain()
             
             FrameGridView.Visible = False
             FrameCodeView.Visible = False
+            
+            Manager.StepIndex = (CInt(ListPrograms.RowData(ListPrograms.RowSel)) And &HFF00) / &H100
+            
+                LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
+                   ".Шаг" & Manager.StepIndex + 1 & "]"
             
             FramePicsView.Top = ShapeFrameMainCaption.Top + ShapeFrameMainCaption.Height + 120
             FramePicsView.Left = 120
@@ -1952,8 +1833,6 @@ Private Sub RefreshFrameMain()
             
     End Select
     
-
-    
     '<EhFooter>
     Exit Sub
 
@@ -1974,17 +1853,16 @@ Private Sub RefreshFrameRight()
     ShapeFrameRight.Width = FrameRight.Width
     ShapeFrameRight.Height = FrameRight.Height
     
+    LabelFrameRight.FontSize = Settings.StepsViewFontSize
+    
+    LabelFrameRight.Top = 0
+    LabelFrameRight.Left = 120
+    LabelFrameRight.Width = ShapeFrameRight.Width - 240
+    
     ShapeFrameRightCaption.Top = 0
     ShapeFrameRightCaption.Left = 0
     ShapeFrameRightCaption.Width = ShapeFrameRight.Width
-    
-    LabelFrameRight.AutoSize = True
-    LabelFrameRight.FontSize = Settings.StepsViewFontSize
-    LabelFrameRight.AutoSize = False
-    
-    LabelFrameRight.Top = ShapeFrameRightCaption.Top
-    LabelFrameRight.Left = ShapeFrameRightCaption.Left + 120
-    LabelFrameRight.Width = ShapeFrameRightCaption.Width - 240
+    ShapeFrameRightCaption.Height = LabelFrameRight.Height
     
     If Not Manager.FileLoaded Then
     
@@ -2092,14 +1970,51 @@ Private Sub RefreshMainMenu()
     On Error GoTo RefreshMainMenu_Err
     '</EhHeader>
     
-    PopupMenuPrograms.Visible = Manager.FileLoaded
+    MainMenuItemEdit.Visible = Manager.FileLoaded
     
-    Select Case ViewMode
-        Case STEPS_VIEW: GotoMenuItem.Visible = False
-        Case CODE_VIEW: GotoMenuItem.Visible = True
+    MenuItemUndo.Enabled = False
+    MenuItemRedo.Enabled = False
+    
+    MenuItemCut.Enabled = False
+    MenuItemCopy.Enabled = False
+    MenuItemPaste.Enabled = False
+    MenuItemDelete.Enabled = False
+    
+    MenuItemSelectAll.Enabled = False
+    
+    If ActiveControl Is Nothing Then Exit Sub
+
+    Select Case ActiveControl
+     
+        Case ListPrograms:
+            
+            MenuItemUndo.Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+            MenuItemRedo.Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            
+            MenuItemCut.Enabled = True
+            MenuItemCopy.Enabled = True
+            MenuItemPaste.Enabled = True
+            MenuItemDelete.Enabled = True
+            
+            MenuItemSelectAll.Enabled = True
+            
+            MenuItemInsertStep.Visible = False
+        
+        Case StepsView:
+            
+            MenuItemUndo.Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+            MenuItemRedo.Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            
+            MenuItemCut.Enabled = True
+            MenuItemCopy.Enabled = True
+            MenuItemPaste.Enabled = True
+            MenuItemDelete.Enabled = True
+            
+            MenuItemSelectAll.Enabled = True
+            
+            MenuItemInsertStep.Visible = True
+            
     End Select
-    
-    StepMainMenuItem.Visible = Manager.FileLoaded And (ViewMode = STEPS_VIEW)
     
     '<EhFooter>
     Exit Sub
@@ -2158,43 +2073,46 @@ Private Sub RefreshToolbar()
     Toolbar.Buttons(12).Enabled = False
     Toolbar.Buttons(13).Enabled = False
         
-    If ActiveControl Is ListPrograms Then
+    If ActiveControl Is Nothing Then Exit Sub
     
-        Exit Sub
-        
-    End If
-
-    If ActiveControl Is StepsView Then
+    Select Case ActiveControl
     
-        Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-        Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+        Case ListPrograms:
         
-        Toolbar.Buttons(10).Enabled = Manager.FileLoaded
-        Toolbar.Buttons(11).Enabled = Manager.FileLoaded
-        Toolbar.Buttons(12).Enabled = Manager.FileLoaded
-        Toolbar.Buttons(13).Enabled = Manager.FileLoaded
+            Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
         
-        Exit Sub
+            Toolbar.Buttons(10).Enabled = Manager.FileLoaded
+            Toolbar.Buttons(11).Enabled = Manager.FileLoaded
+            Toolbar.Buttons(12).Enabled = Manager.FileLoaded
+            Toolbar.Buttons(13).Enabled = Manager.FileLoaded
+            
+        Case StepsView:
+            
+            Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            
+            Toolbar.Buttons(10).Enabled = Manager.FileLoaded
+            Toolbar.Buttons(11).Enabled = Manager.FileLoaded
+            Toolbar.Buttons(12).Enabled = Manager.FileLoaded
+            Toolbar.Buttons(13).Enabled = Manager.FileLoaded
+        
+        Case CodeView:
+        
+            Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+        
+        Case StepGrid:
+        
+            Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+                
+        Case PropertyTable:
     
-    End If
-
-    If ActiveControl Is CodeView Then
+            Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
     
-        Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-        Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
-        
-        Exit Sub
-        
-    End If
-    
-    If ActiveControl Is PropertyTable Then
-    
-        Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-        Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
-        
-        Exit Sub
-        
-    End If
+    End Select
     
     '<EhFooter>
     Exit Sub
@@ -2414,6 +2332,8 @@ Private Sub CodeView_GotFocus()
     '</EhHeader>
 
     ShapeFrameMainCaption.BackColor = &HFF8080
+    
+    RefreshMainMenu
     RefreshToolbar
 
     '<EhFooter>
@@ -2500,6 +2420,8 @@ Private Sub CodeView_LostFocus()
     '</EhHeader>
 
     ShapeFrameMainCaption.BackColor = &HF4C0C0
+    
+    RefreshMainMenu
     RefreshToolbar
 
     '<EhFooter>
@@ -2582,7 +2504,7 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
         If FuncN < 12 Then
             
             ' Сохраняем состояние
-            AddUndoRedoItem Manager.ToString()
+            AddUndoRedoItem Manager.toString()
             
             Select Case FuncN
             
@@ -2687,59 +2609,20 @@ ComboCell_LostFocus_Err:
     '</EhFooter>
 End Sub
 
-Private Sub CopyMainMenuItem_Click()
+Private Sub FramePicsView_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
-    On Error GoTo CopyMainMenuItem_Click_Err
+    On Error GoTo FramePicsView_MouseDown_Err
     '</EhHeader>
-    
-    Dim I As Integer
-    
-    FormCopy.List1.Clear
-    FormCopy.List2.Clear
-    
-    For I = 1 To Manager.ProgramsCount
-    
-        FormCopy.List1.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
-        FormCopy.List2.AddItem ListPrograms.TextArray(GetCellIndex(ListPrograms, I, 0))
-        
-    Next
-    
-    FormCopy.List1.ListIndex = 0
-    FormCopy.List2.ListIndex = 0
-    
-    ' Сохраняем состояние
-    AddUndoRedoItem Manager.ToString()
-    
-    FormCopy.Show (vbModal)
-    
-    RefreshComponents False
-    
-    ' Перерисовываем форму
-    FormMain.Refresh
+
+    'проверка, нажата ли правая клавиша мыши
+    If Button And vbRightButton Then PopupMenu MainMenuItemEdit
     
     '<EhFooter>
     Exit Sub
 
-CopyMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.CopyMainMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
-End Sub
-
-Private Sub CopyStepsMenuItem_Click()
-    '<EhHeader>
-    On Error GoTo CopyStepsMenuItem_Click_Err
-    '</EhHeader>
-
-    Clipboard.SetText StepsSelectionToString
-
-    '<EhFooter>
-    Exit Sub
-
-CopyStepsMenuItem_Click_Err:
+FramePicsView_MouseDown_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.CopyStepsMenuItem_Click]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormMain.FramePicsView_MouseDown]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
@@ -2748,24 +2631,43 @@ CopyStepsMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub CutStepsMenuItem_Click()
+Private Sub MenuItemCopy_Click()
     '<EhHeader>
-    On Error GoTo CutStepsMenuItem_Click_Err
+    On Error GoTo MenuItemCopy_Click_Err
     '</EhHeader>
-        
-    Clipboard.SetText StepsSelectionToString
-      
-    DeleteStepMenuItem_Click
+
+    If ActiveControl Is Nothing Then Exit Sub
+
+    MenuItemCopy.Enabled = False
+
+    Select Case ActiveControl
     
-    ' Перерисовываем форму
-    FormMain.Refresh
+        Case ListPrograms:
         
+            Clipboard.SetText Manager.ProgsSelectionToString(SelProgsCount)
+            
+            
+        Case StepsView:
+    
+            Clipboard.SetText Manager.StepsSelectionToString(SelStepsCount)
+            
+            
+        Case CodeView:
+        
+        Case StepGrid:
+        
+        Case PropertyTable:
+    
+    End Select
+        
+    MenuItemCopy.Enabled = True
+    
     '<EhFooter>
     Exit Sub
 
-CutStepsMenuItem_Click_Err:
+MenuItemCopy_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.CutStepsMenuItem_Click]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormMain.MenuItemCopy_Click]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
@@ -2774,54 +2676,86 @@ CutStepsMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub DeleteStepMenuItem_Click()
+Private Sub MenuItemCut_Click()
     '<EhHeader>
-    On Error GoTo DeleteStepMenuItem_Click_Err
+    On Error GoTo MenuItemCut_Click_Err
     '</EhHeader>
-    
-    Dim I As Integer
-    
-    ' Сохраняем состояние
-    AddUndoRedoItem Manager.ToString()
-    
-    ' Удаляем текущий шаг
-    For I = 1 To SelStepsCount
         
-        Manager.DeleteStep
-        
-    Next
-        
-    ' Пересчитываем CRC поле записи программы
-    Dim CRC8Value As Byte
-    Dim Address As Long
-    Dim Size As Long
-    
-    Address = Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
-    Size = PROGRAM_SIZE_IN_BYTES - 1
-    
-    CRC8Value = Manager.CalculateCRC8(Address + 1, Size)
-    Manager.SetByte Address, CRC8Value
-    
-    SetModified True
-    RefreshDataComponents
-    
-    SelStepsCount = 1
-    ShowVerticalSelector
+    If ActiveControl Is Nothing Then Exit Sub
 
-    StepsView.SetFocus
+    MenuItemCut.Enabled = False
     
+    Select Case ActiveControl
+    
+        Case ListPrograms:
+        
+            Clipboard.SetText Manager.ProgsSelectionToString(SelProgsCount)
+        
+            ' Сохраняем состояние
+            AddUndoRedoItem Manager.toString()
+            
+            ' Удаляем программы
+            Manager.DeletePrograms Manager.ProgramIndex, SelProgsCount
+            
+            SetModified True
+            
+            RefreshComponents False
+        
+            SelProgsCount = 1
+            
+            ShowProgsHorizontalSelector
+            
+            ListPrograms.SetFocus
+            
+            
+        Case StepsView:
+    
+            Clipboard.SetText Manager.StepsSelectionToString(SelStepsCount)
+              
+            ' Сохраняем состояние
+            AddUndoRedoItem Manager.toString()
+            
+            ' Удаляем текущий шаги
+            Manager.DeleteSteps Manager.ProgramIndex, Manager.StepIndex, SelStepsCount
+            
+            SetModified True
+            
+            RefreshDataComponents
+        
+            SelStepsCount = 1
+            
+            ShowStepsVerticalSelector
+            
+            StepsView.SetFocus
+    
+        Case CodeView:
+        
+        Case StepGrid:
+        
+        Case PropertyTable:
+    
+    End Select
+        
     ' Перерисовываем форму
     FormMain.Refresh
         
+    MenuItemCut.Enabled = True
+    
     '<EhFooter>
     Exit Sub
 
-DeleteStepMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.DeleteStepMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+MenuItemCut_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.MenuItemCut_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
     Resume Next
+
     '</EhFooter>
 End Sub
+
+
 
 Private Sub ExitMainMenuItem_Click()
     '<EhHeader>
@@ -2980,10 +2914,13 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                 
                 ViewMode = PICS_VIEW
                 
+                RefreshPicsView
+                
             Case CODE_VIEW
             
                 ViewMode = PICS_VIEW
                 
+                RefreshPicsView
                 
             Case PICS_VIEW
             
@@ -2994,7 +2931,6 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
         End Select
         
         RefreshFrameMain
-        RefreshPicsView
         RefreshMainMenu
         
         Exit Sub
@@ -3077,7 +3013,7 @@ DisplayMRU_Err:
     Resume Next
     '</EhFooter>
 End Sub
- 
+
 Private Sub Form_Load()
 
     On Local Error GoTo Form_Load_Err
@@ -3239,10 +3175,6 @@ Private Sub Form_Load()
     Set ModuleDTRG = New CModuleDTRG
     Set ModuleHeat = New CModuleHeat
     Set ModuleWashOrRinsOrJolt = New CModuleWashOrRinsOrJolt
-'<Удалил: Мезенцев Вячеслав, 24.06.2011 г. в 1:31:58
-'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
-'    Set ModulePause = New TModulePause
-'</Удалил: Мезенцев Вячеслав, 24.06.2011 г. в 1:31:58>
     Set ModuleDrain = New CModuleDrain
     Set ModuleSpin = New CModuleSpin
     Set ModuleCool = New CModuleCool
@@ -3262,10 +3194,6 @@ Private Sub Form_Load()
     ModuleDTRG.LoadLimits IniFilePath
     ModuleHeat.LoadLimits IniFilePath
     ModuleWashOrRinsOrJolt.LoadLimits IniFilePath
-'<Удалил: Мезенцев Вячеслав, 24.06.2011 г. в 1:34:29
-'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
-'    ModulePause.LoadLimits IniFilePath
-'</Удалил: Мезенцев Вячеслав, 24.06.2011 г. в 1:34:29>
     ModuleDrain.LoadLimits IniFilePath
     ModuleSpin.LoadLimits IniFilePath
     ModuleCool.LoadLimits IniFilePath
@@ -3279,123 +3207,6 @@ Private Sub Form_Load()
     ' Восстанавливаем список используемых файлов
     MRUFileList.Load IniFile
     DisplayMRU
-    
-    Dim S As String
-    Dim Col As Integer, row
-    
-    StepsView.Redraw = False
-    
-    StepsView.Font.Bold = Settings.StepsViewFontBold
-    StepsView.Font.Italic = Settings.StepsViewFontItalic
-    StepsView.Font.Name = Settings.StepsViewFontName
-    StepsView.Font.Size = Settings.StepsViewFontSize
-        
-    StepsView.Cols = MAX_NUMBER_OF_STEPS + 1
-    
-    S = "<   |"
-
-    For Col = 1 To StepsView.Cols - 1
-            
-        ' Изменяем размер каждого столбца
-        StepsView.ColWidth(Col) = Settings.StepsColWidth
-        
-
-        If Col < StepsView.Cols - 1 Then
-        
-            S = S & Col & "|"
-            
-        Else
-        
-            S = S & Col
-            
-        End If
-        
-        StepsView.Col = Col
-        StepsView.row = 0
-        StepsView.CellAlignment = flexAlignCenterCenter
-        
-    Next
-    
-    StepsView.FormatString = S
-       
-    S = ";|" _
-       & "Клапан горячей воды" & "|" _
-       & "Клапан холодной воды 1" & "|" _
-       & "Клапан холодной воды 2" & "|" _
-       & "Клапан МС 1" & "|" _
-       & "Клапан МС 2" & "|" _
-       & "Клапан МС 3" & "|" _
-       & "Клапан МС 4" & "|" _
-       & "Клапан МС 5" & "|" _
-       & "Клапан МС 6" & "|" _
-       & "Клапан МС 7" & "|" _
-       & "Клапан МС 8" & "|" _
-       & "Клапан МС 9" & "|" _
-       & "Замок люка 1" & "|" _
-       & "Замок люка 2" & "|" _
-       & "Слив 1" & "|" _
-       & "Слив 2" & "|" _
-       & "Нагрев" & "|" _
-       & "Мотор"
-    
-    StepsView.FormatString = S
-    
-    ' "Тушим" все ячейки таблицы
-    For row = 1 To StepsView.rows - 1
-    
-        StepsView.RowHeight(row) = Settings.StepsRowHeight
-        
-        For Col = 1 To MAX_NUMBER_OF_STEPS
-        
-            ' Изменяем размер каждого столбца
-            StepsView.ColWidth(Col) = Settings.StepsColWidth
-            
-            StepsView.Col = Col
-            StepsView.row = row
-            StepsView.CellBackColor = &HC8D0D4
-            
-        Next
-        
-    Next
-    
-    StepsView.Col = 1
-    StepsView.row = 1
-    
-    StepsView.Redraw = True
-    
-    ' Инициализируем окно кода
-    S = "<   |"
-
-    For Col = 1 To CodeView.Cols - 1
-    
-        ' Изменяем размер каждого столбца
-        CodeView.ColWidth(Col) = Settings.StepsColWidth
-
-        If Col < CodeView.Cols - 1 Then
-
-            If Col < 11 Then
-                S = S & "0" & Col - 1 & "|"
-            Else
-                S = S & "0" & Chr$(Col - 11 + 65) & "|"
-            End If
-            
-        Else
-
-            If Col < 11 Then
-                S = S & "0" & Col - 1 & "|"
-            Else
-                S = S & "0" & Chr$(Col - 11 + 65) & "|"
-            End If
-            
-        End If
-        
-        CodeView.Col = Col
-        CodeView.row = 0
-        CodeView.CellAlignment = flexAlignCenterCenter
-        
-    Next
-    
-    CodeView.FormatString = S
     
     FunctionsStrings(0) = "Пропуск"
     FunctionsStrings(1) = "Налив"
@@ -3608,6 +3419,8 @@ Private Sub ImportMainMenuItem_Click()
             
             ListPrograms.SetFocus
             
+            ShowProgsHorizontalSelector
+            
         Else
             
         End If
@@ -3637,7 +3450,7 @@ Private Sub InsertStepByNum_Click(index As Integer)
     '</EhHeader>
 
     ' Сохраняем состояние
-    AddUndoRedoItem Manager.ToString()
+    AddUndoRedoItem Manager.toString()
     
     Manager.InsertStep Me, index
                       
@@ -3869,17 +3682,23 @@ Public Sub ListPrograms_Click()
     '</EhHeader>
 
     Dim CRC8Value As Byte
-    Dim OldSelectedRow As Integer
     Dim CurrentSelectedRow As Integer
     Dim CellBackColor As Long
     
-    OldSelectedRow = Manager.ProgramIndex + 1
     CurrentSelectedRow = ListPrograms.row
     
-    ListPrograms.Redraw = False
+    ' При клике область выделения сужается до одного шага
+    SelProgsCount = 1
+    
+    Manager.ProgramIndex = CurrentSelectedRow - 1
+    
+    ' Отображаем горизонтальный селектор
+    ShowProgsHorizontalSelector
+    
+    ' Убираем изображение старого селектора
+    ListPrograms.Refresh
 
-    ListPrograms.row = OldSelectedRow
-    ListPrograms.CellForeColor = &H80000008
+    ListPrograms.Redraw = False
 
     ' Вычисляем признак пустой программы
     CRC8Value = Manager.CalculateCRC8(Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, PROGRAM_SIZE_IN_BYTES)
@@ -3935,15 +3754,8 @@ Public Sub ListPrograms_Click()
         End If
 
     End If
-
-    ' Выделенная ячейка
-    ListPrograms.row = CurrentSelectedRow
-    ListPrograms.CellForeColor = &H8000000E
-    ListPrograms.CellBackColor = &H8000000D
     
     ListPrograms.Redraw = True
-    
-    Manager.ProgramIndex = CurrentSelectedRow - 1
     
     Select Case ViewMode
     
@@ -4005,6 +3817,8 @@ Private Sub ListPrograms_GotFocus()
     '</EhHeader>
 
     ShapeLabelListPrograms.BackColor = &HFF8080
+    
+    RefreshMainMenu
     RefreshToolbar
 
     '<EhFooter>
@@ -4026,8 +3840,58 @@ Private Sub ListPrograms_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo ListPrograms_KeyDown_Err
     '</EhHeader>
 
+    Dim ShiftDown As Boolean, CtrlDown As Boolean
+    
+    ShiftDown = (GetAsyncKeyState(vbKeyShift) And &H8000&) <> 0
+    CtrlDown = (GetAsyncKeyState(vbKeyControl) And &H8000&) <> 0
+    
+    ' Вставить пустую программу
+    If KeyCode = VBRUN.KeyCodeConstants.vbKeyInsert Then
+    
+        ' Сохраняем состояние
+        AddUndoRedoItem Manager.toString()
+            
+        Manager.InsertProgram Me
+        
+        SetModified True
+        
+        RefreshDataComponents
+    
+        ListPrograms.SetFocus
+        
+        ' Перерисовываем форму
+        FormMain.Refresh
+
+        Exit Sub
+        
+    End If
+    
+    ' Изменение размеров выделения селектором
+    If ShiftDown And KeyCode = vbKeyDown Then
+               
+        Inc SelProgsCount
+        
+        If (Manager.ProgramIndex + SelProgsCount) > (ListPrograms.rows - 1) Then SelProgsCount = ListPrograms.rows - Manager.ProgramIndex - 1
+        
+        ShowProgsHorizontalSelector
+        
+        Exit Sub
+        
+    End If
+    
+    ' Изменение размеров выделения селектором
+    If ShiftDown And KeyCode = vbKeyUp Then
+        
+        Dec SelProgsCount
+        
+        ShowProgsHorizontalSelector
+        
+        Exit Sub
+        
+    End If
+    
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyUp Or _
-       KeyCode = VBRUN.KeyCodeConstants.vbKeyDown Then
+       KeyCode = VBRUN.KeyCodeConstants.vbKeyDown And Not ShiftDown Then
         
         ListPrograms_Click
         
@@ -4067,6 +3931,8 @@ Private Sub ListPrograms_LostFocus()
     '</EhHeader>
 
     ShapeLabelListPrograms.BackColor = &HF4C0C0
+    
+    RefreshMainMenu
     RefreshToolbar
 
     '<EhFooter>
@@ -4089,7 +3955,7 @@ Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, x As Sin
     '</EhHeader>
     
     'проверка, нажата ли правая клавиша мыши
-    If Button And vbRightButton Then PopupMenu PopupMenuPrograms
+    If Button And vbRightButton Then PopupMenu MainMenuItemEdit
     
     '<EhFooter>
     Exit Sub
@@ -4098,6 +3964,82 @@ ListPrograms_MouseDown_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ListPrograms_MouseDown]: " _
        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
     Resume Next
+    '</EhFooter>
+End Sub
+
+Private Sub MenuItemDelete_Click()
+    '<EhHeader>
+    On Error GoTo MenuItemDelete_Click_Err
+    '</EhHeader>
+    
+    If ActiveControl Is Nothing Then Exit Sub
+    
+    MenuItemDelete.Enabled = False
+    
+    Select Case ActiveControl
+    
+        Case ListPrograms:
+            
+            ' Сохраняем состояние
+            AddUndoRedoItem Manager.toString()
+            
+            ' Удаляем программы
+            Manager.DeletePrograms Manager.ProgramIndex, SelProgsCount
+            
+            SetModified True
+            
+            RefreshComponents False
+        
+            SelProgsCount = 1
+            
+            ShowProgsHorizontalSelector
+            
+            ListPrograms.SetFocus
+            
+            
+        Case StepsView:
+    
+            ' Сохраняем состояние
+            AddUndoRedoItem Manager.toString()
+            
+            ' Удаляем текущий шаги
+            Manager.DeleteSteps Manager.ProgramIndex, Manager.StepIndex, SelStepsCount
+            
+            SetModified True
+            
+            RefreshDataComponents
+        
+            SelStepsCount = 1
+            
+            ShowStepsVerticalSelector
+            
+            StepsView.SetFocus
+            
+    
+        Case CodeView:
+        
+        Case StepGrid:
+        
+        Case PropertyTable:
+    
+    End Select
+        
+    ' Перерисовываем форму
+    FormMain.Refresh
+    
+    MenuItemDelete.Enabled = True
+    
+    '<EhFooter>
+    Exit Sub
+
+MenuItemDelete_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.MenuItemDelete_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4169,6 +4111,74 @@ MenuItemDoUpdate_Click_Err:
     '</EhFooter>
 End Sub
 
+Private Sub MenuItemPrintPreview_Click()
+    '<EhHeader>
+    On Error GoTo MenuItemPrintPreview_Click_Err
+    '</EhHeader>
+
+    FormPrintPreview.Show vbModal, Me
+
+    '<EhFooter>
+    Exit Sub
+
+MenuItemPrintPreview_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.MenuItemPrintPreview_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub MenuItemSelectAll_Click()
+    '<EhHeader>
+    On Error GoTo MenuItemSelectAll_Click_Err
+    '</EhHeader>
+
+    If ActiveControl Is Nothing Then Exit Sub
+
+    MenuItemSelectAll.Enabled = False
+
+    Select Case ActiveControl
+    
+        Case ListPrograms:
+        
+            Manager.ProgramIndex = 0
+            
+            RefreshList
+            
+            SelProgsCount = ListPrograms.rows - 1
+            
+            ShowProgsHorizontalSelector
+        
+        Case StepsView:
+    
+        Case CodeView:
+        
+        Case StepGrid:
+        
+        Case PropertyTable:
+    
+    End Select
+    
+    MenuItemSelectAll.Enabled = True
+    
+    '<EhFooter>
+    Exit Sub
+
+MenuItemSelectAll_Click_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.MenuItemSelectAll_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 Private Sub MenuItemShowHideLog_Click()
     '<EhHeader>
     On Error GoTo MenuItemShowHideLog_Click_Err
@@ -4218,11 +4228,17 @@ Private Sub MRUItems_Click(index As Integer)
         ViewMode = STEPS_VIEW
         
         RefreshComponents False
+        
         'RefreshFrameRight
+        
+        ListPrograms.RowSel = 1
         
         ListPrograms.SetFocus
         
+        ShowProgsHorizontalSelector
+        
         LastUndoRedoItem = 0
+        
         UndoRedoVector.removeAllElements
         
         SetModified False
@@ -4265,14 +4281,23 @@ Private Sub NewMainMenuItem_Click()
 
     ' Теперь можно создавать новый файл
     Manager.CreateNewFile (DEFAULT_FILE_NAME)
-    
-    ' Очистить все программы из образа
-    PopupMenuListClearAll_Click
-    
+       
     LastUndoRedoItem = 0
+    
     UndoRedoVector.removeAllElements
     
     SetModified True
+    
+    RefreshComponents False
+    
+    ListPrograms.RowSel = 1
+    
+    ' Отображаем горизонтальный селектор
+    ShowProgsHorizontalSelector
+    
+    ListPrograms.Refresh
+    
+    ListPrograms.SetFocus
     
     ' Перерисовываем форму
     FormMain.Refresh
@@ -4304,161 +4329,67 @@ OptionsMainMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub PasteStepsMenuItem_Click()
+Private Sub MenuItemPaste_Click()
     '<EhHeader>
-    On Error GoTo PasteStepsMenuItem_Click_Err
+    On Error GoTo MenuItemPaste_Click_Err
     '</EhHeader>
     
     ' Если буфер обмена пустой, то выходим
-    If Len(Clipboard.GetText) = 0 Then Exit Sub
+    If Len(Clipboard.GetText) = 0 Or ActiveControl Is Nothing Then Exit Sub
     
-    ' Сохраняем состояние
-    AddUndoRedoItem Manager.ToString()
+    MenuItemPaste.Enabled = False
     
-    ' Вставляем содержимое буфера обмена в текущую позицию
-    SetModified Manager.ImportFromClipboard(Me, Clipboard.GetText)
+    Select Case ActiveControl
     
-    RefreshDataComponents
+        Case ListPrograms:
+        
+            ' Сохраняем состояние
+            AddUndoRedoItem Manager.toString()
+            
+            ' Вставляем содержимое буфера обмена в текущую позицию
+            Manager.ImportFromClipboard Me, Clipboard.GetText
+            
+            SetModified True
+            
+            RefreshComponents False
+            
+            
+        Case StepsView:
+            
+            ' Сохраняем состояние
+            AddUndoRedoItem Manager.toString()
+            
+            ' Вставляем содержимое буфера обмена в текущую позицию
+            Manager.ImportFromClipboard Me, Clipboard.GetText
+            
+            SetModified True
+            
+            RefreshDataComponents
+    
+        Case CodeView:
+        
+        Case StepGrid:
+        
+        Case PropertyTable:
+    
+    End Select
     
     ' Перерисовываем форму
     FormMain.Refresh
     
+    MenuItemPaste.Enabled = True
+    
     '<EhFooter>
     Exit Sub
 
-PasteStepsMenuItem_Click_Err:
+MenuItemPaste_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.PasteStepsMenuItem_Click]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormMain.MenuItemPaste_Click]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
     Resume Next
 
-    '</EhFooter>
-End Sub
-
-Private Sub PopupMenuListClear_Click()
-    '<EhHeader>
-    On Error GoTo PopupMenuListClear_Click_Err
-    '</EhHeader>
-    
-    Dim StepPointer As Long
-    
-    ' Сохраняем состояние
-    AddUndoRedoItem Manager.ToString()
-    
-    ' Очищаем текущую программу
-    Manager.ClearProgramN (ListPrograms.row)
-    
-    ' Устанавливаем заголовок по умолчанию
-    If LimitsLoaded Then Manager.SetDefaultProgramHeader Manager.ProgramIndex + 1
-            
-    ' Пересчитываем CRC поле записи программы
-    Dim CRC8Value As Byte
-    Dim Address As Long
-    Dim Size As Long
-    
-    Address = (ListPrograms.row - 1) * PROGRAM_SIZE_IN_BYTES
-    Size = PROGRAM_SIZE_IN_BYTES - 1
-    
-    CRC8Value = Manager.CalculateCRC8(Address + 1, Size)
-    Manager.SetByte Address, CRC8Value
-            
-    SetModified True
-    
-    RefreshDataComponents
-    
-    ' Перерисовываем форму
-    FormMain.Refresh
-    
-    '<EhFooter>
-    Exit Sub
-
-PopupMenuListClear_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.PopupMenuListClear_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
-End Sub
-
-Private Sub PopupMenuListClearAll_Click()
-    '<EhHeader>
-    On Error GoTo PopupMenuListClearAll_Click_Err
-    '</EhHeader>
-    
-    ' Сохраняем состояние
-    AddUndoRedoItem Manager.ToString()
-    
-    Manager.ClearAll
-    
-    If LimitsLoaded Then
-    
-        Dim CRC8Value As Byte
-        Dim I As Integer
-        Dim Address As Long
-        Dim Size As Long
-            
-        For I = 1 To Manager.ProgramsCount
-        
-            ' Установка заголовка программы по умолчанию
-            Manager.SetDefaultProgramHeader I
-        
-            ' Пересчитываем CRC поле записи программы
-            Address = (I - 1) * PROGRAM_SIZE_IN_BYTES
-            Size = PROGRAM_SIZE_IN_BYTES - 1
-            
-            CRC8Value = Manager.CalculateCRC8(Address + 1, Size)
-            Manager.SetByte Address, CRC8Value
-            
-        Next
-        
-    End If
-    
-    SetModified True
-    
-    RefreshComponents False
-    
-    ListPrograms.SetFocus
-    
-    ' Перерисовываем форму
-    FormMain.Refresh
-    
-    '<EhFooter>
-    Exit Sub
-
-PopupMenuListClearAll_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.PopupMenuListClearAll_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
-End Sub
-
-Private Sub PopupMenuPrograms_Click()
-    '<EhHeader>
-    On Error GoTo PopupMenuPrograms_Click_Err
-    '</EhHeader>
-    
-    ' Настраиваем доступность пунктов меню "Программа":
-    PopupMenuListClear.Enabled = ActiveControl Is ListPrograms
-    CopyMainMenuItem.Enabled = ActiveControl Is ListPrograms
-    PopupMenuListClearAll.Enabled = ActiveControl Is ListPrograms
-    
-    ' "Программа\Перейти"
-    Select Case ViewMode
-    
-        Case STEPS_VIEW: GotoMenuItem.Enabled = False
-        
-        Case CODE_VIEW: GotoMenuItem.Enabled = True
-        
-    End Select
-    
-    '<EhFooter>
-    Exit Sub
-
-PopupMenuPrograms_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.PopupMenuPrograms_Click]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
     '</EhFooter>
 End Sub
 
@@ -4485,6 +4416,8 @@ Private Sub PropertyTable_GotFocus()
     '</EhHeader>
 
     ShapeFrameRightCaption.BackColor = &HFF8080
+    
+    RefreshMainMenu
     RefreshToolbar
 
     '<EhFooter>
@@ -4581,6 +4514,8 @@ Private Sub PropertyTable_LostFocus()
     '</EhHeader>
 
     ShapeFrameRightCaption.BackColor = &HF4C0C0
+    
+    RefreshMainMenu
     RefreshToolbar
 
     '<EhFooter>
@@ -4597,11 +4532,15 @@ PropertyTable_LostFocus_Err:
     '</EhFooter>
 End Sub
 
-Private Sub RedoMenuItem_Click()
+Private Sub MenuItemRedo_Click()
     '<EhHeader>
-    On Error GoTo RedoMenuItem_Click_Err
+    On Error GoTo MenuItemRedo_Click_Err
     '</EhHeader>
 
+    If ActiveControl Is Nothing Then Exit Sub
+
+    MenuItemRedo.Enabled = False
+    
     Redo
 
     RefreshComponents False
@@ -4609,12 +4548,14 @@ Private Sub RedoMenuItem_Click()
     ' Перерисовываем форму
     FormMain.Refresh
     
+    MenuItemRedo.Enabled = True
+    
     '<EhFooter>
     Exit Sub
 
-RedoMenuItem_Click_Err:
+MenuItemRedo_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.RedoMenuItem_Click]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormMain.MenuItemRedo_Click]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
@@ -4630,10 +4571,18 @@ Private Sub StepGrid_Click(index As Integer)
 
     Manager.StepIndex = StepGrid(index).Tag - 1
     
+    ' Сохраняем данные о навигации по структуре
+    ListPrograms.RowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt(Manager.StepIndex * &H100)
+    
+    LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & ".Шаг" & Manager.StepIndex + 1 & "]"
+            
     ' Обновляем зависимые компоненты
     RefreshProperties
+    
     'RefreshFrameMain
+    
     RefreshFrameRight
+    
     RefreshCodeView
     
     ' Перерисовываем форму
@@ -4666,6 +4615,8 @@ Private Sub StepGrid_GotFocus(index As Integer)
     StepGrid(index).CellBackColor = &HFF8080
 
     ShapeFrameMainCaption.BackColor = &HFF8080
+    
+    RefreshMainMenu
     RefreshToolbar
     
     '<EhFooter>
@@ -4695,6 +4646,8 @@ Private Sub StepGrid_LostFocus(index As Integer)
     StepGrid(index).CellBackColor = &HF4C0C0
     
     ShapeFrameMainCaption.BackColor = &HF4C0C0
+    
+    RefreshMainMenu
     RefreshToolbar
     
     '<EhFooter>
@@ -4711,28 +4664,25 @@ StepGrid_LostFocus_Err:
     '</EhFooter>
 End Sub
 
-Private Sub StepMainMenuItem_Click()
+Private Sub StepGrid_MouseDown(index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
     '<EhHeader>
-    On Error GoTo StepMainMenuItem_Click_Err
+    On Error GoTo StepGrid_MouseDown_Err
     '</EhHeader>
     
-    UndoMenuItem.Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-    RedoMenuItem.Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
-    
-    CutStepsMenuItem.Enabled = ActiveControl Is StepsView
-    CopyStepsMenuItem.Enabled = ActiveControl Is StepsView
-    PasteStepsMenuItem.Enabled = ActiveControl Is StepsView
-    DeleteStepMenuItem.Enabled = ActiveControl Is StepsView
-    
-    InsertStepByFuncMenuItem = ActiveControl Is StepsView
+    'проверка, нажата ли правая клавиша мыши
+    If Button And vbRightButton Then PopupMenu MainMenuItemEdit
     
     '<EhFooter>
     Exit Sub
 
-StepMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.StepMainMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+StepGrid_MouseDown_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.StepGrid_MouseDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4749,9 +4699,12 @@ Private Sub StepsView_Click()
     
     Manager.StepIndex = StepsView.Col - 1
     
+    ' Сохраняем данные о навигации по структуре
+    ListPrograms.RowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt(Manager.StepIndex * &H100)
+
     ' Отображаем горизонтальный и вертикальный селекторы
-    ShowHorizontalSelector
-    ShowVerticalSelector
+    ShowStepsHorizontalSelector
+    ShowStepsVerticalSelector
     
     ' Стираем образ селектора в прошлом положении
     StepsView.Refresh
@@ -4856,6 +4809,7 @@ Private Sub OpenMainMenuItem_Click()
     If FileName <> "" Then
               
         FileName = MiscExtractPathName(OpenFileDialog.FileName, False)
+        
         Manager.LoadFromFile (OpenFileDialog.FileName)
         
         SetCaption (Manager.FileName)
@@ -4864,8 +4818,12 @@ Private Sub OpenMainMenuItem_Click()
         
         RefreshComponents False
         
-        ListPrograms.SetFocus
+        ListPrograms.RowSel = 1
         
+        ListPrograms.SetFocus
+    
+        ShowProgsHorizontalSelector
+
         'RefreshFrameRight
         
         LastUndoRedoItem = 0
@@ -5200,7 +5158,7 @@ Private Sub StepsView_DblClick()
     If FuncN < 12 Then
 
         ' Сохраняем состояние
-        AddUndoRedoItem Manager.ToString()
+        AddUndoRedoItem Manager.toString()
 
         Select Case FuncN
             Case WPC_OPERATION_IDLE ' пропуск
@@ -5261,6 +5219,8 @@ Private Sub StepsView_GotFocus()
     '</EhHeader>
 
     ShapeFrameMainCaption.BackColor = &HFF8080
+    
+    RefreshMainMenu
     RefreshToolbar
 
     '<EhFooter>
@@ -5303,7 +5263,7 @@ Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
     If ShiftDown And KeyCode = vbKeyRight Then
                
         Inc SelStepsCount
-        ShowVerticalSelector
+        ShowStepsVerticalSelector
         
         Exit Sub
         
@@ -5313,7 +5273,7 @@ Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
     If ShiftDown And KeyCode = vbKeyLeft Then
         
         Dec SelStepsCount
-        ShowVerticalSelector
+        ShowStepsVerticalSelector
         
         Exit Sub
         
@@ -5349,6 +5309,8 @@ Private Sub StepsView_LostFocus()
     '</EhHeader>
 
     ShapeFrameMainCaption.BackColor = &HF4C0C0
+    
+    RefreshMainMenu
     RefreshToolbar
 
     '<EhFooter>
@@ -5371,7 +5333,7 @@ Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, x As Single
     '</EhHeader>
     
     'проверка, нажата ли правая клавиша мыши
-    If Button And vbRightButton Then PopupMenu StepMainMenuItem
+    If Button And vbRightButton Then PopupMenu MainMenuItemEdit
     
     '<EhFooter>
     Exit Sub
@@ -5383,9 +5345,78 @@ StepsView_MouseDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub ShowHorizontalSelector()
+Private Sub ShowProgsHorizontalSelector()
     '<EhHeader>
-    On Error GoTo ShowHorizontalSelector_Err
+    On Error GoTo ShowProgsHorizontalSelector_Err
+    '</EhHeader>
+
+    ' Отображаем горизонтальный селектор
+    If True And Manager.FileLoaded Then
+    
+        If SelProgsCount <= 0 Then SelProgsCount = 1
+    
+        PictureProgsHSelLeft.Top = ListPrograms.Top + ListPrograms.RowPos(Manager.ProgramIndex + 1) - Settings.StepsSelectorWidth / 2
+        PictureProgsHSelLeft.Left = ListPrograms.Left
+        PictureProgsHSelLeft.Width = Settings.StepsSelectorWidth
+        PictureProgsHSelLeft.Height = ListPrograms.RowHeight(ListPrograms.RowSel) * SelProgsCount
+        
+        PictureProgsHSelRight.Top = PictureProgsHSelLeft.Top
+        PictureProgsHSelRight.Left = PictureProgsHSelLeft.Left + ListPrograms.Width - Settings.StepsSelectorWidth
+        PictureProgsHSelRight.Height = ListPrograms.RowHeight(ListPrograms.RowSel) * SelProgsCount
+        PictureProgsHSelRight.Width = Settings.StepsSelectorWidth
+        
+        PictureProgsHSelTop.Left = PictureProgsHSelLeft.Left
+        PictureProgsHSelTop.Top = PictureProgsHSelLeft.Top
+        PictureProgsHSelTop.Height = Settings.StepsSelectorWidth
+        PictureProgsHSelTop.Width = ListPrograms.Width
+        
+        PictureProgsHSelBottom.Left = PictureProgsHSelLeft.Left
+        PictureProgsHSelBottom.Top = PictureProgsHSelLeft.Top + PictureProgsHSelLeft.Height - Settings.StepsSelectorWidth
+        PictureProgsHSelBottom.Height = Settings.StepsSelectorWidth
+        PictureProgsHSelBottom.Width = ListPrograms.Width
+        
+        If ListPrograms.RowIsVisible(ListPrograms.RowSel) Then
+        
+            PictureProgsHSelLeft.Visible = True
+            PictureProgsHSelRight.Visible = True
+            PictureProgsHSelTop.Visible = True
+            PictureProgsHSelBottom.Visible = True
+        
+        Else
+        
+            PictureProgsHSelLeft.Visible = False
+            PictureProgsHSelRight.Visible = False
+            PictureProgsHSelTop.Visible = False
+            PictureProgsHSelBottom.Visible = False
+        
+        End If
+
+    Else
+        
+        PictureProgsHSelLeft.Visible = False
+        PictureProgsHSelRight.Visible = False
+        PictureProgsHSelTop.Visible = False
+        PictureProgsHSelBottom.Visible = False
+            
+    End If
+
+    '<EhFooter>
+    Exit Sub
+
+ShowProgsHorizontalSelector_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.ShowProgsHorizontalSelector]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub ShowStepsHorizontalSelector()
+    '<EhHeader>
+    On Error GoTo ShowStepsHorizontalSelector_Err
     '</EhHeader>
 
     ' Отображаем вертикальный селектор
@@ -5439,9 +5470,9 @@ Private Sub ShowHorizontalSelector()
     '<EhFooter>
     Exit Sub
 
-ShowHorizontalSelector_Err:
+ShowStepsHorizontalSelector_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.ShowHorizontalSelector]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormMain.ShowStepsHorizontalSelector]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
@@ -5450,9 +5481,9 @@ ShowHorizontalSelector_Err:
     '</EhFooter>
 End Sub
 
-Private Sub ShowVerticalSelector()
+Private Sub ShowStepsVerticalSelector()
     '<EhHeader>
-    On Error GoTo ShowVerticalSelector_Err
+    On Error GoTo ShowStepsVerticalSelector_Err
     '</EhHeader>
 
     ' Отображаем вертикальный селектор
@@ -5508,9 +5539,9 @@ Private Sub ShowVerticalSelector()
     '<EhFooter>
     Exit Sub
 
-ShowVerticalSelector_Err:
+ShowStepsVerticalSelector_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.ShowVerticalSelector]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormMain.ShowStepsVerticalSelector]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
@@ -5524,7 +5555,7 @@ Private Sub StepsView_Scroll()
     On Error GoTo StepsView_Scroll_Err
     '</EhHeader>
 
-    ShowVerticalSelector
+    ShowStepsVerticalSelector
     
     '<EhFooter>
     Exit Sub
@@ -5617,7 +5648,7 @@ Private Sub TextByte_KeyDown(KeyCode As Integer, Shift As Integer)
         End If
         
         ' Сохраняем состояние
-        AddUndoRedoItem Manager.ToString()
+        AddUndoRedoItem Manager.toString()
         
         Dim row, Col As Long
         
@@ -5760,7 +5791,7 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
         If FuncN < 12 Then
 
             ' Сохраняем состояние
-            AddUndoRedoItem Manager.ToString()
+            AddUndoRedoItem Manager.toString()
 
             Select Case FuncN
                 Case WPC_OPERATION_IDLE ' пропуск
@@ -5923,7 +5954,7 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
     
         ' Сохраняем состояние
-        AddUndoRedoItem Manager.ToString()
+        AddUndoRedoItem Manager.toString()
     
         StepPointer = Manager.DataPointer + Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES
         CopyMemory RecordTitle, ByVal StepPointer, HEADER_SIZE_IN_BYTES
@@ -6435,19 +6466,19 @@ Private Sub Toolbar_ButtonClick(ByVal Button As MSComctlLib.Button)
     
     ' ---
     
-    If (Button.index = 7) Then UndoMenuItem_Click
+    If (Button.index = 7) Then MenuItemUndo_Click
     
-    If (Button.index = 8) Then RedoMenuItem_Click
+    If (Button.index = 8) Then MenuItemRedo_Click
     
     ' ---
     
-    If (Button.index = 10) And ActiveControl Is StepsView Then CutStepsMenuItem_Click
+    If (Button.index = 10) Then MenuItemCut_Click
     
-    If (Button.index = 11) And ActiveControl Is StepsView Then CopyStepsMenuItem_Click
+    If (Button.index = 11) Then MenuItemCopy_Click
     
-    If (Button.index = 12) And ActiveControl Is StepsView Then PasteStepsMenuItem_Click
+    If (Button.index = 12) Then MenuItemPaste_Click
     
-    If (Button.index = 13) And ActiveControl Is StepsView Then DeleteStepMenuItem_Click
+    If (Button.index = 13) Then MenuItemDelete_Click
     
     ' ---
     
@@ -6534,13 +6565,6 @@ Private Sub RefreshListSelection()
         If Not CRC8Value = Manager.GetByte(Cnt * PROGRAM_SIZE_IN_BYTES) Then
         
             ListPrograms.CellBackColor = &H8080FF
-            
-        End If
-        
-        If ListPrograms.row = Manager.ProgramIndex + 1 Then
-        
-            ListPrograms.CellForeColor = &H80000005
-            ListPrograms.CellBackColor = &H8000000D
             
         End If
         
@@ -6632,6 +6656,9 @@ Private Sub RefreshList()
                 
             End If
             
+            ' Инициализируем данные о навигации по структурепрограмм
+            ListPrograms.RowData(Cnt) = Cnt
+            
         Next
     
         ' Обновляем задний фон ячеек списка в зависимости от состояния
@@ -6642,6 +6669,7 @@ Private Sub RefreshList()
     End If
 
     ListPrograms.ColWidth(0) = ListPrograms.Width
+    
     ListPrograms.Redraw = True
     
     '<EhFooter>
@@ -6949,13 +6977,9 @@ Private Sub RefreshPicsView()
     ' Выходим из процедуры, если программы не загружены или отсутствуют
     If Not Manager.FileLoaded Then
 
-        LabelFrameMain.Caption = "Шаги"
-    
         Exit Sub
         
     End If
-    
-    LabelFrameMain.Caption = "Шаги"
     
     Dim StepType As Integer
     Dim StepsCount As Long
@@ -7112,8 +7136,6 @@ Private Function RearrangeStepsPics(StepsCount As Long, ScrollTop As Long) As Lo
 
             StepGrid(StepCols * I + j).Visible = True
 
-            LabelFrameMain.Caption = "Шаги [" & StepCols * I + j + 1 & "]"
-            
             Inc StepsCnt
 
         Next
@@ -7134,37 +7156,6 @@ Private Function RearrangeStepsPics(StepsCount As Long, ScrollTop As Long) As Lo
         RowTop = RowTop + StepTableHeight + YSpaceWidth
 
     Next
-
-    ' Рисуем сетку на Frame
-'    Dim hFrameDC As Long, hPen As Long, hObj As Long
-'    Dim K As Long
-'    Dim objDummyPoint As POINTAPI
-'
-'    K = 1
-'
-'    hFrameDC = GetDC(FramePicsView.hWnd)
-'
-'    hPen = CreatePen(0, 1, &HF4E0E0)
-'
-'    hObj = SelectObject(hFrameDC, hPen)
-'
-'    For I = 0 To FramePicsView.Width / (K * Settings.StepsColWidth)
-'
-'       MoveToEx hFrameDC, I * (K * Settings.StepsColWidth) / Screen.TwipsPerPixelX, 0, objDummyPoint
-'
-'       LineTo hFrameDC, I * (K * Settings.StepsColWidth) / Screen.TwipsPerPixelX, FramePicsView.Height
-'
-'    Next
-'
-'    For I = 0 To FramePicsView.Height / (K * Settings.StepsColWidth)
-'
-'       MoveToEx hFrameDC, 0, I * (K * Settings.StepsColWidth) / Screen.TwipsPerPixelY, objDummyPoint
-'
-'       LineTo hFrameDC, FramePicsView.Width, I * (K * Settings.StepsColWidth) / Screen.TwipsPerPixelY
-'
-'    Next
-'
-'    ReleaseDC FramePicsView.hWnd, hFrameDC
     
     RearrangeStepsPics = RowTop - (StepTableHeight + YSpaceWidth)
 
@@ -7195,8 +7186,6 @@ Private Sub RefreshStepsView()
     ' Выходим из процедуры, если программы не загружены или отсутствуют
     If Not Manager.FileLoaded Then
     
-        LabelFrameMain.Caption = "Шаги"
-        
         StepsView.Redraw = False
         
         StepsView.Clear
@@ -7663,24 +7652,30 @@ LoadLimits_Err:
     '</EhFooter>
 End Sub
 
-Private Sub UndoMenuItem_Click()
+Private Sub MenuItemUndo_Click()
     '<EhHeader>
-    On Error GoTo UndoMenuItem_Click_Err
+    On Error GoTo MenuItemUndo_Click_Err
     '</EhHeader>
 
+    If ActiveControl Is Nothing Then Exit Sub
+
+    MenuItemUndo.Enabled = False
+    
     Undo
     
     RefreshComponents False
     
     ' Перерисовываем форму
     FormMain.Refresh
+    
+    MenuItemUndo.Enabled = True
 
     '<EhFooter>
     Exit Sub
 
-UndoMenuItem_Click_Err:
+MenuItemUndo_Click_Err:
     App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.UndoMenuItem_Click]: " & GetErrorMessageById( _
+            " [INFO] [cop.FormMain.MenuItemUndo_Click]: " & GetErrorMessageById( _
             Err.Number, Err.Description), _
             VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
 
