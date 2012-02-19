@@ -24,8 +24,9 @@ Private Declare Sub InitCommonControls Lib "comctl32.dll" ()
 '**
 '@rem Точка входа в программу
 Private Sub Main()
-    
+       
     InitCommonControls
+    
     FormMain.Show
     
 End Sub

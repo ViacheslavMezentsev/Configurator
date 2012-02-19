@@ -642,7 +642,7 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
 
     Dim b As Byte
     Dim I As Integer
-    Dim J As Integer
+    Dim j As Integer
     Dim FNum As Integer
     Dim StepPointer As Long
     Dim S As String
@@ -707,9 +707,9 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
         
             S = ""
 
-            For J = 1 To PROG_NAME_LENGTH - 1
+            For j = 1 To PROG_NAME_LENGTH - 1
 
-                If RecordTitle.ProgName(J) <> 0 Then S = S & Chr$(RecordTitle.ProgName(J))
+                If RecordTitle.ProgName(j) <> 0 Then S = S & Chr$(RecordTitle.ProgName(j))
                 
             Next
 
@@ -718,12 +718,12 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
             ProgElem.Item("DoorUnlock") = CBool((RecordTitle.LowBits And &H2) / 2 ^ 1)
 
             ' Добавляем шаги к программе
-            J = MAX_NUMBER_OF_STEPS
+            j = MAX_NUMBER_OF_STEPS
 
-            Do While J > 0
+            Do While j > 0
             
                 PutMem4 VarPtr(begin_of_pointers) + 8, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                 FNum = (RecordStep.Bits And &HF)
 
@@ -734,11 +734,11 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
                 
                     Case WPC_OPERATION_IDLE
                         PutMem4 VarPtr(begin_of_pointers) + 8, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                     Case WPC_OPERATION_FILL
                         PutMem4 VarPtr(begin_of_pointers) + 12, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordFill.Bits And &H10) / &H10)
                         StepElem.Item("ColdWaterGate") = CBool((RecordFill.Bits And &H20) / &H20)
@@ -753,7 +753,7 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
 
                     Case WPC_OPERATION_DTRG
                         PutMem4 VarPtr(begin_of_pointers) + 16, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordDetergent.Bits And &H10) / &H10)
                         StepElem.Item("Rotation") = CBool((RecordDetergent.Bits And &H20) / &H20)
@@ -774,7 +774,7 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
 
                     Case WPC_OPERATION_HEAT
                         PutMem4 VarPtr(begin_of_pointers) + 20, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordHeat.Bits And &H10) / &H10)
                         StepElem.Item("Rotation") = CBool((RecordHeat.Bits And &H20) / &H20)
@@ -786,7 +786,7 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
 
                     Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
                         PutMem4 VarPtr(begin_of_pointers) + 24, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Type") = CByte(RecordWash.Bits And &HF)
                         StepElem.Item("Pause") = CBool((RecordWash.Bits And &H10) / &H10)
@@ -799,7 +799,7 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
 
                     Case WPC_OPERATION_DRAIN
                         PutMem4 VarPtr(begin_of_pointers) + 28, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordDrain.Bits And &H10) / &H10)
                         StepElem.Item("DrainGate1") = CBool((RecordDrain.Bits And &H20) / &H20)
@@ -813,7 +813,7 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
 
                     Case WPC_OPERATION_SPIN
                         PutMem4 VarPtr(begin_of_pointers) + 32, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordSpin.Bits And &H10) / &H10)
                         StepElem.Item("DrainGate1") = CBool((RecordSpin.Bits And &H20) / &H20)
@@ -824,7 +824,7 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
 
                     Case WPC_OPERATION_COOL
                         PutMem4 VarPtr(begin_of_pointers) + 36, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordCool.Bits And &H10) / &H10)
                         StepElem.Item("Fast") = CBool((RecordCool.Bits And &H20) / &H20)
@@ -860,7 +860,7 @@ Private Function func_ConvertToJSON(ByVal begin_of_pointers As Long, _
 
                 Set StepElem = Nothing
 
-                J = J - 1
+                j = j - 1
                 
             Loop
 
@@ -1000,7 +1000,7 @@ Private Function func_ImportFromJSON(sInputJson As String, _
     Dim b As Byte
     Dim ProgsCount As Integer
     Dim I As Integer
-    Dim J As Integer
+    Dim j As Integer
     Dim StepPointer As Long
     Dim Title As String
 
@@ -1056,12 +1056,12 @@ Private Function func_ImportFromJSON(sInputJson As String, _
 
         Title = p.Item(I + 1).Item("Title")
 
-        For J = 1 To PROG_NAME_LENGTH - 1
+        For j = 1 To PROG_NAME_LENGTH - 1
 
-            If J <= Len(Title) Then
-                RecordTitle.ProgName(J) = Asc(Mid$(Title, J, 1))
+            If j <= Len(Title) Then
+                RecordTitle.ProgName(j) = Asc(Mid$(Title, j, 1))
             Else
-                RecordTitle.ProgName(J) = 0
+                RecordTitle.ProgName(j) = 0
             End If
         Next
 
@@ -1074,9 +1074,9 @@ Private Function func_ImportFromJSON(sInputJson As String, _
 
         ' В зависимости от типа шага заполняем структуры шагов
 
-        For J = 1 To p.Item(I + 1).Item("Steps").Count
+        For j = 1 To p.Item(I + 1).Item("Steps").Count
         
-            Set Step = p.Item(I + 1).Item("Steps").Item(J)
+            Set Step = p.Item(I + 1).Item("Steps").Item(j)
 
             If Not Step Is Nothing Then
             
@@ -1086,11 +1086,11 @@ Private Function func_ImportFromJSON(sInputJson As String, _
                 
                     Case WPC_OPERATION_IDLE
                         PutMem4 VarPtr(begin_of_pointers) + 8, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                     Case WPC_OPERATION_FILL
                         PutMem4 VarPtr(begin_of_pointers) + 12, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordFill.Bits = FType
 
@@ -1128,7 +1128,7 @@ Private Function func_ImportFromJSON(sInputJson As String, _
 
                     Case WPC_OPERATION_DTRG
                         PutMem4 VarPtr(begin_of_pointers) + 16, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordDetergent.Bits = FType
 
@@ -1160,7 +1160,7 @@ Private Function func_ImportFromJSON(sInputJson As String, _
 
                     Case WPC_OPERATION_HEAT
                         PutMem4 VarPtr(begin_of_pointers) + 20, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordHeat.Bits = FType
 
@@ -1183,7 +1183,7 @@ Private Function func_ImportFromJSON(sInputJson As String, _
 
                     Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
                         PutMem4 VarPtr(begin_of_pointers) + 24, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordWash.Bits = FType
 
@@ -1206,7 +1206,7 @@ Private Function func_ImportFromJSON(sInputJson As String, _
 
                     Case WPC_OPERATION_DRAIN
                         PutMem4 VarPtr(begin_of_pointers) + 28, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordDrain.Bits = FType
 
@@ -1239,7 +1239,7 @@ Private Function func_ImportFromJSON(sInputJson As String, _
 
                     Case WPC_OPERATION_SPIN
                         PutMem4 VarPtr(begin_of_pointers) + 32, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordSpin.Bits = FType
 
@@ -1265,7 +1265,7 @@ Private Function func_ImportFromJSON(sInputJson As String, _
 
                     Case WPC_OPERATION_COOL
                         PutMem4 VarPtr(begin_of_pointers) + 36, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         RecordCool.Bits = FType
 
@@ -1376,7 +1376,7 @@ Private Function func_ImportProgramFromClipboard(frm As FormMain, _
     On Local Error GoTo errHandler
     
     Dim b As Byte
-    Dim J As Integer
+    Dim j As Integer
     Dim ProgsCount As Integer
     Dim FType As Integer
     Dim StepPointer As Long
@@ -1411,12 +1411,12 @@ Private Function func_ImportProgramFromClipboard(frm As FormMain, _
     
     Title = ProgramObj.Item("Title")
 
-    For J = 1 To PROG_NAME_LENGTH - 1
+    For j = 1 To PROG_NAME_LENGTH - 1
 
-        If J <= Len(Title) Then
-            RecordTitle.ProgName(J) = Asc(Mid$(Title, J, 1))
+        If j <= Len(Title) Then
+            RecordTitle.ProgName(j) = Asc(Mid$(Title, j, 1))
         Else
-            RecordTitle.ProgName(J) = 0
+            RecordTitle.ProgName(j) = 0
         End If
         
     Next
@@ -1427,9 +1427,12 @@ Private Function func_ImportProgramFromClipboard(frm As FormMain, _
 
     ' В зависимости от типа шага заполняем структуры шагов
 
-    For J = 1 To ProgramObj.Item("Steps").Count
+    ' Устанавливаем начальное положение для вставки шагов
+    StepIndex = 0
+
+    For j = 1 To ProgramObj.Item("Steps").Count
     
-        Set Step = ProgramObj.Item("Steps").Item(J)
+        Set Step = ProgramObj.Item("Steps").Item(j)
 
         ' Вызываем вспомогательную функцию, которая позволяет работать
         ' с указателями напрямую
@@ -1730,7 +1733,7 @@ Public Function ImportFromClipboard(frm As FormMain, Value As String) As Boolean
     Dim RecordSpin As TYPE_WPC_SPIN
     Dim RecordCool As TYPE_WPC_COOL
 
-    Dim J As Integer
+    Dim j As Integer
     Dim Program As Object, Step As Object
     Dim p As Object
     
@@ -1748,19 +1751,19 @@ Public Function ImportFromClipboard(frm As FormMain, Value As String) As Boolean
         
     End If
     
-    For J = 1 To p.Count
+    For j = 1 To p.Count
     
         ' Если уникальный идентификатор формата элемента не совпадает
         ' с поддерживаемыми программой, переходим к следующему
-        If ObjectGUID <> p.Item(J).Item(CLIPBOARD_OBJECT_GUID_STRING) Then
+        If ObjectGUID <> p.Item(j).Item(CLIPBOARD_OBJECT_GUID_STRING) Then
                     
         Else
         
-            Select Case CInt(p.Item(J).Item(CLIPBOARD_OBJECT_TYPE_STRING))
+            Select Case CInt(p.Item(j).Item(CLIPBOARD_OBJECT_TYPE_STRING))
             
                 Case CLIPBOARD_OBJECT_TYPE_STEP:
             
-                    Set Step = p.Item(J)
+                    Set Step = p.Item(j)
                     
                     ' Вызываем вспомогательную функцию, которая позволяет работать
                     ' с указателями напрямую
@@ -1772,7 +1775,7 @@ Public Function ImportFromClipboard(frm As FormMain, Value As String) As Boolean
                 
                 Case CLIPBOARD_OBJECT_TYPE_PROGRAM:
                 
-                    Set Program = p.Item(J)
+                    Set Program = p.Item(j)
             
                     ' Вызываем вспомогательную функцию, которая позволяет работать
                     ' с указателями напрямую
@@ -2137,7 +2140,7 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
 
     Dim b As Byte
     Dim FNum As Integer
-    Dim I As Long, J As Long, StepPointer As Long
+    Dim I As Long, j As Long, StepPointer As Long
     Dim Result As String, sInputJson As String, S As String
     Dim ProgsArray As Object, StepsArray As Object
     Dim ProgElem As Object, StepElem As Object
@@ -2201,9 +2204,9 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
         
             S = ""
 
-            For J = 1 To PROG_NAME_LENGTH - 1
+            For j = 1 To PROG_NAME_LENGTH - 1
 
-                If RecordTitle.ProgName(J) <> 0 Then S = S & Chr$(RecordTitle.ProgName(J))
+                If RecordTitle.ProgName(j) <> 0 Then S = S & Chr$(RecordTitle.ProgName(j))
                 
             Next
 
@@ -2212,12 +2215,12 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
             ProgElem.Item("DoorUnlock") = CBool((RecordTitle.LowBits And &H2) / 2 ^ 1)
         
             ' Добавляем шаги к программе
-            J = MAX_NUMBER_OF_STEPS
+            j = MAX_NUMBER_OF_STEPS
             
-            Do While J > 0
+            Do While j > 0
             
                 PutMem4 VarPtr(begin_of_pointers) + 8, _
-                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                   ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                 FNum = (RecordStep.Bits And &HF)
                 
@@ -2229,13 +2232,13 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
                     Case WPC_OPERATION_IDLE
                         
                         PutMem4 VarPtr(begin_of_pointers) + 8, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
 
                     Case WPC_OPERATION_FILL
                         
                         PutMem4 VarPtr(begin_of_pointers) + 12, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordFill.Bits And &H10) / &H10)
                         StepElem.Item("ColdWaterGate") = CBool((RecordFill.Bits And &H20) / &H20)
@@ -2252,7 +2255,7 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
                     Case WPC_OPERATION_DTRG
                         
                         PutMem4 VarPtr(begin_of_pointers) + 16, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordDetergent.Bits And &H10) / &H10)
                         StepElem.Item("Rotation") = CBool((RecordDetergent.Bits And &H20) / &H20)
@@ -2275,7 +2278,7 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
                     Case WPC_OPERATION_HEAT
                         
                         PutMem4 VarPtr(begin_of_pointers) + 20, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordHeat.Bits And &H10) / &H10)
                         StepElem.Item("Rotation") = CBool((RecordHeat.Bits And &H20) / &H20)
@@ -2289,7 +2292,7 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
                     Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
                         
                         PutMem4 VarPtr(begin_of_pointers) + 24, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Type") = CByte(RecordWash.Bits And &HF)
                         StepElem.Item("Pause") = CBool((RecordWash.Bits And &H10) / &H10)
@@ -2304,7 +2307,7 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
                     Case WPC_OPERATION_DRAIN
                     
                         PutMem4 VarPtr(begin_of_pointers) + 28, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordDrain.Bits And &H10) / &H10)
                         StepElem.Item("DrainGate1") = CBool((RecordDrain.Bits And &H20) / &H20)
@@ -2320,7 +2323,7 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
                     Case WPC_OPERATION_SPIN
                     
                         PutMem4 VarPtr(begin_of_pointers) + 32, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordSpin.Bits And &H10) / &H10)
                         StepElem.Item("DrainGate1") = CBool((RecordSpin.Bits And &H20) / &H20)
@@ -2333,7 +2336,7 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
                     Case WPC_OPERATION_COOL
                     
                         PutMem4 VarPtr(begin_of_pointers) + 36, _
-                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (J - 1) * STEP_SIZE_IN_BYTES
+                           ByVal StepPointer + HEADER_SIZE_IN_BYTES + (j - 1) * STEP_SIZE_IN_BYTES
 
                         StepElem.Item("Pause") = CBool((RecordCool.Bits And &H10) / &H10)
                         StepElem.Item("Fast") = CBool((RecordCool.Bits And &H20) / &H20)
@@ -2369,7 +2372,7 @@ Private Function func_ProgsSelectionToString(ByVal begin_of_pointers As Long, _
 
                 Set StepElem = Nothing
 
-                J = J - 1
+                j = j - 1
                 
             Loop
                 

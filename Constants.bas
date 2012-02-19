@@ -304,6 +304,9 @@ Public Hook As Long
 '@rem Текущая папка
 Public CurrentDir As String
 '**
+'@rem Буфер для хранения пользовательских данных
+Public ListProgramsRowData(1 To MAX_NUMBER_OF_PROGRAMS) As Integer
+'**
 '@rem Массив названий функций шагов программы. Используется для
 'наглядности описания шагов в столбцах таблицы шагов.
 Public FunctionsStrings(0 To NUMBER_OF_FUNCS - 1) As String
