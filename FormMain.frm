@@ -177,7 +177,7 @@ Begin VB.Form FormMain
          Width           =   3012
       End
       Begin VB.Label LabelLogCaption 
-         BackColor       =   &H8000000D&
+         BackColor       =   &H00FF8080&
          Caption         =   " Журнал"
          BeginProperty Font 
             Name            =   "Tahoma"
@@ -1266,6 +1266,15 @@ Option Explicit
 ' End Sub
  
 '**
+'@rem Message handlers
+Private WithEvents m_ME As CHookMouseEvents
+Attribute m_ME.VB_VarHelpID = -1
+Private WithEvents m_MW As CHookMouseWheel
+Attribute m_MW.VB_VarHelpID = -1
+Private WithEvents Kachalka As clsKachalka
+Attribute Kachalka.VB_VarHelpID = -1
+
+'**
 '@rem Режим отображения средней панели
 Private ViewMode As Long
 '**
@@ -1309,10 +1318,6 @@ Public ModuleCool As CModuleCool
 '@rem
 Public ModuleTrin As CModuleTrin
 
-'**
-'@rem
-Private WithEvents Kachalka As clsKachalka
-Attribute Kachalka.VB_VarHelpID = -1
 
 Dim SplitterRightMoving As Boolean
 Dim SplitterLeftMoving As Boolean
@@ -1323,6 +1328,178 @@ Dim SelStepsCount As Long, SelProgsCount As Long
 Dim LastUndoRedoForward As Boolean
 Dim LastUndoRedoItem As Long
 Dim UndoRedoVector As Vector
+
+
+' *********************************************
+'  Custom Events: CHookMouseEvents
+' *********************************************
+Private Sub m_ME_LostCapture(ByVal hWnd As Long, ByVal hWndCapture As Long)
+   Debug.Print "WM_CAPTURECHANGED -";
+   Debug.Print " hWnd: 0x"; Hex$(hWnd);
+   Debug.Print " (" & hWndToName(hWnd) & ")";
+   Debug.Print " hWndCapture: 0x"; Hex$(hWndCapture);
+   Debug.Print " (" & hWndToName(hWndCapture) & ")"
+End Sub
+
+Private Sub m_ME_MouseEnter(ByVal hWnd As Long)
+   Debug.Print "WM_MOUSEENTER -";
+   Debug.Print " hWnd: 0x"; Hex$(hWnd);
+   Debug.Print " (" & hWndToName(hWnd) & ")"
+End Sub
+
+Private Sub m_ME_MouseHover(ByVal hWnd As Long)
+   Debug.Print "WM_MOUSEHOVER -";
+   Debug.Print " hWnd: 0x"; Hex$(hWnd);
+   Debug.Print " (" & hWndToName(hWnd) & ")"
+End Sub
+
+Private Sub m_ME_MouseLeave(ByVal hWnd As Long)
+   Debug.Print "WM_MOUSELEAVE -";
+   Debug.Print " hWnd: 0x"; Hex$(hWnd);
+   Debug.Print " (" & hWndToName(hWnd) & ")"
+End Sub
+
+Private Sub m_ME_XButtonDblClick(ByVal hWnd As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long)
+   Debug.Print "WM_XBUTTONDBLCLK -";
+   Debug.Print " hWnd: 0x"; Hex$(hWnd);
+   Debug.Print " Button: "; CStr(Button);
+   Debug.Print " X: "; CStr(X);
+   Debug.Print " Y: "; CStr(Y)
+End Sub
+
+Private Sub m_ME_XButtonDown(ByVal hWnd As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long)
+   Debug.Print "WM_XBUTTONDOWN -";
+   Debug.Print " hWnd: 0x"; Hex$(hWnd);
+   Debug.Print " Button: "; CStr(Button);
+   Debug.Print " X: "; CStr(X);
+   Debug.Print " Y: "; CStr(Y)
+End Sub
+
+Private Sub m_ME_XButtonUp(ByVal hWnd As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long)
+   Debug.Print "WM_XBUTTONUP -";
+   Debug.Print " hWnd: 0x"; Hex$(hWnd);
+   Debug.Print " Button: "; CStr(Button);
+   Debug.Print " X: "; CStr(X);
+   Debug.Print " Y: "; CStr(Y)
+End Sub
+
+' *********************************************
+'  Custom Events: CHookMouseWheel
+' *********************************************
+Private Sub m_MW_MouseWheel(ByVal hWnd As Long, ByVal Delta As Long, ByVal Shift As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long, Cancel As Boolean)
+   ' http://msdn.microsoft.com/en-us/library/ms997498.aspx#mshrdwre_topic1
+   Debug.Print "WM_MOUSEWHEEL -";
+   Debug.Print " hWnd: 0x"; Hex$(hWnd);
+   Debug.Print " (" & hWndToName(hWnd) & ")"
+   Debug.Print " Delta: "; CStr(Delta);
+   Debug.Print " Shift: "; CStr(Shift);
+   Debug.Print " Button: "; CStr(Button);
+   Debug.Print " X: "; CStr(X);
+   Debug.Print " Y: "; CStr(Y)
+   
+   Call AutoScroll(hWnd, Delta, Shift)
+End Sub
+
+Private Sub m_MW_MouseWheelH(ByVal hWnd As Long, ByVal Delta As Long, ByVal Shift As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long, Cancel As Boolean)
+   'http://msdn.microsoft.com/en-us/library/ms997498.aspx#mshrdwre_topic2
+   Debug.Print "WM_MOUSEHWHEEL -";
+   Debug.Print " hWnd: 0x"; Hex$(hWnd);
+   Debug.Print " Delta: "; CStr(Delta);
+   Debug.Print " Shift: "; CStr(Shift);
+   Debug.Print " Button: "; CStr(Button);
+   Debug.Print " X: "; CStr(X);
+   Debug.Print " Y: "; CStr(Y)
+
+   Call AutoScroll(hWnd, Delta, Shift)
+End Sub
+
+' *********************************************
+'  Private Methods
+' *********************************************
+Private Function hWndToObject(ByVal hWnd As Long) As Object
+   Dim frm As Form, ctl As Control
+   ' Loop all forms and controls in project, looking for a match.
+   ' This would presumably be in a shared module in real project.
+   For Each frm In Forms
+      If frm.hWnd = hWnd Then
+         Set hWndToObject = frm
+         Exit Function
+      Else
+         On Error Resume Next
+            For Each ctl In frm.Controls
+               If ctl.hWnd = hWnd Then
+                  Set hWndToObject = ctl
+                  Exit Function
+               End If
+            Next ctl
+         On Error GoTo 0
+      End If
+   Next frm
+End Function
+
+Private Function hWndToName(ByVal hWnd As Long) As String
+   Dim obj As Object
+   Set obj = hWndToObject(hWnd)
+   On Error Resume Next
+   hWndToName = obj.Name
+End Function
+
+Private Function hWndToType(ByVal hWnd As Long) As String
+   Dim obj As Object
+   Set obj = hWndToObject(hWnd)
+   hWndToType = TypeName(obj)
+End Function
+
+Private Sub AutoScroll(ByVal hWnd As Long, ByVal Delta As Long, ByVal Shift As Long)
+    '<EhHeader>
+    On Error GoTo AutoScroll_Err
+    '</EhHeader>
+
+    Dim TempValue As Long
+    
+    ' К сожалению, оригинальный обработчик от автора сабклассинга на события
+    ' мыши не заработал, т.к. возникли ошибки при селекции целевого компонента.
+    ' Выяснить причину так и неудалось, поэтому здесь мы явно указываем
+    ' целевые компоненты.
+    If hWnd = VScrollPicsView.hWnd Or hWnd = FramePicsView.hWnd Then
+    
+        ' Симулируем воздействие на элемент управления в зависимости от
+        ' нажатия клавиши Shift
+        If Shift = vbShiftMask Then
+
+            TempValue = VScrollPicsView.Value + -Sgn(Delta) * VScrollPicsView.LargeChange
+            
+        Else
+        
+            TempValue = VScrollPicsView.Value + -Sgn(Delta) * VScrollPicsView.SmallChange
+
+        End If
+        
+        If TempValue < VScrollPicsView.Min Then TempValue = VScrollPicsView.Min
+        
+        If TempValue > VScrollPicsView.Max Then TempValue = VScrollPicsView.Max
+        
+        VScrollPicsView.Value = TempValue
+        
+        ' Вызываем обработчик
+        VScrollPicsView_Scroll
+    
+    End If
+
+    '<EhFooter>
+    Exit Sub
+
+AutoScroll_Err:
+    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
+            " [INFO] [cop.FormMain.AutoScroll]: " & GetErrorMessageById( _
+            Err.Number, Err.Description), _
+            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
 
 '**
 '@see
@@ -1754,7 +1931,7 @@ Private Sub RefreshFrameMain()
 
             If Manager.FileLoaded Then
             
-                Manager.StepIndex = (CInt(ListPrograms.RowData(ListPrograms.RowSel)) And &HFF00) / &H100
+                Manager.StepIndex = (CInt(ListProgramsRowData(ListPrograms.RowSel)) And &HFF00) / &H100
             
                 LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
                    ".Шаг" & Manager.StepIndex + 1 & "]"
@@ -1778,7 +1955,7 @@ Private Sub RefreshFrameMain()
             FrameGridView.Visible = False
             FrameCodeView.Visible = False
             
-            Manager.StepIndex = (CInt(ListPrograms.RowData(ListPrograms.RowSel)) And &HFF00) / &H100
+            Manager.StepIndex = (CInt(ListProgramsRowData(ListPrograms.RowSel)) And &HFF00) / &H100
             
                 LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
                    ".Шаг" & Manager.StepIndex + 1 & "]"
@@ -2010,7 +2187,7 @@ Private Sub RefreshMainMenu()
             MenuItemPaste.Enabled = True
             MenuItemDelete.Enabled = True
             
-            MenuItemSelectAll.Enabled = True
+            MenuItemSelectAll.Enabled = False
             
             MenuItemInsertStep.Visible = True
             
@@ -2256,13 +2433,13 @@ Private Sub CodeView_Click()
     On Error GoTo CodeView_Click_Err
     '</EhHeader>
     
-    Dim x As Integer, y As Integer
+    Dim X As Integer, Y As Integer
     Dim Col As Integer, row As Integer
     
     CodeView.Visible = False
     
-    x = CodeView.Col
-    y = CodeView.row
+    X = CodeView.Col
+    Y = CodeView.row
 
     For Col = 1 To CodeView.Cols - 2
         CodeView.Col = Col
@@ -2283,15 +2460,15 @@ Private Sub CodeView_Click()
     Loop
     
     CodeView.row = 0
-    CodeView.Col = x
+    CodeView.Col = X
     CodeView.CellFontBold = True
     
-    CodeView.row = y
+    CodeView.row = Y
     CodeView.Col = 0
     CodeView.CellFontBold = True
     
-    CodeView.Col = x
-    CodeView.row = y
+    CodeView.Col = X
+    CodeView.row = Y
     
     CodeView.Visible = True
     CodeView.SetFocus
@@ -2609,7 +2786,7 @@ ComboCell_LostFocus_Err:
     '</EhFooter>
 End Sub
 
-Private Sub FramePicsView_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub FramePicsView_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo FramePicsView_MouseDown_Err
     '</EhHeader>
@@ -2914,12 +3091,14 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                 
                 ViewMode = PICS_VIEW
                 
+                RefreshFrameMain
                 RefreshPicsView
                 
             Case CODE_VIEW
             
                 ViewMode = PICS_VIEW
                 
+                RefreshFrameMain
                 RefreshPicsView
                 
             Case PICS_VIEW
@@ -3060,7 +3239,7 @@ Private Sub Form_Load()
     
     ' Создаём контейнер для работы с ошибками
     Set ВекторОшибок = New JVector
-    
+          
     ' Режим отображения средней панели
     ViewMode = STEPS_VIEW
     
@@ -3229,6 +3408,16 @@ Private Sub Form_Load()
     ' Симулируем изменение размером формы для вызова Resize()
     Move Left, Top, Width, Height
     
+    ' Delegate mousewheel handling to class.
+    Set m_MW = New CHookMouseWheel
+    m_MW.hWnd = Me.hWnd
+   
+    ' Start watching for mouse events.
+    Set m_ME = New CHookMouseEvents
+    m_ME.HoverTime = 1000 'milliseconds
+    m_ME.Add Me
+    m_ME.Add VScrollPicsView
+    
     Exit Sub
     
 Form_Load_Err:
@@ -3365,6 +3554,8 @@ Private Sub ImportMainMenuItem_Click()
     On Error GoTo ImportMainMenuItem_Click_Err
     '</EhHeader>
 
+    Dim Cnt As Integer
+
     ' Если файл загружен, то спрашиваем о действии
     If Manager.FileLoaded Then
 
@@ -3414,6 +3605,13 @@ Private Sub ImportMainMenuItem_Click()
         
             ViewMode = STEPS_VIEW
             
+            For Cnt = 1 To Manager.ProgramsCount
+                
+                ' Инициализируем данные о навигации по структуре программ
+                ListProgramsRowData(Cnt) = Cnt
+                
+            Next
+    
             RefreshComponents False
             'RefreshFrameRight
             
@@ -3611,14 +3809,14 @@ LabelLogCaption_DblClick_Err:
     '</EhFooter>
 End Sub
 
-Private Sub LabelLogCaption_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub LabelLogCaption_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo LabelLogCaption_MouseDown_Err
     '</EhHeader>
 
     LogFrameResizing = True
-    BegX = x
-    BegY = y
+    BegX = X
+    BegY = Y
 
     '<EhFooter>
     Exit Sub
@@ -3634,14 +3832,14 @@ LabelLogCaption_MouseDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub LabelLogCaption_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub LabelLogCaption_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo LabelLogCaption_MouseMove_Err
     '</EhHeader>
     
     If LogFrameResizing = True Then
     
-        FrameLog.Top = FrameLog.Top + y - BegY
+        FrameLog.Top = FrameLog.Top + Y - BegY
         
         RefreshFrameLog
         
@@ -3655,7 +3853,7 @@ LabelLogCaption_MouseMove_Err:
     '</EhFooter>
 End Sub
 
-Private Sub LabelLogCaption_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub LabelLogCaption_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo LabelLogCaption_MouseUp_Err
     '</EhHeader>
@@ -3949,7 +4147,7 @@ ListPrograms_LostFocus_Err:
     '</EhFooter>
 End Sub
 
-Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo ListPrograms_MouseDown_Err
     '</EhHeader>
@@ -4047,7 +4245,7 @@ Private Sub MenuItemDoUpdate_Click()
     '<EhHeader>
     On Error GoTo MenuItemDoUpdate_Click_Err
     '</EhHeader>
-        
+    
     ' Если окно загрузки активно, то ничего не делаем
     If FormDownload.Visible Or FormOptions.Visible Then Exit Sub
     
@@ -4206,6 +4404,7 @@ Private Sub MRUItems_Click(index As Integer)
     '</EhHeader>
 
     ' Открываем файл из списка
+    Dim Cnt As Integer
     Dim FName As String
         
     ' Если файл существует, то пытаемся его открыть
@@ -4226,6 +4425,13 @@ Private Sub MRUItems_Click(index As Integer)
         SetCaption (Manager.FileName)
         
         ViewMode = STEPS_VIEW
+        
+        For Cnt = 1 To Manager.ProgramsCount
+            
+            ' Инициализируем данные о навигации по структуре программ
+            ListProgramsRowData(Cnt) = Cnt
+            
+        Next
         
         RefreshComponents False
         
@@ -4268,6 +4474,8 @@ Private Sub NewMainMenuItem_Click()
     On Error GoTo NewMainMenuItem_Click_Err
     '</EhHeader>
 
+    Dim Cnt As Integer
+
     ' Если файл загружен, то спрашиваем о действии
     If Manager.FileLoaded Then
 
@@ -4288,6 +4496,13 @@ Private Sub NewMainMenuItem_Click()
     
     SetModified True
     
+    For Cnt = 1 To Manager.ProgramsCount
+        
+        ' Инициализируем данные о навигации по структуре программ
+        ListProgramsRowData(Cnt) = Cnt
+        
+    Next
+        
     RefreshComponents False
     
     ListPrograms.RowSel = 1
@@ -4572,7 +4787,7 @@ Private Sub StepGrid_Click(index As Integer)
     Manager.StepIndex = StepGrid(index).Tag - 1
     
     ' Сохраняем данные о навигации по структуре
-    ListPrograms.RowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt(Manager.StepIndex * &H100)
+    ListProgramsRowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt(Manager.StepIndex * &H100)
     
     LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & ".Шаг" & Manager.StepIndex + 1 & "]"
             
@@ -4664,7 +4879,7 @@ StepGrid_LostFocus_Err:
     '</EhFooter>
 End Sub
 
-Private Sub StepGrid_MouseDown(index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub StepGrid_MouseDown(index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo StepGrid_MouseDown_Err
     '</EhHeader>
@@ -4691,7 +4906,7 @@ Private Sub StepsView_Click()
     On Error GoTo StepsView_Click_Err
     '</EhHeader>
 
-    Dim x As Integer, y As Integer
+    Dim X As Integer, Y As Integer
     Dim Col As Integer, row As Integer
              
     ' При клике область выделения сужается до одного шага
@@ -4700,7 +4915,7 @@ Private Sub StepsView_Click()
     Manager.StepIndex = StepsView.Col - 1
     
     ' Сохраняем данные о навигации по структуре
-    ListPrograms.RowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt(Manager.StepIndex * &H100)
+    ListProgramsRowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt(Manager.StepIndex * &H100)
 
     ' Отображаем горизонтальный и вертикальный селекторы
     ShowStepsHorizontalSelector
@@ -4712,8 +4927,8 @@ Private Sub StepsView_Click()
     ' Долгая операция по перерисовке
     StepsView.Redraw = False
     
-    x = StepsView.Col
-    y = StepsView.row
+    X = StepsView.Col
+    Y = StepsView.row
     
     For Col = 1 To StepsView.Cols - 2
     
@@ -4738,15 +4953,15 @@ Private Sub StepsView_Click()
     Loop
        
     StepsView.row = 0
-    StepsView.Col = x
+    StepsView.Col = X
     StepsView.CellFontBold = True
     
-    StepsView.row = y
+    StepsView.row = Y
     StepsView.Col = 0
     StepsView.CellFontBold = True
     
-    StepsView.Col = x
-    StepsView.row = y
+    StepsView.Col = X
+    StepsView.row = Y
     
     CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
        HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
@@ -4790,6 +5005,7 @@ Private Sub OpenMainMenuItem_Click()
     End If
     
     ' Теперь можно открывать новый файл
+    Dim Cnt As Integer
     Dim FileName As String
 
     OpenFileDialog.DialogTitle = "Открыть файл..."
@@ -4815,6 +5031,13 @@ Private Sub OpenMainMenuItem_Click()
         SetCaption (Manager.FileName)
         
         ViewMode = STEPS_VIEW
+        
+        For Cnt = 1 To Manager.ProgramsCount
+            
+            ' Инициализируем данные о навигации по структуре программ
+            ListProgramsRowData(Cnt) = Cnt
+            
+        Next
         
         RefreshComponents False
         
@@ -4977,7 +5200,7 @@ SaveMainMenuItem_Click_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseDown_Err
     '</EhHeader>
@@ -4985,8 +5208,8 @@ Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, x As Sin
     ' Показываем разделительную линию
     SplitterLeft.BackColor = &HF4C0C0
     
-    BegX = x
-    BegY = y
+    BegX = X
+    BegY = Y
     
     SplitterLeftMoving = True
     
@@ -5000,14 +5223,14 @@ SplitterLeft_MouseDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseMove_Err
     '</EhHeader>
 
     If SplitterLeftMoving = True Then
     
-        SplitterLeft.Left = SplitterLeft.Left + x - BegX
+        SplitterLeft.Left = SplitterLeft.Left + X - BegX
         FrameLeft.Width = SplitterLeft.Left
         
         FrameMain.Left = SplitterLeft.Left + SplitterLeft.Width
@@ -5044,7 +5267,7 @@ SplitterLeft_MouseMove_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseUp_Err
     '</EhHeader>
@@ -5062,7 +5285,7 @@ SplitterLeft_MouseUp_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     ' Показываем разделительную линию
     '<EhHeader>
     On Error GoTo SplitterRight_MouseDown_Err
@@ -5070,8 +5293,8 @@ Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, x As Si
     
     SplitterRight.BackColor = &HF4C0C0
     
-    BegX = x
-    BegY = y
+    BegX = X
+    BegY = Y
     
     SplitterRightMoving = True
     
@@ -5085,14 +5308,14 @@ SplitterRight_MouseDown_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterRight_MouseMove_Err
     '</EhHeader>
 
     If SplitterRightMoving = True Then
     
-        SplitterRight.Left = SplitterRight.Left + x - BegX
+        SplitterRight.Left = SplitterRight.Left + X - BegX
         
         FrameRight.Left = SplitterRight.Left + SplitterRight.Width
         FrameRight.Width = Me.ScaleWidth - FrameRight.Left
@@ -5130,7 +5353,7 @@ SplitterRight_MouseMove_Err:
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo SplitterRight_MouseUp_Err
     '</EhHeader>
@@ -5327,7 +5550,7 @@ StepsView_LostFocus_Err:
     '</EhFooter>
 End Sub
 
-Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '<EhHeader>
     On Error GoTo StepsView_MouseDown_Err
     '</EhHeader>
@@ -5361,19 +5584,19 @@ Private Sub ShowProgsHorizontalSelector()
         PictureProgsHSelLeft.Height = ListPrograms.RowHeight(ListPrograms.RowSel) * SelProgsCount
         
         PictureProgsHSelRight.Top = PictureProgsHSelLeft.Top
-        PictureProgsHSelRight.Left = PictureProgsHSelLeft.Left + ListPrograms.Width - Settings.StepsSelectorWidth
+        PictureProgsHSelRight.Left = PictureProgsHSelLeft.Left + ListPrograms.ColWidth(0) - Settings.StepsSelectorWidth
         PictureProgsHSelRight.Height = ListPrograms.RowHeight(ListPrograms.RowSel) * SelProgsCount
         PictureProgsHSelRight.Width = Settings.StepsSelectorWidth
         
         PictureProgsHSelTop.Left = PictureProgsHSelLeft.Left
         PictureProgsHSelTop.Top = PictureProgsHSelLeft.Top
         PictureProgsHSelTop.Height = Settings.StepsSelectorWidth
-        PictureProgsHSelTop.Width = ListPrograms.Width
+        PictureProgsHSelTop.Width = ListPrograms.ColWidth(0)
         
         PictureProgsHSelBottom.Left = PictureProgsHSelLeft.Left
         PictureProgsHSelBottom.Top = PictureProgsHSelLeft.Top + PictureProgsHSelLeft.Height - Settings.StepsSelectorWidth
         PictureProgsHSelBottom.Height = Settings.StepsSelectorWidth
-        PictureProgsHSelBottom.Width = ListPrograms.Width
+        PictureProgsHSelBottom.Width = ListPrograms.ColWidth(0)
         
         If ListPrograms.RowIsVisible(ListPrograms.RowSel) Then
         
@@ -6605,6 +6828,7 @@ Private Sub RefreshList()
     LabelListPrograms.Caption = "Программы [" & Manager.ProgramsCount & "]"
     
     ListPrograms.Redraw = False
+    
     ListPrograms.Clear
     ListPrograms.rows = 1
     
@@ -6655,9 +6879,6 @@ Private Sub RefreshList()
                 ListPrograms.AddItem S
                 
             End If
-            
-            ' Инициализируем данные о навигации по структурепрограмм
-            ListPrograms.RowData(Cnt) = Cnt
             
         Next
     
@@ -7180,7 +7401,7 @@ Private Sub RefreshStepsView()
     On Error GoTo RefreshStepsView_Err
     '</EhHeader>
     
-    Dim Col As Integer, row As Integer, x As Integer, y As Integer, FuncN As Integer
+    Dim Col As Integer, row As Integer, X As Integer, Y As Integer, FuncN As Integer
     Dim S As String
     
     ' Выходим из процедуры, если программы не загружены или отсутствуют
@@ -7286,8 +7507,8 @@ Private Sub RefreshStepsView()
     StepsView.Redraw = False
     
     ' Сохраняем координаты
-    x = StepsView.Col
-    y = StepsView.row
+    X = StepsView.Col
+    Y = StepsView.row
     
     ' Очищаем настройки и данные компонента
     StepsView.Clear
@@ -7487,8 +7708,8 @@ Private Sub RefreshStepsView()
         
     Next
     
-    StepsView.Col = x
-    StepsView.row = y
+    StepsView.Col = X
+    StepsView.row = Y
     
     ' После сделанных изменений можно визуализировать компонент
     StepsView.Redraw = True
