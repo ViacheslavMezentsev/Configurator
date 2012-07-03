@@ -1,4 +1,4 @@
-Attribute VB_Name = "Constants"
+Attribute VB_Name = "ModuleConstants"
 '**
 '@author <a href="mailto:unihomelab@ya.ru">Мезенцев Вячеслав</a>
 '@revision Дата ревизии: 16.06.2011 г., время: 3:25:01
@@ -47,15 +47,23 @@ Public Const TITLE_SECTION_NAME = "Title"
 '**
 '@rem GUID для программы "Конфигуратор УП 1.x (*.json)"
 Public Const ProgramGUID As String = "{43CE9E0A-3657-4258-B573-8B18F6AC3B42}"
-
+'**
+'@rem
 Public Const ObjectGUID As String = "{E0B1357B-0FE5-460D-B85F-22F50E3289B9}"
-
+'**
+'@rem
+Public Const AutoupdateServerGUID As String = "{E6A32F50-03B3-49ae-9C9B-ED435284D4A0}"
+'**
+'@rem
 Public Const CLIPBOARD_OBJECT_GUID_STRING As String = "ObjectGUID"
-
+'**
+'@rem
 Public Const CLIPBOARD_OBJECT_TYPE_STRING As String = "ObjectType"
-
+'**
+'@rem
 Public Const CLIPBOARD_OBJECT_TYPE_STEP As Integer = 1
-
+'**
+'@rem
 Public Const CLIPBOARD_OBJECT_TYPE_PROGRAM As Integer = 2
 
 '**
@@ -264,84 +272,21 @@ Public Const SETTINGS_STEPS_ROW_HEIGHT = 105
 Public Const SETTINGS_FILES_HISTORY_SIZE = 106
 Public Const SETTINGS_FILES_HISTORY_LIMIT_PATHS = 107
 
-Public Const SETTINGS_AUTOUPDATE_ENABLED = 108
-Public Const SETTINGS_AUTOUPDATE_PERIOD = 109
-Public Const SETTINGS_AUTOUPDATE_LINK = 110
-Public Const SETTINGS_AUTOUPDATE_LAST_DATE = 111
+Public Const SETTINGS_AUTOUPDATE_HOST = 108
+Public Const SETTINGS_AUTOUPDATE_PORT = 109
 
-Public Const SETTINGS_REWRITE_LOGFILE = 112
-Public Const SETTINGS_LOG_FILEPATH = 113
+Public Const SETTINGS_AUTOUPDATE_ENABLED = 110
+Public Const SETTINGS_AUTOUPDATE_PERIOD = 111
+Public Const SETTINGS_AUTOUPDATE_LINK = 112
+Public Const SETTINGS_AUTOUPDATE_LAST_DATE = 113
 
-Public Const SETTINGS_SPLITTERS_THICKNESS = 114
+Public Const SETTINGS_REWRITE_LOGFILE = 114
+Public Const SETTINGS_LOG_FILEPATH = 115
 
-Public Const SETTINGS_IMPORT_JSON_CODEPAGE = 115
-Public Const SETTINGS_EXPORT_JSON_CODEPAGE = 116
+Public Const SETTINGS_SPLITTERS_THICKNESS = 116
 
-' *****************************************
-' *  ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
-' *  ~~~~~~~~~~ ~~~~~~~~~~
-' *****************************************
+Public Const SETTINGS_IMPORT_JSON_CODEPAGE = 117
+Public Const SETTINGS_EXPORT_JSON_CODEPAGE = 118
 
-'**
-'@rem Признак изменённости файла.
-Public Modified As Boolean
-'**
-'@rem Режим проектирования.
-Public DesignMode As Boolean
-'**
-'@rem Признак загрузки данных об уставках из файла limits.ini
-Public LimitsLoaded As Boolean
-'**
-'@rem
-Public SetCancel As Boolean
-'**
-'@rem Состояние процесса автообновления
-Public AutoUpdateState As Byte
-'**
-'@rem Хук для клавиатуры.
-Public Hook As Long
-'**
-'@rem Текущая папка
-Public CurrentDir As String
-'**
-'@rem Буфер для хранения пользовательских данных
-Public ListProgramsRowData(1 To MAX_NUMBER_OF_PROGRAMS) As Integer
-'**
-'@rem Массив названий функций шагов программы. Используется для
-'наглядности описания шагов в столбцах таблицы шагов.
-Public FunctionsStrings(0 To NUMBER_OF_FUNCS - 1) As String
-'**
-'@rem Набор текстовых шаблонов для шагов программы. С помощью
-'простых шаблонов упрощается функция экспорта данных в JSON формат.
-'<br>
-'Пример такого шаблона:<pre>
-'    JSONStepsTemplates(WPC_OPERATION_FILL) = "{" '       & """Type"": 1," '       & """Pause"": false," '       & """ColdWaterGate"": false," '       & """HotWaterGate"": false," '       & """RecycledWaterGate"": false," '       & """Rotation"": true," '       & """Level"": 15," '       & """RotationTime"": 6," '       & """PauseTime"": 12," '       & """DrumSpeed"": 50}"
-'</pre>
-Public JSONStepsTemplates(0 To NUMBER_OF_FUNCS - 1) As String
-
-'**
-'@rem
-Public EndSound As TYPE_BOOL_DESCRIPTION
-'**
-'@rem
-Public DoorUnlock As TYPE_BOOL_DESCRIPTION
-
-'**
-'@rem
-Public tMessage As Timer
-'**
-'@rem
-Public ВекторОшибок As JVector
-'**
-'@rem Установки программы
-Public Settings As CSettings
-'**
-'@rem Конфигурационный файл программы
-Public IniFile As CIniFiles
-'**
-'@rem Конструктор бинарного образа файла проекта
-Public Manager As CProgramManager
-'**
-'@rem Класс для работы со списком ранее открытых файлов
-Public MRUFileList As cMRUFileList
+Public Const COLOR_MIDLLE_VIOLET = &HF4C0C0
 

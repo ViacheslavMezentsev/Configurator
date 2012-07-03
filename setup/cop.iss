@@ -2,6 +2,7 @@
 ; Программа "Конфигуратор УП"
 ; Автор: Мезенцев Вячеслав Николаевич, Зыков Василий
 ; E-mail: unihomelab@ya.ru
+; Skype: viacheslavmezentsev
 ; www: http://vkontatke.ru/viacheslavmezentsev
 
 #define Version GetFileVersion("..\cop.exe")
@@ -15,10 +16,12 @@ AppName=Конфигуратор УП
 AppVerName=Конфигуратор УП версия {#Version}
 DefaultDirName={pf}\Конфигуратор УП
 DefaultGroupName=Конфигуратор УП
-Compression=lzma
+AppendDefaultDirName=true
+DirExistsWarning=no
+Compression=lzma/Max
 SolidCompression=true
 OutputDir=Output
-OutputBaseFilename=Configurator_{#Version}_setup
+OutputBaseFilename=Configurator-{#Version}-win32-setup
 Uninstallable=true
 UninstallDisplayIcon={app}\cop.exe
 UninstallFilesDir={app}\Uninstall
@@ -27,33 +30,57 @@ CreateUninstallRegKey=false
 ShowLanguageDialog=no
 LanguageDetectionMethod=none
 WizardImageFile={#WizardImage}
+;InfoBeforeFile=MyInfoBefore.txt
+VersionInfoVersion={#Version}
+VersionInfoDescription=Программа "Конфигуратор УП"
+VersionInfoProductName=Конфигуратор УП
+VersionInfoProductVersion={#Version}
 
 [Languages]
 Name: ru; MessagesFile: compiler:Languages\Russian.isl
 
 [Messages]
 ru.BeveledLabel=Russian
-BeveledLabel =Copyright 2011
+BeveledLabel=Copyright 2012
 LicenseLabel3=
 
 [Files]
-Source: ..\cop.exe; DestDir: {app}; Flags: ignoreversion
-Source: ..\help\cop.chm; DestDir: {app}; Flags: ignoreversion
-Source: ..\limits.ini; DestDir: {app}; Flags: ignoreversion
-Source: ..\msvbvm60.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\scrrun.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\comct332.ocx; DestDir: {app}; Flags: ignoreversion
-Source: ..\mscomctl.ocx; DestDir: {app}; Flags: ignoreversion
-Source: ..\mscomct2.ocx; DestDir: {app}; Flags: ignoreversion
-Source: ..\comdlg32.ocx; DestDir: {app}; Flags: ignoreversion
-Source: ..\msflxgrd.ocx; DestDir: {app}; Flags: ignoreversion
-Source: ..\tabctl32.ocx; DestDir: {app}; Flags: ignoreversion
-Source: {#ButtonImage}; DestDir: {tmp}; Flags: dontcopy
+; begin VB system files
+Source: "..\..\..\vbrun60sp5\stdole2.tlb";  DestDir: "{sys}"; Flags: restartreplace uninsneveruninstall sharedfile regtypelib
+Source: "..\..\..\vbrun60sp5\msvbvm60.dll"; DestDir: "{sys}"; Flags: restartreplace uninsneveruninstall sharedfile regserver
+Source: "..\..\..\vbrun60sp5\oleaut32.dll"; DestDir: "{sys}"; Flags: restartreplace uninsneveruninstall sharedfile regserver
+Source: "..\..\..\vbrun60sp5\olepro32.dll"; DestDir: "{sys}"; Flags: restartreplace uninsneveruninstall sharedfile regserver
+Source: "..\..\..\vbrun60sp5\asycfilt.dll"; DestDir: "{sys}"; Flags: restartreplace uninsneveruninstall sharedfile
+Source: "..\..\..\vbrun60sp5\comcat.dll";   DestDir: "{sys}"; Flags: restartreplace uninsneveruninstall sharedfile regserver
+; End VB system files
+
+; Specific control you included In your project(s)
+; always use the following parameters For an OCX:
+;  DestDir: "{sys}"; Flags: restartreplace sharedfile regserver
+Source: "C:\Windows\system32\comct332.ocx"; DestDir: "{sys}"; Flags: restartreplace sharedfile regserver; 
+Source: "C:\Windows\system32\mscomctl.ocx"; DestDir: "{sys}"; Flags: restartreplace sharedfile regserver; 
+Source: "C:\Windows\system32\mscomct2.ocx"; DestDir: "{sys}"; Flags: restartreplace sharedfile regserver; 
+Source: "C:\Windows\system32\comdlg32.ocx"; DestDir: "{sys}"; Flags: restartreplace sharedfile regserver; 
+Source: "C:\Windows\system32\msflxgrd.ocx"; DestDir: "{sys}"; Flags: restartreplace sharedfile regserver; 
+Source: "C:\Windows\system32\tabctl32.ocx"; DestDir: "{sys}"; Flags: restartreplace sharedfile regserver; 
+
+Source: "C:\Windows\system32\scrrun.dll";   DestDir: "{app}"; Flags: ignoreversion
+
+; Some external controls I use all of the time
+; always use the following parameters For an OCX:
+;  DestDir: "{sys}"; Flags: restartreplace sharedfile regserver
+
+; Исполняемый файл
+Source: "..\cop.exe";       DestDir: "{app}"; Flags: ignoreversion
+Source: "..\help\cop.chm";  DestDir: "{app}"; Flags: ignoreversion
+Source: "..\limits.ini";    DestDir: "{app}"; Flags: ignoreversion
+
+Source: {#ButtonImage}; DestDir: "{tmp}"; Flags: dontcopy
 
 [Icons]
-Name: {group}\Конфигуратор УП; Filename: {app}\cop.exe; WorkingDir: {app}
-Name: {group}\Руководство пользователя; Filename: {app}\cop.chm; WorkingDir: {app}
-Name: {group}\Удалить; Filename: {app}\Uninstall\unins000; WorkingDir: {app}
+Name: "{group}\Конфигуратор УП"; Filename: "{app}\cop.exe"; WorkingDir: "{app}"
+Name: "{group}\Руководство пользователя"; Filename: "{app}\cop.chm"; WorkingDir: "{app}"
+Name: "{group}\Удалить"; Filename: "{app}\Uninstall\unins000"; WorkingDir: "{app}"
 
 [Code]
 procedure InitializeWizard;

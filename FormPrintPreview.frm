@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form FormPrintPreview 
    Caption         =   "Предварительный просмотр"
    ClientHeight    =   6264
@@ -119,10 +119,8 @@ Private Sub Toolbar_ButtonClick(ByVal Button As MSComctlLib.Button)
     Exit Sub
 
 Toolbar_ButtonClick_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormPrintPreview.Toolbar_ButtonClick]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormPrintPreview.Toolbar_ButtonClick]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -194,10 +192,8 @@ Private Function ScalePicPreviewToPrinterInches _
     Exit Function
 
 ScalePicPreviewToPrinterInches_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormPrintPreview.ScalePicPreviewToPrinterInches]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormPrintPreview.ScalePicPreviewToPrinterInches]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -206,6 +202,9 @@ End Function
 
 Private Sub PrintRoutine(objPrint As Object, _
                                Optional Ratio As Double = 1)
+    '<EhHeader>
+    On Error GoTo PrintRoutine_Err
+    '</EhHeader>
          
          
          
@@ -230,11 +229,11 @@ Private Sub PrintRoutine(objPrint As Object, _
          End With
 
          ' Print some circles
-         Dim x As Single
+         Dim X As Single
          
-         For x = 3 To 5.5 Step 0.2
+         For X = 3 To 5.5 Step 0.2
          
-            objPrint.Circle (x, 3.5), 0.75
+            objPrint.Circle (X, 3.5), 0.75
             
          Next
 
@@ -259,10 +258,23 @@ Private Sub PrintRoutine(objPrint As Object, _
             
          End With
          
+    '<EhFooter>
+    Exit Sub
+
+PrintRoutine_Err:
+    Logger.Info "[cop.FormPrintPreview.PrintRoutine]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub PrintRoutine2(objPrint As Object, _
                                Optional Ratio As Double = 1)
+    '<EhHeader>
+    On Error GoTo PrintRoutine2_Err
+    '</EhHeader>
          
     Const intLINE_START_POS As Integer = 6
     Const intLINES_PER_PAGE As Integer = 60
@@ -378,6 +390,16 @@ Private Sub PrintRoutine2(objPrint As Object, _
             
     End With
          
+    '<EhFooter>
+    Exit Sub
+
+PrintRoutine2_Err:
+    Logger.Info "[cop.FormPrintPreview.PrintRoutine2]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 

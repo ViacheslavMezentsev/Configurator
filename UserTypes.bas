@@ -1,4 +1,4 @@
-Attribute VB_Name = "UserTypes"
+Attribute VB_Name = "ModuleUserTypes"
 '**
 '@author Мезенцев В. Н.
 '@revision Wed Jun 15 19:13:32 GMT 2011
