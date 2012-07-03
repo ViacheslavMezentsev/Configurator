@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form FormAbout 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "О программе"
@@ -378,10 +378,8 @@ Private Sub cmdOK_Click()
     Exit Sub
 
 cmdOK_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormAbout.cmdOK_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormAbout.cmdOK_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -389,10 +387,10 @@ cmdOK_Click_Err:
 End Sub
 
 Private Sub Form_Load()
-
     '<EhHeader>
     On Error GoTo Form_Load_Err
     '</EhHeader>
+
     
     Me.Caption = "О программе"
     
@@ -425,8 +423,11 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.Form_Load]: " & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormAbout.Form_Load]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -444,9 +445,11 @@ Private Sub Label2_Click()
     Exit Sub
 
 Label2_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.Label2_Click]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormAbout.Label2_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -461,13 +464,14 @@ Private Sub Label3_Click()
     Success = ShellExecute(Me.hWnd, vbNullString, "mailto: unihomelab@ya.ru", vbNullString, vbNullString, SW_SHOWNORMAL)
     
     '<EhFooter>
-    
     Exit Sub
 
 Label3_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.Label3_Click]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormAbout.Label3_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -485,10 +489,8 @@ Private Sub LabelCompany_Click()
     Exit Sub
 
 LabelCompany_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormAbout.LabelCompany_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormAbout.LabelCompany_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -506,10 +508,8 @@ Private Sub lblVersion_Click()
     Exit Sub
 
 lblVersion_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormAbout.lblVersion_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormAbout.lblVersion_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -529,9 +529,11 @@ Private Sub picIcon_Click()
     Exit Sub
 
 picIcon_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormAbout.picIcon_Click]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormAbout.picIcon_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -546,10 +548,8 @@ Private Sub PictureLogoAT_Click()
     Exit Sub
 
 PictureLogoAT_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormAbout.PictureLogoAT_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormAbout.PictureLogoAT_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 

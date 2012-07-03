@@ -1,4 +1,4 @@
-Attribute VB_Name = "UserFunctions"
+Attribute VB_Name = "ModuleUserFunctions"
 '**
 '@author <a href="mailto:unihomelab@ya.ru">Мезенцев Вячеслав</a>
 '@revision Дата ревизии: 16.06.2011 г., время: 5:08:47
@@ -122,10 +122,8 @@ Function FromUTF8(ByVal cnvUni As String) As String
     Exit Function
 
 FromUTF8_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.FromUTF8]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.FromUTF8]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -133,10 +131,10 @@ FromUTF8_Err:
 End Function
 
 Public Function ToUTF8(srcStr As String) As String
-
     '<EhHeader>
     On Error GoTo ToUTF8_Err
     '</EhHeader>
+
 
     Dim utfStr() As Byte ' для исключения ошибок, связанных с дополнительной обработкой строк в VBA, используем не строку, а массив байтов
 
@@ -174,9 +172,8 @@ Public Function ToUTF8(srcStr As String) As String
     Exit Function
 
 ToUTF8_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.ToUTF8]: " & GetErrorMessageById(Err.Number, _
-            Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.ToUTF8]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -207,10 +204,8 @@ Public Function getGUID() As String
     Exit Function
 
 getGUID_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.getGUID]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.getGUID]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -248,10 +243,8 @@ Public Function DoesFileExist(ByVal strPath As String) As Boolean
     Exit Function
 
 DoesFileExist_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.DoesFileExist]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.DoesFileExist]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -317,10 +310,8 @@ Public Function MiscExtractPathName(strPath As String, ByVal bFlag As Boolean, O
     Exit Function
 
 MiscExtractPathName_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.MiscExtractPathName]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.MiscExtractPathName]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -400,10 +391,8 @@ Public Function GetLoadingsFromFuncN(ByVal FuncN As Long) As Long
     Exit Function
 
 GetLoadingsFromFuncN_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.GetLoadingsFromFuncN]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.GetLoadingsFromFuncN]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -463,10 +452,8 @@ Public Sub HookKeyboard(t1 As Timer)
     Exit Sub
 
 HookKeyboard_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.HookKeyboard]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.HookKeyboard]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -620,10 +607,10 @@ GetKeyError:              ' Cleanup After An Error Has Occured...
 End Function
 
 Public Sub StartSysInfo()
-
     '<EhHeader>
     On Error GoTo StartSysInfo_Err
     '</EhHeader>
+
   
     Dim rc As Long
     Dim SysInfoPath As String
@@ -660,9 +647,9 @@ Public Sub StartSysInfo()
     Exit Sub
 
 StartSysInfo_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormAbout.StartSysInfo]: " & GetErrorMessageById(Err.Number, _
-            Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.StartSysInfo]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
 
     '</EhFooter>
@@ -681,10 +668,10 @@ End Sub
 
 Public Function GetFileVersionInformation(ByRef pstrFieName As String, _
                                           ByRef tFileInfo As FILEINFO) As VerisonReturnValue
-
     '<EhHeader>
     On Error GoTo GetFileVersionInformation_Err
     '</EhHeader>
+
     
     Dim lBufferLen          As Long, lDummy As Long
     Dim sBuffer()           As Byte
@@ -826,10 +813,9 @@ Public Function GetFileVersionInformation(ByRef pstrFieName As String, _
     Exit Function
 
 GetFileVersionInformation_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.GetFileVersionInformation]: " & _
-            GetErrorMessageById(Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.GetFileVersionInformation]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
 
     '</EhFooter>
@@ -863,10 +849,8 @@ Public Function LoadFromJSONFile(sFilePath As String) As String
     Exit Function
 
 LoadFromJSONFile_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.LoadFromJSONFile]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.LoadFromJSONFile]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -896,10 +880,8 @@ Public Sub SaveToJSONFile(ByVal FileName As String, ByVal NewValue As String)
     Exit Sub
 
 SaveToJSONFile_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.UserFunctions.SaveToJSONFile]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.ModuleUserFunctions.SaveToJSONFile]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -907,6 +889,9 @@ SaveToJSONFile_Err:
 End Sub
 
 Public Function GetOSVersion() As String
+    '<EhHeader>
+    On Error GoTo GetOSVersion_Err
+    '</EhHeader>
 
     ' Windows Version Data:
     '
@@ -994,4 +979,14 @@ Public Function GetOSVersion() As String
     GetOSVersion = PId & " version" & str$(OSInfo.dwMajorVersion) & "." & LTrim(str( _
             OSInfo.dwMinorVersion)) & " build " & str(OSInfo.dwBuildNumber)
  
+    '<EhFooter>
+    Exit Function
+
+GetOSVersion_Err:
+    Logger.Info "[cop.ModuleUserFunctions.GetOSVersion]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Function

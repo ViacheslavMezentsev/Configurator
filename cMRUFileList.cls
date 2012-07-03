@@ -165,7 +165,7 @@ Public Sub AddFile(ByVal sfileName As String)
     
 End Sub
 
-Public Function Save(ByRef IniFile As CIniFiles) As Boolean
+Public Function Save(ByRef IniFile As CIniFile) As Boolean
 
     On Error GoTo SaveError
 
@@ -193,7 +193,7 @@ SaveError:
 
 End Function
 
-Public Function Load(ByRef IniFile As CIniFiles) As Boolean
+Public Function Load(ByRef IniFile As CIniFile) As Boolean
 
     On Error GoTo LoadError
 

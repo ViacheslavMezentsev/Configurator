@@ -99,7 +99,7 @@ Public Sub LoadLimits(FileName As String)
 
     If Not LimitsLoaded Then Exit Sub
 
-    Dim LimitsFile As New CIniFiles
+    Dim LimitsFile As New CIniFile
 
     LimitsFile.Create FileName
 
@@ -201,7 +201,7 @@ Private Sub func_ShowPropertyTableForCool(frm As FormMain, _
        ByRef RecordTitle As TYPE_WPC_TITLE, _
        ByRef RecordCool As TYPE_WPC_COOL)
 
-    Dim I As Integer, J As Integer
+    Dim I As Integer, j As Integer
     Dim ParamStr As String, S As String
     Dim StepPointer As Long
 
@@ -306,8 +306,8 @@ Private Sub func_ShowPropertyTableForCool(frm As FormMain, _
                 Case IDLE_PROGNAME_FIELD:
                     S = ""
 
-                    For J = 1 To PROG_NAME_LENGTH - 1
-                        S = S & Chr$(CLng(RecordTitle.ProgName(J)))
+                    For j = 1 To PROG_NAME_LENGTH - 1
+                        S = S & Chr$(CLng(RecordTitle.ProgName(j)))
                     Next
 
                     .PropertyTable.Text = S
@@ -900,7 +900,7 @@ Private Function func_ShowStepTableForCool(frm As FormMain, _
        ByRef RecordCool As TYPE_WPC_COOL, _
        ByRef StepGrid As MSFlexGrid) As Boolean
 
-    Dim I As Integer, J As Integer
+    Dim I As Integer, j As Integer
     Dim StepPointer As Long
     Dim S As String
     
@@ -1086,8 +1086,8 @@ Private Function func_ShowStepTableForCool(frm As FormMain, _
                 
                     S = ""
 
-                    For J = 1 To PROG_NAME_LENGTH - 1
-                        S = S & Chr$(CLng(RecordTitle.ProgName(J)))
+                    For j = 1 To PROG_NAME_LENGTH - 1
+                        S = S & Chr$(CLng(RecordTitle.ProgName(j)))
                     Next
 
                     .Text = S

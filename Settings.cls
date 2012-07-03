@@ -46,12 +46,38 @@ Public AutoUpdatePeriod As Long
 Public AutoUpdateLink As String
 Public AutoUpdateLastDate As String
 
+Public AutoUpdateHost As String
+Public AutoUpdatePort As Long
+
 Public StepsViewFontSize As Long
 
 Public StepsViewFontName As String
 Public LogFilePath As String
 
 Public SplittersThickness As Long
+
+Public IniFilePath As String
+
+'**
+'@rem Настройки программы
+Private FIniFile As CIniFile
+
+
+Property Get IniFile() As CIniFile
+
+    Set IniFile = FIniFile
+
+End Property
+
+
+Property Set IniFile(Value As CIniFile)
+
+    If Value Is Nothing Then Exit Property
+
+    Set FIniFile = Value
+
+End Property
+
 
 '**
 '@param
@@ -60,7 +86,20 @@ Private Sub Class_Initialize()
 
     SetDefaultSettings
     
+    ' Создаём файл для хранения найстроек
+    Set FIniFile = New CIniFile
+    
+    FIniFile.Create IniFilePath
+    
 End Sub
+
+
+Private Sub Class_Terminate()
+    
+    Set FIniFile = Nothing
+    
+End Sub
+
 
 '**
 '@param
@@ -98,12 +137,31 @@ Private Sub SetDefaultSettings()
 
     LogFilePath = FilePath
     
+    IniFilePath = Replace(FilePath, ".log", ".ini")
+    
+    Dim WE_ARE_IN_IDE As Boolean
+    
+    Debug.Assert MakeTrue(WE_ARE_IN_IDE)
+    
     ' [Обновление]
+    If WE_ARE_IN_IDE Then
+        
+        AutoUpdateHost = "192.168.0.14"
+        AutoUpdateLink = "http://192.168.0.14/cop/update"
+        
+    Else
+        
+        AutoUpdateHost = "82.193.156.30"
+        AutoUpdateLink = "http://82.193.156.30/cop/update"
+    
+    End If
+    
+    AutoUpdatePort = 1980
     AutoUpdateEnabled = False
     AutoUpdatePeriod = AUP_EVERY_DAY
     AutoUpdateLastDate = CStr(Date)
-    AutoUpdateLink = "http://82.193.156.30/cop/update"
     
+
     ' [Интерфейс]
     SplittersThickness = 60
     
@@ -115,27 +173,30 @@ End Sub
 'Загрузка настроек из конфигурационного файла
 Public Sub LoadSettings()
 
+    ' Если объект файла настроек не создан, то выходим из метода
+    If FIniFile Is Nothing Then Exit Sub
+    
     ' [Основные]
-    StepsColWidth = IniFile.ReadInteger("Settings", "StepsColWidth", 300)
-    StepsRowHeight = IniFile.ReadInteger("Settings", "StepsRowHeight", 300)
+    StepsColWidth = FIniFile.ReadInteger("Settings", "StepsColWidth", 300)
+    StepsRowHeight = FIniFile.ReadInteger("Settings", "StepsRowHeight", 300)
 
-    StepsVSelectorEnabled = IniFile.ReadBoolean("Settings", "StepsVSelectorEnabled", True)
-    StepsHSelectorEnabled = IniFile.ReadBoolean("Settings", "StepsHSelectorEnabled", False)
-    StepsSelectorWidth = IniFile.ReadInteger("Settings", "StepsSelectorWidth", 20)
+    StepsVSelectorEnabled = FIniFile.ReadBoolean("Settings", "StepsVSelectorEnabled", True)
+    StepsHSelectorEnabled = FIniFile.ReadBoolean("Settings", "StepsHSelectorEnabled", False)
+    StepsSelectorWidth = FIniFile.ReadInteger("Settings", "StepsSelectorWidth", 20)
 
-    StepsViewFontBold = IniFile.ReadBoolean("Settings", "StepsViewFontBold", False)
-    StepsViewFontItalic = IniFile.ReadBoolean("Settings", "StepsViewFontItalic", False)
-    StepsViewFontSize = IniFile.ReadInteger("Settings", "StepsViewFontSize", 10)
-    StepsViewFontName = IniFile.ReadString("Settings", "StepsViewFontName", "Courier New")
+    StepsViewFontBold = FIniFile.ReadBoolean("Settings", "StepsViewFontBold", False)
+    StepsViewFontItalic = FIniFile.ReadBoolean("Settings", "StepsViewFontItalic", False)
+    StepsViewFontSize = FIniFile.ReadInteger("Settings", "StepsViewFontSize", 10)
+    StepsViewFontName = FIniFile.ReadString("Settings", "StepsViewFontName", "Courier New")
 
     ' [История файлов]
     ' Ограничивать длину путей в меню
-    FilesHistoryLimitPaths = IniFile.ReadBoolean("Settings", "FilesHistoryLimitPaths", _
+    FilesHistoryLimitPaths = FIniFile.ReadBoolean("Settings", "FilesHistoryLimitPaths", _
             True)
 
     ' [Лог]
     ' Перезаписывать лог файл при каждом запуске программы
-    RewriteLogFile = IniFile.ReadBoolean("Settings", "RewriteLogFile", True)
+    RewriteLogFile = FIniFile.ReadBoolean("Settings", "RewriteLogFile", True)
 
     ' Формируем путь к файлу лога
     Dim FilePath As String, Result As String
@@ -146,15 +207,32 @@ Public Sub LoadSettings()
     FilePath = StrConv(FilePath, vbLowerCase)
     FilePath = Replace(FilePath, ".exe", ".log")
 
-    LogFilePath = IniFile.ReadString("Settings", "LogFilePath", FilePath)
+    LogFilePath = FIniFile.ReadString("Settings", "LogFilePath", FilePath)
+    IniFilePath = FIniFile.ReadString("Settings", "IniFilePath", Replace(FilePath, ".exe", ".ini"))
     
     ' [Обновление]
-    AutoUpdateEnabled = IniFile.ReadBoolean("Settings", "AutoUpdateEnabled", False)
-    AutoUpdatePeriod = IniFile.ReadInteger("Settings", "AutoUpdatePeriod", AUP_EVERY_DAY)
-    AutoUpdateLastDate = IniFile.ReadString("Settings", "AutoUpdateLastDate", CStr(Date))
-    AutoUpdateLink = IniFile.ReadString("Settings", "AutoUpdateLink", _
-            "http://82.193.156.30/cop/update")
-            
+    Dim WE_ARE_IN_IDE As Boolean
+    
+    Debug.Assert MakeTrue(WE_ARE_IN_IDE)
+    
+    If WE_ARE_IN_IDE Then
+        
+        AutoUpdateHost = FIniFile.ReadString("Settings", "AutoUpdateHost", "192.168.0.14")
+        AutoUpdateLink = FIniFile.ReadString("Settings", "AutoUpdateLink", "http://192.168.0.14/cop/update")
+
+    Else
+        
+        AutoUpdateHost = FIniFile.ReadString("Settings", "AutoUpdateHost", "82.193.156.30")
+        AutoUpdateLink = FIniFile.ReadString("Settings", "AutoUpdateLink", "http://82.193.156.30/cop/update")
+    
+    End If
+
+    AutoUpdateEnabled = FIniFile.ReadBoolean("Settings", "AutoUpdateEnabled", False)
+    AutoUpdatePeriod = FIniFile.ReadInteger("Settings", "AutoUpdatePeriod", AUP_EVERY_DAY)
+    AutoUpdateLastDate = FIniFile.ReadString("Settings", "AutoUpdateLastDate", CStr(Date))
+    
+    AutoUpdatePort = FIniFile.ReadInteger("Settings", "AutoUpdatePort", 1980)
+        
     ' [Интерфейс]
     SplittersThickness = IniFile.ReadInteger("Settings", "SplittersThickness", 60)
 
@@ -166,34 +244,42 @@ End Sub
 'Сохранение настроек в конфигурационном файле
 Public Sub SaveSettings()
 
+    ' Если объект файла настроек не создан, то выходим из метода
+    If FIniFile Is Nothing Then Exit Sub
+
     ' [Основные]
-    IniFile.WriteInteger "Settings", "StepsColWidth", StepsColWidth
-    IniFile.WriteInteger "Settings", "StepsRowHeight", StepsRowHeight
+    FIniFile.WriteInteger "Settings", "StepsColWidth", StepsColWidth
+    FIniFile.WriteInteger "Settings", "StepsRowHeight", StepsRowHeight
 
-    IniFile.WriteBoolean "Settings", "StepsVSelectorEnabled", StepsVSelectorEnabled
-    IniFile.WriteBoolean "Settings", "StepsHSelectorEnabled", StepsHSelectorEnabled
-    IniFile.WriteInteger "Settings", "StepsSelectorWidth", StepsSelectorWidth
+    FIniFile.WriteBoolean "Settings", "StepsVSelectorEnabled", StepsVSelectorEnabled
+    FIniFile.WriteBoolean "Settings", "StepsHSelectorEnabled", StepsHSelectorEnabled
+    FIniFile.WriteInteger "Settings", "StepsSelectorWidth", StepsSelectorWidth
 
-    IniFile.WriteBoolean "Settings", "StepsViewFontBold", StepsViewFontBold
-    IniFile.WriteBoolean "Settings", "StepsViewFontItalic", StepsViewFontItalic
-    IniFile.WriteInteger "Settings", "StepsViewFontSize", StepsViewFontSize
-    IniFile.WriteString "Settings", "StepsViewFontName", StepsViewFontName
+    FIniFile.WriteBoolean "Settings", "StepsViewFontBold", StepsViewFontBold
+    FIniFile.WriteBoolean "Settings", "StepsViewFontItalic", StepsViewFontItalic
+    FIniFile.WriteInteger "Settings", "StepsViewFontSize", StepsViewFontSize
+    FIniFile.WriteString "Settings", "StepsViewFontName", StepsViewFontName
 
     ' [История файлов]
     ' Ограничивать длину путей в меню
-    IniFile.WriteBoolean "Settings", "FilesHistoryLimitPaths", FilesHistoryLimitPaths
+    FIniFile.WriteBoolean "Settings", "FilesHistoryLimitPaths", FilesHistoryLimitPaths
 
     ' [Лог]
-    IniFile.WriteBoolean "Settings", "RewriteLogFile", RewriteLogFile
-    IniFile.WriteString "Settings", "LogFilePath", LogFilePath
+    FIniFile.WriteBoolean "Settings", "RewriteLogFile", RewriteLogFile
+    FIniFile.WriteString "Settings", "LogFilePath", LogFilePath
+    FIniFile.WriteString "Settings", "IniFilePath", IniFilePath
     
     ' [Обновление]
-    IniFile.WriteBoolean "Settings", "AutoUpdateEnabled", AutoUpdateEnabled
-    IniFile.WriteInteger "Settings", "AutoUpdatePeriod", AutoUpdatePeriod
-    IniFile.WriteString "Settings", "AutoUpdateLastDate", AutoUpdateLastDate
-    IniFile.WriteString "Settings", "AutoUpdateLink", AutoUpdateLink
+    FIniFile.WriteString "Settings", "AutoUpdateHost", AutoUpdateHost
+    FIniFile.WriteInteger "Settings", "AutoUpdatePort", AutoUpdatePort
+    
+    FIniFile.WriteBoolean "Settings", "AutoUpdateEnabled", AutoUpdateEnabled
+    FIniFile.WriteInteger "Settings", "AutoUpdatePeriod", AutoUpdatePeriod
+    FIniFile.WriteString "Settings", "AutoUpdateLastDate", AutoUpdateLastDate
+    FIniFile.WriteString "Settings", "AutoUpdateLink", AutoUpdateLink
     
     ' [Интерфейс]
-    IniFile.WriteInteger "Settings", "SplittersThickness", SplittersThickness
+    FIniFile.WriteInteger "Settings", "SplittersThickness", SplittersThickness
     
 End Sub
+

@@ -40,7 +40,7 @@ Public Sub LoadLimits(FileName As String)
 
     If Not LimitsLoaded Then Exit Sub
 
-    Dim LimitsFile As New CIniFiles
+    Dim LimitsFile As New CIniFile
 
     LimitsFile.Create FileName
 

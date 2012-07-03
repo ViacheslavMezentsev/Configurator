@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
-Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
+Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "tabctl32.ocx"
 Begin VB.Form FormOptions 
    Caption         =   "Настройки"
    ClientHeight    =   7248
@@ -445,51 +445,53 @@ Private Sub LoadPlacement()
     On Error GoTo LoadPlacement_Err
     '</EhHeader>
     
-    ' Размеры формы
-    Left = IniFile.ReadInteger("FormOptions", "Left", 2532)
-    Top = IniFile.ReadInteger("FormOptions", "Top", 1176)
-    Width = IniFile.ReadInteger("FormOptions", "Width", 7080)
-    Height = IniFile.ReadInteger("FormOptions", "Height", 7632)
+    With Settings.IniFile
     
-    ' Размеры и положение компонентов
-    ' TabControl
-    SSTab.Left = IniFile.ReadInteger("FormOptions", "SSTab.Left", 0)
-    SSTab.Top = IniFile.ReadInteger("FormOptions", "SSTab.Top", 0)
-    SSTab.Width = IniFile.ReadInteger("FormOptions", "SSTab.Width", ScaleWidth)
-    SSTab.Height = IniFile.ReadInteger("FormOptions", "SSTab.Height", 6612)
-
-    ' Вкладка "Приложение"
-    FrameSettings.Left = IniFile.ReadInteger("FormOptions", "FrameSettings.Left", 0)
-    FrameSettings.Top = IniFile.ReadInteger("FormOptions", "FrameSettings.Top", SSTab.TabHeight)
-    FrameSettings.Width = IniFile.ReadInteger("FormOptions", "FrameSettings.Width", SSTab.Width)
-    FrameSettings.Height = IniFile.ReadInteger("FormOptions", "FrameSettings.Height", 5172)
+        ' Размеры формы
+        Left = .ReadInteger("FormOptions", "Left", 2532)
+        Top = .ReadInteger("FormOptions", "Top", 1176)
+        Width = .ReadInteger("FormOptions", "Width", 7080)
+        Height = .ReadInteger("FormOptions", "Height", 7632)
+        
+        ' Размеры и положение компонентов
+        ' TabControl
+        SSTab.Left = .ReadInteger("FormOptions", "SSTab.Left", 0)
+        SSTab.Top = .ReadInteger("FormOptions", "SSTab.Top", 0)
+        SSTab.Width = .ReadInteger("FormOptions", "SSTab.Width", ScaleWidth)
+        SSTab.Height = .ReadInteger("FormOptions", "SSTab.Height", 6612)
     
-    FrameSplitterUpDown.Left = IniFile.ReadInteger("FormOptions", "FrameSplitterUpDown.Left", FrameSettings.Left)
-    FrameSplitterUpDown.Top = IniFile.ReadInteger("FormOptions", "FrameSplitterUpDown.Top", FrameSettings.Top + FrameSettings.Height)
-    FrameSplitterUpDown.Width = IniFile.ReadInteger("FormOptions", "FrameSplitterUpDown.Width", FrameSettings.Width)
-    FrameSplitterUpDown.Height = IniFile.ReadInteger("FormOptions", "FrameSplitterUpDown.Height", Settings.SplittersThickness)
+        ' Вкладка "Приложение"
+        FrameSettings.Left = .ReadInteger("FormOptions", "FrameSettings.Left", 0)
+        FrameSettings.Top = .ReadInteger("FormOptions", "FrameSettings.Top", SSTab.TabHeight)
+        FrameSettings.Width = .ReadInteger("FormOptions", "FrameSettings.Width", SSTab.Width)
+        FrameSettings.Height = .ReadInteger("FormOptions", "FrameSettings.Height", 5172)
     
-    FrameDescription.Left = IniFile.ReadInteger("FormOptions", "FrameDescription.Left", FrameSettings.Left)
-    FrameDescription.Top = IniFile.ReadInteger("FormOptions", "FrameDescription.Top", FrameSplitterUpDown.Top + FrameSplitterUpDown.Height)
-    FrameDescription.Width = IniFile.ReadInteger("FormOptions", "FrameDescription.Width", FrameSettings.Width)
-    FrameDescription.Height = IniFile.ReadInteger("FormOptions", "FrameDescription.Height", SSTab.Height - SSTab.TabHeight - FrameDescription.Top)
+        FrameSplitterUpDown.Left = .ReadInteger("FormOptions", "FrameSplitterUpDown.Left", FrameSettings.Left)
+        FrameSplitterUpDown.Top = .ReadInteger("FormOptions", "FrameSplitterUpDown.Top", FrameSettings.Top + FrameSettings.Height)
+        FrameSplitterUpDown.Width = .ReadInteger("FormOptions", "FrameSplitterUpDown.Width", FrameSettings.Width)
+        FrameSplitterUpDown.Height = .ReadInteger("FormOptions", "FrameSplitterUpDown.Height", Settings.SplittersThickness)
+        
+        FrameDescription.Left = .ReadInteger("FormOptions", "FrameDescription.Left", FrameSettings.Left)
+        FrameDescription.Top = .ReadInteger("FormOptions", "FrameDescription.Top", FrameSplitterUpDown.Top + FrameSplitterUpDown.Height)
+        FrameDescription.Width = .ReadInteger("FormOptions", "FrameDescription.Width", FrameSettings.Width)
+        FrameDescription.Height = .ReadInteger("FormOptions", "FrameDescription.Height", SSTab.Height - SSTab.TabHeight - FrameDescription.Top)
+        
+        MSFGSettings.Left = .ReadInteger("FormOptions", "MSFGSettings.Left", 0)
+        MSFGSettings.Top = .ReadInteger("FormOptions", "MSFGSettings.Top", 0)
+        MSFGSettings.Width = .ReadInteger("FormOptions", "MSFGSettings.Width", FrameSettings.Width)
+        MSFGSettings.Height = .ReadInteger("FormOptions", "MSFGSettings.Height", FrameSettings.Height)
+        
+        MSFGSettings.ColWidth(0) = .ReadInteger("FormOptions", "MSFGSettings.ColWidth0", MSFGSettings.Width / 2)
+        MSFGSettings.ColWidth(1) = .ReadInteger("FormOptions", "MSFGSettings.ColWidth1", MSFGSettings.Width / 2)
     
-    MSFGSettings.Left = IniFile.ReadInteger("FormOptions", "MSFGSettings.Left", 0)
-    MSFGSettings.Top = IniFile.ReadInteger("FormOptions", "MSFGSettings.Top", 0)
-    MSFGSettings.Width = IniFile.ReadInteger("FormOptions", "MSFGSettings.Width", FrameSettings.Width)
-    MSFGSettings.Height = IniFile.ReadInteger("FormOptions", "MSFGSettings.Height", FrameSettings.Height)
-    
-    MSFGSettings.ColWidth(0) = IniFile.ReadInteger("FormOptions", "MSFGSettings.ColWidth0", MSFGSettings.Width / 2)
-    MSFGSettings.ColWidth(1) = IniFile.ReadInteger("FormOptions", "MSFGSettings.ColWidth1", MSFGSettings.Width / 2)
+    End With
     
     '<EhFooter>
     Exit Sub
 
 LoadPlacement_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.LoadPlacement]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.LoadPlacement]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -504,51 +506,53 @@ Private Sub SavePlacement()
     On Error GoTo SavePlacement_Err
     '</EhHeader>
 
-    ' Размеры формы
-    IniFile.WriteInteger "FormOptions", "Left", Left
-    IniFile.WriteInteger "FormOptions", "Top", Top
-    IniFile.WriteInteger "FormOptions", "Width", Width
-    IniFile.WriteInteger "FormOptions", "Height", Height
-    
-    ' Размеры и положение компонентов
-    ' TabControl
-    IniFile.WriteInteger "FormOptions", "SSTab.Left", SSTab.Left
-    IniFile.WriteInteger "FormOptions", "SSTab.Top", SSTab.Top
-    IniFile.WriteInteger "FormOptions", "SSTab.Width", SSTab.Width
-    IniFile.WriteInteger "FormOptions", "SSTab.Height", SSTab.Height
-    
-    ' Вкладка "Приложение"
-    IniFile.WriteInteger "FormOptions", "FrameSettings.Left", FrameSettings.Left
-    IniFile.WriteInteger "FormOptions", "FrameSettings.Top", FrameSettings.Top
-    IniFile.WriteInteger "FormOptions", "FrameSettings.Width", FrameSettings.Width
-    IniFile.WriteInteger "FormOptions", "FrameSettings.Height", FrameSettings.Height
-    
-    IniFile.WriteInteger "FormOptions", "FrameSplitterUpDown.Left", FrameSplitterUpDown.Left
-    IniFile.WriteInteger "FormOptions", "FrameSplitterUpDown.Top", FrameSplitterUpDown.Top
-    IniFile.WriteInteger "FormOptions", "FrameSplitterUpDown.Width", FrameSplitterUpDown.Width
-    IniFile.WriteInteger "FormOptions", "FrameSplitterUpDown.Height", FrameSplitterUpDown.Height
-       
-    IniFile.WriteInteger "FormOptions", "FrameDescription.Left", FrameDescription.Left
-    IniFile.WriteInteger "FormOptions", "FrameDescription.Top", FrameDescription.Top
-    IniFile.WriteInteger "FormOptions", "FrameDescription.Width", FrameDescription.Width
-    IniFile.WriteInteger "FormOptions", "FrameDescription.Height", FrameDescription.Height
+    With Settings.IniFile
 
-    IniFile.WriteInteger "FormOptions", "MSFGSettings.Left", MSFGSettings.Left
-    IniFile.WriteInteger "FormOptions", "MSFGSettings.Top", MSFGSettings.Top
-    IniFile.WriteInteger "FormOptions", "MSFGSettings.Width", MSFGSettings.Width
-    IniFile.WriteInteger "FormOptions", "MSFGSettings.Height", MSFGSettings.Height
+        ' Размеры формы
+        .WriteInteger "FormOptions", "Left", Left
+        .WriteInteger "FormOptions", "Top", Top
+        .WriteInteger "FormOptions", "Width", Width
+        .WriteInteger "FormOptions", "Height", Height
+        
+        ' Размеры и положение компонентов
+        ' TabControl
+        .WriteInteger "FormOptions", "SSTab.Left", SSTab.Left
+        .WriteInteger "FormOptions", "SSTab.Top", SSTab.Top
+        .WriteInteger "FormOptions", "SSTab.Width", SSTab.Width
+        .WriteInteger "FormOptions", "SSTab.Height", SSTab.Height
+        
+        ' Вкладка "Приложение"
+        .WriteInteger "FormOptions", "FrameSettings.Left", FrameSettings.Left
+        .WriteInteger "FormOptions", "FrameSettings.Top", FrameSettings.Top
+        .WriteInteger "FormOptions", "FrameSettings.Width", FrameSettings.Width
+        .WriteInteger "FormOptions", "FrameSettings.Height", FrameSettings.Height
+        
+        .WriteInteger "FormOptions", "FrameSplitterUpDown.Left", FrameSplitterUpDown.Left
+        .WriteInteger "FormOptions", "FrameSplitterUpDown.Top", FrameSplitterUpDown.Top
+        .WriteInteger "FormOptions", "FrameSplitterUpDown.Width", FrameSplitterUpDown.Width
+        .WriteInteger "FormOptions", "FrameSplitterUpDown.Height", FrameSplitterUpDown.Height
+           
+        .WriteInteger "FormOptions", "FrameDescription.Left", FrameDescription.Left
+        .WriteInteger "FormOptions", "FrameDescription.Top", FrameDescription.Top
+        .WriteInteger "FormOptions", "FrameDescription.Width", FrameDescription.Width
+        .WriteInteger "FormOptions", "FrameDescription.Height", FrameDescription.Height
     
-    IniFile.WriteInteger "FormOptions", "MSFGSettings.ColWidth0", MSFGSettings.ColWidth(0)
-    IniFile.WriteInteger "FormOptions", "MSFGSettings.ColWidth1", MSFGSettings.ColWidth(1)
+        .WriteInteger "FormOptions", "MSFGSettings.Left", MSFGSettings.Left
+        .WriteInteger "FormOptions", "MSFGSettings.Top", MSFGSettings.Top
+        .WriteInteger "FormOptions", "MSFGSettings.Width", MSFGSettings.Width
+        .WriteInteger "FormOptions", "MSFGSettings.Height", MSFGSettings.Height
+        
+        .WriteInteger "FormOptions", "MSFGSettings.ColWidth0", MSFGSettings.ColWidth(0)
+        .WriteInteger "FormOptions", "MSFGSettings.ColWidth1", MSFGSettings.ColWidth(1)
+    
+    End With
     
     '<EhFooter>
     Exit Sub
 
 SavePlacement_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.SavePlacement]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.SavePlacement]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -616,10 +620,8 @@ Private Sub ShowHorizontalSelector()
     Exit Sub
 
 ShowHorizontalSelector_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.ShowHorizontalSelector]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.ShowHorizontalSelector]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -687,10 +689,8 @@ Private Sub ShowVerticalSelector()
     Exit Sub
 
 ShowVerticalSelector_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.ShowVerticalSelector]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.ShowVerticalSelector]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -698,26 +698,21 @@ ShowVerticalSelector_Err:
 End Sub
 
 Private Sub cmdOK_Click()
-    '<EhHeader>
-    On Error GoTo cmdOK_Click_Err
-    '</EhHeader>
 
+    ' Сохраняем настройки программы
+    Settings.SaveSettings
+    
     ' Применяем параметры к интерфейсу программы
     FormMain.RefreshComponents False
        
     Unload Me
 
-    '<EhFooter>
-    Exit Sub
-
-cmdOK_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.cmdOK_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
 End Sub
 
 Private Sub RefreshSettingsView()
+    '<EhHeader>
+    On Error GoTo RefreshSettingsView_Err
+    '</EhHeader>
 
     Dim I As Integer
     
@@ -826,6 +821,21 @@ Private Sub RefreshSettingsView()
 
                     .CellBackColor = &HFFFFFF
 
+
+                Case SETTINGS_AUTOUPDATE_HOST:
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+                    .Text = Settings.AutoUpdateHost
+                    .CellBackColor = &HFFFFFF
+                
+                
+                Case SETTINGS_AUTOUPDATE_PORT:
+                    .row = I
+                    .CellAlignment = flexAlignRightCenter
+                    .Text = CLng(Settings.AutoUpdatePort)
+                    .CellBackColor = &HFFFFFF
+                
+                
                 Case SETTINGS_AUTOUPDATE_ENABLED:
 
                     .row = I
@@ -837,6 +847,7 @@ Private Sub RefreshSettingsView()
                     End Select
 
                     .CellBackColor = &HFFFFFF
+
 
                 Case SETTINGS_AUTOUPDATE_PERIOD:
 
@@ -855,11 +866,13 @@ Private Sub RefreshSettingsView()
 
                     .CellBackColor = &HFFFFFF
 
+
                 Case SETTINGS_AUTOUPDATE_LAST_DATE:
                     
                     .row = I
                     .Text = CStr(Settings.AutoUpdateLastDate)
                     .CellBackColor = &HFFFFFF
+                    
                     
                 Case SETTINGS_IMPORT_JSON_CODEPAGE:
 
@@ -868,12 +881,14 @@ Private Sub RefreshSettingsView()
                     .Text = "UTF-8"
                     .CellBackColor = &HFFFFFF
 
+
                 Case SETTINGS_EXPORT_JSON_CODEPAGE:
 
                     .row = I
                     .CellAlignment = flexAlignRightCenter
                     .Text = "UTF-8"
                     .CellBackColor = &HFFFFFF
+
 
             End Select
             
@@ -883,6 +898,16 @@ Private Sub RefreshSettingsView()
     
     End With
     
+    '<EhFooter>
+    Exit Sub
+
+RefreshSettingsView_Err:
+    Logger.Info "[cop.FormOptions.RefreshSettingsView]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub RefreshStepsView()
@@ -986,13 +1011,18 @@ Private Sub RefreshStepsView()
     Exit Sub
 
 RefreshStepsView_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.RefreshStepsView]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.RefreshStepsView]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
 Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
+    '<EhHeader>
+    On Error GoTo ComboCell_KeyDown_Err
+    '</EhHeader>
 
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
     
@@ -1058,6 +1088,10 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
                         Case 1: Settings.AutoUpdateEnabled = True
                     End Select
                     
+                Case SETTINGS_AUTOUPDATE_HOST:
+                
+                Case SETTINGS_AUTOUPDATE_PORT:
+                
                 Case SETTINGS_AUTOUPDATE_PERIOD:
                     
                     Select Case ComboCell.ListIndex
@@ -1089,6 +1123,16 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
             
     End If
 
+    '<EhFooter>
+    Exit Sub
+
+ComboCell_KeyDown_Err:
+    Logger.Info "[cop.FormOptions.ComboCell_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub ComboCell_LostFocus()
@@ -1122,10 +1166,8 @@ Private Sub CommandBrowse_Click()
     Exit Sub
 
 CommandBrowse_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.CommandBrowse_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.CommandBrowse_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1133,6 +1175,9 @@ CommandBrowse_Click_Err:
 End Sub
 
 Private Sub RefreshTabControl()
+    '<EhHeader>
+    On Error GoTo RefreshTabControl_Err
+    '</EhHeader>
 
     SSTab.Top = 0
     SSTab.Left = 0
@@ -1252,25 +1297,61 @@ Private Sub RefreshTabControl()
     
     End Select
     
+    '<EhFooter>
+    Exit Sub
+
+RefreshTabControl_Err:
+    Logger.Info "[cop.FormOptions.RefreshTabControl]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub RefreshButtons()
+    '<EhHeader>
+    On Error GoTo RefreshButtons_Err
+    '</EhHeader>
 
-    cmdOk.Top = ScaleHeight - 456
-    cmdOk.Left = ScaleWidth - 2424
+    cmdOK.Top = ScaleHeight - 456
+    cmdOK.Left = ScaleWidth - 2424
     
     CommandCancel.Top = ScaleHeight - 456
     CommandCancel.Left = ScaleWidth - 1224
     
+    '<EhFooter>
+    Exit Sub
+
+RefreshButtons_Err:
+    Logger.Info "[cop.FormOptions.RefreshButtons]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub RefreshComponents(Optional RefreshWithData As Boolean = False)
+    '<EhHeader>
+    On Error GoTo RefreshComponents_Err
+    '</EhHeader>
 
     If RefreshWithData = True Then RefreshSettingsView
 
     RefreshTabControl
     RefreshButtons
     
+    '<EhFooter>
+    Exit Sub
+
+RefreshComponents_Err:
+    Logger.Info "[cop.FormOptions.RefreshComponents]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub CommandCancel_Click()
@@ -1284,10 +1365,8 @@ Private Sub CommandCancel_Click()
     Exit Sub
 
 CommandCancel_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.CommandCancel_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.CommandCancel_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1309,7 +1388,8 @@ Private Sub Form_Load()
     
         .Redraw = False
     
-        .rows = 21
+        ' Общее количество строк
+        .rows = 23
     
         ' Очищаем таблицу установок
         .Clear
@@ -1417,6 +1497,20 @@ Private Sub Form_Load()
         .CellFontBold = True
     
         .row = Inc(row)
+        .RowData(.row) = SETTINGS_AUTOUPDATE_HOST
+        .Text = "Адрес сервера"
+        .CellBackColor = &HFFFFFF
+
+        ' -----------------------------------------------
+        .Col = 0
+        .row = Inc(row)
+        .RowData(.row) = SETTINGS_AUTOUPDATE_PORT
+        .Text = "Порт сервера"
+        .CellBackColor = &HFFFFFF
+
+        ' -----------------------------------------------
+        .Col = 0
+        .row = Inc(row)
         .RowData(.row) = SETTINGS_AUTOUPDATE_ENABLED
         .Text = "Автоматическое обновление"
         .CellBackColor = &HFFFFFF
@@ -1474,9 +1568,11 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormOptions.Form_Load]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.Form_Load]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -1500,29 +1596,27 @@ Private Sub Form_Unload(Cancel As Integer)
     Exit Sub
 
 Form_Unload_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.Form_Unload]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.Form_Unload]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-Private Sub FrameSplitterUpDown_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub FrameSplitterUpDown_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     SplitterMoving = True
-    BegX = x
-    BegY = y
+    BegX = X
+    BegY = Y
     
 End Sub
 
-Private Sub FrameSplitterUpDown_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub FrameSplitterUpDown_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If SplitterMoving Then
     
-        FrameDescription.Height = FrameDescription.Height - y + BegY
+        FrameDescription.Height = FrameDescription.Height - Y + BegY
         
         RefreshTabControl
     
@@ -1530,7 +1624,7 @@ Private Sub FrameSplitterUpDown_MouseMove(Button As Integer, Shift As Integer, x
     
 End Sub
 
-Private Sub FrameSplitterUpDown_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub FrameSplitterUpDown_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     SplitterMoving = False
     
@@ -1595,6 +1689,16 @@ Private Sub MSFGSettings_Click()
                     LabelDescription.Caption = "Ограничение длины пути файла в истории"
                     Exit Sub
                     
+                Case SETTINGS_AUTOUPDATE_HOST:
+
+                    LabelDescription.Caption = "Имя или адрес сервера обновлений"
+                    Exit Sub
+                    
+                Case SETTINGS_AUTOUPDATE_PORT:
+
+                    LabelDescription.Caption = "Порт подключения к серверу обновлений"
+                    Exit Sub
+                    
                 Case SETTINGS_AUTOUPDATE_ENABLED:
 
                     LabelDescription.Caption = "Настройка режима обновления: автомат или ручное"
@@ -1630,10 +1734,8 @@ Private Sub MSFGSettings_Click()
     Exit Sub
 
 MSFGSettings_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.MSFGSettings_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.MSFGSettings_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1651,10 +1753,8 @@ Private Sub MSFGSettings_DblClick()
     Exit Sub
 
 MSFGSettings_DblClick_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.MSFGSettings_DblClick]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.MSFGSettings_DblClick]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1696,7 +1796,8 @@ Private Sub MSFGSettings_KeyDown(KeyCode As Integer, Shift As Integer)
                 Select Case .RowData(.row)
                 
                     Case SETTINGS_STEPS_COL_WIDTH, SETTINGS_STEPS_ROW_HEIGHT, _
-                        SETTINGS_STEPS_SELECTOR_WIDTH, SETTINGS_FILES_HISTORY_SIZE:
+                        SETTINGS_STEPS_SELECTOR_WIDTH, SETTINGS_FILES_HISTORY_SIZE, _
+                        SETTINGS_AUTOUPDATE_HOST, SETTINGS_AUTOUPDATE_PORT:
                     
                         TextCell.Text = .Text
                         TextCell.SelStart = 0
@@ -1813,7 +1914,7 @@ Private Sub MSFGSettings_KeyDown(KeyCode As Integer, Shift As Integer)
                         TextCell.Visible = True
                         CommandBrowse.Visible = True
                         CommandBrowse.SetFocus
-    
+                        
                     Case SETTINGS_AUTOUPDATE_PERIOD:
                         
                         ComboCell.AddItem "каждый день"
@@ -1845,10 +1946,8 @@ Private Sub MSFGSettings_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 MSFGSettings_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.MSFGSettings_KeyDown]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.MSFGSettings_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1866,10 +1965,8 @@ Private Sub SSTab_Click(PreviousTab As Integer)
     Exit Sub
 
 SSTab_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.SSTab_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.SSTab_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1902,39 +1999,63 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
                 
                     Settings.StepsColWidth = CLng(TextCell.Text)
                     
+                    
                 Case SETTINGS_STEPS_ROW_HEIGHT:
                 
                     Settings.StepsRowHeight = CLng(TextCell.Text)
+                    
 
                 Case SETTINGS_STEPSVIEW_FONT:
+                
 
                 Case SETTINGS_STEPS_SELECTOR_WIDTH:
                 
                     Settings.StepsSelectorWidth = CLng(TextCell.Text)
 
+
                 Case SETTINGS_STEPS_VSELECTOR_ENABLED:
+                
 
                 Case SETTINGS_STEPS_HSELECTOR_ENABLED:
 
+
                 Case SETTINGS_REWRITE_LOGFILE:
+                
 
                 Case SETTINGS_LOG_FILEPATH:
                 
                     Settings.LogFilePath = TextCell.Text
 
+
                 Case SETTINGS_FILES_HISTORY_SIZE:
                 
                     MRUFileList.MaxFileCount = CLng(TextCell.Text)
+                    
 
                 Case SETTINGS_FILES_HISTORY_LIMIT_PATHS:
+                
+
+                Case SETTINGS_AUTOUPDATE_HOST:
+                
+                    Settings.AutoUpdateHost = TextCell.Text
+                    
+                
+                Case SETTINGS_AUTOUPDATE_PORT:
+                
+                    Settings.AutoUpdatePort = CLng(TextCell.Text)
+                    
 
                 Case SETTINGS_AUTOUPDATE_ENABLED:
+                
 
                 Case SETTINGS_AUTOUPDATE_PERIOD:
 
+
                 Case SETTINGS_IMPORT_JSON_CODEPAGE:
 
+
                 Case SETTINGS_EXPORT_JSON_CODEPAGE:
+                
 
             End Select
         
@@ -1959,10 +2080,8 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 TextCell_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.TextCell_KeyDown]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.TextCell_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1980,10 +2099,8 @@ Private Sub TextCell_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 TextCell_KeyPress_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormOptions.TextCell_KeyPress]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormOptions.TextCell_KeyPress]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 

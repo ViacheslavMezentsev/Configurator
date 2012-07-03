@@ -25,8 +25,32 @@ Private Declare Sub InitCommonControls Lib "comctl32.dll" ()
 '@rem Точка входа в программу
 Private Sub Main()
        
-    InitCommonControls
+    ' Создаём экземпляр объекта настроек (инициализация по умолчанию)
+    Set Settings = New CSettings
+        
+    ' Загружаем сохранённые настройки
+    Settings.LoadSettings
     
+    ' Перезаписываем лог файл, если флаг установлен
+    If Settings.RewriteLogFile Then
+    
+        Debug.Print Date & " " & Time & " [cop.ModuleMain.Main]: " & _
+                "Файл лога удалён."
+                
+        DeleteFile Settings.LogFilePath
+        
+    End If
+
+    ' Создаём экземпляр журнала
+    Set Logger = New CLogger
+    
+    ' Запускаем ведение журнала
+    Logger.StartLogging Settings.LogFilePath, VBRUN.LogModeConstants.vbLogToFile
+        
+    ' Инициализация компонентов для правильной работы интерфейса
+    InitCommonControls
+
+    ' Показываем основное окно программы
     FormMain.Show
     
 End Sub

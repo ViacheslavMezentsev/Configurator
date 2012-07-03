@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
 Begin VB.Form FormDownload 
    Caption         =   "Загрузка"
    ClientHeight    =   3516
@@ -169,7 +169,7 @@ Dim BegX As Integer, BegY As Integer
 
 Public Sub ShowFromText(Text As String)
 
-    MSFGSettings.col = 1
+    MSFGSettings.Col = 1
     MSFGSettings.row = 2
     MSFGSettings.Text = Text
     
@@ -177,7 +177,7 @@ End Sub
 
 Public Sub ShowToText(Text As String)
 
-    MSFGSettings.col = 1
+    MSFGSettings.Col = 1
     MSFGSettings.row = 3
     MSFGSettings.Text = Text
     
@@ -185,19 +185,22 @@ End Sub
 
 Public Sub ShowStateText(Text As String)
 
-    MSFGSettings.col = 1
+    MSFGSettings.Col = 1
     MSFGSettings.row = 5
     MSFGSettings.Text = Text
     
 End Sub
 
-Public Sub SetProgress(Value As Integer)
+Public Sub SetProgress(Value As Long)
 
-    ProgressBar.Value = Value
+    ProgressBar.Value = CInt(Value)
 
 End Sub
 
 Private Sub RefreshFrame()
+    '<EhHeader>
+    On Error GoTo RefreshFrame_Err
+    '</EhHeader>
 
     Frame.Top = 0
     Frame.Left = 0
@@ -224,7 +227,7 @@ Private Sub RefreshFrame()
         
     End If
             
-    MSFGSettings.col = 1
+    MSFGSettings.Col = 1
     MSFGSettings.row = 4
     
     ProgressBar.Top = MSFGSettings.CellTop
@@ -242,9 +245,22 @@ Private Sub RefreshFrame()
     ShapeMessageBoderLight.Width = ShapeMessageBoderDark.Width - ShapeMessageBoderLight.Left - 12
     ShapeMessageBoderLight.Height = ShapeMessageBoderDark.Height - ShapeMessageBoderLight.Top - 12
 
+    '<EhFooter>
+    Exit Sub
+
+RefreshFrame_Err:
+    Logger.Info "[cop.FormDownload.RefreshFrame]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub RefreshComponents()
+    '<EhHeader>
+    On Error GoTo RefreshComponents_Err
+    '</EhHeader>
 
     RefreshFrame
     
@@ -254,6 +270,16 @@ Private Sub RefreshComponents()
     CancelButton.Left = CommanClose.Left - CancelButton.Width - 120
     CancelButton.Top = ScaleHeight - CancelButton.Height - 120
 
+    '<EhFooter>
+    Exit Sub
+
+RefreshComponents_Err:
+    Logger.Info "[cop.FormDownload.RefreshComponents]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub CancelButton_Click()
@@ -267,10 +293,8 @@ Private Sub CancelButton_Click()
     Exit Sub
 
 CancelButton_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormDownload.CancelButton_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormDownload.CancelButton_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -288,10 +312,8 @@ Private Sub CommanClose_Click()
     Exit Sub
 
 CommanClose_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormDownload.CommanClose_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormDownload.CommanClose_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -317,13 +339,13 @@ Private Sub Form_Load()
     MSFGSettings.Clear
     
     MSFGSettings.FormatString = "<Параметр|Значение"
-    MSFGSettings.col = 1
+    MSFGSettings.Col = 1
     MSFGSettings.row = 0
     MSFGSettings.CellAlignment = flexAlignRightCenter
     MSFGSettings.ColWidth(0) = 1500
     
     ' -----------------------------------------------
-    MSFGSettings.col = 0
+    MSFGSettings.Col = 0
     MSFGSettings.row = 1
     MSFGSettings.Text = "Загрузка"
     MSFGSettings.CellFontBold = True
@@ -332,27 +354,27 @@ Private Sub Form_Load()
     MSFGSettings.Text = "Откуда"
     MSFGSettings.CellBackColor = &HFFFFFF
     
-    MSFGSettings.col = 1
+    MSFGSettings.Col = 1
     MSFGSettings.Text = ""
     MSFGSettings.CellBackColor = &HFFFFFF
     
     ' -----------------------------------------------
-    MSFGSettings.col = 0
+    MSFGSettings.Col = 0
     MSFGSettings.row = 3
     MSFGSettings.Text = "Куда"
     MSFGSettings.CellBackColor = &HFFFFFF
     
-    MSFGSettings.col = 1
+    MSFGSettings.Col = 1
     MSFGSettings.Text = ""
     MSFGSettings.CellBackColor = &HFFFFFF
     
     ' -----------------------------------------------
-    MSFGSettings.col = 0
+    MSFGSettings.Col = 0
     MSFGSettings.row = 4
     MSFGSettings.Text = "Прогресс"
     MSFGSettings.CellBackColor = &HFFFFFF
     
-    MSFGSettings.col = 1
+    MSFGSettings.Col = 1
     MSFGSettings.Text = ""
     MSFGSettings.CellBackColor = &HFFFFFF
     
@@ -363,12 +385,12 @@ Private Sub Form_Load()
     ProgressBar.Visible = True
     
     ' -----------------------------------------------
-    MSFGSettings.col = 0
+    MSFGSettings.Col = 0
     MSFGSettings.row = 5
     MSFGSettings.Text = "Статус"
     MSFGSettings.CellBackColor = &HFFFFFF
     
-    MSFGSettings.col = 1
+    MSFGSettings.Col = 1
     MSFGSettings.Text = ""
     MSFGSettings.CellBackColor = &HFFFFFF
     
@@ -383,10 +405,8 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormDownload.Form_Load]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormDownload.Form_Load]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -402,19 +422,19 @@ Private Sub Form_Resize()
 
 End Sub
 
-Private Sub FrameSplitterUpDown_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub FrameSplitterUpDown_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     SplitterMoving = True
-    BegX = x
-    BegY = y
+    BegX = X
+    BegY = Y
     
 End Sub
 
-Private Sub FrameSplitterUpDown_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub FrameSplitterUpDown_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If SplitterMoving Then
     
-        FrameDescription.Height = FrameDescription.Height - y + BegY
+        FrameDescription.Height = FrameDescription.Height - Y + BegY
         
         RefreshFrame
     
@@ -422,7 +442,7 @@ Private Sub FrameSplitterUpDown_MouseMove(Button As Integer, Shift As Integer, x
     
 End Sub
 
-Private Sub FrameSplitterUpDown_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub FrameSplitterUpDown_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     SplitterMoving = False
     

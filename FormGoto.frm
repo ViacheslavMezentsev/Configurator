@@ -73,7 +73,22 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cmdCancel_Click()
+    '<EhHeader>
+    On Error GoTo cmdCancel_Click_Err
+    '</EhHeader>
+    
     Unload Me
+    
+    '<EhFooter>
+    Exit Sub
+
+cmdCancel_Click_Err:
+    Logger.Info "[cop.FormGoto.cmdCancel_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub cmdOK_Click()
@@ -90,9 +105,11 @@ Private Sub cmdOK_Click()
     Exit Sub
 
 cmdOK_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormGoto.cmdOK_Click]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormGoto.cmdOK_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -114,14 +131,16 @@ Private Sub Form_Load()
     Next
     
     ComboProgramNames.ListIndex = FormMain.ListPrograms.row - 1
-    ComboSteps.ListIndex = FormMain.StepsView.col - 1
+    ComboSteps.ListIndex = FormMain.StepsView.Col - 1
     
     '<EhFooter>
     Exit Sub
 
 Form_Load_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormGoto.Form_Load]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormGoto.Form_Load]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub

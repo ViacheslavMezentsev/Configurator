@@ -1,4 +1,4 @@
-Attribute VB_Name = "MHookXP"
+Attribute VB_Name = "ModuleHookXP"
 ' *************************************************************************
 '  Copyright ©2009 Karl E. Peterson
 '  All Rights Reserved, http://vb.mvps.org/

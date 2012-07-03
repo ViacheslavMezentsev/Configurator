@@ -1,8 +1,9 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
 Begin VB.Form FormMain 
    Caption         =   "Конфигуратор УП"
    ClientHeight    =   7128
@@ -13,6 +14,14 @@ Begin VB.Form FormMain
    LinkTopic       =   "Form1"
    ScaleHeight     =   7128
    ScaleWidth      =   8916
+   Begin MSWinsockLib.Winsock WinsockConnection 
+      Left            =   1560
+      Top             =   6240
+      _ExtentX        =   593
+      _ExtentY        =   593
+      _Version        =   393216
+      RemotePort      =   1980
+   End
    Begin MSComctlLib.ImageList ImageListTBbw 
       Left            =   960
       Top             =   6180
@@ -771,7 +780,7 @@ Begin VB.Form FormMain
          EndProperty
          ForeColor       =   &H00FFFFFF&
          Height          =   192
-         Left            =   240
+         Left            =   360
          TabIndex        =   30
          Top             =   120
          Width           =   1020
@@ -1269,17 +1278,21 @@ Option Explicit
 '@rem Message handlers
 Private WithEvents m_ME As CHookMouseEvents
 Attribute m_ME.VB_VarHelpID = -1
+
 Private WithEvents m_MW As CHookMouseWheel
 Attribute m_MW.VB_VarHelpID = -1
+
 Private WithEvents Kachalka As clsKachalka
 Attribute Kachalka.VB_VarHelpID = -1
 
 '**
 '@rem Режим отображения средней панели
 Private ViewMode As Long
+
 '**
 '@rem Режимы отображения таблицы шагов
 Private StepsViewMode As Integer
+
 '**
 '@rem
 Private FileName As String
@@ -1287,15 +1300,19 @@ Private FileName As String
 '**
 '@rem
 Public ModuleIdle As CModuleIdle
+
 '**
 '@rem
 Public ModuleFill As CModuleFill
+
 '**
 '@rem
 Public ModuleDTRG As CModuleDTRG
+
 '**
 '@rem
 Public ModuleHeat As CModuleHeat
+
 '**
 '@rem
 Public ModuleWashOrRinsOrJolt As CModuleWashOrRinsOrJolt
@@ -1308,16 +1325,18 @@ Public ModuleWashOrRinsOrJolt As CModuleWashOrRinsOrJolt
 '**
 '@rem
 Public ModuleDrain As CModuleDrain
+
 '**
 '@rem
 Public ModuleSpin As CModuleSpin
+
 '**
 '@rem
 Public ModuleCool As CModuleCool
+
 '**
 '@rem
 Public ModuleTrin As CModuleTrin
-
 
 Dim SplitterRightMoving As Boolean
 Dim SplitterLeftMoving As Boolean
@@ -1329,128 +1348,186 @@ Dim LastUndoRedoForward As Boolean
 Dim LastUndoRedoItem As Long
 Dim UndoRedoVector As Vector
 
-
 ' *********************************************
 '  Custom Events: CHookMouseEvents
 ' *********************************************
 Private Sub m_ME_LostCapture(ByVal hWnd As Long, ByVal hWndCapture As Long)
-   Debug.Print "WM_CAPTURECHANGED -";
-   Debug.Print " hWnd: 0x"; Hex$(hWnd);
-   Debug.Print " (" & hWndToName(hWnd) & ")";
-   Debug.Print " hWndCapture: 0x"; Hex$(hWndCapture);
-   Debug.Print " (" & hWndToName(hWndCapture) & ")"
+
+'    Debug.Print "WM_CAPTURECHANGED -";
+'    Debug.Print " hWnd: 0x"; Hex$(hWnd);
+'    Debug.Print " (" & hWndToName(hWnd) & ")";
+'    Debug.Print " hWndCapture: 0x"; Hex$(hWndCapture);
+'    Debug.Print " (" & hWndToName(hWndCapture) & ")"
+
 End Sub
 
 Private Sub m_ME_MouseEnter(ByVal hWnd As Long)
-   Debug.Print "WM_MOUSEENTER -";
-   Debug.Print " hWnd: 0x"; Hex$(hWnd);
-   Debug.Print " (" & hWndToName(hWnd) & ")"
+
+'    Debug.Print "WM_MOUSEENTER -";
+'    Debug.Print " hWnd: 0x"; Hex$(hWnd);
+'    Debug.Print " (" & hWndToName(hWnd) & ")"
+
 End Sub
 
 Private Sub m_ME_MouseHover(ByVal hWnd As Long)
-   Debug.Print "WM_MOUSEHOVER -";
-   Debug.Print " hWnd: 0x"; Hex$(hWnd);
-   Debug.Print " (" & hWndToName(hWnd) & ")"
+
+'    Debug.Print "WM_MOUSEHOVER -";
+'    Debug.Print " hWnd: 0x"; Hex$(hWnd);
+'    Debug.Print " (" & hWndToName(hWnd) & ")"
+
 End Sub
 
 Private Sub m_ME_MouseLeave(ByVal hWnd As Long)
-   Debug.Print "WM_MOUSELEAVE -";
-   Debug.Print " hWnd: 0x"; Hex$(hWnd);
-   Debug.Print " (" & hWndToName(hWnd) & ")"
+
+'    Debug.Print "WM_MOUSELEAVE -";
+'    Debug.Print " hWnd: 0x"; Hex$(hWnd);
+'    Debug.Print " (" & hWndToName(hWnd) & ")"
+
 End Sub
 
-Private Sub m_ME_XButtonDblClick(ByVal hWnd As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long)
-   Debug.Print "WM_XBUTTONDBLCLK -";
-   Debug.Print " hWnd: 0x"; Hex$(hWnd);
-   Debug.Print " Button: "; CStr(Button);
-   Debug.Print " X: "; CStr(X);
-   Debug.Print " Y: "; CStr(Y)
+Private Sub m_ME_XButtonDblClick(ByVal hWnd As Long, _
+                                 ByVal Button As Long, _
+                                 ByVal X As Long, _
+                                 ByVal Y As Long)
+'
+'    Debug.Print "WM_XBUTTONDBLCLK -";
+'    Debug.Print " hWnd: 0x"; Hex$(hWnd);
+'    Debug.Print " Button: "; CStr(Button);
+'    Debug.Print " X: "; CStr(X);
+'    Debug.Print " Y: "; CStr(Y)
+
 End Sub
 
-Private Sub m_ME_XButtonDown(ByVal hWnd As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long)
-   Debug.Print "WM_XBUTTONDOWN -";
-   Debug.Print " hWnd: 0x"; Hex$(hWnd);
-   Debug.Print " Button: "; CStr(Button);
-   Debug.Print " X: "; CStr(X);
-   Debug.Print " Y: "; CStr(Y)
+Private Sub m_ME_XButtonDown(ByVal hWnd As Long, _
+                             ByVal Button As Long, _
+                             ByVal X As Long, _
+                             ByVal Y As Long)
+
+'    Debug.Print "WM_XBUTTONDOWN -";
+'    Debug.Print " hWnd: 0x"; Hex$(hWnd);
+'    Debug.Print " Button: "; CStr(Button);
+'    Debug.Print " X: "; CStr(X);
+'    Debug.Print " Y: "; CStr(Y)
+
 End Sub
 
-Private Sub m_ME_XButtonUp(ByVal hWnd As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long)
-   Debug.Print "WM_XBUTTONUP -";
-   Debug.Print " hWnd: 0x"; Hex$(hWnd);
-   Debug.Print " Button: "; CStr(Button);
-   Debug.Print " X: "; CStr(X);
-   Debug.Print " Y: "; CStr(Y)
+Private Sub m_ME_XButtonUp(ByVal hWnd As Long, _
+                           ByVal Button As Long, _
+                           ByVal X As Long, _
+                           ByVal Y As Long)
+
+'    Debug.Print "WM_XBUTTONUP -";
+'    Debug.Print " hWnd: 0x"; Hex$(hWnd);
+'    Debug.Print " Button: "; CStr(Button);
+'    Debug.Print " X: "; CStr(X);
+'    Debug.Print " Y: "; CStr(Y)
+
 End Sub
 
 ' *********************************************
 '  Custom Events: CHookMouseWheel
 ' *********************************************
-Private Sub m_MW_MouseWheel(ByVal hWnd As Long, ByVal Delta As Long, ByVal Shift As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long, Cancel As Boolean)
-   ' http://msdn.microsoft.com/en-us/library/ms997498.aspx#mshrdwre_topic1
-   Debug.Print "WM_MOUSEWHEEL -";
-   Debug.Print " hWnd: 0x"; Hex$(hWnd);
-   Debug.Print " (" & hWndToName(hWnd) & ")"
-   Debug.Print " Delta: "; CStr(Delta);
-   Debug.Print " Shift: "; CStr(Shift);
-   Debug.Print " Button: "; CStr(Button);
-   Debug.Print " X: "; CStr(X);
-   Debug.Print " Y: "; CStr(Y)
+Private Sub m_MW_MouseWheel(ByVal hWnd As Long, _
+                            ByVal Delta As Long, _
+                            ByVal Shift As Long, _
+                            ByVal Button As Long, _
+                            ByVal X As Long, _
+                            ByVal Y As Long, _
+                            Cancel As Boolean)
+
+    ' http://msdn.microsoft.com/en-us/library/ms997498.aspx#mshrdwre_topic1
+'    Debug.Print "WM_MOUSEWHEEL -";
+'    Debug.Print " hWnd: 0x"; Hex$(hWnd);
+'    Debug.Print " (" & hWndToName(hWnd) & ")"
+'    Debug.Print " Delta: "; CStr(Delta);
+'    Debug.Print " Shift: "; CStr(Shift);
+'    Debug.Print " Button: "; CStr(Button);
+'    Debug.Print " X: "; CStr(X);
+'    Debug.Print " Y: "; CStr(Y)
    
-   Call AutoScroll(hWnd, Delta, Shift)
+    Call AutoScroll(hWnd, Delta, Shift)
+
 End Sub
 
-Private Sub m_MW_MouseWheelH(ByVal hWnd As Long, ByVal Delta As Long, ByVal Shift As Long, ByVal Button As Long, ByVal X As Long, ByVal Y As Long, Cancel As Boolean)
-   'http://msdn.microsoft.com/en-us/library/ms997498.aspx#mshrdwre_topic2
-   Debug.Print "WM_MOUSEHWHEEL -";
-   Debug.Print " hWnd: 0x"; Hex$(hWnd);
-   Debug.Print " Delta: "; CStr(Delta);
-   Debug.Print " Shift: "; CStr(Shift);
-   Debug.Print " Button: "; CStr(Button);
-   Debug.Print " X: "; CStr(X);
-   Debug.Print " Y: "; CStr(Y)
+Private Sub m_MW_MouseWheelH(ByVal hWnd As Long, _
+                             ByVal Delta As Long, _
+                             ByVal Shift As Long, _
+                             ByVal Button As Long, _
+                             ByVal X As Long, _
+                             ByVal Y As Long, _
+                             Cancel As Boolean)
 
-   Call AutoScroll(hWnd, Delta, Shift)
+    'http://msdn.microsoft.com/en-us/library/ms997498.aspx#mshrdwre_topic2
+'    Debug.Print "WM_MOUSEHWHEEL -";
+'    Debug.Print " hWnd: 0x"; Hex$(hWnd);
+'    Debug.Print " Delta: "; CStr(Delta);
+'    Debug.Print " Shift: "; CStr(Shift);
+'    Debug.Print " Button: "; CStr(Button);
+'    Debug.Print " X: "; CStr(X);
+'    Debug.Print " Y: "; CStr(Y)
+
+    Call AutoScroll(hWnd, Delta, Shift)
+
 End Sub
 
 ' *********************************************
 '  Private Methods
 ' *********************************************
 Private Function hWndToObject(ByVal hWnd As Long) As Object
-   Dim frm As Form, ctl As Control
-   ' Loop all forms and controls in project, looking for a match.
-   ' This would presumably be in a shared module in real project.
-   For Each frm In Forms
-      If frm.hWnd = hWnd Then
-         Set hWndToObject = frm
-         Exit Function
-      Else
-         On Error Resume Next
+
+    Dim frm As Form, ctl As Control
+
+    ' Loop all forms and controls in project, looking for a match.
+    ' This would presumably be in a shared module in real project.
+    For Each frm In Forms
+
+        If frm.hWnd = hWnd Then
+
+            Set hWndToObject = frm
+            Exit Function
+        Else
+            On Error Resume Next
+
             For Each ctl In frm.Controls
-               If ctl.hWnd = hWnd Then
-                  Set hWndToObject = ctl
-                  Exit Function
-               End If
+
+                If ctl.hWnd = hWnd Then
+
+                    Set hWndToObject = ctl
+                    Exit Function
+
+                End If
+
             Next ctl
-         On Error GoTo 0
-      End If
-   Next frm
+
+            On Error GoTo 0
+
+        End If
+
+    Next frm
+
 End Function
 
 Private Function hWndToName(ByVal hWnd As Long) As String
-   Dim obj As Object
-   Set obj = hWndToObject(hWnd)
-   On Error Resume Next
-   hWndToName = obj.Name
+
+    Dim obj As Object
+
+    Set obj = hWndToObject(hWnd)
+    On Error Resume Next
+    hWndToName = obj.Name
+
 End Function
 
 Private Function hWndToType(ByVal hWnd As Long) As String
-   Dim obj As Object
-   Set obj = hWndToObject(hWnd)
-   hWndToType = TypeName(obj)
+
+    Dim obj As Object
+
+    Set obj = hWndToObject(hWnd)
+    hWndToType = TypeName(obj)
+
 End Function
 
 Private Sub AutoScroll(ByVal hWnd As Long, ByVal Delta As Long, ByVal Shift As Long)
+
     '<EhHeader>
     On Error GoTo AutoScroll_Err
     '</EhHeader>
@@ -1490,65 +1567,68 @@ Private Sub AutoScroll(ByVal hWnd As Long, ByVal Delta As Long, ByVal Shift As L
     Exit Sub
 
 AutoScroll_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.AutoScroll]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.AutoScroll]: " & GetErrorMessageById(Err.Number, _
+            Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-
 '**
 '@see
 '@rem Сохранение внешнего вида интерфейса.
 Private Sub SavePlacement()
+
     '<EhHeader>
     On Error GoTo SavePlacement_Err
     '</EhHeader>
 
-    ' Размеры формы
-    IniFile.WriteInteger "Placement", "Left", Left
-    IniFile.WriteInteger "Placement", "Top", Top
-    IniFile.WriteInteger "Placement", "Width", Width
-    IniFile.WriteInteger "Placement", "Height", Height
+    With Settings.IniFile
     
-    IniFile.WriteInteger "Placement", "WindowState", WindowState
+        ' Размеры формы
+        .WriteInteger "Placement", "Left", Left
+        .WriteInteger "Placement", "Top", Top
+        .WriteInteger "Placement", "Width", Width
+        .WriteInteger "Placement", "Height", Height
+        
+        .WriteInteger "Placement", "WindowState", WindowState
+        
+        ' Размеры и положение компонентов
+        .WriteInteger "Placement", "FrameLeft.Left", FrameLeft.Left
+        .WriteInteger "Placement", "FrameLeft.Top", FrameLeft.Top
+        .WriteInteger "Placement", "FrameLeft.Width", FrameLeft.Width
+        .WriteInteger "Placement", "FrameLeft.Height", FrameLeft.Height
+        
+        .WriteInteger "Placement", "SplitterLeft.Left", SplitterLeft.Left
+        .WriteInteger "Placement", "SplitterLeft.Height", SplitterLeft.Height
+        
+        .WriteInteger "Placement", "FrameMain.Left", FrameMain.Left
+        .WriteInteger "Placement", "FrameMain.Top", FrameMain.Top
+        .WriteInteger "Placement", "FrameMain.Width", FrameMain.Width
+        .WriteInteger "Placement", "FrameMain.Height", FrameMain.Height
+        
+        .WriteInteger "Placement", "SplitterRight.Left", SplitterRight.Left
+        .WriteInteger "Placement", "SplitterRight.Height", SplitterRight.Height
+        
+        .WriteInteger "Placement", "FrameRight.Left", FrameRight.Left
+        .WriteInteger "Placement", "FrameRight.Top", FrameRight.Top
+        .WriteInteger "Placement", "FrameRight.Width", FrameRight.Width
+        .WriteInteger "Placement", "FrameRight.Height", FrameRight.Height
+        
+        ' Прочие настройки
+        .WriteString "Settings", "CurrentDir", CurrentDir
     
-    ' Размеры и положение компонентов
-    IniFile.WriteInteger "Placement", "FrameLeft.Left", FrameLeft.Left
-    IniFile.WriteInteger "Placement", "FrameLeft.Top", FrameLeft.Top
-    IniFile.WriteInteger "Placement", "FrameLeft.Width", FrameLeft.Width
-    IniFile.WriteInteger "Placement", "FrameLeft.Height", FrameLeft.Height
-    
-    IniFile.WriteInteger "Placement", "SplitterLeft.Left", SplitterLeft.Left
-    IniFile.WriteInteger "Placement", "SplitterLeft.Height", SplitterLeft.Height
-    
-    IniFile.WriteInteger "Placement", "FrameMain.Left", FrameMain.Left
-    IniFile.WriteInteger "Placement", "FrameMain.Top", FrameMain.Top
-    IniFile.WriteInteger "Placement", "FrameMain.Width", FrameMain.Width
-    IniFile.WriteInteger "Placement", "FrameMain.Height", FrameMain.Height
-    
-    IniFile.WriteInteger "Placement", "SplitterRight.Left", SplitterRight.Left
-    IniFile.WriteInteger "Placement", "SplitterRight.Height", SplitterRight.Height
-    
-    IniFile.WriteInteger "Placement", "FrameRight.Left", FrameRight.Left
-    IniFile.WriteInteger "Placement", "FrameRight.Top", FrameRight.Top
-    IniFile.WriteInteger "Placement", "FrameRight.Width", FrameRight.Width
-    IniFile.WriteInteger "Placement", "FrameRight.Height", FrameRight.Height
-    
-    ' Прочие настройки
-    IniFile.WriteString "Settings", "CurrentDir", CurrentDir
+    End With
 
     '<EhFooter>
     Exit Sub
 
 SavePlacement_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SavePlacement]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.SavePlacement]: " & GetErrorMessageById(Err.Number, _
+            Err.Description)
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -1556,61 +1636,69 @@ End Sub
 '@see
 '@rem Загружаем настройки внешнего вида интерфейса.
 Private Sub LoadPlacement()
+
     '<EhHeader>
     On Error GoTo LoadPlacement_Err
     '</EhHeader>
     
-    ' Размеры формы
-    Left = IniFile.ReadInteger("Placement", "Left", 324)
-    Top = IniFile.ReadInteger("Placement", "Top", 324)
-    Width = IniFile.ReadInteger("Placement", "Width", 9072)
-    Height = IniFile.ReadInteger("Placement", "Height", 7092)
+    With Settings.IniFile
     
-    WindowState = IniFile.ReadInteger("Placement", "WindowState", vbNormal)
+        ' Размеры формы
+        Left = .ReadInteger("Placement", "Left", 324)
+        Top = .ReadInteger("Placement", "Top", 324)
+        Width = .ReadInteger("Placement", "Width", 9072)
+        Height = .ReadInteger("Placement", "Height", 7092)
+        
+        WindowState = .ReadInteger("Placement", "WindowState", vbNormal)
+        
+        ' Размеры и положение компонентов
+        FrameLeft.Left = .ReadInteger("Placement", "FrameLeft.Left", 0)
+        FrameLeft.Top = .ReadInteger("Placement", "FrameLeft.Top", 360)
+        FrameLeft.Width = .ReadInteger("Placement", "FrameLeft.Width", 2172)
     
-    ' Размеры и положение компонентов
-    FrameLeft.Left = IniFile.ReadInteger("Placement", "FrameLeft.Left", 0)
-    FrameLeft.Top = IniFile.ReadInteger("Placement", "FrameLeft.Top", 360)
-    FrameLeft.Width = IniFile.ReadInteger("Placement", "FrameLeft.Width", 2172)
-
-    If FrameLeft.Width < 500 Then FrameLeft.Width = 500
-    FrameLeft.Height = IniFile.ReadInteger("Placement", "FrameLeft.Height", 5052)
+        If FrameLeft.Width < 500 Then FrameLeft.Width = 500
     
-    SplitterLeft.Left = IniFile.ReadInteger("Placement", "SplitterLeft.Left", 2400)
-    SplitterLeft.Height = IniFile.ReadInteger("Placement", "SplitterLeft.Height", 5052)
+        FrameLeft.Height = .ReadInteger("Placement", "FrameLeft.Height", 5052)
     
-    FrameMain.Left = IniFile.ReadInteger("Placement", "FrameMain.Left", 2640)
-    FrameMain.Top = IniFile.ReadInteger("Placement", "FrameMain.Top", 360)
-    FrameMain.Width = IniFile.ReadInteger("Placement", "FrameMain.Width", 3612)
-    FrameMain.Height = IniFile.ReadInteger("Placement", "FrameMain.Height", 5052)
+        SplitterLeft.Left = .ReadInteger("Placement", "SplitterLeft.Left", 2400)
+        SplitterLeft.Height = .ReadInteger("Placement", "SplitterLeft.Height", 5052)
+        
+        FrameMain.Left = .ReadInteger("Placement", "FrameMain.Left", 2640)
+        FrameMain.Top = .ReadInteger("Placement", "FrameMain.Top", 360)
+        FrameMain.Width = .ReadInteger("Placement", "FrameMain.Width", 3612)
+        FrameMain.Height = .ReadInteger("Placement", "FrameMain.Height", 5052)
+        
+        SplitterRight.Left = .ReadInteger("Placement", "SplitterRight.Left", 6396)
+        SplitterRight.Height = .ReadInteger("Placement", "SplitterRight.Height", 5052)
+        
+        FrameRight.Left = .ReadInteger("Placement", "FrameRight.Left", 6600)
+        FrameRight.Top = .ReadInteger("Placement", "FrameRight.Top", 360)
+        FrameRight.Width = .ReadInteger("Placement", "FrameRight.Width", 2292)
     
-    SplitterRight.Left = IniFile.ReadInteger("Placement", "SplitterRight.Left", 6396)
-    SplitterRight.Height = IniFile.ReadInteger("Placement", "SplitterRight.Height", 5052)
+        If FrameRight.Width < 500 Then FrameRight.Width = 500
     
-    FrameRight.Left = IniFile.ReadInteger("Placement", "FrameRight.Left", 6600)
-    FrameRight.Top = IniFile.ReadInteger("Placement", "FrameRight.Top", 360)
-    FrameRight.Width = IniFile.ReadInteger("Placement", "FrameRight.Width", 2292)
-
-    If FrameRight.Width < 500 Then FrameRight.Width = 500
-    FrameRight.Height = IniFile.ReadInteger("Placement", "FrameRight.Height", 5052)
+        FrameRight.Height = .ReadInteger("Placement", "FrameRight.Height", 5052)
+        
+        ' Прочие настройки
+        Dim Path As String
+        Dim Result As Integer
+        
+        Path = String$(255, 0)
+        Result = GetModuleFileName(0, Path, 254)
+        Path = MiscExtractPathName(Path, True)
+        
+        CurrentDir = .ReadString("Settings", "CurrentDir", Path)
     
-    ' Прочие настройки
-    Dim Path As String
-    Dim Result As Integer
-    
-    Path = String$(255, 0)
-    Result = GetModuleFileName(0, Path, 254)
-    Path = MiscExtractPathName(Path, True)
-    
-    CurrentDir = IniFile.ReadString("Settings", "CurrentDir", Path)
-    
+    End With
+      
     '<EhFooter>
     Exit Sub
 
 LoadPlacement_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.LoadPlacement]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.LoadPlacement]: " & GetErrorMessageById(Err.Number, _
+            Err.Description)
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -1618,6 +1706,7 @@ Private Sub AddUndoRedoItem(Value As String)
     '<EhHeader>
     On Error GoTo AddUndoRedoItem_Err
     '</EhHeader>
+
 
     ' Remove any undone commands.
     Do While UndoRedoVector.Size > LastUndoRedoItem
@@ -1635,10 +1724,8 @@ Private Sub AddUndoRedoItem(Value As String)
     Exit Sub
 
 AddUndoRedoItem_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.AddUndoRedoItem]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.AddUndoRedoItem]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1649,6 +1736,7 @@ Private Sub Undo()
     '<EhHeader>
     On Error GoTo Undo_Err
     '</EhHeader>
+
 
     If LastUndoRedoItem < 1 Then Exit Sub
      
@@ -1677,10 +1765,8 @@ Private Sub Undo()
     Exit Sub
 
 Undo_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.Undo]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.Undo]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1691,6 +1777,7 @@ Private Sub Redo()
     '<EhHeader>
     On Error GoTo Redo_Err
     '</EhHeader>
+
 
     If LastUndoRedoItem >= UndoRedoVector.Size Then Exit Sub
     
@@ -1727,10 +1814,8 @@ Private Sub Redo()
     Exit Sub
 
 Redo_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.Redo]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.Redo]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -1742,6 +1827,7 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     On Error GoTo RefreshComponents_Err
     '</EhHeader>
 
+
     If Me.WindowState = vbMinimized Then Exit Sub
     
     ' Обновление данных в компонентах
@@ -1751,7 +1837,8 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     Dim ActiveObject As Object
         
     FrameLeft.Top = Me.ScaleTop + Toolbar.Top + Toolbar.Height + 120
-    FrameLeft.Height = Me.ScaleHeight - (StatusBar.Height + Toolbar.Top + Toolbar.Height + 120)
+    FrameLeft.Height = Me.ScaleHeight - (StatusBar.Height + Toolbar.Top + _
+            Toolbar.Height + 120)
         
     SplitterLeft.Width = Settings.SplittersThickness
     SplitterLeft.Left = FrameLeft.Left + FrameLeft.Width
@@ -1761,7 +1848,8 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     FrameMain.Left = SplitterLeft.Left + SplitterLeft.Width
     FrameMain.Top = FrameLeft.Top
     FrameMain.Height = FrameLeft.Height
-    FrameMain.Width = Me.ScaleWidth - FrameMain.Left - FrameRight.Width - SplitterRight.Width
+    FrameMain.Width = Me.ScaleWidth - FrameMain.Left - FrameRight.Width - _
+            SplitterRight.Width
     
     SplitterRight.Width = Settings.SplittersThickness
     SplitterRight.Left = FrameMain.Left + FrameMain.Width
@@ -1785,9 +1873,11 @@ Public Sub RefreshComponents(ByVal FramesOnly As Boolean)
     Exit Sub
 
 RefreshComponents_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshComponents]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshComponents]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -1795,6 +1885,7 @@ Private Sub RefreshFrameLeft()
     '<EhHeader>
     On Error GoTo RefreshFrameLeft_Err
     '</EhHeader>
+
     
     ShapeListPrograms.Top = 0
     ShapeListPrograms.Left = 0
@@ -1818,7 +1909,7 @@ Private Sub RefreshFrameLeft()
         
         ListPrograms.Visible = False
         
-        ShapeLabelListPrograms.BackColor = &HF4C0C0
+        ShapeLabelListPrograms.BackColor = COLOR_MIDLLE_VIOLET
         
         Exit Sub
             
@@ -1851,9 +1942,11 @@ Private Sub RefreshFrameLeft()
     Exit Sub
 
 RefreshFrameLeft_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshFrameLeft]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshFrameLeft]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -1861,6 +1954,7 @@ Private Sub RefreshFrameMain()
     '<EhHeader>
     On Error GoTo RefreshFrameMain_Err
     '</EhHeader>
+
 
     ShapeFrameMain.Top = 0
     ShapeFrameMain.Left = 0
@@ -1892,7 +1986,7 @@ Private Sub RefreshFrameMain()
         
         VScrollPicsView.Visible = False
         
-        ShapeFrameMainCaption.BackColor = &HF4C0C0
+        ShapeFrameMainCaption.BackColor = COLOR_MIDLLE_VIOLET
         
         Exit Sub
             
@@ -1906,7 +2000,8 @@ Private Sub RefreshFrameMain()
             FramePicsView.Visible = False
             VScrollPicsView.Visible = False
             
-            FrameGridView.Top = ShapeFrameMainCaption.Top + ShapeFrameMainCaption.Height + 120
+            FrameGridView.Top = ShapeFrameMainCaption.Top + _
+                    ShapeFrameMainCaption.Height + 120
             FrameGridView.Left = 120
             FrameGridView.Width = FrameMain.Width - FrameGridView.Left - 120
             FrameGridView.Height = FrameMain.Height - FrameGridView.Top - 120
@@ -1919,7 +2014,8 @@ Private Sub RefreshFrameMain()
             
             ScrollHeight = Screen.TwipsPerPixelY * GetSystemMetrics(SM_CYHSCROLL)
             
-            If FrameGridView.Height < (StepsView.rows * StepsView.RowHeight(1) + ScrollHeight) Then
+            If FrameGridView.Height < (StepsView.rows * StepsView.RowHeight(1) + _
+                    ScrollHeight) Then
             
                 StepsView.Height = FrameGridView.Height
             
@@ -1931,10 +2027,11 @@ Private Sub RefreshFrameMain()
 
             If Manager.FileLoaded Then
             
-                Manager.StepIndex = (CInt(ListProgramsRowData(ListPrograms.RowSel)) And &HFF00) / &H100
+                Manager.StepIndex = (CInt(ListProgramsRowData(ListPrograms.RowSel)) And _
+                        &HFF00) / &H100
             
-                LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
-                   ".Шаг" & Manager.StepIndex + 1 & "]"
+                LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & ".Шаг" & _
+                        Manager.StepIndex + 1 & "]"
                                
             Else
             
@@ -1955,14 +2052,17 @@ Private Sub RefreshFrameMain()
             FrameGridView.Visible = False
             FrameCodeView.Visible = False
             
-            Manager.StepIndex = (CInt(ListProgramsRowData(ListPrograms.RowSel)) And &HFF00) / &H100
+            Manager.StepIndex = (CInt(ListProgramsRowData(ListPrograms.RowSel)) And _
+                    &HFF00) / &H100
             
-                LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & _
-                   ".Шаг" & Manager.StepIndex + 1 & "]"
+            LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & ".Шаг" & _
+                    Manager.StepIndex + 1 & "]"
             
-            FramePicsView.Top = ShapeFrameMainCaption.Top + ShapeFrameMainCaption.Height + 120
+            FramePicsView.Top = ShapeFrameMainCaption.Top + _
+                    ShapeFrameMainCaption.Height + 120
             FramePicsView.Left = 120
-            FramePicsView.Width = FrameMain.Width - FramePicsView.Left - VScrollPicsView.Width - 120
+            FramePicsView.Width = FrameMain.Width - FramePicsView.Left - _
+                    VScrollPicsView.Width - 120
             FramePicsView.Height = FrameMain.Height - FramePicsView.Top - 120
             
             VScrollPicsView.Top = FramePicsView.Top
@@ -1982,7 +2082,8 @@ Private Sub RefreshFrameMain()
             FramePicsView.Visible = False
             VScrollPicsView.Visible = False
             
-            FrameCodeView.Top = ShapeFrameMainCaption.Top + ShapeFrameMainCaption.Height + 120
+            FrameCodeView.Top = ShapeFrameMainCaption.Top + _
+                    ShapeFrameMainCaption.Height + 120
             FrameCodeView.Left = 120
             FrameCodeView.Width = FrameMain.Width - FrameCodeView.Left - 120
             FrameCodeView.Height = FrameMain.Height - FrameCodeView.Top - 120
@@ -2014,9 +2115,11 @@ Private Sub RefreshFrameMain()
     Exit Sub
 
 RefreshFrameMain_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshFrameMain]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshFrameMain]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2024,6 +2127,7 @@ Private Sub RefreshFrameRight()
     '<EhHeader>
     On Error GoTo RefreshFrameRight_Err
     '</EhHeader>
+
     
     ShapeFrameRight.Top = 0
     ShapeFrameRight.Left = 0
@@ -2047,7 +2151,7 @@ Private Sub RefreshFrameRight()
         ShapeDescription.Visible = False
         LabelDescription.Visible = False
         
-        ShapeFrameRightCaption.BackColor = &HF4C0C0
+        ShapeFrameRightCaption.BackColor = COLOR_MIDLLE_VIOLET
         
         Exit Sub
             
@@ -2060,7 +2164,8 @@ Private Sub RefreshFrameRight()
     
     If LabelDescription.Visible Then
     
-        PropertyTable.Height = FrameRight.Height - PropertyTable.Top - LabelDescription.Height - 120
+        PropertyTable.Height = FrameRight.Height - PropertyTable.Top - _
+                LabelDescription.Height - 120
         LabelDescription.Top = PropertyTable.Top + PropertyTable.Height
         LabelDescription.Width = PropertyTable.Width
         ShapeDescription.Top = LabelDescription.Top
@@ -2082,7 +2187,8 @@ Private Sub RefreshFrameRight()
 
         If PropertyTable.Width > (PropertyTable.ColWidth(0) + ScrollWidth) Then
             
-            PropertyTable.ColWidth(1) = PropertyTable.Width - PropertyTable.ColWidth(0) - ScrollWidth
+            PropertyTable.ColWidth(1) = PropertyTable.Width - PropertyTable.ColWidth(0) _
+                    - ScrollWidth
         
         End If
     
@@ -2105,9 +2211,11 @@ Private Sub RefreshFrameRight()
     Exit Sub
 
 RefreshFrameRight_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshFrameRight]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshFrameRight]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2115,6 +2223,7 @@ Private Sub RefreshForm()
     '<EhHeader>
     On Error GoTo RefreshForm_Err
     '</EhHeader>
+
     
     SetCaption Manager.FileName
     
@@ -2136,9 +2245,11 @@ Private Sub RefreshForm()
     Exit Sub
 
 RefreshForm_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshForm]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshForm]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2146,6 +2257,7 @@ Private Sub RefreshMainMenu()
     '<EhHeader>
     On Error GoTo RefreshMainMenu_Err
     '</EhHeader>
+
     
     MainMenuItemEdit.Visible = Manager.FileLoaded
     
@@ -2166,7 +2278,8 @@ Private Sub RefreshMainMenu()
         Case ListPrograms:
             
             MenuItemUndo.Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-            MenuItemRedo.Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            MenuItemRedo.Enabled = Manager.FileLoaded And LastUndoRedoItem < _
+                    UndoRedoVector.Size()
             
             MenuItemCut.Enabled = True
             MenuItemCopy.Enabled = True
@@ -2180,7 +2293,8 @@ Private Sub RefreshMainMenu()
         Case StepsView:
             
             MenuItemUndo.Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-            MenuItemRedo.Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            MenuItemRedo.Enabled = Manager.FileLoaded And LastUndoRedoItem < _
+                    UndoRedoVector.Size()
             
             MenuItemCut.Enabled = True
             MenuItemCopy.Enabled = True
@@ -2197,16 +2311,19 @@ Private Sub RefreshMainMenu()
     Exit Sub
 
 RefreshMainMenu_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshMainMenu]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshMainMenu]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
 Private Sub RefreshFrameLog()
     '<EhHeader>
-    On Error GoTo RefrefhFrameLog_Err
+    On Error GoTo RefreshFrameLog_Err
     '</EhHeader>
+
 
     FrameLog.Height = StatusBar.Top - FrameLog.Top
     FrameLog.Left = FormMain.ScaleLeft
@@ -2224,11 +2341,9 @@ Private Sub RefreshFrameLog()
     '<EhFooter>
     Exit Sub
 
-RefrefhFrameLog_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.RefrefhFrameLog]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+RefreshFrameLog_Err:
+    Logger.Info "[cop.FormMain.RefreshFrameLog]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -2239,6 +2354,7 @@ Private Sub RefreshToolbar()
     '<EhHeader>
     On Error GoTo RefreshToolbar_Err
     '</EhHeader>
+
 
     Toolbar.Buttons(3).Enabled = Modified
 
@@ -2257,7 +2373,8 @@ Private Sub RefreshToolbar()
         Case ListPrograms:
         
             Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < _
+                    UndoRedoVector.Size()
         
             Toolbar.Buttons(10).Enabled = Manager.FileLoaded
             Toolbar.Buttons(11).Enabled = Manager.FileLoaded
@@ -2267,7 +2384,8 @@ Private Sub RefreshToolbar()
         Case StepsView:
             
             Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < _
+                    UndoRedoVector.Size()
             
             Toolbar.Buttons(10).Enabled = Manager.FileLoaded
             Toolbar.Buttons(11).Enabled = Manager.FileLoaded
@@ -2277,17 +2395,20 @@ Private Sub RefreshToolbar()
         Case CodeView:
         
             Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < _
+                    UndoRedoVector.Size()
         
         Case StepGrid:
         
             Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < _
+                    UndoRedoVector.Size()
                 
         Case PropertyTable:
     
             Toolbar.Buttons(7).Enabled = Manager.FileLoaded And LastUndoRedoItem > 0
-            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < UndoRedoVector.Size()
+            Toolbar.Buttons(8).Enabled = Manager.FileLoaded And LastUndoRedoItem < _
+                    UndoRedoVector.Size()
     
     End Select
     
@@ -2295,10 +2416,8 @@ Private Sub RefreshToolbar()
     Exit Sub
 
 RefreshToolbar_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.RefreshToolbar]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshToolbar]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -2310,19 +2429,24 @@ Private Sub RefreshStatusBar()
     On Error GoTo RefreshStatusBar_Err
     '</EhHeader>
 
+
     If Modified Then
+
         StatusBar.Panels(2).Text = "Изменён"
     Else
         StatusBar.Panels(2).Text = ""
+
     End If
     
     '<EhFooter>
     Exit Sub
 
 RefreshStatusBar_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshStatusBar]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshStatusBar]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2330,6 +2454,7 @@ Private Sub AboutMainMenuItem_Click()
     '<EhHeader>
     On Error GoTo AboutMainMenuItem_Click_Err
     '</EhHeader>
+
     
     FormAbout.Show (vbModal)
     
@@ -2337,9 +2462,11 @@ Private Sub AboutMainMenuItem_Click()
     Exit Sub
 
 AboutMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.AboutMainMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.AboutMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2348,6 +2475,7 @@ Private Sub ClearHistoryMenuItem_Click()
     On Error GoTo ClearHistoryMenuItem_Click_Err
     '</EhHeader>
 
+
     MRUFileList.ClearHistory
     DisplayMRU
     
@@ -2355,9 +2483,11 @@ Private Sub ClearHistoryMenuItem_Click()
     Exit Sub
 
 ClearHistoryMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ClearHistoryMenuItem_Click]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ClearHistoryMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2366,13 +2496,14 @@ Private Sub CloseMainMenuItem_Click()
     On Error GoTo CloseMainMenuItem_Click_Err
     '</EhHeader>
 
+
     If Modified = True Then
     
         Dim vbRes As Integer
         
-        vbRes = MsgBox("Сохранить изменения в файле:" & _
-           VBA.Constants.vbCrLf & VBA.Constants.vbCrLf & """" & Manager.FileName & """?", _
-           vbYesNoCancel + vbQuestion, APP_NAME)
+        vbRes = MsgBox("Сохранить изменения в файле:" & VBA.Constants.vbCrLf & _
+                VBA.Constants.vbCrLf & """" & Manager.FileName & """?", vbYesNoCancel + _
+                vbQuestion, APP_NAME)
         
         Select Case vbRes
         
@@ -2422,9 +2553,11 @@ Private Sub CloseMainMenuItem_Click()
     Exit Sub
 
 CloseMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.CloseMainMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.CloseMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2432,6 +2565,7 @@ Private Sub CodeView_Click()
     '<EhHeader>
     On Error GoTo CodeView_Click_Err
     '</EhHeader>
+
     
     Dim X As Integer, Y As Integer
     Dim Col As Integer, row As Integer
@@ -2442,6 +2576,7 @@ Private Sub CodeView_Click()
     Y = CodeView.row
 
     For Col = 1 To CodeView.Cols - 2
+
         CodeView.Col = Col
         CodeView.row = 0
         CodeView.CellFontBold = False
@@ -2450,6 +2585,7 @@ Private Sub CodeView_Click()
     row = CodeView.TopRow
     
     Do While CodeView.RowIsVisible(row)
+
         CodeView.Col = 0
         CodeView.row = row
     
@@ -2457,6 +2593,7 @@ Private Sub CodeView_Click()
         row = row + 1
 
         If row > CodeView.rows - 1 Then Exit Do
+
     Loop
     
     CodeView.row = 0
@@ -2480,9 +2617,11 @@ Private Sub CodeView_Click()
     Exit Sub
 
 CodeView_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.CodeView_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.CodeView_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2490,6 +2629,7 @@ Private Sub CodeView_DblClick()
     '<EhHeader>
     On Error GoTo CodeView_DblClick_Err
     '</EhHeader>
+
     
     CodeView_KeyDown VBRUN.KeyCodeConstants.vbKeyReturn, 0
     
@@ -2497,9 +2637,11 @@ Private Sub CodeView_DblClick()
     Exit Sub
 
 CodeView_DblClick_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.CodeView_DblClick]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.CodeView_DblClick]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2507,6 +2649,7 @@ Private Sub CodeView_GotFocus()
     '<EhHeader>
     On Error GoTo CodeView_GotFocus_Err
     '</EhHeader>
+
 
     ShapeFrameMainCaption.BackColor = &HFF8080
     
@@ -2517,10 +2660,8 @@ Private Sub CodeView_GotFocus()
     Exit Sub
 
 CodeView_GotFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.CodeView_GotFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.CodeView_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -2532,30 +2673,32 @@ Private Sub CodeView_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo CodeView_KeyDown_Err
     '</EhHeader>
 
+
     ' При нажатии Enter в ячейке даём возможность редактировать её содержимое
     'If Not (KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn) Then Exit Sub
     
     ' Фильтруем не нужные клавиши
     Select Case KeyCode
-        Case Asc("a"), Asc("b"), Asc("c"), Asc("d"), Asc("e"), Asc("f"):
-        Case Asc("A"), Asc("B"), Asc("C"), Asc("D"), Asc("E"), Asc("F"):
-        Case Asc("0"), Asc("1"), Asc("2"), Asc("3"), Asc("4"), _
-           Asc("5"), Asc("6"), Asc("7"), Asc("8"), Asc("9"):
 
-        Case VBRUN.KeyCodeConstants.vbKeyReturn, _
-           VBRUN.KeyCodeConstants.vbKeyDelete, _
-           VBRUN.KeyCodeConstants.vbKeyBack, _
-           VBRUN.KeyCodeConstants.vbKeySpace, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad0, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad1, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad2, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad3, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad4, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad5, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad6, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad7, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad8, _
-           VBRUN.KeyCodeConstants.vbKeyNumpad9:
+        Case Asc("a"), Asc("b"), Asc("c"), Asc("d"), Asc("e"), Asc("f"):
+
+        Case Asc("A"), Asc("B"), Asc("C"), Asc("D"), Asc("E"), Asc("F"):
+
+        Case Asc("0"), Asc("1"), Asc("2"), Asc("3"), Asc("4"), Asc("5"), Asc("6"), Asc( _
+                "7"), Asc("8"), Asc("9"):
+
+        Case VBRUN.KeyCodeConstants.vbKeyReturn, VBRUN.KeyCodeConstants.vbKeyDelete, _
+                VBRUN.KeyCodeConstants.vbKeyBack, VBRUN.KeyCodeConstants.vbKeySpace, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad0, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad1, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad2, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad3, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad4, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad5, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad6, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad7, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad8, _
+                VBRUN.KeyCodeConstants.vbKeyNumpad9:
         
         Case Else: Exit Sub
             
@@ -2585,9 +2728,11 @@ Private Sub CodeView_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 CodeView_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.CodeView_KeyDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.CodeView_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2596,7 +2741,8 @@ Private Sub CodeView_LostFocus()
     On Error GoTo CodeView_LostFocus_Err
     '</EhHeader>
 
-    ShapeFrameMainCaption.BackColor = &HF4C0C0
+
+    ShapeFrameMainCaption.BackColor = COLOR_MIDLLE_VIOLET
     
     RefreshMainMenu
     RefreshToolbar
@@ -2605,10 +2751,8 @@ Private Sub CodeView_LostFocus()
     Exit Sub
 
 CodeView_LostFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.CodeView_LostFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.CodeView_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -2619,6 +2763,7 @@ Private Sub CodeView_Scroll()
     '<EhHeader>
     On Error GoTo CodeView_Scroll_Err
     '</EhHeader>
+
     
     RefreshCodeView
     
@@ -2626,9 +2771,11 @@ Private Sub CodeView_Scroll()
     Exit Sub
 
 CodeView_Scroll_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.CodeView_Scroll]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.CodeView_Scroll]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2637,16 +2784,15 @@ Private Sub ComboCell_GotFocus()
     On Error GoTo ComboCell_GotFocus_Err
     '</EhHeader>
 
+
     ShapeFrameRightCaption.BackColor = &HFF8080
 
     '<EhFooter>
     Exit Sub
 
 ComboCell_GotFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.ComboCell_GotFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ComboCell_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -2657,6 +2803,7 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo ComboCell_KeyDown_Err
     '</EhHeader>
+
 
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
     
@@ -2686,37 +2833,47 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
             Select Case FuncN
             
                 Case WPC_OPERATION_IDLE ' пропуск
+
                     ModuleIdle.SetComboPropertyForIdle Me
             
                 Case WPC_OPERATION_FILL ' Налив
+
                     ModuleFill.SetComboPropertyForFill Me
                 
                 Case WPC_OPERATION_DTRG ' моющие
+
                     ModuleDTRG.SetComboPropertyForDTRG Me
                 
                 Case WPC_OPERATION_HEAT ' нагрев
+
                     ModuleHeat.SetComboPropertyForHeat Me
                     
                     ' стирка, полоскание, расстряска
-                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, _
+                        WPC_OPERATION_PAUS
+
                     ModuleWashOrRinsOrJolt.SetComboPropertyForWashOrRinsOrJolt Me
                     
-'<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:18:47
-'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
-'                Case WPC_OPERATION_PAUS ' пауза
-'                    ModulePause.SetComboPropertyForPause Me
-'</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:18:47>
+                    '<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:18:47
+                    'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
+                    '                Case WPC_OPERATION_PAUS ' пауза
+                    '                    ModulePause.SetComboPropertyForPause Me
+                    '</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:18:47>
     
                 Case WPC_OPERATION_DRAIN ' слив
+
                     ModuleDrain.SetComboPropertyForDrain Me
                     
                 Case WPC_OPERATION_SPIN ' отжим
+
                     ModuleSpin.SetComboPropertyForSpin Me
                 
                 Case WPC_OPERATION_COOL ' охлаждение
+
                     ModuleCool.SetComboPropertyForCool Me
                     
                 Case WPC_OPERATION_TRIN ' тех.полоскание
+
                     ModuleTrin.SetComboPropertyForTrin Me
             
                 Case Else
@@ -2757,9 +2914,11 @@ Private Sub ComboCell_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 ComboCell_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ComboCell_KeyDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ComboCell_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2767,12 +2926,13 @@ Private Sub ComboCell_LostFocus()
     '<EhHeader>
     On Error GoTo ComboCell_LostFocus_Err
     '</EhHeader>
+
     
     ComboCell.Visible = False
     LabelDescription.Visible = False
     ShapeDescription.Visible = False
     
-    ShapeFrameRightCaption.BackColor = &HF4C0C0
+    ShapeFrameRightCaption.BackColor = COLOR_MIDLLE_VIOLET
     
     RefreshFrameRight
     
@@ -2780,16 +2940,22 @@ Private Sub ComboCell_LostFocus()
     Exit Sub
 
 ComboCell_LostFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ComboCell_LostFocus]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ComboCell_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
-Private Sub FramePicsView_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub FramePicsView_MouseDown(Button As Integer, _
+                                    Shift As Integer, _
+                                    X As Single, _
+                                    Y As Single)
     '<EhHeader>
     On Error GoTo FramePicsView_MouseDown_Err
     '</EhHeader>
+
 
     'проверка, нажата ли правая клавиша мыши
     If Button And vbRightButton Then PopupMenu MainMenuItemEdit
@@ -2798,10 +2964,8 @@ Private Sub FramePicsView_MouseDown(Button As Integer, Shift As Integer, X As Si
     Exit Sub
 
 FramePicsView_MouseDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.FramePicsView_MouseDown]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.FramePicsView_MouseDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -2813,6 +2977,7 @@ Private Sub MenuItemCopy_Click()
     On Error GoTo MenuItemCopy_Click_Err
     '</EhHeader>
 
+
     If ActiveControl Is Nothing Then Exit Sub
 
     MenuItemCopy.Enabled = False
@@ -2823,11 +2988,9 @@ Private Sub MenuItemCopy_Click()
         
             Clipboard.SetText Manager.ProgsSelectionToString(SelProgsCount)
             
-            
         Case StepsView:
     
             Clipboard.SetText Manager.StepsSelectionToString(SelStepsCount)
-            
             
         Case CodeView:
         
@@ -2843,10 +3006,8 @@ Private Sub MenuItemCopy_Click()
     Exit Sub
 
 MenuItemCopy_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemCopy_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemCopy_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -2857,6 +3018,7 @@ Private Sub MenuItemCut_Click()
     '<EhHeader>
     On Error GoTo MenuItemCut_Click_Err
     '</EhHeader>
+
         
     If ActiveControl Is Nothing Then Exit Sub
 
@@ -2883,7 +3045,6 @@ Private Sub MenuItemCut_Click()
             ShowProgsHorizontalSelector
             
             ListPrograms.SetFocus
-            
             
         Case StepsView:
     
@@ -2922,33 +3083,33 @@ Private Sub MenuItemCut_Click()
     Exit Sub
 
 MenuItemCut_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemCut_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemCut_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-
-
 Private Sub ExitMainMenuItem_Click()
     '<EhHeader>
     On Error GoTo ExitMainMenuItem_Click_Err
     '</EhHeader>
-    
+
     ' Выходим из программы
     Unload Me
+    
+    Logger.Info "Завершение работы программы..." & VBA.Constants.vbCrLf & VBA.Constants.vbCrLf
     
     '<EhFooter>
     Exit Sub
 
 ExitMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ExitMainMenuItem_Click]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ExitMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -2966,7 +3127,8 @@ Private Sub ExportMainMenuItem_Click()
         
     Else
     
-        SaveFileDialog.FileName = Left$(Manager.FileName, InStrRev(Manager.FileName, ".")) & "json"
+        SaveFileDialog.FileName = Left$(Manager.FileName, InStrRev(Manager.FileName, _
+                ".")) & "json"
         
     End If
     
@@ -2995,13 +3157,18 @@ Private Sub ExportMainMenuItem_Click()
     Exit Sub
 
 ExportMainMenuItem_Click_Err:
+
     If Err.Number = cdlCancel Then
+
     Else
-        App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ExportMainMenuItem_Click]: " _
-           & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    
+        Logger.Info "[cop.FormMain.ExportMainMenuItem_Click]: " & GetErrorMessageById( _
+                Err.Number, Err.Description)
+
     End If
     
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -3028,10 +3195,11 @@ Private Sub FileMainMenuItem_Click()
     Exit Sub
 
 FileMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.FileMainMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    
+    Logger.Info "[cop.FormMain.FileMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -3039,6 +3207,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo Form_KeyDown_Err
     '</EhHeader>
+
 
     Dim Col As Integer, row As Integer
     
@@ -3051,7 +3220,8 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
             Case STEPS_VIEW
                 
                 CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
-                   HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
+                        HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) _
+                        / 16 + 1
                 
                 ViewMode = CODE_VIEW
                 
@@ -3087,7 +3257,8 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
             Case STEPS_VIEW
                 
                 CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
-                   HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
+                        HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) _
+                        / 16 + 1
                 
                 ViewMode = PICS_VIEW
                 
@@ -3140,16 +3311,18 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
         StepsView.SetFocus
         
         Exit Sub
+
     End If
     
     '<EhFooter>
     Exit Sub
 
 Form_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.Form_KeyDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    
+    Logger.Info "[cop.FormMain.Form_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -3157,6 +3330,7 @@ Private Sub DisplayMRU()
     '<EhHeader>
     On Error GoTo DisplayMRU_Err
     '</EhHeader>
+
 
     Dim iFile As Long
     
@@ -3168,7 +3342,8 @@ Private Sub DisplayMRU()
         If (MRUFileList.FileExists(iFile)) Then
         
             MRUItems(iFile).Visible = True
-            MRUItems(iFile).Caption = MRUFileList.MenuCaption(iFile, Settings.FilesHistoryLimitPaths)
+            MRUItems(iFile).Caption = MRUFileList.MenuCaption(iFile, _
+                    Settings.FilesHistoryLimitPaths)
             MRUItems(iFile).Tag = CStr(iFile)
             
         Else
@@ -3187,23 +3362,28 @@ Private Sub DisplayMRU()
     Exit Sub
 
 DisplayMRU_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.DisplayMRU]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.DisplayMRU]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
 Private Sub Form_Load()
-
-    On Local Error GoTo Form_Load_Err
+    '<EhHeader>
+    On Error GoTo Form_Load_Err
+    '</EhHeader>
     
     Dim itm As ListItem
     Dim sitm As ListSubItem
     Dim IniFilePath As String
     Dim Result As Integer
 
-    Debug.Print "----------------------------------------------------------------------------"
-    Debug.Print Date & " " & Time & ": " & "Версия: " & App.Major & "." & App.Minor & "." & App.Revision
+    Debug.Print _
+            "----------------------------------------------------------------------------"
+    Debug.Print Date & " " & Time & ": " & "Версия: " & App.Major & "." & App.Minor & _
+            "." & App.Revision
     
     KeyPreview = True
     LogFrameResizing = False
@@ -3223,7 +3403,8 @@ Private Sub Form_Load()
     
         ' Код, выполняемый в runtime среды разработки
         DesignMode = True
-        Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Режим разработки."
+        Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & _
+                "Режим разработки."
         
     Else
     
@@ -3249,49 +3430,18 @@ Private Sub Form_Load()
     SplitterRightMoving = False
     SplitterLeftMoving = False
     
-    ' Формируем путь к файлу настроек
-    IniFilePath = String$(255, 0)
-    Result = GetModuleFileName(0, IniFilePath, 254)
-    CurrentDir = MiscExtractPathName(IniFilePath, True)
-    IniFilePath = StrConv(IniFilePath, vbLowerCase)
-    IniFilePath = Replace(IniFilePath, ".exe", ".ini")
-
-    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Текущий путь: " & CurrentDir
-    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл настроек: " & IniFilePath
-    
-    ' Создаём экземпляр объекта
-    Set IniFile = New CIniFiles
-    IniFile.Create (IniFilePath)
-    
-    ' Настройки программы
-    Set Settings = New CSettings
-    Settings.LoadSettings
-    
-    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл лога: " & Settings.LogFilePath
+    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Текущий путь: " _
+            & CurrentDir
+            
+    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & _
+            "Файл настроек: " & Settings.IniFilePath
+        
+    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл лога: " & _
+            Settings.LogFilePath
     
     ' При загрузке выставляем флаг необходимости обновления
     ' Он будет действовать до срабатывания таймера автообновления
     If Settings.AutoUpdateEnabled Then AutoUpdateState = AUS_NOT_UPDATED
-   
-    'TODO: Проверить корректность всех файловых путей
-    ' VBRUN.LogModeConstants.vbLogOverwrite не работает по невыясненной причине
-    If Settings.RewriteLogFile Then
-    
-        Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл лога удалён."
-        DeleteFile Settings.LogFilePath
-        
-    End If
-    
-    ' Проверяем доступ на запись для лог-файла
-    If VerifyFile(Settings.LogFilePath) = True Then
-        
-        App.StartLogging Settings.LogFilePath, VBRUN.LogModeConstants.vbLogToFile
-    
-    Else
-    
-        App.StartLogging Settings.LogFilePath, VBRUN.LogModeConstants.vbLogOff
-    
-    End If
     
     ' Версия программы
     Dim MAX_PATH As Long
@@ -3306,7 +3456,8 @@ Private Sub Form_Load()
 
     If GetFileVersionInformation(strFile, udtFileInfo) = eNoVersion Then
         
-        udtFileInfo.FileVersion = "Версия " & App.Major & "." & App.Minor & "." & App.Revision
+        udtFileInfo.FileVersion = "Версия " & App.Major & "." & App.Minor & "." & _
+                App.Revision
     
     Else
         
@@ -3323,17 +3474,15 @@ Private Sub Form_Load()
     GetUserName szUserName, length
     szUserName = Left$(szUserName, length - 1)
     
-    App.LogEvent VBA.Constants.vbCrLf & VBA.Constants.vbCrLf _
-       & "-----------------------------------------------------------------------" & vbCrLf _
-       & "Конфигуратор управляющих программ" & vbCrLf _
-       & udtFileInfo.FileVersion & vbCrLf _
-       & "Уникальный идентификатор (GUID): " & ProgramGUID & vbCrLf _
-       & "Дата запуска: " & Date & " г. в " & Time & vbCrLf _
-       & "Операционная система: " & GetOSVersion & vbCrLf _
-       & "Имя пользователя: " & szUserName & vbCrLf _
-       & "Текущая папка: " & szCurrDir & vbCrLf _
-       & "-----------------------------------------------------------------------" & vbCrLf, _
-       VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "Запуск программы..." & VBA.Constants.vbCrLf & VBA.Constants.vbCrLf & _
+            "-----------------------------------------------------------------------" & _
+            vbCrLf & "Конфигуратор управляющих программ" & vbCrLf & _
+            udtFileInfo.FileVersion & vbCrLf & "Уникальный идентификатор (GUID): " & _
+            ProgramGUID & vbCrLf & "Дата запуска: " & Date & " г. в " & Time & vbCrLf & _
+            "Операционная система: " & GetOSVersion & vbCrLf & "Имя пользователя: " & _
+            szUserName & vbCrLf & "Текущая папка: " & szCurrDir & vbCrLf & _
+            "-----------------------------------------------------------------------" & _
+            vbCrLf
        
     ' Создаём экземпляр объекта
     Set Manager = New CProgramManager
@@ -3343,7 +3492,8 @@ Private Sub Form_Load()
     
     App.HelpFile = CurrentDir & "\cop.chm"
     
-    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл справки: " & App.HelpFile
+    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл справки: " _
+            & App.HelpFile
     
     ' Начальные пути для диалоговых окон
     OpenFileDialog.InitDir = CurrentDir
@@ -3359,14 +3509,14 @@ Private Sub Form_Load()
     Set ModuleCool = New CModuleCool
     Set ModuleTrin = New CModuleTrin
         
-    IniFilePath = CurrentDir & "\limits.ini"
+    ' Загрузка уставок
+    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл уставок: " _
+            & IniFilePath
     
-    Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл уставок: " & IniFilePath
-    
-    LoadLimits IniFilePath
+    LoadLimits CurrentDir & "\limits.ini"
     
     If LimitsLoaded Then Debug.Print Date & " " & Time & _
-        " [cop.FormOptions.Form_Load]: " & "Уставки загружены."
+            " [cop.FormOptions.Form_Load]: " & "Уставки загружены."
     
     ModuleIdle.LoadLimits IniFilePath
     ModuleFill.LoadLimits IniFilePath
@@ -3384,7 +3534,7 @@ Private Sub Form_Load()
     LoadPlacement
     
     ' Восстанавливаем список используемых файлов
-    MRUFileList.Load IniFile
+    MRUFileList.Load Settings.IniFile
     DisplayMRU
     
     FunctionsStrings(0) = "Пропуск"
@@ -3418,15 +3568,16 @@ Private Sub Form_Load()
     m_ME.Add Me
     m_ME.Add VScrollPicsView
     
+    '<EhFooter>
     Exit Sub
-    
+
 Form_Load_Err:
-    ' Обновляем вид
-    RefreshComponents False
-    
-    ' Симулируем изменение размером формы для вызова Resize()
-    Move Left, Top, Width, Height
-    
+    Logger.Info "[cop.FormMain.Form_Load]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub Form_Paint()
@@ -3437,6 +3588,7 @@ Private Sub Form_Paint()
 End Sub
 
 Private Sub Form_Resize()
+
     '<EhHeader>
     On Error Resume Next
     '</EhHeader>
@@ -3450,14 +3602,14 @@ Private Sub Form_Unload(Cancel As Integer)
     On Error GoTo Form_Unload_Err
     '</EhHeader>
 
+
     If Modified = True Then
     
         Dim vbRes As Integer
         
-        vbRes = MsgBox("Сохранить изменения в файле:" & _
-           VBA.Constants.vbCrLf & VBA.Constants.vbCrLf & _
-           """" & Manager.FileName & """?", _
-           vbYesNoCancel + vbQuestion, APP_NAME)
+        vbRes = MsgBox("Сохранить изменения в файле:" & VBA.Constants.vbCrLf & _
+                VBA.Constants.vbCrLf & """" & Manager.FileName & """?", vbYesNoCancel + _
+                vbQuestion, APP_NAME)
            
         Select Case vbRes
         
@@ -3466,6 +3618,7 @@ Private Sub Form_Unload(Cancel As Integer)
             Case vbNo:
             
             Case vbCancel
+
                 Cancel = 1
                 Exit Sub
                 
@@ -3479,7 +3632,7 @@ Private Sub Form_Unload(Cancel As Integer)
     SavePlacement
     
     ' Сохраняем список используемых файлов
-    MRUFileList.Save IniFile
+    MRUFileList.Save Settings.IniFile
     
     LastUndoRedoItem = 0
     UndoRedoVector.removeAllElements
@@ -3503,10 +3656,8 @@ Private Sub Form_Unload(Cancel As Integer)
     Exit Sub
 
 Form_Unload_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.Form_Unload]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.Form_Unload]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -3524,9 +3675,11 @@ Private Sub GotoMenuItem_Click()
     Exit Sub
 
 GotoMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.GotoMenuItem_Click]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.GotoMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -3536,16 +3689,20 @@ Private Sub HelpMainMenuSubItem_Click()
     '</EhHeader>
 
     If DoesFileExist(App.HelpFile) Then
+
         Shell ("hh " & App.HelpFile), vbNormalFocus
+
     End If
     
     '<EhFooter>
     Exit Sub
 
 HelpMainMenuSubItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.HelpMainMenuSubItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.HelpMainMenuSubItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -3553,6 +3710,7 @@ Private Sub ImportMainMenuItem_Click()
     '<EhHeader>
     On Error GoTo ImportMainMenuItem_Click_Err
     '</EhHeader>
+
 
     Dim Cnt As Integer
 
@@ -3632,13 +3790,18 @@ Private Sub ImportMainMenuItem_Click()
     Exit Sub
 
 ImportMainMenuItem_Click_Err:
+
     If Err.Number = cdlCancel Then
+
     Else
-        App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ImportMainMenuItem_Click]: " _
-           & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+        
+        Logger.Info "[cop.FormMain.ImportMainMenuItem_Click]: " & GetErrorMessageById( _
+                Err.Number, Err.Description)
+
     End If
-    
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -3665,24 +3828,24 @@ Private Sub InsertStepByNum_Click(index As Integer)
     Exit Sub
 
 InsertStepByNum_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.InsertStepByNum_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.InsertStepByNum_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-Private Sub Kachalka_Complete(ByVal Status As kach_tlb.BINDSTATUS, ByVal StatusText As String)
+Private Sub Kachalka_Complete(ByVal Status As kach_tlb.BINDSTATUS, _
+                              ByVal StatusText As String)
     '<EhHeader>
     On Error GoTo Kachalka_Complete_Err
     '</EhHeader>
-    
+
     TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Загрузка завершена"
     
     FormDownload.SetProgress 0
+    
     FormDownload.ShowStateText "Загрузка завершена"
     
     MenuItemDoUpdate.Enabled = True
@@ -3691,27 +3854,34 @@ Private Sub Kachalka_Complete(ByVal Status As kach_tlb.BINDSTATUS, ByVal StatusT
     Exit Sub
 
 Kachalka_Complete_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.Kachalka_Complete]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.Kachalka_Complete]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-Private Sub Kachalka_DataAvailable(ByVal EventType As kach_tlb.BSCF, ByVal Data As String, ByVal DataFormat As Long)
+Private Sub Kachalka_DataAvailable(ByVal EventType As kach_tlb.BSCF, _
+                                   ByVal Data As String, _
+                                   ByVal DataFormat As Long)
 
     ' Пропускаем
     
 End Sub
 
-Private Sub Kachalka_Progress(ByVal Progress As Long, ByVal ProgressMax As Long, ByVal Status As Long, ByVal StatusText As String, Cancel As Boolean)
+Private Sub Kachalka_Progress(ByVal Progress As Long, _
+                              ByVal ProgressMax As Long, _
+                              ByVal Status As Long, _
+                              ByVal StatusText As String, _
+                              Cancel As Boolean)
     '<EhHeader>
     On Error GoTo Kachalka_Progress_Err
     '</EhHeader>
 
+    ' Игнорируем пустые события
+    If ProgressMax = 0 Then Exit Sub
+    
     Dim sProgress As String
     
     If ProgressMax Then
@@ -3725,8 +3895,8 @@ Private Sub Kachalka_Progress(ByVal Progress As Long, ByVal ProgressMax As Long,
     End If
      
     If FormDownload.Visible = True Then
-    
-        FormDownload.SetProgress CInt((100 * Progress) / ProgressMax)
+        
+        FormDownload.SetProgress (100& * Progress / ProgressMax)
         FormDownload.ShowStateText "Загрузка: " & sProgress
         
     End If
@@ -3740,10 +3910,8 @@ Private Sub Kachalka_Progress(ByVal Progress As Long, ByVal ProgressMax As Long,
     Exit Sub
 
 Kachalka_Progress_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.Kachalka_Progress]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.Kachalka_Progress]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -3751,6 +3919,9 @@ Kachalka_Progress_Err:
 End Sub
 
 Private Function LookupStatus(ByVal ulStatusCode As kach_tlb.BINDSTATUS) As String
+    '<EhHeader>
+    On Error GoTo LookupStatus_Err
+    '</EhHeader>
     
     If ulStatusCode <= 0 Then
     
@@ -3758,34 +3929,44 @@ Private Function LookupStatus(ByVal ulStatusCode As kach_tlb.BINDSTATUS) As Stri
         
     Else
     
-        LookupStatus = Choose(ulStatusCode, _
-            "BINDSTATUS_FINDINGRESOURCE", "BINDSTATUS_CONNECTING", _
-            "BINDSTATUS_REDIRECTING", "BINDSTATUS_BEGINDOWNLOADDATA", _
-            "BINDSTATUS_DOWNLOADINGDATA", "BINDSTATUS_ENDDOWNLOADDATA", _
-            "BINDSTATUS_BEGINDOWNLOADCOMPONENTS", "BINDSTATUS_INSTALLINGCOMPONENTS", _
-            "BINDSTATUS_ENDDOWNLOADCOMPONENTS", "BINDSTATUS_USINGCACHEDCOPY", _
-            "BINDSTATUS_SENDINGREQUEST", "BINDSTATUS_CLASSIDAVAILABLE", _
-            "BINDSTATUS_MIMETYPEAVAILABLE", "BINDSTATUS_CACHEFILENAMEAVAILABLE", _
-            "BINDSTATUS_BEGINSYNCOPERATION", "BINDSTATUS_ENDSYNCOPERATION", _
-            "BINDSTATUS_BEGINUPLOADDATA", "BINDSTATUS_UPLOADINGDATA", _
-            "BINDSTATUS_ENDUPLOADDATA", "BINDSTATUS_PROTOCOLCLASSID", _
-            "BINDSTATUS_ENCODING", "BINDSTATUS_VERIFIEDMIMETYPEAVAILABLE", _
-            "BINDSTATUS_CLASSINSTALLLOCATION", "BINDSTATUS_DECODING", _
-            "BINDSTATUS_LOADINGMIMEHANDLER", "BINDSTATUS_CONTENTDISPOSITIONATTACH", _
-            "BINDSTATUS_FILTERREPORTMIMETYPE", "BINDSTATUS_CLSIDCANINSTANTIATE", _
-            "BINDSTATUS_IUNKNOWNAVAILABLE", "BINDSTATUS_DIRECTBIND", _
-            "BINDSTATUS_RAWMIMETYPE", "BINDSTATUS_PROXYDETECTING", _
-            "BINDSTATUS_ACCEPTRANGES", "BINDSTATUS_COOKIE_SENT", _
-            "BINDSTATUS_COMPACT_POLICY_RECEIVED", "BINDSTATUS_COOKIE_SUPPRESSED", _
-            "BINDSTATUS_COOKIE_STATE_UNKNOWN", "BINDSTATUS_COOKIE_STATE_ACCEPT", _
-            "BINDSTATUS_COOKIE_STATE_REJECT", "BINDSTATUS_COOKIE_STATE_PROMPT", _
-            "BINDSTATUS_COOKIE_STATE_LEASH", "BINDSTATUS_COOKIE_STATE_DOWNGRADE", _
-            "BINDSTATUS_POLICY_HREF", "BINDSTATUS_P3P_HEADER", _
-            "BINDSTATUS_SESSION_COOKIE_RECEIVED", "BINDSTATUS_PERSISTENT_COOKIE_RECEIVED", _
-            "BINDSTATUS_SESSION_COOKIES_ALLOWED")
+        LookupStatus = Choose(ulStatusCode, "BINDSTATUS_FINDINGRESOURCE", _
+                "BINDSTATUS_CONNECTING", "BINDSTATUS_REDIRECTING", _
+                "BINDSTATUS_BEGINDOWNLOADDATA", "BINDSTATUS_DOWNLOADINGDATA", _
+                "BINDSTATUS_ENDDOWNLOADDATA", "BINDSTATUS_BEGINDOWNLOADCOMPONENTS", _
+                "BINDSTATUS_INSTALLINGCOMPONENTS", "BINDSTATUS_ENDDOWNLOADCOMPONENTS", _
+                "BINDSTATUS_USINGCACHEDCOPY", "BINDSTATUS_SENDINGREQUEST", _
+                "BINDSTATUS_CLASSIDAVAILABLE", "BINDSTATUS_MIMETYPEAVAILABLE", _
+                "BINDSTATUS_CACHEFILENAMEAVAILABLE", "BINDSTATUS_BEGINSYNCOPERATION", _
+                "BINDSTATUS_ENDSYNCOPERATION", "BINDSTATUS_BEGINUPLOADDATA", _
+                "BINDSTATUS_UPLOADINGDATA", "BINDSTATUS_ENDUPLOADDATA", _
+                "BINDSTATUS_PROTOCOLCLASSID", "BINDSTATUS_ENCODING", _
+                "BINDSTATUS_VERIFIEDMIMETYPEAVAILABLE", _
+                "BINDSTATUS_CLASSINSTALLLOCATION", "BINDSTATUS_DECODING", _
+                "BINDSTATUS_LOADINGMIMEHANDLER", "BINDSTATUS_CONTENTDISPOSITIONATTACH", _
+                "BINDSTATUS_FILTERREPORTMIMETYPE", "BINDSTATUS_CLSIDCANINSTANTIATE", _
+                "BINDSTATUS_IUNKNOWNAVAILABLE", "BINDSTATUS_DIRECTBIND", _
+                "BINDSTATUS_RAWMIMETYPE", "BINDSTATUS_PROXYDETECTING", _
+                "BINDSTATUS_ACCEPTRANGES", "BINDSTATUS_COOKIE_SENT", _
+                "BINDSTATUS_COMPACT_POLICY_RECEIVED", "BINDSTATUS_COOKIE_SUPPRESSED", _
+                "BINDSTATUS_COOKIE_STATE_UNKNOWN", "BINDSTATUS_COOKIE_STATE_ACCEPT", _
+                "BINDSTATUS_COOKIE_STATE_REJECT", "BINDSTATUS_COOKIE_STATE_PROMPT", _
+                "BINDSTATUS_COOKIE_STATE_LEASH", "BINDSTATUS_COOKIE_STATE_DOWNGRADE", _
+                "BINDSTATUS_POLICY_HREF", "BINDSTATUS_P3P_HEADER", _
+                "BINDSTATUS_SESSION_COOKIE_RECEIVED", _
+                "BINDSTATUS_PERSISTENT_COOKIE_RECEIVED", "BINDSTATUS_SESSION_COOKIES_ALLOWED")
     
     End If
 
+    '<EhFooter>
+    Exit Function
+
+LookupStatus_Err:
+    Logger.Info "[cop.FormMain.LookupStatus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Function
 
 Private Sub LabelLogCaption_DblClick()
@@ -3799,17 +3980,18 @@ Private Sub LabelLogCaption_DblClick()
     Exit Sub
 
 LabelLogCaption_DblClick_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.LabelLogCaption_DblClick]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.LabelLogCaption_DblClick]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-Private Sub LabelLogCaption_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub LabelLogCaption_MouseDown(Button As Integer, _
+                                      Shift As Integer, _
+                                      X As Single, _
+                                      Y As Single)
     '<EhHeader>
     On Error GoTo LabelLogCaption_MouseDown_Err
     '</EhHeader>
@@ -3822,21 +4004,19 @@ Private Sub LabelLogCaption_MouseDown(Button As Integer, Shift As Integer, X As 
     Exit Sub
 
 LabelLogCaption_MouseDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.LabelLogCaption_MouseDown]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.LabelLogCaption_MouseDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-Private Sub LabelLogCaption_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    '<EhHeader>
-    On Error GoTo LabelLogCaption_MouseMove_Err
-    '</EhHeader>
-    
+Private Sub LabelLogCaption_MouseMove(Button As Integer, _
+                                      Shift As Integer, _
+                                      X As Single, _
+                                      Y As Single)
+
     If LogFrameResizing = True Then
     
         FrameLog.Top = FrameLog.Top + Y - BegY
@@ -3845,15 +4025,12 @@ Private Sub LabelLogCaption_MouseMove(Button As Integer, Shift As Integer, X As 
         
     End If
 
-    '<EhFooter>
-    Exit Sub
-
-LabelLogCaption_MouseMove_Err:
-
-    '</EhFooter>
 End Sub
 
-Private Sub LabelLogCaption_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub LabelLogCaption_MouseUp(Button As Integer, _
+                                    Shift As Integer, _
+                                    X As Single, _
+                                    Y As Single)
     '<EhHeader>
     On Error GoTo LabelLogCaption_MouseUp_Err
     '</EhHeader>
@@ -3864,10 +4041,8 @@ Private Sub LabelLogCaption_MouseUp(Button As Integer, Shift As Integer, X As Si
     Exit Sub
 
 LabelLogCaption_MouseUp_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.LabelLogCaption_MouseUp]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.LabelLogCaption_MouseUp]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -3878,6 +4053,7 @@ Public Sub ListPrograms_Click()
     '<EhHeader>
     On Error GoTo ListPrograms_Click_Err
     '</EhHeader>
+
 
     Dim CRC8Value As Byte
     Dim CurrentSelectedRow As Integer
@@ -3899,7 +4075,8 @@ Public Sub ListPrograms_Click()
     ListPrograms.Redraw = False
 
     ' Вычисляем признак пустой программы
-    CRC8Value = Manager.CalculateCRC8(Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, PROGRAM_SIZE_IN_BYTES)
+    CRC8Value = Manager.CalculateCRC8(Manager.ProgramIndex * PROGRAM_SIZE_IN_BYTES, _
+            PROGRAM_SIZE_IN_BYTES)
 
     ' Дополнительная проверка для пустой программы
     If CRC8Value = CRC8_FOR_DEFAULT_PROGRAM Then
@@ -3986,9 +4163,11 @@ Public Sub ListPrograms_Click()
     Exit Sub
 
 ListPrograms_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ListPrograms_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ListPrograms_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4003,9 +4182,11 @@ Private Sub ListPrograms_DblClick()
     Exit Sub
 
 ListPrograms_DblClick_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ListPrograms_DblClick]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ListPrograms_DblClick]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4023,10 +4204,8 @@ Private Sub ListPrograms_GotFocus()
     Exit Sub
 
 ListPrograms_GotFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.ListPrograms_GotFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ListPrograms_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4037,6 +4216,7 @@ Private Sub ListPrograms_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo ListPrograms_KeyDown_Err
     '</EhHeader>
+
 
     Dim ShiftDown As Boolean, CtrlDown As Boolean
     
@@ -4069,7 +4249,8 @@ Private Sub ListPrograms_KeyDown(KeyCode As Integer, Shift As Integer)
                
         Inc SelProgsCount
         
-        If (Manager.ProgramIndex + SelProgsCount) > (ListPrograms.rows - 1) Then SelProgsCount = ListPrograms.rows - Manager.ProgramIndex - 1
+        If (Manager.ProgramIndex + SelProgsCount) > (ListPrograms.rows - 1) Then _
+                SelProgsCount = ListPrograms.rows - Manager.ProgramIndex - 1
         
         ShowProgsHorizontalSelector
         
@@ -4088,8 +4269,8 @@ Private Sub ListPrograms_KeyDown(KeyCode As Integer, Shift As Integer)
         
     End If
     
-    If KeyCode = VBRUN.KeyCodeConstants.vbKeyUp Or _
-       KeyCode = VBRUN.KeyCodeConstants.vbKeyDown And Not ShiftDown Then
+    If KeyCode = VBRUN.KeyCodeConstants.vbKeyUp Or KeyCode = _
+            VBRUN.KeyCodeConstants.vbKeyDown And Not ShiftDown Then
         
         ListPrograms_Click
         
@@ -4117,9 +4298,11 @@ Private Sub ListPrograms_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 ListPrograms_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ListPrograms_KeyDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ListPrograms_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4128,7 +4311,7 @@ Private Sub ListPrograms_LostFocus()
     On Error GoTo ListPrograms_LostFocus_Err
     '</EhHeader>
 
-    ShapeLabelListPrograms.BackColor = &HF4C0C0
+    ShapeLabelListPrograms.BackColor = COLOR_MIDLLE_VIOLET
     
     RefreshMainMenu
     RefreshToolbar
@@ -4137,17 +4320,18 @@ Private Sub ListPrograms_LostFocus()
     Exit Sub
 
 ListPrograms_LostFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.ListPrograms_LostFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ListPrograms_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub ListPrograms_MouseDown(Button As Integer, _
+                                   Shift As Integer, _
+                                   X As Single, _
+                                   Y As Single)
     '<EhHeader>
     On Error GoTo ListPrograms_MouseDown_Err
     '</EhHeader>
@@ -4159,9 +4343,11 @@ Private Sub ListPrograms_MouseDown(Button As Integer, Shift As Integer, X As Sin
     Exit Sub
 
 ListPrograms_MouseDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ListPrograms_MouseDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ListPrograms_MouseDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4194,7 +4380,6 @@ Private Sub MenuItemDelete_Click()
             
             ListPrograms.SetFocus
             
-            
         Case StepsView:
     
             ' Сохраняем состояние
@@ -4212,7 +4397,6 @@ Private Sub MenuItemDelete_Click()
             ShowStepsVerticalSelector
             
             StepsView.SetFocus
-            
     
         Case CodeView:
         
@@ -4231,10 +4415,8 @@ Private Sub MenuItemDelete_Click()
     Exit Sub
 
 MenuItemDelete_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemDelete_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemDelete_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4245,7 +4427,7 @@ Private Sub MenuItemDoUpdate_Click()
     '<EhHeader>
     On Error GoTo MenuItemDoUpdate_Click_Err
     '</EhHeader>
-    
+
     ' Если окно загрузки активно, то ничего не делаем
     If FormDownload.Visible Or FormOptions.Visible Then Exit Sub
     
@@ -4258,7 +4440,8 @@ Private Sub MenuItemDoUpdate_Click()
     Dim dwConnectionTypes As Long
 
     StatusBar.Panels(1).Text = "Проверяю доступ к сети"
-    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Проверяю доступ к сети"
+    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & _
+            "Проверяю доступ к сети"
     
     dwConnectionTypes = INTERNET_CONNECTION_MODEM + INTERNET_CONNECTION_LAN + _
             INTERNET_CONNECTION_PROXY
@@ -4269,40 +4452,28 @@ Private Sub MenuItemDoUpdate_Click()
     ' Если имеется подключение к Интернет, то проверяем доступность сервера и
     ' файла автообновления
     If InternetConnected = True Then
-
+    
         StatusBar.Panels(1).Text = "Проверяю наличие обновлений"
-        TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Проверяю наличие обновлений"
+        TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & _
+                "Проверяю наличие обновлений"
         
-        ' Пытаемся обновиться
-        Result = DoAutoUpdate(Settings.AutoUpdateLink)
-
-        If Result = True Then
-
-            StatusBar.Panels(1).Text = "Проверка проведена"
-            TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Проверка проведена"
-            
-            AutoUpdateState = AUS_UPDATED
-            
-            ' Останавливаем таймер и выходим
-            TimerAutoUpdate.Interval = 0
-            
-            Exit Sub
-
-        End If
+        WinsockConnection.Close
         
-        ' TODO: Подумать что тут написать пользователю
-        StatusBar.Panels(1).Text = ""
+        WinsockConnection.RemoteHost = Settings.AutoUpdateHost
         
+        WinsockConnection.RemotePort = Settings.AutoUpdatePort
+        
+        ' Выполняем обновление
+        WinsockConnection.Connect
+    
     End If
     
     '<EhFooter>
     Exit Sub
 
 MenuItemDoUpdate_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemDoUpdate_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemDoUpdate_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4320,10 +4491,8 @@ Private Sub MenuItemPrintPreview_Click()
     Exit Sub
 
 MenuItemPrintPreview_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemPrintPreview_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemPrintPreview_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4367,10 +4536,8 @@ Private Sub MenuItemSelectAll_Click()
     Exit Sub
 
 MenuItemSelectAll_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemSelectAll_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemSelectAll_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4388,10 +4555,8 @@ Private Sub MenuItemShowHideLog_Click()
     Exit Sub
 
 MenuItemShowHideLog_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemShowHideLog_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemShowHideLog_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4463,9 +4628,11 @@ Private Sub MRUItems_Click(index As Integer)
     Exit Sub
 
 MRUItems_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.MRUItems_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MRUItems_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4521,9 +4688,11 @@ Private Sub NewMainMenuItem_Click()
     Exit Sub
 
 NewMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.NewMainMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.NewMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4531,16 +4700,18 @@ Private Sub OptionsMainMenuItem_Click()
     '<EhHeader>
     On Error GoTo OptionsMainMenuItem_Click_Err
     '</EhHeader>
-    
+
     FormOptions.Show vbModal, Me
     
     '<EhFooter>
     Exit Sub
 
 OptionsMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.OptionsMainMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.OptionsMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4548,6 +4719,7 @@ Private Sub MenuItemPaste_Click()
     '<EhHeader>
     On Error GoTo MenuItemPaste_Click_Err
     '</EhHeader>
+
     
     ' Если буфер обмена пустой, то выходим
     If Len(Clipboard.GetText) = 0 Or ActiveControl Is Nothing Then Exit Sub
@@ -4567,7 +4739,6 @@ Private Sub MenuItemPaste_Click()
             SetModified True
             
             RefreshComponents False
-            
             
         Case StepsView:
             
@@ -4598,10 +4769,8 @@ Private Sub MenuItemPaste_Click()
     Exit Sub
 
 MenuItemPaste_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemPaste_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemPaste_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4609,20 +4778,10 @@ MenuItemPaste_Click_Err:
 End Sub
 
 Private Sub PropertyTable_DblClick()
-    '<EhHeader>
-    On Error GoTo PropertyTable_DblClick_Err
-    '</EhHeader>
+
     
     PropertyTable_KeyDown VBRUN.KeyCodeConstants.vbKeyReturn, 0
     
-    '<EhFooter>
-    Exit Sub
-
-PropertyTable_DblClick_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.PropertyTable_DblClick]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    Resume Next
-    '</EhFooter>
 End Sub
 
 Private Sub PropertyTable_GotFocus()
@@ -4639,10 +4798,8 @@ Private Sub PropertyTable_GotFocus()
     Exit Sub
 
 PropertyTable_GotFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.PropertyTable_GotFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.PropertyTable_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4653,6 +4810,7 @@ Private Sub PropertyTable_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo PropertyTable_KeyDown_Err
     '</EhHeader>
+
     
     ' При нажатии Enter в ячейке даём возможность редактировать её содержимое
     If Not (KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn) Then Exit Sub
@@ -4671,43 +4829,55 @@ Private Sub PropertyTable_KeyDown(KeyCode As Integer, Shift As Integer)
     If FuncN < 12 Then
 
         Select Case FuncN
+
             Case WPC_OPERATION_IDLE ' пропуск
+
                 ModuleIdle.EditPropertyForIdle Me
         
             Case WPC_OPERATION_FILL ' Налив
+
                 ModuleFill.EditPropertyForFill Me
             
             Case WPC_OPERATION_DTRG ' моющие
+
                 ModuleDTRG.EditPropertyForDTRG Me
             
             Case WPC_OPERATION_HEAT ' нагрев
+
                 ModuleHeat.EditPropertyForHeat Me
                 
                 ' стирка, полоскание, расстряска
-            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, _
+                    WPC_OPERATION_PAUS
+
                 ModuleWashOrRinsOrJolt.EditPropertyForWashOrRinsOrJolt Me
                 
-'<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:19:28
-'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
-'            Case WPC_OPERATION_PAUS ' пауза
-'                ModulePause.EditPropertyForPause Me
-'</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:19:28>
+                '<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:19:28
+                'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
+                '            Case WPC_OPERATION_PAUS ' пауза
+                '                ModulePause.EditPropertyForPause Me
+                '</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:19:28>
 
             Case WPC_OPERATION_DRAIN ' слив
+
                 ModuleDrain.EditPropertyForDrain Me
                 
             Case WPC_OPERATION_SPIN ' отжим
+
                 ModuleSpin.EditPropertyForSpin Me
             
             Case WPC_OPERATION_COOL ' охлаждение
+
                 ModuleCool.EditPropertyForCool Me
                 
             Case WPC_OPERATION_TRIN ' тех.полоскание
+
                 ModuleTrin.EditPropertyForTrin Me
         
             Case Else
 
         End Select
+
     End If
     
     ' Перерисовываем форму
@@ -4717,9 +4887,11 @@ Private Sub PropertyTable_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 PropertyTable_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.PropertyTable_KeyDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.PropertyTable_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4728,7 +4900,7 @@ Private Sub PropertyTable_LostFocus()
     On Error GoTo PropertyTable_LostFocus_Err
     '</EhHeader>
 
-    ShapeFrameRightCaption.BackColor = &HF4C0C0
+    ShapeFrameRightCaption.BackColor = COLOR_MIDLLE_VIOLET
     
     RefreshMainMenu
     RefreshToolbar
@@ -4737,10 +4909,8 @@ Private Sub PropertyTable_LostFocus()
     Exit Sub
 
 PropertyTable_LostFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.PropertyTable_LostFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.PropertyTable_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4751,6 +4921,7 @@ Private Sub MenuItemRedo_Click()
     '<EhHeader>
     On Error GoTo MenuItemRedo_Click_Err
     '</EhHeader>
+
 
     If ActiveControl Is Nothing Then Exit Sub
 
@@ -4769,10 +4940,8 @@ Private Sub MenuItemRedo_Click()
     Exit Sub
 
 MenuItemRedo_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemRedo_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemRedo_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4787,9 +4956,11 @@ Private Sub StepGrid_Click(index As Integer)
     Manager.StepIndex = StepGrid(index).Tag - 1
     
     ' Сохраняем данные о навигации по структуре
-    ListProgramsRowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt(Manager.StepIndex * &H100)
+    ListProgramsRowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt( _
+            Manager.StepIndex * &H100)
     
-    LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & ".Шаг" & Manager.StepIndex + 1 & "]"
+    LabelFrameMain.Caption = "Шаги - [" & ListPrograms.Text & ".Шаг" & _
+            Manager.StepIndex + 1 & "]"
             
     ' Обновляем зависимые компоненты
     RefreshProperties
@@ -4807,10 +4978,8 @@ Private Sub StepGrid_Click(index As Integer)
     Exit Sub
 
 StepGrid_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.StepGrid_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepGrid_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4838,10 +5007,8 @@ Private Sub StepGrid_GotFocus(index As Integer)
     Exit Sub
 
 StepGrid_GotFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.StepGrid_GotFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepGrid_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4855,12 +5022,12 @@ Private Sub StepGrid_LostFocus(index As Integer)
 
     StepGrid(index).row = 0
     StepGrid(index).Col = 0
-    StepGrid(index).CellBackColor = &HF4C0C0
+    StepGrid(index).CellBackColor = COLOR_MIDLLE_VIOLET
 
     StepGrid(index).Col = 1
-    StepGrid(index).CellBackColor = &HF4C0C0
+    StepGrid(index).CellBackColor = COLOR_MIDLLE_VIOLET
     
-    ShapeFrameMainCaption.BackColor = &HF4C0C0
+    ShapeFrameMainCaption.BackColor = COLOR_MIDLLE_VIOLET
     
     RefreshMainMenu
     RefreshToolbar
@@ -4869,21 +5036,23 @@ Private Sub StepGrid_LostFocus(index As Integer)
     Exit Sub
 
 StepGrid_LostFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.StepGrid_LostFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepGrid_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-Private Sub StepGrid_MouseDown(index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub StepGrid_MouseDown(index As Integer, _
+                               Button As Integer, _
+                               Shift As Integer, _
+                               X As Single, _
+                               Y As Single)
     '<EhHeader>
     On Error GoTo StepGrid_MouseDown_Err
     '</EhHeader>
-    
+
     'проверка, нажата ли правая клавиша мыши
     If Button And vbRightButton Then PopupMenu MainMenuItemEdit
     
@@ -4891,10 +5060,8 @@ Private Sub StepGrid_MouseDown(index As Integer, Button As Integer, Shift As Int
     Exit Sub
 
 StepGrid_MouseDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.StepGrid_MouseDown]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepGrid_MouseDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -4906,6 +5073,7 @@ Private Sub StepsView_Click()
     On Error GoTo StepsView_Click_Err
     '</EhHeader>
 
+
     Dim X As Integer, Y As Integer
     Dim Col As Integer, row As Integer
              
@@ -4915,7 +5083,8 @@ Private Sub StepsView_Click()
     Manager.StepIndex = StepsView.Col - 1
     
     ' Сохраняем данные о навигации по структуре
-    ListProgramsRowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt(Manager.StepIndex * &H100)
+    ListProgramsRowData(ListPrograms.RowSel) = CInt(ListPrograms.RowSel) + CInt( _
+            Manager.StepIndex * &H100)
 
     ' Отображаем горизонтальный и вертикальный селекторы
     ShowStepsHorizontalSelector
@@ -4964,7 +5133,7 @@ Private Sub StepsView_Click()
     StepsView.row = Y
     
     CodeView.TopRow = (PROGRAM_SIZE_IN_BYTES * Manager.ProgramIndex + _
-       HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
+            HEADER_SIZE_IN_BYTES + STEP_SIZE_IN_BYTES * Manager.StepIndex) / 16 + 1
     
     StepsView.Redraw = True
     StepsView.SetFocus
@@ -4982,9 +5151,11 @@ Private Sub StepsView_Click()
     Exit Sub
 
 StepsView_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.StepsView_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepsView_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -4992,6 +5163,7 @@ Private Sub OpenMainMenuItem_Click()
     '<EhHeader>
     On Error GoTo OpenMainMenuItem_Click_Err
     '</EhHeader>
+
 
     ' Если файл загружен, то спрашиваем о действии
     If Manager.FileLoaded Then
@@ -5069,13 +5241,18 @@ Private Sub OpenMainMenuItem_Click()
     Exit Sub
 
 OpenMainMenuItem_Click_Err:
+
     If Err.Number = cdlCancel Then
+
     Else
-        App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.OpenMainMenuItem_Click]: " _
-           & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
-    End If
     
+        Logger.Info "[cop.FormMain.OpenMainMenuItem_Click]: " & GetErrorMessageById( _
+                Err.Number, Err.Description)
+
+    End If
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5084,29 +5261,38 @@ Private Sub SetCaption(FileName As String)
     On Error GoTo SetCaption_Err
     '</EhHeader>
 
+
     If Manager.FileLoaded Then
 
         If DesignMode Then
+
             Caption = APP_NAME & " [DESIGN] - [" & FileName & "]"
         Else
             Caption = APP_NAME & " - [" & FileName & "]"
+
         End If
+
     Else
 
         If DesignMode Then
+
             Caption = APP_NAME & " [DESIGN]"
         Else
             Caption = APP_NAME & ""
+
         End If
+
     End If
     
     '<EhFooter>
     Exit Sub
 
 SetCaption_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SetCaption]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.SetCaption]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5114,6 +5300,7 @@ Private Sub SaveAsMainMenuItem_Click()
     '<EhHeader>
     On Error GoTo SaveAsMainMenuItem_Click_Err
     '</EhHeader>
+
 
     Dim FileName As String
 
@@ -5148,18 +5335,20 @@ Private Sub SaveAsMainMenuItem_Click()
     Exit Sub
 
 SaveAsMainMenuItem_Click_Err:
+
     If Err.Number = cdlCancel Then
-    
     
     Else
     
-        App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SaveAsMainMenuItem_Click]: " _
-           & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+        Logger.Info "[cop.FormMain.SaveAsMainMenuItem_Click]: " & GetErrorMessageById( _
+                Err.Number, Err.Description)
            
         Resume Next
         
     End If
     
+    Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5167,6 +5356,7 @@ Private Sub SaveMainMenuItem_Click()
     '<EhHeader>
     On Error GoTo SaveMainMenuItem_Click_Err
     '</EhHeader>
+
 
     If Modified Then
 
@@ -5194,19 +5384,25 @@ Private Sub SaveMainMenuItem_Click()
     Exit Sub
 
 SaveMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SaveMainMenuItem_Click]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.SaveMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterLeft_MouseDown(Button As Integer, _
+                                   Shift As Integer, _
+                                   X As Single, _
+                                   Y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseDown_Err
     '</EhHeader>
+
     
     ' Показываем разделительную линию
-    SplitterLeft.BackColor = &HF4C0C0
+    SplitterLeft.BackColor = COLOR_MIDLLE_VIOLET
     
     BegX = X
     BegY = Y
@@ -5217,16 +5413,22 @@ Private Sub SplitterLeft_MouseDown(Button As Integer, Shift As Integer, X As Sin
     Exit Sub
 
 SplitterLeft_MouseDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SplitterLeft_MouseDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.SplitterLeft_MouseDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterLeft_MouseMove(Button As Integer, _
+                                   Shift As Integer, _
+                                   X As Single, _
+                                   Y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseMove_Err
     '</EhHeader>
+
 
     If SplitterLeftMoving = True Then
     
@@ -5261,17 +5463,22 @@ Private Sub SplitterLeft_MouseMove(Button As Integer, Shift As Integer, X As Sin
     Exit Sub
 
 SplitterLeft_MouseMove_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SplitterLeft_MouseMove]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.SplitterLeft_MouseMove]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
-Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterLeft_MouseUp(Button As Integer, _
+                                 Shift As Integer, _
+                                 X As Single, _
+                                 Y As Single)
     '<EhHeader>
     On Error GoTo SplitterLeft_MouseUp_Err
     '</EhHeader>
-    
+
     SplitterLeft.BackColor = &H8000000F
     SplitterLeftMoving = False
     
@@ -5279,19 +5486,25 @@ Private Sub SplitterLeft_MouseUp(Button As Integer, Shift As Integer, X As Singl
     Exit Sub
 
 SplitterLeft_MouseUp_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SplitterLeft_MouseUp]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.SplitterLeft_MouseUp]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    ' Показываем разделительную линию
+Private Sub SplitterRight_MouseDown(Button As Integer, _
+                                    Shift As Integer, _
+                                    X As Single, _
+                                    Y As Single)
     '<EhHeader>
     On Error GoTo SplitterRight_MouseDown_Err
     '</EhHeader>
+
+    ' Показываем разделительную линию
     
-    SplitterRight.BackColor = &HF4C0C0
+    SplitterRight.BackColor = COLOR_MIDLLE_VIOLET
     
     BegX = X
     BegY = Y
@@ -5302,16 +5515,22 @@ Private Sub SplitterRight_MouseDown(Button As Integer, Shift As Integer, X As Si
     Exit Sub
 
 SplitterRight_MouseDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SplitterRight_MouseDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.SplitterRight_MouseDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterRight_MouseMove(Button As Integer, _
+                                    Shift As Integer, _
+                                    X As Single, _
+                                    Y As Single)
     '<EhHeader>
     On Error GoTo SplitterRight_MouseMove_Err
     '</EhHeader>
+
 
     If SplitterRightMoving = True Then
     
@@ -5347,13 +5566,18 @@ Private Sub SplitterRight_MouseMove(Button As Integer, Shift As Integer, X As Si
     Exit Sub
 
 SplitterRight_MouseMove_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SplitterRight_MouseMove]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.SplitterRight_MouseMove]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
-Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SplitterRight_MouseUp(Button As Integer, _
+                                  Shift As Integer, _
+                                  X As Single, _
+                                  Y As Single)
     '<EhHeader>
     On Error GoTo SplitterRight_MouseUp_Err
     '</EhHeader>
@@ -5365,13 +5589,18 @@ Private Sub SplitterRight_MouseUp(Button As Integer, Shift As Integer, X As Sing
     Exit Sub
 
 SplitterRight_MouseUp_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.SplitterRight_MouseUp]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.SplitterRight_MouseUp]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
 Private Sub StepsView_DblClick()
+    '<EhHeader>
+    On Error GoTo StepsView_DblClick_Err
+    '</EhHeader>
 
     Dim FuncN As Integer
     
@@ -5384,32 +5613,43 @@ Private Sub StepsView_DblClick()
         AddUndoRedoItem Manager.toString()
 
         Select Case FuncN
+
             Case WPC_OPERATION_IDLE ' пропуск
+
                 ModuleIdle.SetCheckBoxForIdle Me, StepsView.row
         
             Case WPC_OPERATION_FILL ' Налив
+
                 ModuleFill.SetCheckBoxForFill Me, StepsView.row
             
             Case WPC_OPERATION_DTRG ' моющие
+
                 ModuleDTRG.SetCheckBoxForDTRG Me, StepsView.row
             
             Case WPC_OPERATION_HEAT ' нагрев
+
                 ModuleHeat.SetCheckBoxForHeat Me, StepsView.row
                 
                 ' стирка, полоскание, расстряска
-            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, _
+                    WPC_OPERATION_PAUS
+
                 ModuleWashOrRinsOrJolt.SetCheckBoxForWashOrRinsOrJolt Me, StepsView.row
                 
             Case WPC_OPERATION_DRAIN ' слив
+
                 ModuleDrain.SetCheckBoxForDrain Me, StepsView.row
                 
             Case WPC_OPERATION_SPIN ' отжим
+
                 ModuleSpin.SetCheckBoxForSpin Me, StepsView.row
             
             Case WPC_OPERATION_COOL ' охлаждение
+
                 ModuleCool.SetCheckBoxForCool Me, StepsView.row
                 
             Case WPC_OPERATION_TRIN ' тех.полоскание
+
                 ModuleTrin.SetCheckBoxForTrin Me, StepsView.row
         
             Case Else
@@ -5434,6 +5674,16 @@ Private Sub StepsView_DblClick()
     
     End If
     
+    '<EhFooter>
+    Exit Sub
+
+StepsView_DblClick_Err:
+    Logger.Info "[cop.FormMain.StepsView_DblClick]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
 End Sub
 
 Private Sub StepsView_GotFocus()
@@ -5450,10 +5700,8 @@ Private Sub StepsView_GotFocus()
     Exit Sub
 
 StepsView_GotFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.StepsView_GotFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepsView_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -5464,6 +5712,7 @@ Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo StepsView_KeyDown_Err
     '</EhHeader>
+
 
     Dim ShiftDown As Boolean, CtrlDown As Boolean
     
@@ -5502,10 +5751,10 @@ Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
         
     End If
         
-    If (KeyCode = VBRUN.KeyCodeConstants.vbKeyLeft _
-        Or KeyCode = VBRUN.KeyCodeConstants.vbKeyRight _
-        Or KeyCode = VBRUN.KeyCodeConstants.vbKeyUp _
-        Or KeyCode = VBRUN.KeyCodeConstants.vbKeyDown) And Not ShiftDown Then
+    If (KeyCode = VBRUN.KeyCodeConstants.vbKeyLeft Or KeyCode = _
+            VBRUN.KeyCodeConstants.vbKeyRight Or KeyCode = _
+            VBRUN.KeyCodeConstants.vbKeyUp Or KeyCode = _
+            VBRUN.KeyCodeConstants.vbKeyDown) And Not ShiftDown Then
 
         StepsView_Click
 
@@ -5520,9 +5769,11 @@ Private Sub StepsView_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 StepsView_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.StepsView_KeyDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepsView_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5531,7 +5782,8 @@ Private Sub StepsView_LostFocus()
     On Error GoTo StepsView_LostFocus_Err
     '</EhHeader>
 
-    ShapeFrameMainCaption.BackColor = &HF4C0C0
+
+    ShapeFrameMainCaption.BackColor = COLOR_MIDLLE_VIOLET
     
     RefreshMainMenu
     RefreshToolbar
@@ -5540,21 +5792,22 @@ Private Sub StepsView_LostFocus()
     Exit Sub
 
 StepsView_LostFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.StepsView_LostFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepsView_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
 
-Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub StepsView_MouseDown(Button As Integer, _
+                                Shift As Integer, _
+                                X As Single, _
+                                Y As Single)
     '<EhHeader>
     On Error GoTo StepsView_MouseDown_Err
     '</EhHeader>
-    
+
     'проверка, нажата ли правая клавиша мыши
     If Button And vbRightButton Then PopupMenu MainMenuItemEdit
     
@@ -5562,9 +5815,11 @@ Private Sub StepsView_MouseDown(Button As Integer, Shift As Integer, X As Single
     Exit Sub
 
 StepsView_MouseDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.StepsView_MouseDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepsView_MouseDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5573,19 +5828,24 @@ Private Sub ShowProgsHorizontalSelector()
     On Error GoTo ShowProgsHorizontalSelector_Err
     '</EhHeader>
 
+
     ' Отображаем горизонтальный селектор
     If True And Manager.FileLoaded Then
     
         If SelProgsCount <= 0 Then SelProgsCount = 1
     
-        PictureProgsHSelLeft.Top = ListPrograms.Top + ListPrograms.RowPos(Manager.ProgramIndex + 1) - Settings.StepsSelectorWidth / 2
+        PictureProgsHSelLeft.Top = ListPrograms.Top + ListPrograms.RowPos( _
+                Manager.ProgramIndex + 1) - Settings.StepsSelectorWidth / 2
         PictureProgsHSelLeft.Left = ListPrograms.Left
         PictureProgsHSelLeft.Width = Settings.StepsSelectorWidth
-        PictureProgsHSelLeft.Height = ListPrograms.RowHeight(ListPrograms.RowSel) * SelProgsCount
+        PictureProgsHSelLeft.Height = ListPrograms.RowHeight(ListPrograms.RowSel) * _
+                SelProgsCount
         
         PictureProgsHSelRight.Top = PictureProgsHSelLeft.Top
-        PictureProgsHSelRight.Left = PictureProgsHSelLeft.Left + ListPrograms.ColWidth(0) - Settings.StepsSelectorWidth
-        PictureProgsHSelRight.Height = ListPrograms.RowHeight(ListPrograms.RowSel) * SelProgsCount
+        PictureProgsHSelRight.Left = PictureProgsHSelLeft.Left + ListPrograms.ColWidth( _
+                0) - Settings.StepsSelectorWidth
+        PictureProgsHSelRight.Height = ListPrograms.RowHeight(ListPrograms.RowSel) * _
+                SelProgsCount
         PictureProgsHSelRight.Width = Settings.StepsSelectorWidth
         
         PictureProgsHSelTop.Left = PictureProgsHSelLeft.Left
@@ -5594,7 +5854,8 @@ Private Sub ShowProgsHorizontalSelector()
         PictureProgsHSelTop.Width = ListPrograms.ColWidth(0)
         
         PictureProgsHSelBottom.Left = PictureProgsHSelLeft.Left
-        PictureProgsHSelBottom.Top = PictureProgsHSelLeft.Top + PictureProgsHSelLeft.Height - Settings.StepsSelectorWidth
+        PictureProgsHSelBottom.Top = PictureProgsHSelLeft.Top + _
+                PictureProgsHSelLeft.Height - Settings.StepsSelectorWidth
         PictureProgsHSelBottom.Height = Settings.StepsSelectorWidth
         PictureProgsHSelBottom.Width = ListPrograms.ColWidth(0)
         
@@ -5627,10 +5888,8 @@ Private Sub ShowProgsHorizontalSelector()
     Exit Sub
 
 ShowProgsHorizontalSelector_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.ShowProgsHorizontalSelector]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ShowProgsHorizontalSelector]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -5642,16 +5901,19 @@ Private Sub ShowStepsHorizontalSelector()
     On Error GoTo ShowStepsHorizontalSelector_Err
     '</EhHeader>
 
+
     ' Отображаем вертикальный селектор
     If Settings.StepsHSelectorEnabled And Manager.FileLoaded Then
     
-        PictureHSelLeft.Top = StepsView.Top + StepsView.RowPos(StepsView.RowSel) - Settings.StepsSelectorWidth / 2
+        PictureHSelLeft.Top = StepsView.Top + StepsView.RowPos(StepsView.RowSel) - _
+                Settings.StepsSelectorWidth / 2
         PictureHSelLeft.Left = StepsView.Left
         PictureHSelLeft.Width = Settings.StepsSelectorWidth
         PictureHSelLeft.Height = StepsView.RowHeight(StepsView.RowSel)
         
         PictureHSelRight.Top = PictureHSelLeft.Top
-        PictureHSelRight.Left = PictureHSelLeft.Left + StepsView.ColWidth(0) + Settings.StepsColWidth * (StepsView.Cols - 1)
+        PictureHSelRight.Left = PictureHSelLeft.Left + StepsView.ColWidth(0) + _
+                Settings.StepsColWidth * (StepsView.Cols - 1)
         PictureHSelRight.Height = PictureHSelLeft.Height
         PictureHSelRight.Width = Settings.StepsSelectorWidth
         
@@ -5694,10 +5956,8 @@ Private Sub ShowStepsHorizontalSelector()
     Exit Sub
 
 ShowStepsHorizontalSelector_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.ShowStepsHorizontalSelector]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ShowStepsHorizontalSelector]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -5709,18 +5969,21 @@ Private Sub ShowStepsVerticalSelector()
     On Error GoTo ShowStepsVerticalSelector_Err
     '</EhHeader>
 
+
     ' Отображаем вертикальный селектор
     If Settings.StepsVSelectorEnabled And Manager.FileLoaded Then
             
         If SelStepsCount <= 0 Then SelStepsCount = 1
         
         PictureVSelLeft.Top = StepsView.Top
-        PictureVSelLeft.Left = StepsView.Left + StepsView.ColPos(Manager.StepIndex + 1) - Settings.StepsSelectorWidth / 2
+        PictureVSelLeft.Left = StepsView.Left + StepsView.ColPos(Manager.StepIndex + 1) _
+                - Settings.StepsSelectorWidth / 2
         PictureVSelLeft.Width = Settings.StepsSelectorWidth
         PictureVSelLeft.Height = StepsView.RowHeight(StepsView.RowSel) * StepsView.rows
         
         PictureVSelRight.Top = PictureVSelLeft.Top
-        PictureVSelRight.Left = PictureVSelLeft.Left + StepsView.ColWidth(Manager.StepIndex + 1) * SelStepsCount
+        PictureVSelRight.Left = PictureVSelLeft.Left + StepsView.ColWidth( _
+                Manager.StepIndex + 1) * SelStepsCount
         PictureVSelRight.Height = PictureVSelLeft.Height
         PictureVSelRight.Width = Settings.StepsSelectorWidth
         
@@ -5763,10 +6026,8 @@ Private Sub ShowStepsVerticalSelector()
     Exit Sub
 
 ShowStepsVerticalSelector_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.ShowStepsVerticalSelector]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ShowStepsVerticalSelector]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -5784,10 +6045,8 @@ Private Sub StepsView_Scroll()
     Exit Sub
 
 StepsView_Scroll_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.StepsView_Scroll]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.StepsView_Scroll]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -5798,16 +6057,18 @@ Private Sub TextByte_Change()
     '<EhHeader>
     On Error GoTo TextByte_Change_Err
     '</EhHeader>
-    
+
     TextByte.Text = Mid$(TextByte.Text, 1, 2)
         
     '<EhFooter>
     Exit Sub
 
 TextByte_Change_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextByte_Change]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextByte_Change]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5822,10 +6083,8 @@ Private Sub TextByte_GotFocus()
     Exit Sub
 
 TextByte_GotFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.TextByte_GotFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextByte_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -5836,6 +6095,7 @@ Private Sub TextByte_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo TextByte_KeyDown_Err
     '</EhHeader>
+
 
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
     
@@ -5912,9 +6172,11 @@ Private Sub TextByte_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 TextByte_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextByte_KeyDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextByte_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5922,19 +6184,25 @@ Private Sub TextByte_KeyPress(KeyAscii As Integer)
     '<EhHeader>
     On Error GoTo TextByte_KeyPress_Err
     '</EhHeader>
-    
+
     ' Фильтруем не нужные клавиши
 
     Select Case KeyAscii
+
         Case Asc("a"), Asc("b"), Asc("c"), Asc("d"), Asc("e"), Asc("f"):
+
         Case Asc("A"), Asc("B"), Asc("C"), Asc("D"), Asc("E"), Asc("F"):
-        Case Asc("0"), Asc("1"), Asc("2"), Asc("3"), Asc("4"), _
-           Asc("5"), Asc("6"), Asc("7"), Asc("8"), Asc("9"):
+
+        Case Asc("0"), Asc("1"), Asc("2"), Asc("3"), Asc("4"), Asc("5"), Asc("6"), Asc( _
+                "7"), Asc("8"), Asc("9"):
+
             ' Enter и Del
         Case 13, 8:
             
         Case Else
+
             KeyAscii = 0
+
     End Select
     
     If KeyAscii = vbKeyReturn Or KeyAscii = vbKeyEscape Then KeyAscii = 0
@@ -5943,9 +6211,11 @@ Private Sub TextByte_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 TextByte_KeyPress_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextByte_KeyPress]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextByte_KeyPress]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5953,17 +6223,19 @@ Private Sub TextByte_LostFocus()
     '<EhHeader>
     On Error GoTo TextByte_LostFocus_Err
     '</EhHeader>
-    
-    ShapeFrameMainCaption.BackColor = &HF4C0C0
+
+    ShapeFrameMainCaption.BackColor = COLOR_MIDLLE_VIOLET
     TextByte.Visible = False
     
     '<EhFooter>
     Exit Sub
 
 TextByte_LostFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextByte_LostFocus]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextByte_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -5978,10 +6250,8 @@ Private Sub TextCell_GotFocus()
     Exit Sub
 
 TextCell_GotFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.TextCell_GotFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextCell_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -5992,6 +6262,7 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo TextCell_KeyDown_Err
     '</EhHeader>
+
 
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyEscape Then
     
@@ -6004,7 +6275,6 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
     
     If KeyCode = VBRUN.KeyCodeConstants.vbKeyReturn Then
-    
         
         Dim FuncN As Integer
         
@@ -6017,38 +6287,49 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
             AddUndoRedoItem Manager.toString()
 
             Select Case FuncN
+
                 Case WPC_OPERATION_IDLE ' пропуск
+
                     ModuleIdle.SetComboPropertyForIdle Me
             
                 Case WPC_OPERATION_FILL ' Налив
+
                     ModuleFill.SetComboPropertyForFill Me
                 
                 Case WPC_OPERATION_DTRG ' моющие
+
                     ModuleDTRG.SetComboPropertyForDTRG Me
                 
                 Case WPC_OPERATION_HEAT ' нагрев
+
                     ModuleHeat.SetComboPropertyForHeat Me
                     
                     ' стирка, полоскание, расстряска
-                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, _
+                        WPC_OPERATION_PAUS
+
                     ModuleWashOrRinsOrJolt.SetComboPropertyForWashOrRinsOrJolt Me
                     
-'<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:10
-'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
-'                Case WPC_OPERATION_PAUS ' пауза
-'                    ModulePause.SetComboPropertyForPause Me
-'</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:10>
+                    '<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:10
+                    'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
+                    '                Case WPC_OPERATION_PAUS ' пауза
+                    '                    ModulePause.SetComboPropertyForPause Me
+                    '</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:10>
     
                 Case WPC_OPERATION_DRAIN ' слив
+
                     ModuleDrain.SetComboPropertyForDrain Me
                     
                 Case WPC_OPERATION_SPIN ' отжим
+
                     ModuleSpin.SetComboPropertyForSpin Me
                 
                 Case WPC_OPERATION_COOL ' охлаждение
+
                     ModuleCool.SetComboPropertyForCool Me
                     
                 Case WPC_OPERATION_TRIN ' тех.полоскание
+
                     ModuleTrin.SetComboPropertyForTrin Me
             
                 Case Else
@@ -6091,9 +6372,11 @@ Private Sub TextCell_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 TextCell_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextCell_KeyDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextCell_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -6108,9 +6391,11 @@ Private Sub TextCell_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 TextCell_KeyPress_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextCell_KeyPress]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextCell_KeyPress]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -6118,12 +6403,12 @@ Private Sub TextCell_LostFocus()
     '<EhHeader>
     On Error GoTo TextCell_LostFocus_Err
     '</EhHeader>
-    
+
     TextCell.Visible = False
     LabelDescription.Visible = False
     ShapeDescription.Visible = False
     
-    ShapeFrameRightCaption.BackColor = &HF4C0C0
+    ShapeFrameRightCaption.BackColor = COLOR_MIDLLE_VIOLET
     
     RefreshFrameRight
     
@@ -6131,9 +6416,11 @@ Private Sub TextCell_LostFocus()
     Exit Sub
 
 TextCell_LostFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextCell_LostFocus]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextCell_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -6148,10 +6435,8 @@ Private Sub TextName_GotFocus()
     Exit Sub
 
 TextName_GotFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.TextName_GotFocus]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextName_GotFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -6162,6 +6447,7 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
     '<EhHeader>
     On Error GoTo TextName_KeyDown_Err
     '</EhHeader>
+
     
     Dim I As Integer
     Dim StepPointer As Long
@@ -6233,9 +6519,11 @@ Private Sub TextName_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 TextName_KeyDown_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextName_KeyDown]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextName_KeyDown]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -6250,9 +6538,11 @@ Private Sub TextName_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 TextName_KeyPress_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextName_KeyPress]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextName_KeyPress]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -6260,8 +6550,8 @@ Private Sub TextName_LostFocus()
     '<EhHeader>
     On Error GoTo TextName_LostFocus_Err
     '</EhHeader>
-    
-    ShapeLabelListPrograms.BackColor = &HF4C0C0
+
+    ShapeLabelListPrograms.BackColor = COLOR_MIDLLE_VIOLET
     
     TextName.Visible = False
     
@@ -6269,13 +6559,16 @@ Private Sub TextName_LostFocus()
     Exit Sub
 
 TextName_LostFocus_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.TextName_LostFocus]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.TextName_LostFocus]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
 Private Sub Timer1_Timer()
+
     '<EhHeader>
     On Error GoTo Timer1_Timer_Err
     '</EhHeader>
@@ -6312,10 +6605,11 @@ Timer1_Timer_Err:
     '</EhFooter>
 End Sub
 
-Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
+Private Function DoAutoUpdate(UpdateData As String) As Boolean
     '<EhHeader>
     On Error GoTo DoAutoUpdate_Err
     '</EhHeader>
+
 
     Dim Result As Boolean
        
@@ -6326,40 +6620,41 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     Dim MAX_PATH As Long
     Dim length As Integer
     
-    ' На время отладки задаём отладочный входной файл
-    If DesignMode Then
-        
-        szTempFileName = "D:\Projects\vbasic\Projects\Configurator\update"
-        
-    Else
-    
-        MAX_PATH = 255
-        szBuffer = Space(255)
-        
-        ' Получаем путь к временной папке
-        length = GetTempPath(MAX_PATH, szBuffer)
-    
-        ' Формируем путь к временному файлу
-        szTempFileName = Space(255)
-        GetTempFileName szBuffer, "cop", 0, szTempFileName
-           
-        TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Загрузка файла обновления"
-        
-        ' Пытаемся скачать файл описания с сервера
-        Kachalka.DownloadToFile UpdateFileLink, szTempFileName
-    
-    End If
-    
-    If Not DoesFileExist(szTempFileName) Then
-        
-        Debug.Print Date & " " & Time & ": " & "Файл обновления отсутствует"
-        Exit Function
-        
-    End If
+    '    ' На время отладки задаём отладочный входной файл
+    '    If DesignMode Then
+    '
+    '        szTempFileName = "D:\Projects\vbasic\Projects\Configurator\update"
+    '
+    '    Else
+    '
+    '        MAX_PATH = 255
+    '        szBuffer = Space(255)
+    '
+    '        ' Получаем путь к временной папке
+    '        length = GetTempPath(MAX_PATH, szBuffer)
+    '
+    '        ' Формируем путь к временному файлу
+    '        szTempFileName = Space(255)
+    '        GetTempFileName szBuffer, "cop", 0, szTempFileName
+    '
+    '        TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Загрузка файла обновления"
+    '
+    '        ' Пытаемся скачать файл описания с сервера
+    '        Kachalka.DownloadToFile UpdateFileLink, szTempFileName
+    '
+    '    End If
+    '
+    '    If Not DoesFileExist(szTempFileName) Then
+    '
+    '        Debug.Print Date & " " & Time & ": " & "Файл обновления отсутствует"
+    '        Exit Function
+    '
+    '    End If
         
     ' Обрабатываем скачанный файл
     Dim I As Integer
-    Dim CurrMajor As Integer, CurrMinor As Integer, CurrRevision As Integer, CurrBuild As Integer
+    Dim CurrMajor As Integer, CurrMinor As Integer, CurrRevision As Integer, CurrBuild _
+            As Integer
     Dim Major As Integer, Minor As Integer, Revision As Integer, Build As Integer
     Dim sInputJson As String
     Dim Version As String
@@ -6374,18 +6669,22 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     GetModuleFileName 0, strFile, 255
     
     ' Считываем файл и декодируем его
-    sInputJson = FromUTF8(LoadFromJSONFile(szTempFileName))
+    sInputJson = UpdateData
+    'sInputJson = FromUTF8(LoadFromJSONFile(szTempFileName))
 
     ' Производим разбор данных из файла
     Set p = JSON.parse(sInputJson)
    
-    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Поиск информации об обновлении"
+    TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & _
+            "Поиск информации об обновлении"
+    
     ' Ищем запись, имеющую необходимый GUID в поле ProgID
     For I = 1 To p.Count
     
         If (ProgramGUID = p.Item(I).Item("ProgID")) Then
         
-            TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Сверка версий"
+            TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & _
+                    "Сверка версий: "
             
             ' Считываем информацию о версии
             Major = p.Item(I).Item("Major")
@@ -6436,7 +6735,6 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
                     If CurrRevision = Revision Then
         
                         If CurrBuild = Build Then
-            
                         
                         ElseIf CurrBuild < Build Then
                         
@@ -6465,14 +6763,18 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
             ' Спрашиваем и качаем дистрибутив
             If NeedUpdate = True Then
             
+                TextLog.Text = TextLog.Text & "доступно обновление " & CStr(Major) & _
+                        "." & CStr(Minor) & "." & CStr(Revision) & "." & CStr(Build)
+            
                 Dim vbRes As Integer
                 
-                vbRes = MsgBox("Доступно обновление:" & _
-                    vbCrLf & vbCrLf & _
-                    "Новая версия: " & CStr(Major) & "." & CStr(Minor) & "." & CStr(Revision) & "." & CStr(Build) & vbCrLf & vbCrLf & _
-                    "Текущая версия: " & CStr(CurrMajor) & "." & CStr(CurrMinor) & "." & CStr(CurrRevision) & "." & CStr(CurrBuild) & _
-                    vbCrLf & vbCrLf & "Загрузить обновление?", _
-                    vbYesNo + vbQuestion, APP_NAME)
+                vbRes = MsgBox("Доступно обновление:" & vbCrLf & vbCrLf & _
+                        "Новая версия: " & CStr(Major) & "." & CStr(Minor) & "." & CStr( _
+                        Revision) & "." & CStr(Build) & vbCrLf & vbCrLf & _
+                        "Текущая версия: " & CStr(CurrMajor) & "." & CStr(CurrMinor) & _
+                        "." & CStr(CurrRevision) & "." & CStr(CurrBuild) & vbCrLf & _
+                        vbCrLf & "Загрузить обновление?", vbYesNo + vbQuestion, _
+                        APP_NAME)
                 
                 Select Case vbRes
                 
@@ -6480,7 +6782,8 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
                     
                         Dim FileName As String
                     
-                        SaveFileDialog.FileName = MiscExtractPathName(DownloadLink, False, "/")
+                        SaveFileDialog.FileName = MiscExtractPathName(DownloadLink, _
+                                False, "/")
                         SaveFileDialog.DialogTitle = "Сохранить файл..."
                         SaveFileDialog.DefaultExt = ""
                         SaveFileDialog.Filter = "Все файлы (*.*)|*.*"
@@ -6495,8 +6798,8 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
                         
                         If FileName <> "" Then
                                            
-                            TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & _
-                                "Загрузка файла:" & vbCrLf & FileName
+                            TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & _
+                                    ": " & "Загрузка файла:" & vbCrLf & FileName
                             
                             FormDownload.ShowFromText DownloadLink
                             FormDownload.ShowToText FileName
@@ -6522,6 +6825,10 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
                 
                 End Select
                 
+            Else
+            
+                TextLog.Text = TextLog.Text & "новых версий не обнаружено"
+            
             End If
             
             Result = True
@@ -6544,6 +6851,7 @@ Private Function DoAutoUpdate(UpdateFileLink As String) As Boolean
     Exit Function
 
 DoAutoUpdate_Err:
+
     If Err.Number = cdlCancel Then
         
         ' Удаляем временный файл
@@ -6555,10 +6863,8 @@ DoAutoUpdate_Err:
     
     Else
     
-        App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-                " [INFO] [cop.FormMain.DoAutoUpdate]: " & GetErrorMessageById( _
-                Err.Number, Err.Description), _
-                VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+        Logger.Info "[cop.FormMain.DoAutoUpdate]: " & GetErrorMessageById( _
+                Err.Number, Err.Description)
                 
         ' Удаляем временный файл
         If DoesFileExist(szTempFileName) And Not DesignMode Then DeleteFile szTempFileName
@@ -6569,6 +6875,8 @@ DoAutoUpdate_Err:
         
     End If
 
+    Resume Next
+
     '</EhFooter>
 End Function
 
@@ -6576,6 +6884,7 @@ Private Sub TimerAutoUpdate_Timer()
     '<EhHeader>
     On Error GoTo TimerAutoUpdate_Timer_Err
     '</EhHeader>
+
 
     ' Если окно загрузки активно, то ничего не делаем
     If FormDownload.Visible Or FormOptions.Visible Then Exit Sub
@@ -6645,27 +6954,24 @@ Private Sub TimerAutoUpdate_Timer()
                 
             Case Else:
             
-                    TimerAutoUpdate.Interval = 0
-                    Exit Sub
+                TimerAutoUpdate.Interval = 0
+                Exit Sub
                     
         End Select
         
     End If
-
-    ' Выполняем обновление
+    
     MenuItemDoUpdate_Click
 
     '<EhFooter>
     Exit Sub
 
 TimerAutoUpdate_Timer_Err:
-    
+
     TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & "Ошибка (см. лог)"
-    
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.TimerAutoUpdate_Timer]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+            
+    Logger.Info "[cop.FormMain.TimerAutoUpdate_Timer]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -6676,6 +6982,7 @@ Private Sub Toolbar_ButtonClick(ByVal Button As MSComctlLib.Button)
     '<EhHeader>
     On Error GoTo Toolbar_ButtonClick_Err
     '</EhHeader>
+
  
     If (Button.index = 1) Then NewMainMenuItem_Click
 
@@ -6711,9 +7018,11 @@ Private Sub Toolbar_ButtonClick(ByVal Button As MSComctlLib.Button)
     Exit Sub
 
 Toolbar_ButtonClick_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.Toolbar1_ButtonClick]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.Toolbar_ButtonClick]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -6721,7 +7030,7 @@ Public Sub RefreshDataComponents()
     '<EhHeader>
     On Error GoTo RefreshDataComponents_Err
     '</EhHeader>
-    
+
     RefreshForm
     RefreshMainMenu
     RefreshList
@@ -6736,9 +7045,11 @@ Public Sub RefreshDataComponents()
     Exit Sub
 
 RefreshDataComponents_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshDataComponents]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshDataComponents]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -6746,6 +7057,7 @@ Private Sub RefreshListSelection()
     '<EhHeader>
     On Error GoTo RefreshListSelection_Err
     '</EhHeader>
+
 
     Dim CRC8Value As Byte
     Dim Cnt As Integer
@@ -6757,7 +7069,8 @@ Private Sub RefreshListSelection()
         ListPrograms.row = Cnt + 1
         
         ' Вычисляем признак пустой программы
-        CRC8Value = Manager.CalculateCRC8(Cnt * PROGRAM_SIZE_IN_BYTES, PROGRAM_SIZE_IN_BYTES)
+        CRC8Value = Manager.CalculateCRC8(Cnt * PROGRAM_SIZE_IN_BYTES, _
+                PROGRAM_SIZE_IN_BYTES)
         
         ' Дополнительная проверка для пустой программы
         If CRC8Value = CRC8_FOR_DEFAULT_PROGRAM Then
@@ -6783,7 +7096,7 @@ Private Sub RefreshListSelection()
         End If
         
         CRC8Value = Manager.CalculateCRC8(Cnt * PROGRAM_SIZE_IN_BYTES + 1, _
-           PROGRAM_SIZE_IN_BYTES - 1)
+                PROGRAM_SIZE_IN_BYTES - 1)
 
         If Not CRC8Value = Manager.GetByte(Cnt * PROGRAM_SIZE_IN_BYTES) Then
         
@@ -6797,9 +7110,11 @@ Private Sub RefreshListSelection()
     Exit Sub
 
 RefreshListSelection_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshListSelection]: " _
-        & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshListSelection]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -6807,6 +7122,7 @@ Private Sub RefreshList()
     '<EhHeader>
     On Error GoTo RefreshList_Err
     '</EhHeader>
+
 
     If Not Manager.FileLoaded Then
     
@@ -6897,9 +7213,11 @@ Private Sub RefreshList()
     Exit Sub
 
 RefreshList_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshList]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshList]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -6907,6 +7225,7 @@ Private Sub RefreshCodeView()
     '<EhHeader>
     On Error GoTo RefreshCodeView_Err
     '</EhHeader>
+
     
     Dim Col As Integer, row As Integer
     Dim S As String
@@ -6939,17 +7258,21 @@ Private Sub RefreshCodeView()
             If Col < CodeView.Cols - 1 Then
 
                 If Col < 11 Then
+
                     S = S & "0" & Col - 1 & "|"
                 Else
                     S = S & "0" & Chr$(Col - 11 + 65) & "|"
+
                 End If
                 
             Else
 
                 If Col < 11 Then
+
                     S = S & "0" & Col - 1 & "|"
                 Else
                     S = S & "0" & Chr$(Col - 11 + 65) & "|"
+
                 End If
                 
             End If
@@ -6988,17 +7311,21 @@ Private Sub RefreshCodeView()
         If Col < CodeView.Cols - 1 Then
 
             If Col < 11 Then
+
                 S = S & "0" & Col - 1 & "|"
             Else
                 S = S & "0" & Chr$(Col - 11 + 65) & "|"
+
             End If
             
         Else
 
             If Col < 11 Then
+
                 S = S & "0" & Col - 1 & "|"
             Else
                 S = S & "0" & Chr$(Col - 11 + 65) & "|"
+
             End If
             
         End If
@@ -7025,22 +7352,30 @@ Private Sub RefreshCodeView()
         HexValue = (row - 1) * 16
         
         If HexValue < &H10 Then
+
             CodeView.Text = "0000"
         Else
 
             If HexValue < &H100 Then
+
                 CodeView.Text = "00" & Hex$(HexValue)
             Else
 
                 If HexValue < &H1000 Then
+
                     CodeView.Text = "0" & Hex$(HexValue)
                 Else
 
                     If HexValue < &H10000 Then
+
                         CodeView.Text = "" & Hex$(HexValue)
+
                     End If
+
                 End If
+
             End If
+
         End If
         
         CodeView.CellAlignment = flexAlignRightCenter
@@ -7065,9 +7400,11 @@ Private Sub RefreshCodeView()
                 HexValue = Manager.GetByte(16 * (row - 1) + Col - 1)
             
                 If (HexValue < &H10) Then
+
                     CodeView.Text = "0" & Hex$(HexValue)
                 Else
                     CodeView.Text = "" & Hex$(HexValue)
+
                 End If
                 
             Else
@@ -7081,6 +7418,7 @@ Private Sub RefreshCodeView()
         row = row + 1
 
         If (row > CodeView.rows - 1) Then Exit Do
+
     Loop
     
     ' После сделанных изменений можно визуализировать компонент
@@ -7090,9 +7428,11 @@ Private Sub RefreshCodeView()
     Exit Sub
 
 RefreshCodeView_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshCodeView]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshCodeView]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -7100,6 +7440,7 @@ Private Function ValveEnabled(Col As Integer, row As Integer) As Boolean
     '<EhHeader>
     On Error GoTo ValveEnabled_Err
     '</EhHeader>
+
     
     Dim FuncN As Integer
     
@@ -7110,53 +7451,65 @@ Private Function ValveEnabled(Col As Integer, row As Integer) As Boolean
     If FuncN < 12 Then
 
         Select Case FuncN
+
             Case WPC_OPERATION_IDLE ' пропуск
+
                 ValveEnabled = ModuleIdle.ValveEnabled(Me, Col - 1, row)
                 Exit Function
         
             Case WPC_OPERATION_FILL ' Налив
+
                 ValveEnabled = ModuleFill.ValveEnabled(Me, Col - 1, row)
                 Exit Function
             
             Case WPC_OPERATION_DTRG ' моющие
+
                 ValveEnabled = ModuleDTRG.ValveEnabled(Me, Col - 1, row)
                 Exit Function
             
             Case WPC_OPERATION_HEAT ' нагрев
+
                 ValveEnabled = ModuleHeat.ValveEnabled(Me, Col - 1, row)
                 Exit Function
                 
                 ' стирка, полоскание, расстряска, пауза
-            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, _
+                    WPC_OPERATION_PAUS
+
                 ValveEnabled = ModuleWashOrRinsOrJolt.ValveEnabled(Me, Col - 1, row)
                 Exit Function
                 
-'<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:26
-'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
-'            Case WPC_OPERATION_PAUS ' пауза
-'               ValveEnabled = ModulePause.SetComboPropertyForPause(Me, col - 1, row)
-'               Exit Function
-'</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:26>
+                '<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:26
+                'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
+                '            Case WPC_OPERATION_PAUS ' пауза
+                '               ValveEnabled = ModulePause.SetComboPropertyForPause(Me, col - 1, row)
+                '               Exit Function
+                '</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:20:26>
 
             Case WPC_OPERATION_DRAIN ' слив
+
                 ValveEnabled = ModuleDrain.ValveEnabled(Me, Col - 1, row)
                 Exit Function
                 
             Case WPC_OPERATION_SPIN ' отжим
+
                 ValveEnabled = ModuleSpin.ValveEnabled(Me, Col - 1, row)
                 Exit Function
             
             Case WPC_OPERATION_COOL ' охлаждение
+
                 ValveEnabled = ModuleCool.ValveEnabled(Me, Col - 1, row)
                 Exit Function
                 
             Case WPC_OPERATION_TRIN ' тех.полоскание
+
                 ValveEnabled = ModuleTrin.ValveEnabled(Me, Col - 1, row)
                 Exit Function
         
             Case Else
 
         End Select
+
     End If
     
     ValveEnabled = False
@@ -7165,9 +7518,11 @@ Private Function ValveEnabled(Col As Integer, row As Integer) As Boolean
     Exit Function
 
 ValveEnabled_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.ValveEnabled]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ValveEnabled]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Function
 
@@ -7175,6 +7530,7 @@ Private Sub RefreshPicsView()
     '<EhHeader>
     On Error GoTo RefreshPicsView_Err
     '</EhHeader>
+
 
     Dim I As Integer
 
@@ -7227,28 +7583,38 @@ Private Sub RefreshPicsView()
             Select Case StepType
             
                 Case WPC_OPERATION_FILL ' Налив
+
                     ModuleFill.ShowStepTableForFill Me, StepGrid(StepsCount)
                 
                 Case WPC_OPERATION_DTRG ' моющие
+
                     ModuleDTRG.ShowStepTableForDTRG Me, StepGrid(StepsCount)
 
                 Case WPC_OPERATION_HEAT ' нагрев
+
                     ModuleHeat.ShowStepTableForHeat Me, StepGrid(StepsCount)
 
                     ' стирка, полоскание, расстряска, пауза
-                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
-                    ModuleWashOrRinsOrJolt.ShowStepTableForWashOrRinsOrJolt Me, StepGrid(StepsCount)
+                Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, _
+                        WPC_OPERATION_PAUS
+
+                    ModuleWashOrRinsOrJolt.ShowStepTableForWashOrRinsOrJolt Me, _
+                            StepGrid(StepsCount)
 
                 Case WPC_OPERATION_DRAIN ' слив
+
                     ModuleDrain.ShowStepTableForDrain Me, StepGrid(StepsCount)
 
                 Case WPC_OPERATION_SPIN ' отжим
+
                     ModuleSpin.ShowStepTableForSpin Me, StepGrid(StepsCount)
 
                 Case WPC_OPERATION_COOL ' охлаждение
+
                     ModuleCool.ShowStepTableForCool Me, StepGrid(StepsCount)
 
                 Case WPC_OPERATION_TRIN ' тех.полоскание
+
                     ModuleTrin.ShowStepTableForTrin Me, StepGrid(StepsCount)
             
                 Case Else
@@ -7300,10 +7666,8 @@ Private Sub RefreshPicsView()
     Exit Sub
 
 RefreshPicsView_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.RefreshPicsView]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshPicsView]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -7314,6 +7678,7 @@ Private Function RearrangeStepsPics(StepsCount As Long, ScrollTop As Long) As Lo
     '<EhHeader>
     On Error GoTo RearrangeStepsPics_Err
     '</EhHeader>
+
 
     Dim I As Integer, j As Integer
     
@@ -7335,7 +7700,8 @@ Private Function RearrangeStepsPics(StepsCount As Long, ScrollTop As Long) As Lo
 
     StepTableWidth = StepGrid(0).Width
 
-    StepCols = (FramePicsView.Width - LeftMargin - RightMargin) / (StepTableWidth + XSpaceWidth)
+    StepCols = (FramePicsView.Width - LeftMargin - RightMargin) / (StepTableWidth + _
+            XSpaceWidth)
 
     StepRows = StepsCount / StepCols
 
@@ -7353,7 +7719,8 @@ Private Function RearrangeStepsPics(StepsCount As Long, ScrollTop As Long) As Lo
             If StepsCnt > StepsCount Then Exit For
 
             StepGrid(StepCols * I + j).Top = RowTop
-            StepGrid(StepCols * I + j).Left = LeftMargin + (StepTableWidth + XSpaceWidth) * j
+            StepGrid(StepCols * I + j).Left = LeftMargin + (StepTableWidth + _
+                    XSpaceWidth) * j
 
             StepGrid(StepCols * I + j).Visible = True
 
@@ -7368,7 +7735,8 @@ Private Function RearrangeStepsPics(StepsCount As Long, ScrollTop As Long) As Lo
 
         Do While Cnt < (StepCols * (I + 1)) And Cnt < StepsCount - 1
 
-            If StepGrid(Cnt).Height > StepTableHeight Then StepTableHeight = StepGrid(Cnt).Height
+            If StepGrid(Cnt).Height > StepTableHeight Then StepTableHeight = StepGrid( _
+                    Cnt).Height
 
             Inc Cnt
 
@@ -7384,22 +7752,19 @@ Private Function RearrangeStepsPics(StepsCount As Long, ScrollTop As Long) As Lo
     Exit Function
 
 RearrangeStepsPics_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.RearrangeStepsPics]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RearrangeStepsPics]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Function
 
-
-
 Private Sub RefreshStepsView()
     '<EhHeader>
     On Error GoTo RefreshStepsView_Err
     '</EhHeader>
+
     
     Dim Col As Integer, row As Integer, X As Integer, Y As Integer, FuncN As Integer
     Dim S As String
@@ -7453,25 +7818,12 @@ Private Sub RefreshStepsView()
         
         StepsView.FormatString = S
         
-        S = ";|" _
-           & "Клапан горячей воды" & "|" _
-           & "Клапан холодной воды 1" & "|" _
-           & "Клапан холодной воды 2" & "|" _
-           & "Клапан МС 1" & "|" _
-           & "Клапан МС 2" & "|" _
-           & "Клапан МС 3" & "|" _
-           & "Клапан МС 4" & "|" _
-           & "Клапан МС 5" & "|" _
-           & "Клапан МС 6" & "|" _
-           & "Клапан МС 7" & "|" _
-           & "Клапан МС 8" & "|" _
-           & "Клапан МС 9" & "|" _
-           & "Замок люка 1" & "|" _
-           & "Замок люка 2" & "|" _
-           & "Слив 1" & "|" _
-           & "Слив 2" & "|" _
-           & "Нагрев" & "|" _
-           & "Мотор"
+        S = ";|" & "Клапан горячей воды" & "|" & "Клапан холодной воды 1" & "|" & _
+                "Клапан холодной воды 2" & "|" & "Клапан МС 1" & "|" & "Клапан МС 2" & _
+                "|" & "Клапан МС 3" & "|" & "Клапан МС 4" & "|" & "Клапан МС 5" & "|" & _
+                "Клапан МС 6" & "|" & "Клапан МС 7" & "|" & "Клапан МС 8" & "|" & _
+                "Клапан МС 9" & "|" & "Замок люка 1" & "|" & "Замок люка 2" & "|" & _
+                "Слив 1" & "|" & "Слив 2" & "|" & "Нагрев" & "|" & "Мотор"
         
         StepsView.FormatString = S
         
@@ -7555,25 +7907,12 @@ Private Sub RefreshStepsView()
     
     StepsView.FormatString = S
            
-    S = ";|" _
-       & "Клапан горячей воды" & "|" _
-       & "Клапан холодной воды 1" & "|" _
-       & "Клапан холодной воды 2" & "|" _
-       & "Клапан МС 1" & "|" _
-       & "Клапан МС 2" & "|" _
-       & "Клапан МС 3" & "|" _
-       & "Клапан МС 4" & "|" _
-       & "Клапан МС 5" & "|" _
-       & "Клапан МС 6" & "|" _
-       & "Клапан МС 7" & "|" _
-       & "Клапан МС 8" & "|" _
-       & "Клапан МС 9" & "|" _
-       & "Замок люка 1" & "|" _
-       & "Замок люка 2" & "|" _
-       & "Слив 1" & "|" _
-       & "Слив 2" & "|" _
-       & "Нагрев" & "|" _
-       & "Мотор"
+    S = ";|" & "Клапан горячей воды" & "|" & "Клапан холодной воды 1" & "|" & _
+            "Клапан холодной воды 2" & "|" & "Клапан МС 1" & "|" & "Клапан МС 2" & "|" _
+            & "Клапан МС 3" & "|" & "Клапан МС 4" & "|" & "Клапан МС 5" & "|" & _
+            "Клапан МС 6" & "|" & "Клапан МС 7" & "|" & "Клапан МС 8" & "|" & _
+            "Клапан МС 9" & "|" & "Замок люка 1" & "|" & "Замок люка 2" & "|" & _
+            "Слив 1" & "|" & "Слив 2" & "|" & "Нагрев" & "|" & "Мотор"
     
     StepsView.FormatString = S
     
@@ -7627,7 +7966,8 @@ Private Sub RefreshStepsView()
                 StepsView.row = row
                 StepsView.CellAlignment = flexAlignCenterCenter
                 
-                If StepsViewMode = TEXT_VIEW Then StepsView.Text = Mid$(FunctionsStrings(FuncN), row, 1)
+                If StepsViewMode = TEXT_VIEW Then StepsView.Text = Mid$( _
+                        FunctionsStrings(FuncN), row, 1)
                 
                 ' Если нагрузку можно изменять, то показываем состояние ячейки таблицы
                 If GetLoadingsFromFuncN(FuncN) And (2 ^ (row - 1)) Then
@@ -7642,7 +7982,8 @@ Private Sub RefreshStepsView()
                                 
                                     Case LOADING_HEAT:
                                     
-                                        StepsView.Text = CStr(ModuleHeat.GetTemperature(Me, Col - 1))
+                                        StepsView.Text = CStr(ModuleHeat.GetTemperature( _
+                                                Me, Col - 1))
                                 
                                 End Select
                             
@@ -7655,7 +7996,6 @@ Private Sub RefreshStepsView()
                             End If
                             
                             StepsView.CellPictureAlignment = flexAlignCenterCenter
-                        
                         
                         Case CHECKS_VIEW:
                         
@@ -7718,9 +8058,11 @@ Private Sub RefreshStepsView()
     Exit Sub
 
 RefreshStepsView_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshStepsView]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshStepsView]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -7728,6 +8070,7 @@ Private Sub RefreshProperties()
     '<EhHeader>
     On Error GoTo RefreshProperties_Err
     '</EhHeader>
+
     
     Dim ParamStr As String
 
@@ -7764,7 +8107,8 @@ Private Sub RefreshProperties()
     
     FrameRight.Enabled = True
 
-    LabelFrameRight.Caption = "Свойства - [" & ListPrograms.Text & ".Шаг" & Manager.StepIndex + 1 & "]"
+    LabelFrameRight.Caption = "Свойства - [" & ListPrograms.Text & ".Шаг" & _
+            Manager.StepIndex + 1 & "]"
     
     ' Узнаём номер функции текущего шага
     Dim FuncN As Integer
@@ -7792,38 +8136,49 @@ Private Sub RefreshProperties()
     If FuncN < 12 Then
 
         Select Case FuncN
+
             Case WPC_OPERATION_IDLE ' пропуск
+
                 ModuleIdle.ShowPropertyTableForIdle Me
         
             Case WPC_OPERATION_FILL ' Налив
+
                 ModuleFill.ShowPropertyTableForFill Me
             
             Case WPC_OPERATION_DTRG ' моющие
+
                 ModuleDTRG.ShowPropertyTableForDTRG Me
             
             Case WPC_OPERATION_HEAT ' нагрев
+
                 ModuleHeat.ShowPropertyTableForHeat Me
                 
                 ' стирка, полоскание, расстряска, пауза
-            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, WPC_OPERATION_PAUS
+            Case WPC_OPERATION_WASH, WPC_OPERATION_RINS, WPC_OPERATION_JOLT, _
+                    WPC_OPERATION_PAUS
+
                 ModuleWashOrRinsOrJolt.ShowPropertyTableForWashOrRinsOrJolt Me
                 
-'<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:19:45
-'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
-'            Case WPC_OPERATION_PAUS ' пауза
-'                ModulePause.ShowPropertyTableForPause Me
-'</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:19:45>
+                '<Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:19:45
+                'Причина: Модуль аналогичен по функционалу с ModuleWashOrRinsOrJolt>
+                '            Case WPC_OPERATION_PAUS ' пауза
+                '                ModulePause.ShowPropertyTableForPause Me
+                '</Удалил: Мезенцев Вячеслав, 17.06.2011 г. в 17:19:45>
 
             Case WPC_OPERATION_DRAIN ' слив
+
                 ModuleDrain.ShowPropertyTableForDrain Me
                 
             Case WPC_OPERATION_SPIN ' отжим
+
                 ModuleSpin.ShowPropertyTableForSpin Me
             
             Case WPC_OPERATION_COOL ' охлаждение
+
                 ModuleCool.ShowPropertyTableForCool Me
                 
             Case WPC_OPERATION_TRIN ' тех.полоскание
+
                 ModuleTrin.ShowPropertyTableForTrin Me
         
             Case Else
@@ -7838,9 +8193,11 @@ Private Sub RefreshProperties()
     Exit Sub
 
 RefreshProperties_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.RefreshProperties]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.RefreshProperties]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -7848,18 +8205,20 @@ Public Sub LoadLimits(FileName As String)
     '<EhHeader>
     On Error GoTo LoadLimits_Err
     '</EhHeader>
-    
+
     LimitsLoaded = DoesFileExist(FileName)
     
     If Not LimitsLoaded Then Exit Sub
     
-    Dim LimitsFile As New CIniFiles
+    Dim LimitsFile As New CIniFile
     
     LimitsFile.Create FileName
     
     ' Настройки заголовка
-    EndSound.DefaultValue = LimitsFile.ReadBoolean(TITLE_SECTION_NAME, "EndSound.Default", ENDSOUND_DEFAULT)
-    DoorUnlock.DefaultValue = LimitsFile.ReadBoolean(TITLE_SECTION_NAME, "DoorUnlock.Default", DOORUNLOCK_DEFAULT)
+    EndSound.DefaultValue = LimitsFile.ReadBoolean(TITLE_SECTION_NAME, _
+            "EndSound.Default", ENDSOUND_DEFAULT)
+    DoorUnlock.DefaultValue = LimitsFile.ReadBoolean(TITLE_SECTION_NAME, _
+            "DoorUnlock.Default", DOORUNLOCK_DEFAULT)
     
     Set LimitsFile = Nothing
     
@@ -7867,9 +8226,11 @@ Public Sub LoadLimits(FileName As String)
     Exit Sub
 
 LoadLimits_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & " [INFO] [cop.FormMain.LoadLimits]: " _
-       & GetErrorMessageById(Err.Number, Err.Description), VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.LoadLimits]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
     Resume Next
+
     '</EhFooter>
 End Sub
 
@@ -7895,10 +8256,8 @@ Private Sub MenuItemUndo_Click()
     Exit Sub
 
 MenuItemUndo_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.MenuItemUndo_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.MenuItemUndo_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -7916,10 +8275,8 @@ Private Sub ViewMainMenuItem_Click()
     Exit Sub
 
 ViewMainMenuItem_Click_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.ViewMainMenuItem_Click]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.ViewMainMenuItem_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -7937,10 +8294,8 @@ Private Sub VScrollPicsView_Change()
     Exit Sub
 
 VScrollPicsView_Change_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.VScrollPicsView_Change]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.VScrollPicsView_Change]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
@@ -7963,18 +8318,90 @@ Private Sub VScrollPicsView_Scroll()
     
     Next
     
-    If StepsCount > 0 Then RearrangeStepsPics StepsCount, 120 - VScrollPicsView.Value * (VScrollPicsView.Tag / VScrollPicsView.Max)
+    If StepsCount > 0 Then RearrangeStepsPics StepsCount, 120 - VScrollPicsView.Value * _
+            (VScrollPicsView.Tag / VScrollPicsView.Max)
     
     '<EhFooter>
     Exit Sub
 
 VScrollPicsView_Scroll_Err:
-    App.LogEvent "" & VBA.Constants.vbCrLf & Date & " " & Time & _
-            " [INFO] [cop.FormMain.VScrollPicsView_Scroll]: " & GetErrorMessageById( _
-            Err.Number, Err.Description), _
-            VBRUN.LogEventTypeConstants.vbLogEventTypeInformation
+    Logger.Info "[cop.FormMain.VScrollPicsView_Scroll]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
 
     Resume Next
 
     '</EhFooter>
 End Sub
+
+Private Sub WinsockConnection_Connect()
+    '<EhHeader>
+    On Error GoTo WinsockConnection_Connect_Err
+    '</EhHeader>
+        
+    Dim Request As String
+    
+    ' Формируем строку с запросом к серверу
+    Request = ToUTF8("{""ProgID"":""" & AutoupdateServerGUID & """")
+    
+    WinsockConnection.SendData Request
+        
+    '<EhFooter>
+    Exit Sub
+
+WinsockConnection_Connect_Err:
+    Logger.Info "[cop.FormMain.WinsockConnection_Connect]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+Private Sub WinsockConnection_DataArrival(ByVal bytesTotal As Long)
+    '<EhHeader>
+    On Error GoTo WinsockConnection_DataArrival_Err
+    '</EhHeader>
+               
+    ' Ожидаем получения всех данных целиком
+    If WinsockConnection.BytesReceived < bytesTotal Then Exit Sub
+    
+    Dim Result As Boolean
+    Dim strData As String
+    
+    Result = False
+    
+    WinsockConnection.GetData strData
+        
+    ' Пытаемся обновиться
+    Result = DoAutoUpdate(FromUTF8(strData))
+
+    If Result = True Then
+
+        StatusBar.Panels(1).Text = "Проверка проведена"
+        TextLog.Text = TextLog.Text & vbCrLf & Date & " " & Time & ": " & _
+                "Проверка проведена"
+        
+        AutoUpdateState = AUS_UPDATED
+        
+        ' Останавливаем таймер и выходим
+        TimerAutoUpdate.Interval = 0
+        
+        Exit Sub
+
+    End If
+    
+    ' TODO: Подумать что тут написать пользователю
+    StatusBar.Panels(1).Text = ""
+    
+    '<EhFooter>
+    Exit Sub
+
+WinsockConnection_DataArrival_Err:
+    Logger.Info "[cop.FormMain.WinsockConnection_DataArrival]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
