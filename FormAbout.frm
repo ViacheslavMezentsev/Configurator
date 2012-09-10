@@ -1,9 +1,9 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form FormAbout 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "О программе"
-   ClientHeight    =   3708
+   ClientHeight    =   3948
    ClientLeft      =   2340
    ClientTop       =   1932
    ClientWidth     =   5412
@@ -12,7 +12,7 @@ Begin VB.Form FormAbout
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3708
+   ScaleHeight     =   3948
    ScaleWidth      =   5412
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -24,7 +24,7 @@ Begin VB.Form FormAbout
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   768
-      Left            =   204
+      Left            =   360
       MouseIcon       =   "FormAbout.frx":6432
       MousePointer    =   99  'Custom
       Picture         =   "FormAbout.frx":6CFC
@@ -33,7 +33,7 @@ Begin VB.Form FormAbout
       TabIndex        =   11
       TabStop         =   0   'False
       ToolTipText     =   "ООО НПФ ""Авторские технологии"""
-      Top             =   2352
+      Top             =   2400
       Width           =   768
    End
    Begin VB.PictureBox PictureLogoVyazma 
@@ -44,13 +44,13 @@ Begin VB.Form FormAbout
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   768
-      Left            =   4440
+      Left            =   4320
       Picture         =   "FormAbout.frx":9D40
       ScaleHeight     =   768
       ScaleWidth      =   768
       TabIndex        =   10
       TabStop         =   0   'False
-      Top             =   2352
+      Top             =   2400
       Width           =   768
    End
    Begin MSComctlLib.ImageList ImageListPhotos 
@@ -105,7 +105,7 @@ Begin VB.Form FormAbout
       Height          =   348
       Left            =   2076
       TabIndex        =   0
-      Top             =   3276
+      Top             =   3480
       Width           =   1260
    End
    Begin VB.Label Label3 
@@ -252,7 +252,7 @@ Begin VB.Form FormAbout
       Height          =   252
       Left            =   1680
       TabIndex        =   6
-      Top             =   2760
+      Top             =   2880
       Width           =   2052
    End
    Begin VB.Label LabelCompany 
@@ -280,7 +280,7 @@ Begin VB.Form FormAbout
    End
    Begin VB.Shape Shape8 
       BorderColor     =   &H80000010&
-      Height          =   936
+      Height          =   1056
       Left            =   108
       Shape           =   4  'Rounded Rectangle
       Top             =   2268
@@ -314,7 +314,7 @@ Begin VB.Form FormAbout
       BackColor       =   &H00F4E0E0&
       BackStyle       =   1  'Opaque
       BorderColor     =   &H00FFFFFF&
-      Height          =   912
+      Height          =   1032
       Left            =   120
       Shape           =   4  'Rounded Rectangle
       Top             =   2280

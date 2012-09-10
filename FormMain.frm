@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
 Begin VB.Form FormMain 
@@ -874,12 +874,12 @@ Begin VB.Form FormMain
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   312
-         Left            =   1200
+         Height          =   372
+         Left            =   1320
          TabIndex        =   17
          Top             =   4320
          Visible         =   0   'False
-         Width           =   972
+         Width           =   852
       End
       Begin VB.Shape ShapeDescription 
          BackColor       =   &H00F4E0E0&
@@ -1241,6 +1241,12 @@ Begin VB.Form FormMain
       Begin VB.Menu HelpMainMenuSubItem 
          Caption         =   "&Справка"
          Shortcut        =   {F1}
+      End
+      Begin VB.Menu MenuItemShowLogFile 
+         Caption         =   "&Журнал ошибок"
+      End
+      Begin VB.Menu Separator9 
+         Caption         =   "-"
       End
       Begin VB.Menu MenuItemDoUpdate 
          Caption         =   "О&бновить"
@@ -3435,7 +3441,7 @@ Private Sub Form_Load()
             
     Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & _
             "Файл настроек: " & Settings.IniFilePath
-        
+            
     Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл лога: " & _
             Settings.LogFilePath
     
@@ -3474,6 +3480,8 @@ Private Sub Form_Load()
     GetUserName szUserName, length
     szUserName = Left$(szUserName, length - 1)
     
+    App.HelpFile = CurrentDir & "\cop.chm"
+    
     Logger.Info "Запуск программы..." & VBA.Constants.vbCrLf & VBA.Constants.vbCrLf & _
             "-----------------------------------------------------------------------" & _
             vbCrLf & "Конфигуратор управляющих программ" & vbCrLf & _
@@ -3481,6 +3489,10 @@ Private Sub Form_Load()
             ProgramGUID & vbCrLf & "Дата запуска: " & Date & " г. в " & Time & vbCrLf & _
             "Операционная система: " & GetOSVersion & vbCrLf & "Имя пользователя: " & _
             szUserName & vbCrLf & "Текущая папка: " & szCurrDir & vbCrLf & _
+            "Рабочая папка: " & CurrentDir & vbCrLf & _
+            "Файл настроек: " & Settings.IniFilePath & vbCrLf & _
+            "Файл лога: " & Settings.LogFilePath & vbCrLf & _
+            "Файл справки: " & App.HelpFile & vbCrLf & _
             "-----------------------------------------------------------------------" & _
             vbCrLf
        
@@ -3489,8 +3501,6 @@ Private Sub Form_Load()
     
     ' Создаём экземпляр объекта
     Set MRUFileList = New cMRUFileList
-    
-    App.HelpFile = CurrentDir & "\cop.chm"
     
     Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл справки: " _
             & App.HelpFile
@@ -3510,13 +3520,23 @@ Private Sub Form_Load()
     Set ModuleTrin = New CModuleTrin
         
     ' Загрузка уставок
+    IniFilePath = CurrentDir & "\limits.ini"
+    
     Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл уставок: " _
             & IniFilePath
     
-    LoadLimits CurrentDir & "\limits.ini"
+    Logger.Info Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Файл уставок: " _
+            & IniFilePath
     
-    If LimitsLoaded Then Debug.Print Date & " " & Time & _
-            " [cop.FormOptions.Form_Load]: " & "Уставки загружены."
+    LoadLimits IniFilePath
+    
+    If LimitsLoaded Then
+    
+        Debug.Print Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Уставки загружены."
+            
+        Logger.Info Date & " " & Time & " [cop.FormOptions.Form_Load]: " & "Уставки загружены."
+        
+    End If
     
     ModuleIdle.LoadLimits IniFilePath
     ModuleFill.LoadLimits IniFilePath
@@ -4563,6 +4583,29 @@ MenuItemShowHideLog_Click_Err:
     '</EhFooter>
 End Sub
 
+
+Private Sub MenuItemShowLogFile_Click()
+    '<EhHeader>
+    On Error GoTo MenuItemShowLogFile_Click_Err
+    '</EhHeader>
+
+    ' Показываем журнал ошибок
+    Shell ("notepad " & Settings.LogFilePath), vbNormalFocus
+
+
+    '<EhFooter>
+    Exit Sub
+
+MenuItemShowLogFile_Click_Err:
+    Logger.Info "[cop.FormMain.MenuItemShowLogFile_Click]: " & GetErrorMessageById( _
+            Err.Number, Err.Description)
+
+    Resume Next
+
+    '</EhFooter>
+End Sub
+
+
 Private Sub MRUItems_Click(index As Integer)
     '<EhHeader>
     On Error GoTo MRUItems_Click_Err
@@ -4778,7 +4821,6 @@ MenuItemPaste_Click_Err:
 End Sub
 
 Private Sub PropertyTable_DblClick()
-
     
     PropertyTable_KeyDown VBRUN.KeyCodeConstants.vbKeyReturn, 0
     
@@ -8341,7 +8383,7 @@ Private Sub WinsockConnection_Connect()
     Dim Request As String
     
     ' Формируем строку с запросом к серверу
-    Request = ToUTF8("{""ProgID"":""" & AutoupdateServerGUID & """")
+    Request = ToUTF8("{""ProgID"":""" & AutoupdateServerGUID & """}")
     
     WinsockConnection.SendData Request
         
