@@ -133,11 +133,9 @@ Private Sub SetDefaultSettings()
     Result = GetModuleFileName(0, FilePath, 254)
     CurrentDir = MiscExtractPathName(FilePath, True)
     FilePath = StrConv(FilePath, vbLowerCase)
-    FilePath = Replace(FilePath, ".exe", ".log")
 
-    LogFilePath = FilePath
-    
-    IniFilePath = Replace(FilePath, ".log", ".ini")
+    LogFilePath = Replace(FilePath, ".exe", ".log")
+    IniFilePath = Replace(FilePath, ".exe", ".ini")
     
     Dim WE_ARE_IN_IDE As Boolean
     
@@ -147,12 +145,12 @@ Private Sub SetDefaultSettings()
     If WE_ARE_IN_IDE Then
         
         AutoUpdateHost = "192.168.0.14"
-        AutoUpdateLink = "http://192.168.0.14/cop/update"
+        AutoUpdateLink = "ftp://192.168.0.14/update.json"
         
     Else
         
         AutoUpdateHost = "82.193.156.30"
-        AutoUpdateLink = "http://82.193.156.30/cop/update"
+        AutoUpdateLink = "ftp://82.193.156.30/update.json"
     
     End If
     
@@ -205,9 +203,8 @@ Public Sub LoadSettings()
     Result = GetModuleFileName(0, FilePath, 254)
     CurrentDir = MiscExtractPathName(FilePath, True)
     FilePath = StrConv(FilePath, vbLowerCase)
-    FilePath = Replace(FilePath, ".exe", ".log")
 
-    LogFilePath = FIniFile.ReadString("Settings", "LogFilePath", FilePath)
+    LogFilePath = FIniFile.ReadString("Settings", "LogFilePath", Replace(FilePath, ".exe", ".log"))
     IniFilePath = FIniFile.ReadString("Settings", "IniFilePath", Replace(FilePath, ".exe", ".ini"))
     
     ' [Обновление]
@@ -218,12 +215,12 @@ Public Sub LoadSettings()
     If WE_ARE_IN_IDE Then
         
         AutoUpdateHost = FIniFile.ReadString("Settings", "AutoUpdateHost", "192.168.0.14")
-        AutoUpdateLink = FIniFile.ReadString("Settings", "AutoUpdateLink", "http://192.168.0.14/cop/update")
+        AutoUpdateLink = FIniFile.ReadString("Settings", "AutoUpdateLink", "ftp://192.168.0.14/update.json")
 
     Else
         
         AutoUpdateHost = FIniFile.ReadString("Settings", "AutoUpdateHost", "82.193.156.30")
-        AutoUpdateLink = FIniFile.ReadString("Settings", "AutoUpdateLink", "http://82.193.156.30/cop/update")
+        AutoUpdateLink = FIniFile.ReadString("Settings", "AutoUpdateLink", "ftp://82.193.156.30/update.json")
     
     End If
 

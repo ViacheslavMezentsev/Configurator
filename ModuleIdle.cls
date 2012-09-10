@@ -230,6 +230,7 @@ Private Sub func_EditPropertyForIdle(frm As FormMain, _
         .ShapeDescription.Top = .LabelDescription.Top
 
         Select Case .PropertyTable.row
+        
             Case IDLE_ENDSOUND_FIELD:
 
             Case IDLE_DOORUNLOCK_FIELD:

@@ -473,6 +473,9 @@ Private Sub func_EditPropertyForFill(frm As FormMain, _
         .ShapeDescription.Height = .LabelDescription.Height
         .ShapeDescription.Top = .LabelDescription.Top
 
+        Debug.Print "LabelDescription.Height = " & CStr(.LabelDescription.Height) & vbCrLf & _
+            "ShapeDescription.Height = " & CStr(.ShapeDescription.Height)
+        
         Select Case .PropertyTable.row
                 ' Общие параметры программы и шага
             Case IDLE_ENDSOUND_FIELD:

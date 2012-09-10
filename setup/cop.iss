@@ -80,7 +80,12 @@ Source: {#ButtonImage}; DestDir: "{tmp}"; Flags: dontcopy
 [Icons]
 Name: "{group}\Конфигуратор УП"; Filename: "{app}\cop.exe"; WorkingDir: "{app}"
 Name: "{group}\Руководство пользователя"; Filename: "{app}\cop.chm"; WorkingDir: "{app}"
+Name: "{group}\Журнал ошибок"; Filename: "{app}\cop.log"; WorkingDir: "{app}"
 Name: "{group}\Удалить"; Filename: "{app}\Uninstall\unins000"; WorkingDir: "{app}"
+
+[PreCompile]
+Name: "D:\Projects\vbasic\Projects\Configurator\makehelp.bat"; Flags: runminimized abortonerror
+Name: "D:\Projects\vbasic\Projects\Configurator\pack.bat"; Flags: runminimized abortonerror
 
 [Code]
 procedure InitializeWizard;
@@ -110,9 +115,3 @@ begin
 
 end;
 
-[_ISToolPreCompile]
-Name: D:\Projects\vbasic\Configurator\pack.bat; Parameters: ; Flags: runminimized
-
-[InnoIDE_PreCompile]
-Name: D:\Projects\vbasic\Projects\Configurator\pack.bat; Flags: RunMinimized AbortOnError; 
-Name: D:\Projects\vbasic\Projects\Configurator\makehelp.bat; Flags: RunMinimized AbortOnError;
